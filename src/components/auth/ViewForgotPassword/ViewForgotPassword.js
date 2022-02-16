@@ -10,6 +10,7 @@ import Alert from '@mui/material/Alert';
 import { useParams } from 'react-router-dom';
 import Grid from '@mui/material/Grid';
 import Link from '@mui/material/Link';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const axios = require('axios').default;
 
@@ -18,10 +19,12 @@ export default function ViewForgotPassword() {
   const [password, setPassword] = useState('');
   const [data, setData] = useState();
   const [error, setError] = useState();
+  const [loading, setLoading] = useState(false);
 
   let token = useParams();
 
   const handleSubmit = async (e) => {
+    setLoading(true);
     e.preventDefault();
     try {
       const response = await axios.post(
@@ -30,14 +33,17 @@ export default function ViewForgotPassword() {
       );
       setData(response.data.Msg);
       setError(undefined);
+      setLoading(false);
     } catch (e) {
       console.log(e.response);
       if (e.response.status === 400) {
         setError(e.response.data.errors);
         setData(undefined);
+        setLoading(false);
       } else {
         setError(e.response.data.Msg);
         setData(undefined);
+        setLoading(false);
       }
     }
   };
@@ -114,7 +120,7 @@ export default function ViewForgotPassword() {
                   required
                   fullWidth
                   name='password'
-                  label='Password'
+                  label=' New Password'
                   type='password'
                   id='password'
                   autoFocus
@@ -128,7 +134,7 @@ export default function ViewForgotPassword() {
                   variant='contained'
                   sx={{ mt: 3, mb: 2 }}
                 >
-                  Reset Password
+                  {loading ? <CircularProgress /> : 'Reset Password'}
                 </Button>
               </Box>
             </>

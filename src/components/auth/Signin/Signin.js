@@ -13,6 +13,8 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useSelector, useDispatch } from 'react-redux';
 import { signin } from '../../../features/auth/authSlice';
 import Alert from '@mui/material/Alert';
+import CircularProgress from '@mui/material/CircularProgress';
+
 
 export default function Signin() {
   const theme = createTheme();
@@ -130,7 +132,9 @@ export default function Signin() {
               variant='contained'
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign In
+              {
+                authData.status === 'loading' ? <CircularProgress/> : 'Sign In'
+              }
             </Button>
             <Grid container>
               <Grid item xs>

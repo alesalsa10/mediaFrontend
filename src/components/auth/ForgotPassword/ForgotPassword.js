@@ -7,6 +7,9 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Alert from '@mui/material/Alert';
+import CircularProgress from '@mui/material/CircularProgress';
+
+
 const axios = require('axios').default;
 
 export default function ForgotPassword() {
@@ -14,25 +17,30 @@ export default function ForgotPassword() {
   const [email, setEmail] = useState('');
   const [data, setData] = useState();
   const [error, setError] = useState();
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       const response = await axios.post(
         `http://localhost:3000/auth/forgotPassword`,
         { email: email }
       );
       setData(response.data.Msg);
-      setError(undefined)
+      setError(undefined);
+      setLoading(false);
     } catch (e) {
-        console.log(e.response)
-        if(e.response.status === 400){
-            setError(e.response.data.errors);
-            setData(undefined)
-        }else {
-            setError('Something went wrong, try again later');
-            setData(undefined)
-        }
+      console.log(e.response);
+      if (e.response.status === 400) {
+        setError(e.response.data.errors);
+        setData(undefined);
+        setLoading(false);
+      } else {
+        setError('Something went wrong, try again later');
+        setData(undefined);
+        setLoading(false);
+      }
     }
   };
 
@@ -119,7 +127,9 @@ export default function ForgotPassword() {
                   variant='contained'
                   sx={{ mt: 3, mb: 2 }}
                 >
-                  Continute
+                  {
+                    loading ? <CircularProgress/>: 'Continue'
+                  }
                 </Button>
               </Box>
             </>

@@ -12,6 +12,7 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { register } from '../../../features/auth/authSlice';
 import { useSelector, useDispatch } from 'react-redux';
+import  CircularProgress  from '@mui/material/CircularProgress';
 
 export default function Register() {
   const theme = createTheme();
@@ -103,8 +104,8 @@ export default function Register() {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            boxShadow:3,
-            p:2
+            boxShadow: 3,
+            p: 2,
           }}
         >
           <Typography component='h1' variant='h5'>
@@ -149,7 +150,10 @@ export default function Register() {
                         authData.errors.Error ===
                           'Username and email already in use'))
                   }
-                  helperText={chooseHelperText(authData.errors, 'username') || choolseHelpter2('username')}
+                  helperText={
+                    chooseHelperText(authData.errors, 'username') ||
+                    choolseHelpter2('username')
+                  }
                 />
               </Grid>
               <Grid item xs={12}>
@@ -169,7 +173,10 @@ export default function Register() {
                         authData.errors.Error ===
                           'Username and email already in use'))
                   }
-                  helperText={chooseHelperText(authData.errors, 'email') || choolseHelpter2('email')}
+                  helperText={
+                    chooseHelperText(authData.errors, 'email') ||
+                    choolseHelpter2('email')
+                  }
                 />
               </Grid>
               <Grid item xs={12}>
@@ -193,7 +200,7 @@ export default function Register() {
               variant='contained'
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign Up
+              {authData.status === 'loading' ? <CircularProgress /> : 'Sign Up'}
             </Button>
             <Grid container justifyContent='flex-end'>
               <Grid item>
