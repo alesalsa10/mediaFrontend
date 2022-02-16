@@ -18,23 +18,24 @@ const createAccount = async (data) => {
   return response.data;
 };
 
-const login = async(data)=>{
-  const response = await axios.post(`http://localhost:3000/auth/register`, {
+const login = async (data) => {
+  const response = await axios.post(`http://localhost:3000/auth/signin`, {
     email: data.email,
-    password: data.password
+    password: data.password,
   });
-  return response.data
-}
+  console.log(response.data)
+  return response.data;
+};
 
 export const register = createAsyncThunk(
   'auth/register',
   async (data, { rejectWithValue }) => {
     try {
       const response = await createAccount(data);
-      return response.data;
+      return response;
     } catch (err) {
-        console.log(err.response.data)
-        return rejectWithValue(err.response.data);
+      console.log(err.response.data);
+      return rejectWithValue(err.response.data);
     }
   }
 );
@@ -44,7 +45,7 @@ export const signin = createAsyncThunk(
   async (data, { rejectWithValue }) => {
     try {
       const response = await login(data);
-      return response.data;
+      return response;
     } catch (err) {
       console.log(err.response.data);
       return rejectWithValue(err.response.data);
@@ -63,9 +64,9 @@ export const authSlice = createSlice({
       })
       .addCase(register.fulfilled, (state, action) => {
         state.status = 'idle';
-        state.value += action.payload;
         state.errors = null;
         state.isAuth = true;
+        state.token = action.payload;
       })
       .addCase(register.rejected, (state, action) => {
         state.status = 'idle';
@@ -78,7 +79,7 @@ export const authSlice = createSlice({
       })
       .addCase(signin.fulfilled, (state, action) => {
         state.status = 'idle';
-        state.value += action.payload;
+        state.token = action.payload;
         state.errors = null;
         state.isAuth = true;
       })

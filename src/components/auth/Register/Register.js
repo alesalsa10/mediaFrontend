@@ -10,7 +10,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { register } from '../../features/auth/authSlice';
+import { register } from '../../../features/auth/authSlice';
 import { useSelector, useDispatch } from 'react-redux';
 
 export default function Register() {
@@ -103,6 +103,8 @@ export default function Register() {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
+            boxShadow:3,
+            p:2
           }}
         >
           <Typography component='h1' variant='h5'>
@@ -195,7 +197,7 @@ export default function Register() {
             </Button>
             <Grid container justifyContent='flex-end'>
               <Grid item>
-                <Link href='#' variant='body2'>
+                <Link href='/signin' variant='body2'>
                   Already have an account? Sign in
                 </Link>
               </Grid>

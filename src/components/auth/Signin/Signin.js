@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -10,14 +10,58 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-
-const theme = createTheme();
+import { useSelector, useDispatch } from 'react-redux';
+import { signin } from '../../../features/auth/authSlice';
+import Alert from '@mui/material/Alert';
 
 export default function Signin() {
-  
+  const theme = createTheme();
+  const dispatch = useDispatch();
+  const authData = useSelector((state) => state.auth);
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    
+    const data = {
+      password: password,
+      email: email,
+    };
+    dispatch(signin(data));
+  };
+
+  const checkErrors = (errors, name) => {
+    //firs validation layer on the backend
+    if (!errors) {
+      return false;
+    } else if (Array.isArray(errors.errors)) {
+      return errors.errors.some(function (el) {
+        return el.param === name;
+      });
+    }
+  };
+
+  const chooseHelperText = (errors, name) => {
+    if (!errors) {
+      return null;
+    } else if (Array.isArray(errors.errors)) {
+      const obj = authData.errors.errors.find((el) => el.param === name);
+      if (obj) {
+        return obj.msg;
+      }
+    }
+  };
+
+  const handleFieldChanges = (e) => {
+    switch (e.target.id) {
+      case 'email':
+        setEmail(e.target.value);
+        break;
+      default:
+        setPassword(e.target.value);
+        break;
+    }
   };
 
   return (
@@ -30,11 +74,20 @@ export default function Signin() {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
+            boxShadow: 3,
+            p: 2,
           }}
         >
           <Typography component='h1' variant='h5'>
             Sign in
           </Typography>
+          {authData.errors && authData.errors.Msg ? (
+            <Alert variant='outlined' severity='error'>
+              {authData.errors.Msg}
+            </Alert>
+          ) : (
+            ''
+          )}
           <Box
             component='form'
             onSubmit={handleSubmit}
@@ -50,6 +103,9 @@ export default function Signin() {
               name='email'
               autoComplete='email'
               autoFocus
+              error={checkErrors(authData.errors, 'email')}
+              onChange={handleFieldChanges}
+              helperText={chooseHelperText(authData.errors, 'email')}
             />
             <TextField
               margin='normal'
@@ -60,6 +116,9 @@ export default function Signin() {
               type='password'
               id='password'
               autoComplete='current-password'
+              error={checkErrors(authData.errors, 'password')}
+              onChange={handleFieldChanges}
+              helperText={chooseHelperText(authData.errors, 'password')}
             />
             <FormControlLabel
               control={<Checkbox value='remember' color='primary' />}
@@ -75,12 +134,12 @@ export default function Signin() {
             </Button>
             <Grid container>
               <Grid item xs>
-                <Link href='#' variant='body2'>
+                <Link href='/forgotPassword' variant='body2'>
                   Forgot password?
                 </Link>
               </Grid>
               <Grid item>
-                <Link href='#' variant='body2'>
+                <Link href='/register' variant='body2'>
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>
