@@ -8,22 +8,29 @@ import ForgotPassword from './components/auth/ForgotPassword/ForgotPassword';
 import ViewForgotPassword from './components/auth/ViewForgotPassword/ViewForgotPassword';
 import VerifyEmail from './components/auth/VerifyEmail/VerifyEmail';
 import Home from './components/Home/Home';
-import Navigation from './components/Navigation/Navigation';
+import WithoutNav from './components/Navigation/WithoutNav';
+import WithNav from './components/Navigation/WithNav';
 
 function App() {
   return (
     <>
       <Router>
         <Fragment>
-          <Navigation />
           <Routes>
-            <Route path='/signin' element={<Signin />} />
-            <Route path='/register' element={<Register />} />
-            <Route path='/forgotPassword' element={<ForgotPassword />} />
-            <Route path='/forgotPassword/:token' element={<ViewForgotPassword />} />
-            <Route path='/verify/:token' element={<VerifyEmail/>}  />
-            <Route path='/home' element={<Home />} />
-            <Route path='/' element={<Home />} />
+            <Route element={<WithoutNav />}>
+              <Route path='/signin' element={<Signin />} />
+              <Route path='/register' element={<Register />} />
+              <Route path='/forgotPassword' element={<ForgotPassword />} />
+              <Route
+                path='/forgotPassword/:token'
+                element={<ViewForgotPassword />}
+              />
+              <Route path='/verify/:token' element={<VerifyEmail />} />
+            </Route>
+            <Route element={<WithNav />}>
+              <Route path='/home' element={<Home />} />
+              <Route path='/' element={<Home />} />
+            </Route>
           </Routes>
         </Fragment>
       </Router>

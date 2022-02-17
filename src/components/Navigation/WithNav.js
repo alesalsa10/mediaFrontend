@@ -1,0 +1,13 @@
+import React from 'react';
+import Navigation from './Navigation';
+import { Outlet } from 'react-router';
+
+
+export default function WithNav() {
+  return (
+    <>
+      <Navigation />
+      <Outlet />
+    </>
+  );
+}
