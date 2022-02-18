@@ -123,165 +123,177 @@ export default function Navigation() {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
+  
+
   return (
-    <HideOnScroll>
-      <AppBar>
-        <Container maxWidth='xl'>
-          <Toolbar disableGutters>
-            <Typography
-              variant='h6'
-              noWrap
-              component='div'
-              sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
-            >
-              LOGO
-            </Typography>
-
-            <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-              <IconButton
-                size='large'
-                aria-label='account of current user'
-                aria-controls='menu-appbar'
-                aria-haspopup='true'
-                onClick={handleOpenNavMenu}
-                color='inherit'
+    <>
+      <HideOnScroll>
+        <AppBar>
+          <Container maxWidth='xl'>
+            <Toolbar disableGutters>
+              <Typography
+                variant='h6'
+                noWrap
+                component='div'
+                sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
               >
-                <MenuIcon />
-              </IconButton>
-              <Drawer
-                id='menu-appbar'
-                keepMounted
-                open={Boolean(anchorElNav)}
-                onClose={handleCloseNavMenu}
-                sx={{
-                  display: { xs: 'block', md: 'none' },
-                }}
-              >
-                {pages2.map((page) => (
-                  <Accordion key={page.main}>
-                    <AccordionSummary
-                      expandIcon={<ExpandMoreIcon />}
-                      aria-controls='panel1a-content'
-                      id='panel1a-header'
-                    >
-                      <Typography>{page.main}</Typography>
-                    </AccordionSummary>
-                    {page.links.map((link) => (
-                      <AccordionDetails key={link.link}>
-                        <Link
-                          href={link.link}
-                          color='inherit'
-                          underline='none'
-                          onClick={handleCloseNavMenu}
-                        >
-                          {link.title}
-                        </Link>
-                      </AccordionDetails>
-                    ))}
-                  </Accordion>
-                ))}
-              </Drawer>
-            </Box>
-            <Typography
-              variant='h6'
-              noWrap
-              component='div'
-              sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}
-            >
-              LOGO
-            </Typography>
-            <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-              {pages2.map((page, index) => (
-                <div key={index}>
-                  <Button
-                    id={`menuButton${index}`}
-                    aria-controls={ariaControl(index)}
-                    onClick={(e) => handleOver(e, index)}
-                    onMouseEnter={(e) => handleOver(e, index)}
-                    variant='text'
-                    color='inherit'
-                    style={{ zIndex: 1301 }}
-                  >
-                    {page.main}
-                  </Button>
-                  <HoverMenu
-                    id={index}
-                    anchorEl={
-                      index === 0
-                        ? anchorEl
-                        : index === 1
-                        ? anchorEl1
-                        : anchorEl2
-                    }
-                    open={index === 0 ? open : index === 1 ? open1 : open2}
-                    onMouseLeave={() => handleClose(index)}
-                    
-                  >
-                    {page.links.map((link) => (
-                      <MenuItem key={link.link}>
-                        <Link
-                          href={link.link}
-                          underline='none'
-                          color='inherit'
-                          key={link.title}
-                        >
-                          {link.title}
-                        </Link>
-                      </MenuItem>
-                    ))}
-                  </HoverMenu>
-                </div>
-              ))}
-            </Box>
+                LOGO
+              </Typography>
 
-            <Box sx={{ flexGrow: 0 }}>
-              <Tooltip title='Open settings'>
-                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt='Remy Sharp' src='/static/images/avatar/2.jpg' />
+              <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+                <IconButton
+                  size='large'
+                  aria-label='account of current user'
+                  aria-controls='menu-appbar'
+                  aria-haspopup='true'
+                  onClick={handleOpenNavMenu}
+                  color='inherit'
+                >
+                  <MenuIcon />
                 </IconButton>
-              </Tooltip>
-              <Menu
-                sx={{ mt: '45px' }}
-                id='menu-appbar'
-                anchorEl={anchorElUser}
-                anchorOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                open={Boolean(anchorElUser)}
-                onClose={handleCloseUserMenu}
+                <Drawer
+                  id='menu-appbar'
+                  keepMounted
+                  open={Boolean(anchorElNav)}
+                  onClose={handleCloseNavMenu}
+                  sx={{
+                    display: { xs: 'block', md: 'none' },
+                  }}
+                >
+                  {pages2.map((page) => (
+                    <Accordion key={page.main}>
+                      <AccordionSummary
+                        expandIcon={<ExpandMoreIcon />}
+                        aria-controls='panel1a-content'
+                        id='panel1a-header'
+                      >
+                        <Typography>{page.main}</Typography>
+                      </AccordionSummary>
+                      {page.links.map((link) => (
+                        <AccordionDetails key={link.link}>
+                          <Link
+                            href={link.link}
+                            color='inherit'
+                            underline='none'
+                            onClick={handleCloseNavMenu}
+                          >
+                            {link.title}
+                          </Link>
+                        </AccordionDetails>
+                      ))}
+                    </Accordion>
+                  ))}
+                </Drawer>
+              </Box>
+              <Typography
+                variant='h6'
+                noWrap
+                component='div'
+                sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}
               >
-                {authData.isAuth ? (
-                  <div>
-                    {authSettings.map((setting) => (
-                      <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                        <Link href={`/${setting}`}>
-                          <Typography textAlign='center'>{setting}</Typography>
-                        </Link>
-                      </MenuItem>
-                    ))}
+                LOGO
+              </Typography>
+              <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+                {pages2.map((page, index) => (
+                  <div key={index}>
+                    <Button
+                      id={`menuButton${index}`}
+                      aria-controls={ariaControl(index)}
+                      onClick={(e) => handleOver(e, index)}
+                      onMouseEnter={(e) => handleOver(e, index)}
+                      variant='text'
+                      color='inherit'
+                      style={{ zIndex: 1301 }}
+                    >
+                      {page.main}
+                    </Button>
+                    <HoverMenu
+                      id={index}
+                      anchorEl={
+                        index === 0
+                          ? anchorEl
+                          : index === 1
+                          ? anchorEl1
+                          : anchorEl2
+                      }
+                      open={index === 0 ? open : index === 1 ? open1 : open2}
+                      onMouseLeave={() => handleClose(index)}
+                    >
+                      {page.links.map((link) => (
+                        <MenuItem key={link.link}>
+                          <Link
+                            href={link.link}
+                            underline='none'
+                            color='inherit'
+                            key={link.title}
+                          >
+                            {link.title}
+                          </Link>
+                        </MenuItem>
+                      ))}
+                    </HoverMenu>
                   </div>
-                ) : (
-                  <div>
-                    {nonAuthSettings.map((setting) => (
-                      <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                        <Link href={`/${setting.split(' ').join('')}`}>
-                          <Typography textAlign='center'>{setting}</Typography>
-                        </Link>
-                      </MenuItem>
-                    ))}
-                  </div>
-                )}
-              </Menu>
-            </Box>
-          </Toolbar>
-        </Container>
-      </AppBar>
-    </HideOnScroll>
+                ))}
+              </Box>
+
+              <Box sx={{ flexGrow: 0 }}>
+                <Tooltip title='Open settings'>
+                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                    <Avatar
+                      alt='Remy Sharp'
+                      src='/static/images/avatar/2.jpg'
+                    />
+                  </IconButton>
+                </Tooltip>
+                <Menu
+                  sx={{ mt: '45px' }}
+                  id='menu-appbar'
+                  anchorEl={anchorElUser}
+                  anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  open={Boolean(anchorElUser)}
+                  onClose={handleCloseUserMenu}
+                >
+                  {authData.isAuth ? (
+                    <div>
+                      {authSettings.map((setting) => (
+                        <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                          <Link href={`/${setting}`}>
+                            <Typography textAlign='center'>
+                              {setting}
+                            </Typography>
+                          </Link>
+                        </MenuItem>
+                      ))}
+                    </div>
+                  ) : (
+                    <div>
+                      {nonAuthSettings.map((setting) => (
+                        <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                          <Link href={`/${setting.split(' ').join('')}`}>
+                            <Typography textAlign='center'>
+                              {setting}
+                            </Typography>
+                          </Link>
+                        </MenuItem>
+                      ))}
+                    </div>
+                  )}
+                </Menu>
+              </Box>
+            </Toolbar>
+          </Container>
+        </AppBar>
+      </HideOnScroll>
+      <Toolbar />
+    </>
   );
 }
