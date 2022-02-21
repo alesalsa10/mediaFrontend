@@ -15,13 +15,14 @@ import { useSelector } from 'react-redux';
 import Link from '@mui/material/Link';
 import Drawer from '@mui/material/Drawer';
 import Slide from '@mui/material/Slide';
-import { useScrollTrigger } from '@mui/material';
+import { Card, useScrollTrigger } from '@mui/material';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import Popover from '@mui/material/Popover';
 import HoverMenu from 'material-ui-popup-state/HoverMenu';
+import { positions } from '@mui/system';
+import styles from './Navigation.module.css'
 
 const HideOnScroll = ({ children }) => {
   const trigger = useScrollTrigger();
@@ -58,11 +59,14 @@ export default function Navigation() {
     }
   };
   const handleClose = (index) => {
+    //add extra validation to check if it is on top of the button
+    //it has to work when the pointer leaves the menu or the button
+    //only close when leaving the button if i am going anywhere else except the menu
     if (index === 0) {
       setAnchorEl(null);
     } else if (index === 1) {
       setAnchorEl1(null);
-    } else {
+    } else if (index === 2) {
       setAnchorEl2(null);
     }
   };
@@ -194,45 +198,41 @@ export default function Navigation() {
               >
                 LOGO
               </Typography>
-              <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+              <Box
+                sx={{
+                  flexGrow: 1,
+                  display: { xs: 'none', md: 'flex' },
+                  position: 'relative',
+                }}
+              >
                 {pages2.map((page, index) => (
-                  <div key={index}>
+                  <div key={index} className={styles.dropdown}>
                     <Button
                       id={`menuButton${index}`}
-                      aria-controls={ariaControl(index)}
-                      onClick={(e) => handleOver(e, index)}
-                      onMouseEnter={(e) => handleOver(e, index)}
                       variant='text'
                       color='inherit'
-                      style={{ zIndex: 1301 }}
                     >
                       {page.main}
                     </Button>
-                    <HoverMenu
-                      id={index}
-                      anchorEl={
-                        index === 0
-                          ? anchorEl
-                          : index === 1
-                          ? anchorEl1
-                          : anchorEl2
-                      }
-                      open={index === 0 ? open : index === 1 ? open1 : open2}
-                      onMouseLeave={() => handleClose(index)}
-                    >
-                      {page.links.map((link) => (
-                        <MenuItem key={link.link}>
-                          <Link
-                            href={link.link}
-                            underline='none'
-                            color='inherit'
-                            key={link.title}
+                    <div className={styles.dropdownContent}>
+                      <Card>
+                        {page.links.map((link) => (
+                          <MenuItem
+                            key={link.link}
+                            onClick={() => handleClose(index)}
                           >
-                            {link.title}
-                          </Link>
-                        </MenuItem>
-                      ))}
-                    </HoverMenu>
+                            <Link
+                              href={link.link}
+                              underline='none'
+                              color='inherit'
+                              key={link.title}
+                            >
+                              {link.title}
+                            </Link>
+                          </MenuItem>
+                        ))}
+                      </Card>
+                    </div>
                   </div>
                 ))}
               </Box>
