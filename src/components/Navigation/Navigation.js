@@ -20,9 +20,7 @@ import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import HoverMenu from 'material-ui-popup-state/HoverMenu';
-import { positions } from '@mui/system';
-import styles from './Navigation.module.css'
+import styles from './Navigation.module.css';
 
 const HideOnScroll = ({ children }) => {
   const trigger = useScrollTrigger();
@@ -35,54 +33,7 @@ const HideOnScroll = ({ children }) => {
 
 export default function Navigation() {
   const authData = useSelector((state) => state.auth);
-  const [anchorEl, setAnchorEl] = useState(null);
-  const [anchorEl1, setAnchorEl1] = useState(null);
-  const [anchorEl2, setAnchorEl2] = useState(null);
 
-  const open = Boolean(anchorEl);
-  const open1 = Boolean(anchorEl1);
-  const open2 = Boolean(anchorEl2);
-
-  const handleOver = (event, index) => {
-    if (index === 0) {
-      setAnchorEl(event.currentTarget);
-      setAnchorEl1(null);
-      setAnchorEl2(null);
-    } else if (index === 1) {
-      setAnchorEl1(event.currentTarget);
-      setAnchorEl(null);
-      setAnchorEl2(null);
-    } else if (index === 2) {
-      setAnchorEl2(event.currentTarget);
-      setAnchorEl(null);
-      setAnchorEl1(null);
-    }
-  };
-  const handleClose = (index) => {
-    //add extra validation to check if it is on top of the button
-    //it has to work when the pointer leaves the menu or the button
-    //only close when leaving the button if i am going anywhere else except the menu
-    if (index === 0) {
-      setAnchorEl(null);
-    } else if (index === 1) {
-      setAnchorEl1(null);
-    } else if (index === 2) {
-      setAnchorEl2(null);
-    }
-  };
-
-  const ariaControl = (index) => {
-    if (index === 0) {
-      let value = open ? index : undefined;
-      return value;
-    } else if (index === 1) {
-      let value = open1 ? index : undefined;
-      return value;
-    } else if (index === 2) {
-      let value = open2 ? index : undefined;
-      return value;
-    }
-  };
 
   const pages2 = [
     {
@@ -127,8 +78,6 @@ export default function Navigation() {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
-
-  
 
   return (
     <>
@@ -214,22 +163,18 @@ export default function Navigation() {
                     >
                       {page.main}
                     </Button>
+
                     <div className={styles.dropdownContent}>
                       <Card>
                         {page.links.map((link) => (
-                          <MenuItem
-                            key={link.link}
-                            onClick={() => handleClose(index)}
+                          <Link
+                            href={link.link}
+                            underline='none'
+                            color='inherit'
+                            key={link.title}
                           >
-                            <Link
-                              href={link.link}
-                              underline='none'
-                              color='inherit'
-                              key={link.title}
-                            >
-                              {link.title}
-                            </Link>
-                          </MenuItem>
+                            {link.title}
+                          </Link>
                         ))}
                       </Card>
                     </div>
