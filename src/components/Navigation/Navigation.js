@@ -4,13 +4,9 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
-import MenuItem from '@mui/material/MenuItem';
 import { useSelector } from 'react-redux';
 import Link from '@mui/material/Link';
 import Drawer from '@mui/material/Drawer';
@@ -21,6 +17,7 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import styles from './Navigation.module.css';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 const HideOnScroll = ({ children }) => {
   const trigger = useScrollTrigger();
@@ -34,49 +31,43 @@ const HideOnScroll = ({ children }) => {
 export default function Navigation() {
   const authData = useSelector((state) => state.auth);
 
-
   const pages2 = [
     {
       main: 'Movies',
       links: [
-        { title: 'Popular movie', link: '/movie/popular' },
-        { title: 'Trending', link: '/movie/trending' },
+        { title: 'Popular', link: '/movie/popular' },
+        { title: 'Top Rated', link: '/movie/top_rated' },
+        { title: 'Latest', link: '/movie/latest' },
+        { title: 'Now Playing', link: '/movie/now_playing' },
+        { title: 'Upcoming', link: '/movie/upcoming' },
       ],
     },
     {
       main: 'TV Shows',
       links: [
-        { title: 'Popular Tv', link: '/tv/popular' },
-        { title: 'Trending', link: '/tv/trending' },
+        { title: 'Popular', link: '/tv/popular' },
+        { title: 'Top Rated', link: '/tv/top_rated' },
+        { title: 'Latest', link: '/movie/latest' },
+        { title: 'Airing Today', link: '/movie/airing_today' },
+        { title: 'Upcoming', link: '/movie/upcoming' },
       ],
     },
     {
       main: 'Books',
-      links: [
-        { title: 'Popular book', link: '/book/popular' },
-        { title: 'Trending', link: '/book/trending' },
-      ],
+      links: [{ title: 'Best Sellers', link: '/book/best_sellers' }],
     },
   ];
 
   const authSettings = ['Profile', 'Logout'];
   const nonAuthSettings = ['Sign In', 'Register'];
   const [anchorElNav, setAnchorElNav] = useState(null);
-  const [anchorElUser, setAnchorElUser] = useState(null);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
-  const handleOpenUserMenu = (event) => {
-    setAnchorElUser(event.currentTarget);
-  };
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
-  };
-
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
   };
 
   return (
@@ -164,75 +155,47 @@ export default function Navigation() {
                       {page.main}
                     </Button>
 
-                    <div className={styles.dropdownContent}>
-                      <Card>
-                        {page.links.map((link) => (
-                          <Link
-                            href={link.link}
-                            underline='none'
-                            color='inherit'
-                            key={link.title}
-                          >
+                    <Card className={styles.dropdownContent}>
+                      {page.links.map((link) => (
+                        <Link
+                          href={link.link}
+                          //underline='none'
+                          //color='inherit'
+                          key={link.title}
+                        >
+                          <Typography>
                             {link.title}
-                          </Link>
-                        ))}
-                      </Card>
-                    </div>
+                          </Typography>
+                        </Link>
+                      ))}
+                    </Card>
                   </div>
                 ))}
               </Box>
-
-              <Box sx={{ flexGrow: 0 }}>
-                <Tooltip title='Open settings'>
-                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    <Avatar
-                      alt='Remy Sharp'
-                      src='/static/images/avatar/2.jpg'
-                    />
-                  </IconButton>
-                </Tooltip>
-                <Menu
-                  sx={{ mt: '45px' }}
-                  id='menu-appbar'
-                  anchorEl={anchorElUser}
-                  anchorOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                  }}
-                  keepMounted
-                  transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                  }}
-                  open={Boolean(anchorElUser)}
-                  onClose={handleCloseUserMenu}
-                >
+              <Box sx={{ flexGrow: 0 }} className={styles.dropdown}>
+                <AccountCircleIcon
+                  sx={{ p: 0 }}
+                  fontSize='large'
+                ></AccountCircleIcon>
+                <Card className={`${styles.dropdownContent} ${styles.profileDropdownContent} `}>
                   {authData.isAuth ? (
-                    <div>
+                    <>
                       {authSettings.map((setting) => (
-                        <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                          <Link href={`/${setting}`}>
-                            <Typography textAlign='center'>
-                              {setting}
-                            </Typography>
-                          </Link>
-                        </MenuItem>
+                        <Link href={`/${setting}`} key={setting}>
+                          <Typography textAlign='center'>{setting}</Typography>
+                        </Link>
                       ))}
-                    </div>
+                    </>
                   ) : (
-                    <div>
+                    <>
                       {nonAuthSettings.map((setting) => (
-                        <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                          <Link href={`/${setting.split(' ').join('')}`}>
-                            <Typography textAlign='center'>
-                              {setting}
-                            </Typography>
-                          </Link>
-                        </MenuItem>
+                        <Link href={`/${setting.split(' ').join('')}`} key={setting}>
+                          <Typography textAlign='center'>{setting}</Typography>
+                        </Link>
                       ))}
-                    </div>
+                    </>
                   )}
-                </Menu>
+                </Card>
               </Box>
             </Toolbar>
           </Container>

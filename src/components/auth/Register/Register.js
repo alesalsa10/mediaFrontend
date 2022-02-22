@@ -13,6 +13,9 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { register } from '../../../features/auth/authSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import  CircularProgress  from '@mui/material/CircularProgress';
+import List from '@mui/material/List';
+import { ListItem, ListItemText } from '@mui/material';
+
 
 export default function Register() {
   const theme = createTheme();
@@ -192,6 +195,50 @@ export default function Register() {
                   error={checkErrors(authData.errors, 'password')}
                   helperText={chooseHelperText(authData.errors, 'password')}
                 />
+                <List>
+                  <ListItem disablePadding>
+                    <ListItemText
+                      disableTypography
+                      primary={
+                        <Typography
+                          component='div'
+                          variant='subtitle2'
+                          color='gray'
+                        >
+                          At least 8 charcaters
+                        </Typography>
+                      }
+                    ></ListItemText>
+                  </ListItem>
+                  <ListItem disablePadding>
+                    <ListItemText
+                      disableTypography
+                      primary={
+                        <Typography
+                          component='div'
+                          variant='subtitle2'
+                          color='gray'
+                        >
+                          At least 1 upper case letter
+                        </Typography>
+                      }
+                    ></ListItemText>
+                  </ListItem>
+                  <ListItem disablePadding>
+                    <ListItemText
+                      disableTypography
+                      primary={
+                        <Typography
+                          component='div'
+                          variant='subtitle2'
+                          color='gray'
+                        >
+                          At least one lower case letter
+                        </Typography>
+                      }
+                    ></ListItemText>
+                  </ListItem>
+                </List>
               </Grid>
             </Grid>
             <Button
