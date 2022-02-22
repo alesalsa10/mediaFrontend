@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import Search from '../Search/Search';
-import Slider from 'react-slick';
-import { Card, Grid } from '@mui/material';
-import { Box } from '@mui/system';
-import styles from './Home.module.css';
+import { Card, CardContent, CardMedia, Grid, Typography } from '@mui/material';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation } from 'swiper';
+
+import 'swiper/css';
+import 'swiper/css/navigation';
+
 const { default: axios } = require('axios');
 
 export default function Home() {
@@ -16,54 +19,21 @@ export default function Home() {
   const [tvData, setTvData] = useState();
   const [tvError, setTvError] = useState();
 
-  const settings = {
-    dots: true,
-    infinite: false,
-    speed: 500,
-    slidesToShow: 4,
-    slidesToScroll: 4,
-    initialSlide: 0,
-    arrows: true,
-    responsive: [
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 5,
-          slidesToScroll: 1,
-          infinite: true,
-          dots: true,
-        },
-      },
-      {
-        breakpoint: 600,
-        settings: {
-          slidesToShow: 2,
-          slidesToScroll: 2,
-          initialSlide: 2,
-        },
-      },
-      {
-        breakpoint: 480,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1,
-        },
-      },
-    ],
-  };
-
   const getTrendingMovies = async (filter) => {
+    setMovieStatus('loading');
     try {
       const response = await axios.get(
         `http://localhost:3000/media/trending/movie/${filter}`
       );
       console.log(response.data);
       setMovieData(response.data.results);
-      setTvError()
+      setTvError();
+      setMovieStatus('idle');
     } catch (e) {
       console.log();
       setMovieError(e.response.data.Msg);
-      setMovieData()
+      setMovieData();
+      setMovieStatus('idle');
     }
   };
 
@@ -75,8 +45,48 @@ export default function Home() {
     <div>
       <Search />
       <Grid container justifyContent='center'>
-        <Grid item xs={12} md={8} p={8}>
-          
+        <Grid item xs={12} md={8} p={8} px={{ xs: 3, md: 0 }}>
+          {movieData && !movieError && movieStatus === 'idle' ? (
+            <Swiper
+              modules={[Navigation]}
+              spaceBetween={25}
+              navigation={{ clickable: true }}
+              breakpoints={{
+                300: {
+                  width: 300,
+                  slidesPerView: 2,
+                },
+                600: {
+                  width: 600,
+                  slidesPerView: 3,
+                },
+                1200: {
+                  width: 1200,
+                  slidesPerView: 7,
+                },
+              }}
+            >
+              {movieData.map((movie) => (
+                <SwiperSlide key={movie.title}>
+                  <CardMedia
+                    component='img'
+                    src={`https://image.tmdb.org/t/p/original/${movie.poster_path}`}
+                    alt={movie.title}
+                    sx={{ width: 150, height: 225 }}
+                  />
+                  <CardContent>
+                    <Typography variant='h6' component={'div'}>
+                      {movie.title}
+                    </Typography>
+                  </CardContent>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          ) : !movieData && movieError && movieStatus === 'idle' ? (
+            <>error</>
+          ) : (
+            <>loading</>
+          )}
         </Grid>
       </Grid>
     </div>

@@ -3,9 +3,7 @@ import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import InputAdornment from '@mui/material/InputAdornment';
-import SearchIcon from '@mui/icons-material/Search';
-import { withStyles, makeStyles } from '@material-ui/core/styles';
-import { borderRadius, padding } from '@mui/system';
+import { withStyles } from '@material-ui/core/styles';
 
 const StyledTextField = withStyles({
   root: {
@@ -22,11 +20,11 @@ export default function Search() {
 
   return (
     <Grid container justifyContent='center'>
-      <Grid item xs={12} md={8} border={1} borderColor='blue' p={8}>
+      <Grid item xs={12} md={8} border={1} borderColor='blue' px={8} py={2}>
         <Typography variant='h4' component='h4'>
           Welcome.
         </Typography>
-        <Typography variant='h4' component='h4' pb={5}>
+        <Typography variant='h4' component='h4' pb={{xs: 1, md:5}}>
           Movies, TV shows, books, and people. Explore now
         </Typography>
         <StyledTextField

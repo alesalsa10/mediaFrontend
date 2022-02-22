@@ -202,8 +202,8 @@ export default function Register() {
                       primary={
                         <Typography
                           component='div'
-                          variant='subtitle2'
-                          color='gray'
+                          variant='body2'
+                          color='text.secondary'
                         >
                           At least 8 charcaters
                         </Typography>
@@ -216,8 +216,8 @@ export default function Register() {
                       primary={
                         <Typography
                           component='div'
-                          variant='subtitle2'
-                          color='gray'
+                          variant='body2'
+                          color='text.secondary'
                         >
                           At least 1 upper case letter
                         </Typography>
@@ -230,8 +230,8 @@ export default function Register() {
                       primary={
                         <Typography
                           component='div'
-                          variant='subtitle2'
-                          color='gray'
+                          variant='body2'
+                          color='text.secondary'
                         >
                           At least one lower case letter
                         </Typography>
