@@ -20,7 +20,7 @@ export default function Search() {
 
   return (
     <Grid container justifyContent='center'>
-      <Grid item xs={12} md={8} border={1} borderColor='blue' px={8} py={2}>
+      <Grid item xs={12} md={8} border={1} borderColor='blue' px={1} py={2}>
         <Typography variant='h4' component='h4'>
           Welcome.
         </Typography>
@@ -30,7 +30,7 @@ export default function Search() {
         <StyledTextField
           className='inputRounded'
           fullWidth
-          label='Search'
+          label='Search...'
           id='search'
           InputProps={{
             endAdornment: (

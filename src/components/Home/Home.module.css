@@ -1,1 +1,12 @@
+.cardWrapper {
+  display: inline-block;
+  position: relative;
+}
 
+.layer {
+  position: absolute;
+  bottom: -20px;
+  left: 5px;
+  height: 40px;
+  width: 40px;
+}
