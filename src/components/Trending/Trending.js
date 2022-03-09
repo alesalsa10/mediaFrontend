@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import {
-    Alert,
+  Alert,
   CardContent,
   CardMedia,
   CircularProgress,
   FormControl,
   Grid,
+  Link,
   MenuItem,
   Select,
   Stack,
@@ -24,35 +25,33 @@ import 'swiper/css/navigation';
 
 const { default: axios } = require('axios');
 
+export default function Trending({ mediaType }) {
+  const [filter, setFilter] = useState('day');
+  const [data, setData] = useState();
+  const [error, setError] = useState();
+  const [status, setStatus] = useState('loading');
 
-export default function Trending({mediaType}) {
-    const [filter, setFilter] = useState('day');
-    const [data, setData] = useState();
-    const [error, setError] = useState();
-    const [status, setStatus] = useState('loading');
+  const getTrendingmedias = async (filter) => {
+    setStatus('loading');
+    try {
+      const response = await axios.get(
+        `http://localhost:3000/media/trending/${mediaType}/${filter}`
+      );
+      console.log(response.data);
+      setData(response.data.results);
+      setError();
+      setStatus('idle');
+    } catch (e) {
+      console.log();
+      setError(e.response.data.Msg);
+      setData();
+      setStatus('idle');
+    }
+  };
 
-    const getTrendingmedias = async (filter) => {
-      setStatus('loading');
-      try {
-        const response = await axios.get(
-          `http://localhost:3000/media/trending/${mediaType}/${filter}`
-        );
-        console.log(response.data);
-        setData(response.data.results);
-        setError();
-        setStatus('idle');
-      } catch (e) {
-        console.log();
-        setError(e.response.data.Msg);
-        setData();
-        setStatus('idle');
-      }
-    };
-
-    useEffect(() => {
-      getTrendingmedias(filter);
-    }, [filter]);
-
+  useEffect(() => {
+    getTrendingmedias(filter);
+  }, [filter]);
 
   return (
     <Grid container justifyContent='center'>
@@ -60,7 +59,7 @@ export default function Trending({mediaType}) {
         <Grid container pb={2} alignItems='center'>
           <Grid item pr={2}>
             <Typography variant='h5' component={'div'}>
-              Trending {mediaType === 'media' ? 'medias' : 'TV'}
+              Trending {mediaType === 'movie' ? 'Movies' : 'TV'}
             </Typography>
           </Grid>
           <Grid item>
@@ -100,7 +99,10 @@ export default function Trending({mediaType}) {
               <SwiperSlide
                 key={mediaType === 'movie' ? media.title : media.name}
               >
-                <div className={styles.cardWrapper}>
+                <Link
+                  href={`/${mediaType}/${media.id}`}
+                  className={styles.cardWrapper}
+                >
                   <CardMedia
                     component='img'
                     src={`https://image.tmdb.org/t/p/original/${media.poster_path}`}
@@ -129,7 +131,7 @@ export default function Trending({mediaType}) {
                     />
                     ;
                   </div>
-                </div>
+                </Link>
                 <CardContent
                   sx={{
                     px: 0.5,
@@ -140,7 +142,15 @@ export default function Trending({mediaType}) {
                     component={'div'}
                     sx={{ fontWeight: 'bold' }}
                   >
-                    {mediaType === 'movie' ? media.title : media.name}
+                    <Link
+                      href={`/${mediaType}/${media.id}`}
+                      variant='inherit'
+                      color='inherit'
+                      underline='none'
+                      sx={{ ':hover': { color: 'primary.main' } }}
+                    >
+                      {mediaType === 'movie' ? media.title : media.name}
+                    </Link>
                   </Typography>
                   <Typography
                     variant={'body2'}

@@ -7,9 +7,10 @@ import Register from './components/auth/Register/Register';
 import ForgotPassword from './components/auth/ForgotPassword/ForgotPassword';
 import ViewForgotPassword from './components/auth/ViewForgotPassword/ViewForgotPassword';
 import VerifyEmail from './components/auth/VerifyEmail/VerifyEmail';
-import Home from './components/Home/Home';
+import Home from './views/Home/Home';
 import WithoutNav from './components/Navigation/WithoutNav';
 import WithNav from './components/Navigation/WithNav';
+import Media from './views/Media/Media';
 
 function App() {
   return (
@@ -28,8 +29,9 @@ function App() {
               <Route path='/verify/:token' element={<VerifyEmail />} />
             </Route>
             <Route element={<WithNav />}>
-              <Route path='/home' element={<Home />} />
+              {/* <Route path='/home' element={<Home />} /> */}
               <Route path='/' element={<Home />} />
+            <Route path={`/:mediaType/:id`} element={<Media />} />
             </Route>
           </Routes>
         </Fragment>
