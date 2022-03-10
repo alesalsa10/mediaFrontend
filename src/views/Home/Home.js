@@ -7,7 +7,7 @@ export default function Home() {
     <div>
       <Search />
       <Trending mediaType={'movie'} />
-    <Trending mediaType={'tv'} />
+      <Trending mediaType={'tv'} />
     </div>
   );
 }

@@ -1,20 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import {
   Alert,
-  CardContent,
-  CardMedia,
   CircularProgress,
   FormControl,
   Grid,
-  Link,
   MenuItem,
   Select,
   Stack,
   Typography,
 } from '@mui/material';
 import { Box } from '@mui/system';
-import moment from 'moment';
-import { buildStyles, CircularProgressbar } from 'react-circular-progressbar';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper';
 
@@ -22,6 +17,7 @@ import styles from './Trending.module.css';
 import 'react-circular-progressbar/dist/styles.css';
 import 'swiper/css';
 import 'swiper/css/navigation';
+import Card from '../Card/Card';
 
 const { default: axios } = require('axios');
 
@@ -97,73 +93,13 @@ export default function Trending({ mediaType }) {
           >
             {data.map((media) => (
               <SwiperSlide
-                key={mediaType === 'movie' ? media.title : media.name}
+                key={
+                  mediaType === 'movie' || mediaType === 'book'
+                    ? media.title
+                    : media.name
+                }
               >
-                <Link
-                  href={`/${mediaType}/${media.id}`}
-                  className={styles.cardWrapper}
-                >
-                  <CardMedia
-                    component='img'
-                    src={`https://image.tmdb.org/t/p/original/${media.poster_path}`}
-                    alt={media.title}
-                    sx={{ width: 150, height: 225 }}
-                  />
-                  <div className={styles.layer}>
-                    <CircularProgressbar
-                      value={media.vote_average * 10}
-                      text={`${media.vote_average * 10}%`}
-                      background
-                      backgroundPadding={6}
-                      styles={buildStyles({
-                        backgroundColor: '#282b29',
-                        textColor: '#fff',
-                        pathColor:
-                          media.vote_average * 10 >= 70
-                            ? '#21d07a'
-                            : media.vote_average * 10 > 50 &&
-                              media.vote_average * 10 < 70
-                            ? '#d2d531'
-                            : '#d53f31',
-                        trailColor: 'transparent',
-                        textSize: '30px',
-                      })}
-                    />
-                    ;
-                  </div>
-                </Link>
-                <CardContent
-                  sx={{
-                    px: 0.5,
-                  }}
-                >
-                  <Typography
-                    variant='body1'
-                    component={'div'}
-                    sx={{ fontWeight: 'bold' }}
-                  >
-                    <Link
-                      href={`/${mediaType}/${media.id}`}
-                      variant='inherit'
-                      color='inherit'
-                      underline='none'
-                      sx={{ ':hover': { color: 'primary.main' } }}
-                    >
-                      {mediaType === 'movie' ? media.title : media.name}
-                    </Link>
-                  </Typography>
-                  <Typography
-                    variant={'body2'}
-                    component={'div'}
-                    color='text.secondary'
-                  >
-                    {moment(
-                      mediaType === 'movie'
-                        ? media.release_date
-                        : media.first_air_date
-                    ).format('MMM DD, YYYY')}
-                  </Typography>
-                </CardContent>
+                <Card mediaType={mediaType} media={media} type='slide' />
               </SwiperSlide>
             ))}
           </Swiper>

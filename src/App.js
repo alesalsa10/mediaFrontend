@@ -11,6 +11,7 @@ import Home from './views/Home/Home';
 import WithoutNav from './components/Navigation/WithoutNav';
 import WithNav from './components/Navigation/WithNav';
 import Media from './views/Media/Media';
+import List from './views/List/List';
 
 function App() {
   return (
@@ -31,7 +32,8 @@ function App() {
             <Route element={<WithNav />}>
               {/* <Route path='/home' element={<Home />} /> */}
               <Route path='/' element={<Home />} />
-            <Route path={`/:mediaType/:id`} element={<Media />} />
+              {/* <Route path={`/:mediaType/:id`} element={<Media />} /> */}
+              <Route path={`/:mediaType/:listType`} element={<List/>}/>
             </Route>
           </Routes>
         </Fragment>
