@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-  CardContent,
-  CardMedia,
-  Link,
-  Typography,
-} from '@mui/material';
+import { CardContent, CardMedia, Link, Typography } from '@mui/material';
 
 import moment from 'moment';
 import { buildStyles, CircularProgressbar } from 'react-circular-progressbar';
@@ -13,16 +8,16 @@ import styles from './Card.module.css';
 import 'react-circular-progressbar/dist/styles.css';
 
 
-export default function Card({ mediaType, media, type }) {
+export default function Card({ mediaType, media }) {
 
   return (
-    < >
+    <>
       <Link href={`/${mediaType}/${media.id}`} className={styles.cardWrapper}>
         <CardMedia
           component='img'
           src={`https://image.tmdb.org/t/p/original/${media.poster_path}`}
           alt={media.title}
-          sx={{ width: 150, height: 225 }}
+          sx={{ width: 200 }}
         />
         <div className={styles.layer}>
           <CircularProgressbar
@@ -43,12 +38,12 @@ export default function Card({ mediaType, media, type }) {
               textSize: '30px',
             })}
           />
-          ;
         </div>
       </Link>
       <CardContent
         sx={{
           px: 0.5,
+          width: 150
         }}
       >
         <Typography

@@ -32,7 +32,7 @@ export default function List() {
       setError();
       setStatus('idle');
     } catch (e) {
-      console.log();
+      console.log(e);
       setError(e.response.data.Msg);
       setData();
       setStatus('idle');
@@ -68,32 +68,53 @@ export default function List() {
   }, [params]);
 
   return (
-    <Grid>
-      {data && !error && status === 'idle' ? (
-        <>
-          {data.map((media) => (
-            <MaterialCard
-              key={
-                params.mediaType === 'movie' || params.mediaType === 'book'
-                  ? media.title
-                  : media.name
-              }
-            >
-              <Card mediaType={params.mediaType} media={media} type='lists' />
-            </MaterialCard>
-          ))}
-        </>
-      ) : !data && error && status === 'idle' ? (
-        <Stack sx={{ width: '100%' }} spacing={2}>
-          <Alert severity='error' variant='outlined' p={2}>
-            {error}
-          </Alert>
-        </Stack>
-      ) : (
-        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-          <CircularProgress />
-        </Box>
-      )}
+    <Grid container justifyContent='center' px={1} py={2}>
+      <Grid item xs={12} md={8}>
+        <Grid container spacing={1}>
+          {data && !error && status === 'idle' ? (
+            <>
+              {data.map((media) => (
+                <Grid
+                  item
+                  xs
+                  my={2}
+                  key={
+                    params.mediaType === 'movie' || params.mediaType === 'book'
+                      ? media.title
+                      : media.name
+                  }
+                  sx={{ display: 'flex', justifyContent: 'center'}}
+                >
+                  <MaterialCard
+                    sx={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      flexDirection: 'column',
+                      boxShadow: '0 2px 8px rgb(0 0 0 / 25%)',
+                    }}
+                  >
+                    <Card
+                      mediaType={params.mediaType}
+                      media={media}
+                      type='lists'
+                    />
+                  </MaterialCard>
+                </Grid>
+              ))}
+            </>
+          ) : !data && error && status === 'idle' ? (
+            <Stack sx={{ width: '100%' }} spacing={2}>
+              <Alert severity='error' variant='outlined' p={2}>
+                {error}
+              </Alert>
+            </Stack>
+          ) : (
+            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+              <CircularProgress />
+            </Box>
+          )}
+        </Grid>
+      </Grid>
     </Grid>
   );
 }

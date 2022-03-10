@@ -37,7 +37,6 @@ export default function Navigation() {
       links: [
         { title: 'Popular', link: '/movie/popular' },
         { title: 'Top Rated', link: '/movie/top_rated' },
-        { title: 'Latest', link: '/movie/latest' },
         { title: 'Now Playing', link: '/movie/now_playing' },
         { title: 'Upcoming', link: '/movie/upcoming' },
       ],
@@ -47,9 +46,8 @@ export default function Navigation() {
       links: [
         { title: 'Popular', link: '/tv/popular' },
         { title: 'Top Rated', link: '/tv/top_rated' },
-        { title: 'Latest', link: '/movie/latest' },
-        { title: 'Airing Today', link: '/movie/airing_today' },
-        { title: 'Upcoming', link: '/movie/upcoming' },
+        { title: 'Airing Today', link: '/tv/airing_today' },
+        { title: 'Upcoming', link: '/tv/upcoming' },
       ],
     },
     {
