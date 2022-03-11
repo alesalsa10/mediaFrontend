@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import {
   Alert,
-  CircularProgress,
   FormControl,
   Grid,
   MenuItem,
   Select,
-  Stack,
+  Skeleton,
   Typography,
+  Card as MaterialCard,
 } from '@mui/material';
-import { Box, height } from '@mui/system';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper';
@@ -99,15 +98,54 @@ export default function Trending({ mediaType }) {
             ))}
           </Swiper>
         ) : !data && error && status === 'idle' ? (
-          <Stack sx={{ width: '100%' }} spacing={2}>
+          <Grid item xs={12} sx={{ gridColumn: '1/-1' }}>
             <Alert severity='error' variant='outlined' p={2}>
               {error}
             </Alert>
-          </Stack>
+          </Grid>
         ) : (
-          <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-            <CircularProgress />
-          </Box>
+          <Swiper
+            style={{ padding: '1px 0px' }}
+            spaceBetween={25}
+            slidesPerView='auto'
+          >
+            <>
+              {[...Array(5).keys()].map((item, index) => (
+                <SwiperSlide
+                  key={index}
+                  style={{
+                    boxShadow: '0 2px 8px rgb(0 0 0 / 25%)',
+                    width: 'fit-content',
+                    height: 'auto',
+                  }}
+                >
+                  <MaterialCard key={index}>
+                    <Skeleton
+                      animation='wave'
+                      variant='rectangular'
+                      width={250}
+                      height={300}
+                      sx={{ mb: 2 }}
+                    />
+                    <Skeleton
+                      animation='wave'
+                      variant='rectangular'
+                      width={170}
+                      height={16}
+                      sx={{ mb: 2, ml: 1 }}
+                    />
+                    <Skeleton
+                      animation='wave'
+                      variant='rectangular'
+                      width={140}
+                      height={10}
+                      sx={{ mb: 2, ml: 1 }}
+                    />
+                  </MaterialCard>
+                </SwiperSlide>
+              ))}
+            </>
+          </Swiper>
         )}
       </Grid>
     </Grid>

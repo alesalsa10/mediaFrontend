@@ -18,6 +18,7 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import styles from './Navigation.module.css';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import logo from '../../assets/logo.svg';
 
 const HideOnScroll = ({ children }) => {
   const trigger = useScrollTrigger();
@@ -35,24 +36,24 @@ export default function Navigation() {
     {
       main: 'Movies',
       links: [
-        { title: 'Popular', link: '/movie/popular' },
-        { title: 'Top Rated', link: '/movie/top_rated' },
-        { title: 'Now Playing', link: '/movie/now_playing' },
-        { title: 'Upcoming', link: '/movie/upcoming' },
+        { title: 'Popular', link: '/movie/lists/popular' },
+        { title: 'Top Rated', link: '/movie/lists/top_rated' },
+        { title: 'Now Playing', link: '/movie/lists/now_playing' },
+        { title: 'Upcoming', link: '/movie/lists/upcoming' },
       ],
     },
     {
       main: 'TV Shows',
       links: [
-        { title: 'Popular', link: '/tv/popular' },
-        { title: 'Top Rated', link: '/tv/top_rated' },
-        { title: 'Airing Today', link: '/tv/airing_today' },
-        { title: 'Upcoming', link: '/tv/upcoming' },
+        { title: 'Popular', link: '/tv/lists/popular' },
+        { title: 'Top Rated', link: '/tv/lists/top_rated' },
+        { title: 'Airing Today', link: '/tv/lists/airing_today' },
+        { title: 'On TV', link: '/tv/lists/on_the_air' },
       ],
     },
     {
       main: 'Books',
-      links: [{ title: 'Best Sellers', link: '/book/best_sellers' }],
+      links: [{ title: 'Best Sellers', link: '/book/lists/best_sellers' }],
     },
   ];
 
@@ -74,14 +75,12 @@ export default function Navigation() {
         <AppBar>
           <Container maxWidth='xl'>
             <Toolbar disableGutters>
-              <Typography
-                variant='h6'
-                noWrap
-                component='div'
+              <Link
+                href='/'
                 sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
               >
-                LOGO
-              </Typography>
+                <img src={logo} alt='TMDB Logo' width={140} />
+              </Link>
 
               <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
                 <IconButton
@@ -128,14 +127,12 @@ export default function Navigation() {
                   ))}
                 </Drawer>
               </Box>
-              <Typography
-                variant='h6'
-                noWrap
-                component='div'
+              <Link
+                href='/'
                 sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}
               >
-                LOGO
-              </Typography>
+                <img src={logo} alt='TMDB Logo' width={140} />
+              </Link>
               <Box
                 sx={{
                   flexGrow: 1,
@@ -161,9 +158,7 @@ export default function Navigation() {
                           //color='inherit'
                           key={link.title}
                         >
-                          <Typography>
-                            {link.title}
-                          </Typography>
+                          <Typography>{link.title}</Typography>
                         </Link>
                       ))}
                     </Card>
@@ -175,7 +170,9 @@ export default function Navigation() {
                   sx={{ p: 0 }}
                   fontSize='large'
                 ></AccountCircleIcon>
-                <Card className={`${styles.dropdownContent} ${styles.profileDropdownContent} `}>
+                <Card
+                  className={`${styles.dropdownContent} ${styles.profileDropdownContent} `}
+                >
                   {authData.isAuth ? (
                     <>
                       {authSettings.map((setting) => (
@@ -187,7 +184,10 @@ export default function Navigation() {
                   ) : (
                     <>
                       {nonAuthSettings.map((setting) => (
-                        <Link href={`/${setting.split(' ').join('')}`} key={setting}>
+                        <Link
+                          href={`/${setting.split(' ').join('')}`}
+                          key={setting}
+                        >
                           <Typography textAlign='center'>{setting}</Typography>
                         </Link>
                       ))}

@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import {
   Alert,
-  CircularProgress,
   Grid,
-  Stack,
   Card as MaterialCard,
+  Skeleton,
 } from '@mui/material';
-import { Box } from '@mui/system';
 import { useParams } from 'react-router-dom';
 
 import 'react-circular-progressbar/dist/styles.css';
@@ -46,7 +44,7 @@ export default function List() {
         `http://localhost:3000/book/newYorkTimes/bestSellers`
       );
       console.log(response.data);
-      setData(response.data.results);
+      setData(response.data);
       setError();
       setStatus('idle');
     } catch (e) {
@@ -77,7 +75,7 @@ export default function List() {
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fill, 200px)',
             justifyContent: 'center',
-            gap: '1rem'
+            gap: '1rem',
           }}
         >
           {data && !error && status === 'idle' ? (
@@ -112,15 +110,53 @@ export default function List() {
               ))}
             </>
           ) : !data && error && status === 'idle' ? (
-            <Stack sx={{ width: '100%' }} spacing={2}>
+            <Grid
+              item
+              xs={12}
+              sx={{ gridColumn: '1/-1' }}
+            >
               <Alert severity='error' variant='outlined' p={2}>
                 {error}
               </Alert>
-            </Stack>
+            </Grid>
           ) : (
-            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-              <CircularProgress />
-            </Box>
+            <>
+              {[...Array(20).keys()].map((item, index) => (
+                <Grid item sx={{ display: 'grid', justifyContent: 'center' }}>
+                  <MaterialCard
+                    sx={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      flexDirection: 'column',
+                      boxShadow: '0 2px 8px rgb(0 0 0 / 25%)',
+                    }}
+                    key={index}
+                  >
+                    <Skeleton
+                      animation='wave'
+                      variant='rectangular'
+                      width={250}
+                      height={300}
+                      sx={{ mb: 2 }}
+                    />
+                    <Skeleton
+                      animation='wave'
+                      variant='rectangular'
+                      width={170}
+                      height={16}
+                      sx={{ mb: 2, ml: 1 }}
+                    />
+                    <Skeleton
+                      animation='wave'
+                      variant='rectangular'
+                      width={140}
+                      height={10}
+                      sx={{ mb: 2, ml: 1 }}
+                    />
+                  </MaterialCard>
+                </Grid>
+              ))}
+            </>
           )}
         </Grid>
       </Grid>

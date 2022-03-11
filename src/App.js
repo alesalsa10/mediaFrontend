@@ -30,10 +30,9 @@ function App() {
               <Route path='/verify/:token' element={<VerifyEmail />} />
             </Route>
             <Route element={<WithNav />}>
-              {/* <Route path='/home' element={<Home />} /> */}
               <Route path='/' element={<Home />} />
               {/* <Route path={`/:mediaType/:id`} element={<Media />} /> */}
-              <Route path={`/:mediaType/:listType`} element={<List/>}/>
+              <Route path={`/:mediaType/lists/:listType`} element={<List />} />
             </Route>
           </Routes>
         </Fragment>
