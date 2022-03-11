@@ -75,7 +75,7 @@ export default function Trending({ mediaType }) {
             style={{ padding: '1px 0px' }}
             modules={[Navigation]}
             spaceBetween={25}
-            loop
+            loop={true}
             loopedSlides={1}
             navigation={{ clickable: true }}
             slidesPerView='auto'

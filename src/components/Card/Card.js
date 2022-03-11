@@ -10,35 +10,57 @@ import 'react-circular-progressbar/dist/styles.css';
 
 export default function Card({ mediaType, media }) {
 
+  const capitalizeTitle = (title) =>{
+    const arr = title.split(' ');
+    for (var i = 0; i < arr.length; i++) {
+      arr[i] = arr[i].charAt(0).toUpperCase() + arr[i].slice(1).toLowerCase();
+    }
+    return arr.join(' ')
+  }
+
   return (
     <>
-      <Link href={`/${mediaType}/${media.id}`} className={styles.cardWrapper}>
+      <Link
+        href={`/${mediaType}/${
+          mediaType === 'book' ? media.primary_isbn10 : media.id
+        }`}
+        className={styles.cardWrapper}
+      >
         <CardMedia
           component='img'
-          src={`https://image.tmdb.org/t/p/original/${media.poster_path}`}
+          src={
+            mediaType === 'book'
+              ? media.book_image
+              : `https://image.tmdb.org/t/p/original/${media.poster_path}`
+          }
           alt={media.title}
           sx={{ width: 200 }}
         />
-        <div className={styles.layer}>
-          <CircularProgressbar
-            value={media.vote_average * 10}
-            text={`${media.vote_average * 10}%`}
-            background
-            backgroundPadding={6}
-            styles={buildStyles({
-              backgroundColor: '#282b29',
-              textColor: '#fff',
-              pathColor:
-                media.vote_average * 10 >= 70
-                  ? '#21d07a'
-                  : media.vote_average * 10 > 50 && media.vote_average * 10 < 70
-                  ? '#d2d531'
-                  : '#d53f31',
-              trailColor: 'transparent',
-              textSize: '30px',
-            })}
-          />
-        </div>
+        {mediaType === 'book' ? (
+          <></>
+        ) : (
+          <div className={styles.layer}>
+            <CircularProgressbar
+              value={media.vote_average * 10}
+              text={`${media.vote_average * 10}%`}
+              background
+              backgroundPadding={6}
+              styles={buildStyles({
+                backgroundColor: '#282b29',
+                textColor: '#fff',
+                pathColor:
+                  media.vote_average * 10 >= 70
+                    ? '#21d07a'
+                    : media.vote_average * 10 > 50 &&
+                      media.vote_average * 10 < 70
+                    ? '#d2d531'
+                    : '#d53f31',
+                trailColor: 'transparent',
+                textSize: '30px',
+              })}
+            />
+          </div>
+        )}
       </Link>
       <CardContent
         sx={{
@@ -52,13 +74,17 @@ export default function Card({ mediaType, media }) {
           sx={{ fontWeight: 'bold', paddingLeft: '0.5rem' }}
         >
           <Link
-            href={`/${mediaType}/${media.id}`}
+            href={`/${mediaType}/${
+              mediaType === 'book' ? media.primary_isbn10 : media.id
+            }`}
             variant='inherit'
             color='inherit'
             underline='none'
             sx={{ ':hover': { color: 'primary.main' } }}
           >
-            {mediaType === 'movie' ? media.title : media.name}
+            {mediaType === 'movie' || mediaType === 'book'
+              ? capitalizeTitle(media.title)
+              : media.name}
           </Link>
         </Typography>
         <Typography
@@ -68,7 +94,11 @@ export default function Card({ mediaType, media }) {
           sx={{ fontWeight: 'bold', paddingLeft: '0.5rem' }}
         >
           {moment(
-            mediaType === 'movie' ? media.release_date : media.first_air_date
+            mediaType === 'movie'
+              ? media.release_date
+              : mediaType === 'tv'
+              ? media.first_air_date
+              : media.created_date
           ).format('MMM DD, YYYY')}
         </Typography>
       </CardContent>

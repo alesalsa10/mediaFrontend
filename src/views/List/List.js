@@ -4,6 +4,7 @@ import {
   Grid,
   Card as MaterialCard,
   Skeleton,
+  Typography,
 } from '@mui/material';
 import { useParams } from 'react-router-dom';
 
@@ -61,7 +62,9 @@ export default function List() {
     } else if (params.mediaType === 'book') {
       getBestSellers();
     } else {
-      //set error saying invalid media type
+      setData();
+      setError('Invalid media type')
+      setStatus('idle')
     }
   }, [params]);
 
@@ -80,17 +83,89 @@ export default function List() {
         >
           {data && !error && status === 'idle' ? (
             <>
-              {data.map((media) => (
+              {params.mediaType === 'movie' || params.mediaType === 'tv' ? (
+                <>
+                  {data.map((media) => (
+                    <Grid
+                      item
+                      xs
+                      my={2}
+                      key={
+                        params.mediaType === 'movie' ||
+                        params.mediaType === 'book'
+                          ? media.title
+                          : media.name
+                      }
+                      sx={{ display: 'grid', justifyContent: 'center' }}
+                    >
+                      <MaterialCard
+                        sx={{
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          flexDirection: 'column',
+                          boxShadow: '0 2px 8px rgb(0 0 0 / 25%)',
+                        }}
+                      >
+                        <Card
+                          mediaType={params.mediaType}
+                          media={media}
+                          type='lists'
+                        />
+                      </MaterialCard>
+                    </Grid>
+                  ))}
+                </>
+              ) : (
+                <>
+                  {data.map((media, index) => (
+                    <React.Fragment key={`${media.display_name}${index}`}>
+                      <Grid item xs={12} sx={{ gridColumn: '1/-1' }}>
+                        <Typography variant='h5' component='div' gutterBottom>
+                          {media.display_name}
+                        </Typography>
+                      </Grid>
+                      {media.books.map((info, i) => (
+                        <Grid
+                          item
+                          xs
+                          my={2}
+                          key={`${info.title}${i}`}
+                          sx={{ display: 'grid', justifyContent: 'center' }}
+                        >
+                          <MaterialCard
+                            sx={{
+                              display: 'flex',
+                              justifyContent: 'space-between',
+                              flexDirection: 'column',
+                              boxShadow: '0 2px 8px rgb(0 0 0 / 25%)',
+                            }}
+                          >
+                            <Card
+                              mediaType={params.mediaType}
+                              media={info}
+                              type='lists'
+                            />
+                          </MaterialCard>
+                        </Grid>
+                      ))}
+                    </React.Fragment>
+                  ))}
+                </>
+              )}
+            </>
+          ) : !data && error && status === 'idle' ? (
+            <Grid item xs={12} sx={{ gridColumn: '1/-1' }}>
+              <Alert severity='error' variant='outlined' p={2}>
+                {error}
+              </Alert>
+            </Grid>
+          ) : (
+            <>
+              {[...Array(20).keys()].map((item, index) => (
                 <Grid
                   item
-                  xs
-                  my={2}
-                  key={
-                    params.mediaType === 'movie' || params.mediaType === 'book'
-                      ? media.title
-                      : media.name
-                  }
                   sx={{ display: 'grid', justifyContent: 'center' }}
+                  key={index}
                 >
                   <MaterialCard
                     sx={{
@@ -99,38 +174,6 @@ export default function List() {
                       flexDirection: 'column',
                       boxShadow: '0 2px 8px rgb(0 0 0 / 25%)',
                     }}
-                  >
-                    <Card
-                      mediaType={params.mediaType}
-                      media={media}
-                      type='lists'
-                    />
-                  </MaterialCard>
-                </Grid>
-              ))}
-            </>
-          ) : !data && error && status === 'idle' ? (
-            <Grid
-              item
-              xs={12}
-              sx={{ gridColumn: '1/-1' }}
-            >
-              <Alert severity='error' variant='outlined' p={2}>
-                {error}
-              </Alert>
-            </Grid>
-          ) : (
-            <>
-              {[...Array(20).keys()].map((item, index) => (
-                <Grid item sx={{ display: 'grid', justifyContent: 'center' }}>
-                  <MaterialCard
-                    sx={{
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      flexDirection: 'column',
-                      boxShadow: '0 2px 8px rgb(0 0 0 / 25%)',
-                    }}
-                    key={index}
                   >
                     <Skeleton
                       animation='wave'
