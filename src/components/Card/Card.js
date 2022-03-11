@@ -42,14 +42,14 @@ export default function Card({ mediaType, media }) {
       </Link>
       <CardContent
         sx={{
-          px: 0.5,
-          width: 150
+          px: 0,
+          width: 200,
         }}
       >
         <Typography
           variant='body1'
           component={'div'}
-          sx={{ fontWeight: 'bold' }}
+          sx={{ fontWeight: 'bold', paddingLeft: '0.5rem' }}
         >
           <Link
             href={`/${mediaType}/${media.id}`}
@@ -61,7 +61,12 @@ export default function Card({ mediaType, media }) {
             {mediaType === 'movie' ? media.title : media.name}
           </Link>
         </Typography>
-        <Typography variant={'body2'} component={'div'} color='text.secondary'>
+        <Typography
+          variant={'body2'}
+          component={'div'}
+          color='text.secondary'
+          sx={{ fontWeight: 'bold', paddingLeft: '0.5rem' }}
+        >
           {moment(
             mediaType === 'movie' ? media.release_date : media.first_air_date
           ).format('MMM DD, YYYY')}

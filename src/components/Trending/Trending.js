@@ -9,14 +9,15 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import { Box } from '@mui/system';
+import { Box, height } from '@mui/system';
+
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper';
 
-import styles from './Trending.module.css';
 import 'react-circular-progressbar/dist/styles.css';
 import 'swiper/css';
 import 'swiper/css/navigation';
+
 import Card from '../Card/Card';
 
 const { default: axios } = require('axios');
@@ -72,24 +73,13 @@ export default function Trending({ mediaType }) {
         </Grid>
         {data && !error && status === 'idle' ? (
           <Swiper
+            style={{ padding: '1px 0px' }}
             modules={[Navigation]}
             spaceBetween={25}
-            loop={true}
+            loop
+            loopedSlides={1}
             navigation={{ clickable: true }}
-            breakpoints={{
-              300: {
-                width: 300,
-                slidesPerView: 2,
-              },
-              600: {
-                width: 600,
-                slidesPerView: 3,
-              },
-              1200: {
-                width: 1200,
-                slidesPerView: 7,
-              },
-            }}
+            slidesPerView='auto'
           >
             {data.map((media) => (
               <SwiperSlide
@@ -98,8 +88,13 @@ export default function Trending({ mediaType }) {
                     ? media.title
                     : media.name
                 }
+                style={{
+                  boxShadow: '0 2px 8px rgb(0 0 0 / 25%)',
+                  width: 'fit-content',
+                  height: 'auto',
+                }}
               >
-                <Card mediaType={mediaType} media={media} type='slide' />
+                <Card mediaType={mediaType} media={media} />
               </SwiperSlide>
             ))}
           </Swiper>
