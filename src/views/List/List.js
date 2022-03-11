@@ -70,7 +70,16 @@ export default function List() {
   return (
     <Grid container justifyContent='center' px={1} py={2}>
       <Grid item xs={12} md={8}>
-        <Grid container spacing={1}>
+        <Grid
+          container
+          spacing={1}
+          sx={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fill, 200px)',
+            justifyContent: 'center',
+            gap: '1rem'
+          }}
+        >
           {data && !error && status === 'idle' ? (
             <>
               {data.map((media) => (
@@ -83,7 +92,7 @@ export default function List() {
                       ? media.title
                       : media.name
                   }
-                  sx={{ display: 'flex', justifyContent: 'center'}}
+                  sx={{ display: 'grid', justifyContent: 'center' }}
                 >
                   <MaterialCard
                     sx={{
