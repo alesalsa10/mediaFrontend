@@ -5,31 +5,41 @@ import {
   Card as MaterialCard,
   Skeleton,
   Typography,
+  Button,
+  CircularProgress,
 } from '@mui/material';
 import { useParams } from 'react-router-dom';
 
 import 'react-circular-progressbar/dist/styles.css';
 import Card from '../../components/Card/Card';
+import Header from '../../components/Header/Header';
 
 const { default: axios } = require('axios');
 
 export default function List() {
   let params = useParams();
-  console.log(params);
-  const [data, setData] = useState();
+  const [data, setData] = useState([]);
   const [error, setError] = useState();
   const [status, setStatus] = useState('loading');
+  const [page, setPage] = useState(1);
+  const [showMore, setShowMore] = useState(false)
 
   const getMediaLists = async () => {
-    setStatus('loading');
+    //setStatus('loading');
+    if(!showMore){
+      setStatus('loading')
+    }else {
+      setStatus('idle')
+    }
     try {
       const response = await axios.get(
-        `http://localhost:3000/media/lists/${params.mediaType}/${params.listType}`
+        `http://localhost:3000/media/lists/${params.mediaType}/${params.listType}?page=${page}`
       );
       console.log(response.data);
-      setData(response.data.results);
+      setData([...data, ...response.data.results]);
       setError();
       setStatus('idle');
+      setShowMore(false);
     } catch (e) {
       console.log(e);
       setError(e.response.data.Msg);
@@ -63,13 +73,37 @@ export default function List() {
       getBestSellers();
     } else {
       setData();
-      setError('Invalid media type')
-      setStatus('idle')
+      setError('Invalid media type');
+      setStatus('idle');
     }
-  }, [params]);
+  }, [params, page]);
+
+  const handleViewMore = () => {
+    setPage(page => page + 1);
+    setShowMore(true);
+  };
 
   return (
-    <Grid container justifyContent='center' px={1} py={2}>
+    <Grid
+      container
+      justifyContent='center'
+      px={1}
+      py={2}
+      sx={{ justifyContent: 'center' }}
+    >
+      <Grid item xs={12} md={8} sx={{ textAlign: 'center' }}>
+        {status === 'loading' && !data && !error ? (
+          <Skeleton
+            animation='wave'
+            variant='rectangular'
+            width={250}
+            height={16}
+            sx={{ mb: 2 }}
+          />
+        ) : (
+          <Header params={params} />
+        )}
+      </Grid>
       <Grid item xs={12} md={8}>
         <Grid
           container
@@ -120,7 +154,7 @@ export default function List() {
                   {data.map((media, index) => (
                     <React.Fragment key={`${media.display_name}${index}`}>
                       <Grid item xs={12} sx={{ gridColumn: '1/-1' }}>
-                        <Typography variant='h5' component='div' gutterBottom>
+                        <Typography variant='h6' component='div'>
                           {media.display_name}
                         </Typography>
                       </Grid>
@@ -130,7 +164,11 @@ export default function List() {
                           xs
                           my={2}
                           key={`${info.title}${i}`}
-                          sx={{ display: 'grid', justifyContent: 'center' }}
+                          sx={{
+                            display: 'grid',
+                            justifyContent: 'center',
+                            mt: 0,
+                          }}
                         >
                           <MaterialCard
                             sx={{
@@ -203,6 +241,17 @@ export default function List() {
           )}
         </Grid>
       </Grid>
+      {params.mediaType !== 'book' ? (
+        <Grid item xs={12} md={8} sx={{ justifyContent: 'center', display: 'flex'}}>
+          <Button variant='contained' sx={{ py: 2, px: 3 }} onClick={handleViewMore}>
+            {
+              showMore ? <CircularProgress/> : 'Load More'
+            }
+          </Button>
+        </Grid>
+      ) : (
+        <></>
+      )}
     </Grid>
   );
 }
