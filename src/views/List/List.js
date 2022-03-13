@@ -91,7 +91,7 @@ export default function List() {
       py={2}
       sx={{ justifyContent: 'center' }}
     >
-      <Grid item xs={12} md={8} sx={{ textAlign: 'center' }}>
+      <Grid item xs={12} md={10} sx={{ textAlign: 'center' }}>
         {status === 'loading' && !data && !error ? (
           <Skeleton
             animation='wave'
@@ -104,7 +104,7 @@ export default function List() {
           <Header params={params} />
         )}
       </Grid>
-      <Grid item xs={12} md={8}>
+      <Grid item xs={12} md={10}>
         <Grid
           container
           spacing={1}
@@ -242,11 +242,24 @@ export default function List() {
         </Grid>
       </Grid>
       {params.mediaType !== 'book' ? (
-        <Grid item xs={12} md={8} sx={{ justifyContent: 'center', display: 'flex'}}>
-          <Button variant='contained' sx={{ py: 2, px: 3 }} onClick={handleViewMore}>
-            {
-              showMore ? <CircularProgress/> : 'Load More'
-            }
+        <Grid
+          item
+          xs={12}
+          md={8}
+          sx={{ justifyContent: 'center', display: 'flex' }}
+        >
+          <Button
+            variant='contained'
+            sx={{ py: 1, px: 3,  lineHeight: 1 }}
+            onClick={handleViewMore}
+            fullWidth
+          >
+            {showMore && status !== 'loading' ? (
+              <CircularProgress color='inherit' size={'1.2rem'} />
+            ) : (
+              <span style={{ fontSize: '1.2rem' }}>Load More</span>
+            )}
+            {/* <CircularProgress color='inherit' size={'1.2rem'}/> */}
           </Button>
         </Grid>
       ) : (

@@ -12,10 +12,9 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { register } from '../../../features/auth/authSlice';
 import { useSelector, useDispatch } from 'react-redux';
-import  CircularProgress  from '@mui/material/CircularProgress';
+import CircularProgress from '@mui/material/CircularProgress';
 import List from '@mui/material/List';
 import { ListItem, ListItemText } from '@mui/material';
-
 
 export default function Register() {
   const theme = createTheme();
@@ -80,17 +79,17 @@ export default function Register() {
   const choolseHelpter2 = (name) => {
     if (name === 'email') {
       if (
-        (authData.errors) && 
+        authData.errors &&
         (authData.errors.Error === 'Email already in use' ||
-        authData.errors.Error === 'Username and email already in use')
+          authData.errors.Error === 'Username and email already in use')
       ) {
         return authData.errors.Error;
       }
     } else if (name === 'username') {
       if (
-        (authData.errors) &&
+        authData.errors &&
         (authData.errors.Error === 'Username already in use' ||
-        authData.errors.Error === 'Username and email already in use')
+          authData.errors.Error === 'Username and email already in use')
       ) {
         return authData.errors.Error;
       }
@@ -245,9 +244,13 @@ export default function Register() {
               type='submit'
               fullWidth
               variant='contained'
-              sx={{ mt: 3, mb: 2 }}
+              sx={{ mt: 3, mb: 2, lineHeight: 1, py: 1 }}
             >
-              {authData.status === 'loading' ? <CircularProgress /> : 'Sign Up'}
+              {authData.status === 'loading' ? (
+                <CircularProgress color='inherit' size={'1.2rem'}/>
+              ) : (
+                <span style={{fontSize: '1.2rem'}}>Sign Up</span>
+              )}
             </Button>
             <Grid container justifyContent='flex-end'>
               <Grid item>

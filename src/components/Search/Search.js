@@ -3,20 +3,18 @@ import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import InputAdornment from '@mui/material/InputAdornment';
-import { withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@mui/styles';
 
-const StyledTextField = withStyles({
-  root: {
-    '& .MuiOutlinedInput-root': {
-      '& fieldset': {
-        borderRadius: `90px`,
-      },
+const useStyles = makeStyles({
+  button: {
+    '& fieldset': {
+      borderRadius: `90px`,
     },
   },
-})(TextField);
-
+});
 
 export default function Search() {
+  const classes = useStyles();
 
   return (
     <Grid container justifyContent='center'>
@@ -24,11 +22,11 @@ export default function Search() {
         <Typography variant='h4' component='h4'>
           Welcome.
         </Typography>
-        <Typography variant='h4' component='h4' pb={{xs: 1, md:5}}>
+        <Typography variant='h4' component='h4' pb={{ xs: 1, md: 5 }}>
           Movies, TV shows, books, and people. Explore now
         </Typography>
-        <StyledTextField
-          className='inputRounded'
+        <TextField
+          className={classes.button}
           fullWidth
           label='Search...'
           id='search'

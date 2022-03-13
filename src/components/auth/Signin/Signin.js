@@ -132,9 +132,11 @@ export default function Signin() {
               variant='contained'
               sx={{ mt: 3, mb: 2 }}
             >
-              {
-                authData.status === 'loading' ? <CircularProgress/> : 'Sign In'
-              }
+              {authData.status === 'loading' ? (
+                <CircularProgress color='inherit' size={'1.2rem'} />
+              ) : (
+                <span style={{ fontSize: '1.2rem' }}>Sign In</span>
+              )}
             </Button>
             <Grid container>
               <Grid item xs>
