@@ -12,6 +12,7 @@ import WithoutNav from './components/Navigation/WithoutNav';
 import WithNav from './components/Navigation/WithNav';
 import Media from './views/Media/Media';
 import List from './views/List/List';
+import SearchResults from './views/SearchResults/SearchResults';
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
             <Route element={<WithNav />}>
               <Route path='/' element={<Home />} />
               {/* <Route path={`/:mediaType/:id`} element={<Media />} /> */}
+              <Route path='/search' element={<SearchResults />} />
               <Route path={`/:mediaType/lists/:listType`} element={<List />} />
             </Route>
           </Routes>

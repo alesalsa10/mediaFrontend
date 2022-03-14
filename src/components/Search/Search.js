@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import InputAdornment from '@mui/material/InputAdornment';
 import { makeStyles } from '@mui/styles';
+import { Box } from '@mui/system';
+import { useNavigate } from 'react-router-dom';
 
 const useStyles = makeStyles({
   button: {
@@ -15,6 +17,26 @@ const useStyles = makeStyles({
 
 export default function Search() {
   const classes = useStyles();
+  const [search, setSearch] = useState('');
+  let navigate = useNavigate();
+  const handleOnChange = (e) => {
+    setSearch(e.target.value);
+  };
+
+  const handleKeyPress = (e) => {
+    //when i press enter it should redirect to searchResults with query strings
+    if (e.keyCode === 13) {
+      console.log(search.split(' ').join('+'));
+      let searchQuery = search.split(' ').join('+');
+      navigate(`/search?name=${searchQuery}`);
+    }
+  };
+
+  const handleSearchClick = (e) => {
+    console.log('you pressed the search button');
+    let searchQuery = search.split(' ').join('+');
+    navigate(`/search?name=${searchQuery}`);
+  };
 
   return (
     <Grid container justifyContent='center'>
@@ -30,11 +52,14 @@ export default function Search() {
           fullWidth
           label='Search...'
           id='search'
+          onChange={handleOnChange}
+          value={search}
+          onKeyDown={handleKeyPress}
           InputProps={{
             endAdornment: (
-              <InputAdornment position='end'>
-                <div
-                  style={{
+              <InputAdornment position='end' onClick={handleSearchClick}>
+                <Box
+                  sx={{
                     position: 'absolute',
                     right: 0,
                     height: '100%',
@@ -46,10 +71,13 @@ export default function Search() {
                     paddingLeft: '2rem',
                     paddingRight: '2rem',
                     borderRadius: '90px',
+                    '&:hover': {
+                      cursor: 'pointer',
+                    },
                   }}
                 >
                   Search
-                </div>
+                </Box>
               </InputAdornment>
             ),
           }}
