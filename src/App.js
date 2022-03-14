@@ -32,7 +32,6 @@ function App() {
             </Route>
             <Route element={<WithNav />}>
               <Route path='/' element={<Home />} />
-              {/* <Route path={`/:mediaType/:id`} element={<Media />} /> */}
               <Route path='/search' element={<SearchResults />} />
               <Route path={`/:mediaType/lists/:listType`} element={<List />} />
             </Route>

@@ -1,5 +1,7 @@
+import { Grid } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import SearchMenu from '../../components/SearchMenu/SearchMenu';
 const { default: axios } = require('axios');
 
 export default function SearchResults() {
@@ -50,5 +52,14 @@ export default function SearchResults() {
     }
   };
 
-  return <div>SearchResults</div>;
+  return (
+      <Grid container>
+          <Grid item>
+              <SearchMenu/>
+          </Grid>
+          <Grid item>
+              
+          </Grid>
+      </Grid>
+  );
 }
