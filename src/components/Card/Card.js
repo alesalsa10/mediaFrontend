@@ -1,5 +1,5 @@
 import React from 'react';
-import { CardContent, CardMedia, Link, Typography } from '@mui/material';
+import { Box, CardContent, CardMedia, Link, Typography } from '@mui/material';
 
 import moment from 'moment';
 import { buildStyles, CircularProgressbar } from 'react-circular-progressbar';
@@ -7,19 +7,17 @@ import { buildStyles, CircularProgressbar } from 'react-circular-progressbar';
 import styles from './Card.module.css';
 import 'react-circular-progressbar/dist/styles.css';
 
-
-export default function Card({ mediaType, media }) {
-
-  const capitalizeTitle = (title) =>{
+export default function Card({ mediaType, media, type }) {
+  const capitalizeTitle = (title) => {
     const arr = title.split(' ');
     for (var i = 0; i < arr.length; i++) {
       arr[i] = arr[i].charAt(0).toUpperCase() + arr[i].slice(1).toLowerCase();
     }
-    return arr.join(' ')
-  }
+    return arr.join(' ');
+  };
 
   return (
-    <>
+    <Box>
       <Link
         href={`/${mediaType}/${
           mediaType === 'book' ? media.primary_isbn10 : media.id
@@ -34,7 +32,10 @@ export default function Card({ mediaType, media }) {
               : `https://image.tmdb.org/t/p/original/${media.poster_path}`
           }
           alt={media.title}
-          sx={{ width: 200 }}
+          sx={{
+            height: type !== 'lists' ? 'auto' : '20%',
+            width: type !== 'lists' ? 200 : '100%',
+          }}
         />
         {mediaType === 'book' ? (
           <></>
@@ -102,6 +103,6 @@ export default function Card({ mediaType, media }) {
           ).format('MMM DD, YYYY')}
         </Typography>
       </CardContent>
-    </>
+    </Box>
   );
 }

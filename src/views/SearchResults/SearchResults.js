@@ -6,7 +6,7 @@ const { default: axios } = require('axios');
 
 export default function SearchResults() {
   const [searchParams] = useSearchParams();
-  let searchQuery = searchParams.get('name');
+  let searchQuery = searchParams.get('name').split(' ').join('+');
 
   const [mediaData, setMediaData] = useState();
   const [mediaError, setMediaError] = useState();
@@ -19,13 +19,27 @@ export default function SearchResults() {
   const [selected, setSelected] = useState('Movies');
 
   const searchMedia = async () => {
-    //http://localhost:3000/media/search/all?search_query=harry+potter\
+    //person
+    let mediaObj = {
+      Movies: [],
+      TV: [],
+      People: [],
+    };
     try {
       const response = await axios.get(
-        `http://localhost:3000/media/search/all/?search_query=${searchQuery}`
+        `http://localhost:3000/media/search/all?search_query=${searchQuery}`
       );
-      console.log(response.data);
-      setMediaData(response.data.results);
+      response.data.results.forEach((item) => {
+        if (item.media_type === 'movie') {
+          mediaObj.Movies.push(item);
+        } else if (item.media_type === 'tv') {
+          mediaObj.TV.push(item);
+        } else if (item.media_type === 'person') {
+          mediaObj.People.push(item);
+        }
+      });
+      console.log(mediaObj);
+      setMediaData(mediaObj);
       setMediaError();
       setMediaStatus('idle');
     } catch (e) {
@@ -37,13 +51,19 @@ export default function SearchResults() {
   };
 
   const searchBooks = async () => {
-    //http://localhost:3000/book/search/?search_query=harry+potter
+    //http://localhost:3000/book/search?search_query=harry+potter
+    let bookObj = {
+      Books: [],
+    };
     try {
       const response = await axios.get(
         `http://localhost:3000/book/search?search_query=${searchQuery}`
       );
       console.log(response.data);
-      setBookData(response.data.results);
+      response.data.items.forEach((item) => {
+        bookObj.Books.push(item);
+      });
+      setBookData(bookObj);
       setBookError();
       setBookStatus('idle');
     } catch (e) {
@@ -58,10 +78,12 @@ export default function SearchResults() {
     setSelected(value);
   };
 
-  useEffect(() =>{
+  useEffect(() => {
     //call both apis
     //organize the data by cetegory (movies, books, tv shows, people will be added in the future)
-  },[])
+    searchMedia();
+    searchBooks();
+  }, []);
 
   return (
     <Grid
@@ -75,7 +97,19 @@ export default function SearchResults() {
         <SearchMenu selected={selected} handleChangeTab={handleChangeTab} />
       </Grid>
       <Grid item xs={12} md={9} sx={{ textAlign: 'center' }}>
-        Rest of stuff here
+        {/* Rest of stuff here */}
+        {bookStatus === 'loading' || mediaStatus === 'loading' ? (
+          <div>loading</div>
+        ) : bookStatus === 'idle' &&
+          mediaStatus === 'idle' &&
+          bookData &&
+          mediaData &&
+          !bookError &&
+          !mediaError ? (
+          <div>Content</div>
+        ) : (
+          <div>error</div>
+        )}
       </Grid>
     </Grid>
   );

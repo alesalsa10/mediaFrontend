@@ -13,7 +13,7 @@ export default function SearchMenu({ selected, handleChangeTab }) {
       <Box
         sx={{
           bgcolor: 'primary.main',
-          p: 2,
+          p: { xs: 0.5, md: 2 },
           display: 'flex',
           alignContent: 'center',
           justifyContent: 'start',
@@ -24,7 +24,9 @@ export default function SearchMenu({ selected, handleChangeTab }) {
           borderStyle: 'solid',
         }}
       >
-        <Typography variant='h6' component={'div'} sx={{color: 'white'}}>Search Results</Typography>
+        <Typography variant='h6' component={'div'} sx={{ color: 'white' }}>
+          Search Results
+        </Typography>
       </Box>
       <MaterialList
         component='nav'
@@ -35,6 +37,12 @@ export default function SearchMenu({ selected, handleChangeTab }) {
           borderColor: 'text.secondary',
           borderWidth: 1,
           borderStyle: 'solid',
+          display: 'flex',
+          flexDirection: {
+            xs: 'row',
+            md: 'column',
+          },
+          p: { xs: 0.5, md: 2 },
         }}
       >
         <ListItemButton
@@ -54,6 +62,12 @@ export default function SearchMenu({ selected, handleChangeTab }) {
           onClick={() => handleChangeTab('Books')}
         >
           <ListItemText primary='Books' />
+        </ListItemButton>
+        <ListItemButton
+          selected={selected === 'People'}
+          onClick={() => handleChangeTab('People')}
+        >
+          <ListItemText primary='People' />
         </ListItemButton>
       </MaterialList>
     </Box>

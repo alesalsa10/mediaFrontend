@@ -76,6 +76,9 @@ export default function List() {
       setError('Invalid media type');
       setStatus('idle');
     }
+    // setStatus('idle');
+    // setError('something went wrong')
+    // setData()
   }, [params, page]);
 
   const handleViewMore = () => {
@@ -109,10 +112,9 @@ export default function List() {
           container
           spacing={1}
           sx={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, 200px)',
+            display: 'flex',
             justifyContent: 'center',
-            gap: '1rem',
+            gap: 2
           }}
         >
           {data && !error && status === 'idle' ? (
@@ -130,7 +132,7 @@ export default function List() {
                           ? media.title
                           : media.name
                       }
-                      sx={{ display: 'grid', justifyContent: 'center' }}
+                      sx={{ display: 'flex' }}
                     >
                       <MaterialCard
                         sx={{
@@ -200,11 +202,7 @@ export default function List() {
           ) : (
             <>
               {[...Array(20).keys()].map((item, index) => (
-                <Grid
-                  item
-                  sx={{ display: 'grid', justifyContent: 'center' }}
-                  key={index}
-                >
+                <Grid item sx={{ display: 'flex' }} key={index}>
                   <MaterialCard
                     sx={{
                       display: 'flex',
@@ -216,7 +214,7 @@ export default function List() {
                     <Skeleton
                       animation='wave'
                       variant='rectangular'
-                      width={250}
+                      width={230}
                       height={300}
                       sx={{ mb: 2 }}
                     />
@@ -241,16 +239,16 @@ export default function List() {
           )}
         </Grid>
       </Grid>
-      {params.mediaType !== 'book' ? (
+      {params.mediaType !== 'book' && !error? (
         <Grid
           item
           xs={12}
-          md={8}
+          md={10}
           sx={{ justifyContent: 'center', display: 'flex' }}
         >
           <Button
             variant='contained'
-            sx={{ py: 1, px: 3,  lineHeight: 1 }}
+            sx={{ py: 1, px: 3, lineHeight: 1 }}
             onClick={handleViewMore}
             fullWidth
           >
