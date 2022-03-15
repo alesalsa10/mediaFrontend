@@ -14,7 +14,9 @@ export default function SearchResults() {
 
   const [bookData, setBookData] = useState();
   const [bookError, setBookError] = useState();
-  const [bookStatus, setBookStatus] = useState('loading')
+  const [bookStatus, setBookStatus] = useState('loading');
+
+  const [selected, setSelected] = useState('Movies');
 
   const searchMedia = async () => {
     //http://localhost:3000/media/search/all?search_query=harry+potter\
@@ -52,14 +54,29 @@ export default function SearchResults() {
     }
   };
 
+  const handleChangeTab = (value) => {
+    setSelected(value);
+  };
+
+  useEffect(() =>{
+    //call both apis
+    //organize the data by cetegory (movies, books, tv shows, people will be added in the future)
+  },[])
+
   return (
-      <Grid container>
-          <Grid item>
-              <SearchMenu/>
-          </Grid>
-          <Grid item>
-              
-          </Grid>
+    <Grid
+      container
+      justifyContent='center'
+      px={1}
+      py={2}
+      sx={{ justifyContent: 'center' }}
+    >
+      <Grid item xs={12} md={3} sx={{ textAlign: 'center' }}>
+        <SearchMenu selected={selected} handleChangeTab={handleChangeTab} />
       </Grid>
+      <Grid item xs={12} md={9} sx={{ textAlign: 'center' }}>
+        Rest of stuff here
+      </Grid>
+    </Grid>
   );
 }

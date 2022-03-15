@@ -1,20 +1,15 @@
 import {
-    Box,
+  Box,
   List as MaterialList,
   ListItemButton,
   ListItemText,
   Typography,
 } from '@mui/material';
-import React, { useState } from 'react';
+import React from 'react';
 
-export default function SearchMenu() {
-  const [selected, setSelected] = useState('Movies');
-  const handleChangeTab = (value) => {
-      //this will come from the parent in the future
-    setSelected(value);
-  };
+export default function SearchMenu({ selected, handleChangeTab }) {
   return (
-    <Box sx={{ m: 2 }}>
+    <Box sx={{}}>
       <Box
         sx={{
           bgcolor: 'primary.main',
@@ -22,11 +17,26 @@ export default function SearchMenu() {
           display: 'flex',
           alignContent: 'center',
           justifyContent: 'start',
+          borderTopRightRadius: 5,
+          borderTopLeftRadius: 5,
+          borderColor: 'text.secondary',
+          borderWidth: 1,
+          borderStyle: 'solid',
         }}
       >
-        <Typography>Search Results</Typography>
+        <Typography variant='h6' component={'div'} sx={{color: 'white'}}>Search Results</Typography>
       </Box>
-      <MaterialList component='nav' aria-label='secondary mailbox folder'>
+      <MaterialList
+        component='nav'
+        aria-label='secondary mailbox folder'
+        sx={{
+          borderBottomRightRadius: 5,
+          borderBottomLeftRadius: 5,
+          borderColor: 'text.secondary',
+          borderWidth: 1,
+          borderStyle: 'solid',
+        }}
+      >
         <ListItemButton
           selected={selected === 'Movies'}
           onClick={() => handleChangeTab('Movies')}
