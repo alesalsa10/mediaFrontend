@@ -4,7 +4,7 @@ import { useSearchParams } from 'react-router-dom';
 import SearchMenu from '../../components/SearchMenu/SearchMenu';
 import { Card as MaterialCard } from '@mui/material';
 import { Box } from '@mui/system';
-import HorizontalCard from '../../components/auth/ForgotPassword/HorizontalCard';
+import HorizontalCard from '../../components/HorizontalCard/HorizontalCard';
 const { default: axios } = require('axios');
 
 export default function SearchResults() {
