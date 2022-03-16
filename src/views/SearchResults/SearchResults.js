@@ -1,9 +1,10 @@
-import { Grid, Skeleton } from '@mui/material';
+import { Alert, Grid, Link, Skeleton, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import SearchMenu from '../../components/SearchMenu/SearchMenu';
 import { Card as MaterialCard } from '@mui/material';
 import { Box } from '@mui/system';
+import moment from 'moment';
 const { default: axios } = require('axios');
 
 export default function SearchResults() {
@@ -18,7 +19,7 @@ export default function SearchResults() {
   let responseObj = {
     Movies: [],
     TV: [],
-    //People: [],
+    People: [],
     Books: [],
   };
 
@@ -33,9 +34,9 @@ export default function SearchResults() {
           responseObj.Movies.push(item);
         } else if (item.media_type === 'tv') {
           responseObj.TV.push(item);
-        } //else if (item.media_type === 'person') {
-        //mediaObj.People.push(item);
-        //}
+        } else if (item.media_type === 'person') {
+          responseObj.People.push(item);
+        }
       });
       console.log(responseObj);
     } catch (e) {
@@ -70,6 +71,15 @@ export default function SearchResults() {
 
   const handleChangeTab = (value) => {
     setSelected(value);
+    console.log(selected);
+  };
+
+  const capitalizeTitle = (title) => {
+    const arr = title.split(' ');
+    for (var i = 0; i < arr.length; i++) {
+      arr[i] = arr[i].charAt(0).toUpperCase() + arr[i].slice(1).toLowerCase();
+    }
+    return arr.join(' ');
   };
 
   useEffect(() => {
@@ -143,9 +153,108 @@ export default function SearchResults() {
           </Grid>
         ) : (
           <>
-            {
-              
-            }
+            {selected === 'Movies' ? (
+              <>
+                {typeof data.Movies === 'string' ? (
+                  <Alert severity='error' variant='outlined' p={2}>
+                    {data.Movies}
+                  </Alert>
+                ) : (
+                  <>
+                    {data.Movies.map((movie, index) => (
+                      <Box
+                        sx={{
+                          display: 'grid',
+                          gridTemplateColumns: '100px 1fr',
+                          boxShadow: '0 2px 8px rgb(0 0 0 / 25%)',
+                          m: 1,
+                        }}
+                        key={
+                          selected === 'Movies' || selected === 'Books'
+                            ? movie.title + index
+                            : movie.name + index
+                        }
+                      >
+                        <Box
+                          component='img'
+                          sx={{
+                            width: 100,
+                          }}
+                          src={
+                            selected === 'Books'
+                              ? movie.book_image
+                              : `https://image.tmdb.org/t/p/original/${movie.poster_path}`
+                          }
+                          alt={movie.title}
+                        ></Box>
+                        <Box sx={{ justifySelf: 'start', display: 'flex', flexDirection: 'column'}}>
+                          <Typography
+                            variant='body1'
+                            component={'div'}
+                            sx={{ fontWeight: 'bold', paddingLeft: '0.5rem', textAlign: 'left' }}
+                          >
+                            <Link
+                              href={`/${'movie'}/${
+                                selected === 'Books'
+                                  ? movie.primary_isbn10
+                                  : movie.id
+                              }`}
+                              variant='inherit'
+                              color='inherit'
+                              underline='none'
+                              sx={{ ':hover': { color: 'primary.main' } }}
+                            >
+                              {selected === 'Movies' || selected === 'Books'
+                                ? capitalizeTitle(movie.title)
+                                : movie.name}
+                            </Link>
+                          </Typography>
+                          <Typography
+                            variant={'body2'}
+                            component={'div'}
+                            color='text.secondary'
+                            sx={{
+                              fontWeight: 'bold',
+                              paddingLeft: '0.5rem',
+                              textAlign: 'left',
+                            }}
+                          >
+                            {moment(
+                              selected === 'Movie'
+                                ? movie.release_date
+                                : selected === 'TV Shows'
+                                ? movie.first_air_date
+                                : movie.created_date
+                            ).format('MMM DD, YYYY')}
+                          </Typography>
+                          <Typography
+                            variant={'body2'}
+                            component={'div'}
+                            color='text.primary'
+                            sx={{
+                              paddingLeft: '0.5rem',
+                              textAlign: 'left',
+                              flexGrow: 1,
+                              display: 'grid',
+                              alignContent: 'end',
+                              pb:3
+                            }}
+                          >
+                            {`${movie.overview.substring(0, 150)}...`}
+                          </Typography>
+                        </Box>
+                      </Box>
+                    ))}
+                  </>
+                )}
+              </>
+            ) : selected === 'TV Shows' ? (
+              <div>TV</div>
+            ) : selected === 'Books' ? (
+              <div>Books</div>
+            ) : (
+              <div>People</div>
+            )}
           </>
         )}
       </Grid>
