@@ -7,6 +7,8 @@ import { buildStyles, CircularProgressbar } from 'react-circular-progressbar';
 import styles from './Card.module.css';
 import 'react-circular-progressbar/dist/styles.css';
 
+import placeholder from '../../assets/placeholder.png';
+
 export default function Card({ mediaType, media, type }) {
   const capitalizeTitle = (title) => {
     const arr = title.split(' ');
@@ -16,25 +18,65 @@ export default function Card({ mediaType, media, type }) {
     return arr.join(' ');
   };
 
+  const baseImgUrl = 'https://image.tmdb.org/t/p/original';
+
   return (
-    <Box>
+    <Box
+      sx={{
+        // display: 'flex',
+        // justifyContent: 'space-between',
+        // flexDirection: 'column',
+        // boxShadow: '0 2px 8px rgb(0 0 0 / 25%)',
+        display: type !== 'lists' ? 'flex' : '',
+        justifyContent: type !== 'lists' ? 'space-between' : '',
+        flexDirection: type !== 'lists' ? 'column' : '',
+        boxShadow: type !== 'lists' ? '' : '0 2px 8px rgb(0 0 0 / 25%)',
+        width: type !== 'lists' ? '' : 'fit-content',
+        height: type !== 'lists' ? '' : 'auto',
+      }}
+    >
       <Link
-        href={`/${mediaType}/${
-          mediaType === 'book' ? media.primary_isbn10 : media.id
+        href={`/${
+          mediaType === 'book'
+            ? 'book'
+            : mediaType === 'person'
+            ? 'person'
+            : mediaType === 'person'
+            ? 'movie'
+            : 'tv'
+        }/${
+          mediaType === 'book' ? media.primary_isbn10 || media.id : media.id
         }`}
+        variant='inherit'
+        color='inherit'
+        underline='none'
+        sx={{ ':hover': { color: 'primary.main' } }}
         className={styles.cardWrapper}
       >
         <CardMedia
           component='img'
           src={
             mediaType === 'book'
-              ? media.book_image
-              : `https://image.tmdb.org/t/p/original/${media.poster_path}`
+              ? !media.book_image
+                ? placeholder
+                : media.book_image
+              : mediaType === 'person'
+              ? !media.profile_path
+                ? placeholder
+                : `${baseImgUrl}/${media.profile_path}`
+              : mediaType === 'movie'
+              ? !media.poster_path
+                ? placeholder
+                : `${baseImgUrl}/${media.poster_path}`
+              : !media.poster_path
+              ? placeholder
+              : `${baseImgUrl}/${media.poster_path}`
           }
           alt={media.title}
           sx={{
-            height: type !== 'lists' ? 'auto' : '20%',
+            //height: type !== 'lists' ? 'auto' : '20%',
             width: type !== 'lists' ? 200 : '100%',
+            height: { xs: '300px', sm: 'auto' },
           }}
         />
         {mediaType === 'book' ? (
@@ -75,8 +117,16 @@ export default function Card({ mediaType, media, type }) {
           sx={{ fontWeight: 'bold', paddingLeft: '0.5rem' }}
         >
           <Link
-            href={`/${mediaType}/${
-              mediaType === 'book' ? media.primary_isbn10 : media.id
+            href={`/${
+              mediaType === 'book'
+                ? 'book'
+                : mediaType === 'person'
+                ? 'person'
+                : mediaType === 'person'
+                ? 'movie'
+                : 'tv'
+            }/${
+              mediaType === 'book' ? media.primary_isbn10 || media.id : media.id
             }`}
             variant='inherit'
             color='inherit'

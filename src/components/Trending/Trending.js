@@ -119,7 +119,7 @@ export default function Trending({ mediaType }) {
                     height: 'auto',
                   }}
                 >
-                  <MaterialCard key={index}>
+                  <React.Fragment key={index}>
                     <Skeleton
                       animation='wave'
                       variant='rectangular'
@@ -141,7 +141,7 @@ export default function Trending({ mediaType }) {
                       height={10}
                       sx={{ mb: 2, ml: 1 }}
                     />
-                  </MaterialCard>
+                  </React.Fragment>
                 </SwiperSlide>
               ))}
             </>

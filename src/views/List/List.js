@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import {
   Alert,
   Grid,
-  Card as MaterialCard,
   Skeleton,
   Typography,
   Button,
+  Box,
   CircularProgress,
 } from '@mui/material';
 import { useParams } from 'react-router-dom';
@@ -13,6 +13,7 @@ import { useParams } from 'react-router-dom';
 import 'react-circular-progressbar/dist/styles.css';
 import Card from '../../components/Card/Card';
 import Header from '../../components/Header/Header';
+import HorizontalCard from '../../components/HorizontalCard/HorizontalCard';
 
 const { default: axios } = require('axios');
 
@@ -22,14 +23,14 @@ export default function List() {
   const [error, setError] = useState();
   const [status, setStatus] = useState('loading');
   const [page, setPage] = useState(1);
-  const [showMore, setShowMore] = useState(false)
+  const [showMore, setShowMore] = useState(false);
 
   const getMediaLists = async () => {
     //setStatus('loading');
-    if(!showMore){
-      setStatus('loading')
-    }else {
-      setStatus('idle')
+    if (!showMore) {
+      setStatus('loading');
+    } else {
+      setStatus('idle');
     }
     try {
       const response = await axios.get(
@@ -82,7 +83,7 @@ export default function List() {
   }, [params, page]);
 
   const handleViewMore = () => {
-    setPage(page => page + 1);
+    setPage((page) => page + 1);
     setShowMore(true);
   };
 
@@ -112,42 +113,56 @@ export default function List() {
           container
           spacing={1}
           sx={{
-            display: 'flex',
+            display: { xs: 'grid', sm: 'flex' },
             justifyContent: 'center',
-            gap: 2
+            gap: 2,
           }}
         >
           {data && !error && status === 'idle' ? (
             <>
               {params.mediaType === 'movie' || params.mediaType === 'tv' ? (
                 <>
-                  {data.map((media) => (
+                  {data.map((media, index) => (
                     <Grid
                       item
                       xs
-                      my={2}
+                      mb={1}
                       key={
                         params.mediaType === 'movie' ||
                         params.mediaType === 'book'
                           ? media.title
                           : media.name
                       }
-                      sx={{ display: 'flex' }}
+                      sx={{
+                        // display: 'flex',
+                        // justifyContent: 'center',
+                        // flex: '1',
+                        display: { sx: 'initial', sm: 'grid' },
+                        justifyContent: 'start',
+                      }}
                     >
-                      <MaterialCard
-                        sx={{
-                          display: 'flex',
-                          justifyContent: 'space-between',
-                          flexDirection: 'column',
-                          boxShadow: '0 2px 8px rgb(0 0 0 / 25%)',
-                        }}
-                      >
+                      <Box sx={{ display: { xs: 'none', sm: 'inherit' } }}>
                         <Card
                           mediaType={params.mediaType}
                           media={media}
                           type='lists'
                         />
-                      </MaterialCard>
+                      </Box>
+                      <Box sx={{ display: { xs: 'inherit', sm: 'none' } }}>
+                        <HorizontalCard
+                          selected={
+                            params.mediaType === 'movie'
+                              ? 'Movies'
+                              : params.mediaType === 'tv'
+                              ? 'TV Shows'
+                              : params.mediaType === 'book'
+                              ? 'Books'
+                              : 'People'
+                          }
+                          movie={media}
+                          index={index}
+                        />
+                      </Box>
                     </Grid>
                   ))}
                 </>
@@ -156,7 +171,11 @@ export default function List() {
                   {data.map((media, index) => (
                     <React.Fragment key={`${media.display_name}${index}`}>
                       <Grid item xs={12} sx={{ gridColumn: '1/-1' }}>
-                        <Typography variant='h6' component='div'>
+                        <Typography
+                          variant='h6'
+                          component='div'
+                          sx={{ textAlign: 'center' }}
+                        >
                           {media.display_name}
                         </Typography>
                       </Grid>
@@ -167,25 +186,37 @@ export default function List() {
                           my={2}
                           key={`${info.title}${i}`}
                           sx={{
-                            display: 'grid',
-                            justifyContent: 'center',
+                            display: { sx: 'initial', sm: 'grid' },
+                            justifyContent: 'start',
                             mt: 0,
+                            // display: 'flex',
+                            // justifyContent: 'center',
+                            // flex: '1',
                           }}
                         >
-                          <MaterialCard
-                            sx={{
-                              display: 'flex',
-                              justifyContent: 'space-between',
-                              flexDirection: 'column',
-                              boxShadow: '0 2px 8px rgb(0 0 0 / 25%)',
-                            }}
-                          >
+                          <Box sx={{ display: { xs: 'none', sm: 'flex' } }}>
                             <Card
                               mediaType={params.mediaType}
                               media={info}
                               type='lists'
                             />
-                          </MaterialCard>
+                          </Box>
+                          <Box sx={{ display: { xs: 'inherit', sm: 'none' } }}>
+                            <HorizontalCard
+                              selected={
+                                params.mediaType === 'movie'
+                                  ? 'Movies'
+                                  : params.mediaType === 'tv'
+                                  ? 'TV Shows'
+                                  : params.mediaType === 'book'
+                                  ? 'Books'
+                                  : 'People'
+                              }
+                              movie={info}
+                              index={i}
+                              bestSellers={true}
+                            />
+                          </Box>
                         </Grid>
                       ))}
                     </React.Fragment>
@@ -203,7 +234,7 @@ export default function List() {
             <>
               {[...Array(20).keys()].map((item, index) => (
                 <Grid item sx={{ display: 'flex' }} key={index}>
-                  <MaterialCard
+                  <Box
                     sx={{
                       display: 'flex',
                       justifyContent: 'space-between',
@@ -232,14 +263,14 @@ export default function List() {
                       height={10}
                       sx={{ mb: 2, ml: 1 }}
                     />
-                  </MaterialCard>
+                  </Box>
                 </Grid>
               ))}
             </>
           )}
         </Grid>
       </Grid>
-      {params.mediaType !== 'book' && !error? (
+      {params.mediaType !== 'book' && !error ? (
         <Grid
           item
           xs={12}
