@@ -14,7 +14,11 @@ export default function Header({ params }) {
               params.mediaType.slice(1)
             }s`
           );
-        }else {
+
+        }else if(params.mediaType === 'people'){
+          setContent('Popular People')
+        }
+        else {
           setContent(`Popular ${params.mediaType.toUpperCase()} Shows`)
         }
         break;
@@ -57,7 +61,7 @@ export default function Header({ params }) {
   }, [params])
 
   //mediaType and listType
-  return <Typography variant='h5' component='div'>
+  return <Typography variant='h5' component='div' sx={{py:1}}>
     {content}
   </Typography>;
 }

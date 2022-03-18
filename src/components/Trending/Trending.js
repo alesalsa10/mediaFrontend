@@ -91,9 +91,10 @@ export default function Trending({ mediaType }) {
                   boxShadow: '0 2px 8px rgb(0 0 0 / 25%)',
                   width: 'fit-content',
                   height: 'auto',
+                  borderRadius: '3px'
                 }}
               >
-                <Card mediaType={mediaType} media={media} />
+                <Card mediaType={mediaType} media={media} type='carousel'/>
               </SwiperSlide>
             ))}
           </Swiper>

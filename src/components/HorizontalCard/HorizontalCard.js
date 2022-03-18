@@ -42,21 +42,21 @@ export default function HorizontalCard({
     }
   };
 
-  const selectDescription = (book) =>{
-      if(bestSellers){
-        if(!book.description){
-            return 'No Description Available'
-        }else {
-            return book.description;
-        }
-      }else {
-        if(!movie.volumeInfo.description){
-            return 'No Description Available'
-        }else {
-            return movie.volumeInfo.description.substring(0, 100) + '...';
-        }
+  const selectDescription = (book) => {
+    if (bestSellers) {
+      if (!book.description) {
+        return 'No Description Available';
+      } else {
+        return book.description;
       }
-  }
+    } else {
+      if (!movie.volumeInfo.description) {
+        return 'No Description Available';
+      } else {
+        return movie.volumeInfo.description.substring(0, 100) + '...';
+      }
+    }
+  };
 
   return (
     <Box
@@ -75,7 +75,7 @@ export default function HorizontalCard({
           ? movie.name + index
           : selected === 'Books'
           ? selectKey(movie, index)
-          : movie.profile_path + index
+          : movie.id + index
       }
     >
       <Link
@@ -118,6 +118,7 @@ export default function HorizontalCard({
           justifySelf: 'start',
           display: 'flex',
           flexDirection: 'column',
+          alignSelf: selected === 'People' ? 'center' : '',
         }}
       >
         <Typography
@@ -189,11 +190,18 @@ export default function HorizontalCard({
               textAlign: 'left',
             }}
           >
-            {movie.known_for_department}:{' '}
+            {movie.known_for_department}
+            <span>&#183;</span>{' '}
             {movie.known_for.length > 0 ? (
               <>
-                {movie.known_for.map((item) => (
-                  <>{item.title}</>
+                {movie.known_for.map((item, index) => (
+                  <Box
+                    component={'span'}
+                    sx={{ flexGrow: '1', flexShrink: '1', flexBasis: '0' }}
+                    key={index}
+                  >
+                    {`${item.title}${index === movie.known_for.length -1 ? '': ', '}`}
+                  </Box>
                 ))}
               </>
             ) : (

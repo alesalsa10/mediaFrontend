@@ -55,6 +55,10 @@ export default function Navigation() {
       main: 'Books',
       links: [{ title: 'Best Sellers', link: '/book/lists/best_sellers' }],
     },
+    {
+      main: 'People',
+      links: [{title: 'Popular People', link: '/people/lists/popular'}]
+    }
   ];
 
   const authSettings = ['Profile', 'Logout'];

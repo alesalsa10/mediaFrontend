@@ -19,6 +19,7 @@ const { default: axios } = require('axios');
 
 export default function List() {
   let params = useParams();
+  console.log(params)
   const [data, setData] = useState([]);
   const [error, setError] = useState();
   const [status, setStatus] = useState('loading');
@@ -35,6 +36,29 @@ export default function List() {
     try {
       const response = await axios.get(
         `http://localhost:3000/media/lists/${params.mediaType}/${params.listType}?page=${page}`
+      );
+      console.log(response.data);
+      setData([...data, ...response.data.results]);
+      setError();
+      setStatus('idle');
+      setShowMore(false);
+    } catch (e) {
+      console.log(e);
+      setError(e.response.data.Msg);
+      setData();
+      setStatus('idle');
+    }
+  };
+
+  const getPopularPeople = async () => {
+    if (!showMore) {
+      setStatus('loading');
+    } else {
+      setStatus('idle');
+    }
+    try {
+      const response = await axios.get(
+        `http://localhost:3000/people/lists/popular?page=${page}`
       );
       console.log(response.data);
       setData([...data, ...response.data.results]);
@@ -72,13 +96,15 @@ export default function List() {
       getMediaLists();
     } else if (params.mediaType === 'book') {
       getBestSellers();
+    } else if (params.mediaType === 'people') {
+      getPopularPeople();
     } else {
       setData();
       setError('Invalid media type');
       setStatus('idle');
     }
-    // setStatus('idle');
-    // setError('something went wrong')
+    // setStatus('loading');
+    // setError('')
     // setData()
   }, [params, page]);
 
@@ -95,14 +121,20 @@ export default function List() {
       py={2}
       sx={{ justifyContent: 'center' }}
     >
-      <Grid item xs={12} md={10} sx={{ textAlign: 'center' }}>
+      <Grid
+        item
+        xs={12}
+        md={10}
+        justifyContent='center'
+        sx={{ textAlign: 'center', display: 'flex' }}
+      >
         {status === 'loading' && !data && !error ? (
           <Skeleton
             animation='wave'
             variant='rectangular'
             width={250}
             height={16}
-            sx={{ mb: 2 }}
+            sx={{ mb: 2, display: 'flex' }}
           />
         ) : (
           <Header params={params} />
@@ -113,14 +145,22 @@ export default function List() {
           container
           spacing={1}
           sx={{
-            display: { xs: 'grid', sm: 'flex' },
+            display: { xs: status === 'loading' ? 'flex' : 'grid' },
             justifyContent: 'center',
             gap: 2,
+            gridTemplateColumns: {
+              xs: '',
+              sm: 'repeat(auto-fill, minmax(200px, 1fr))',
+            },
+            justifyItems: 'center',
+            px: 1,
           }}
         >
           {data && !error && status === 'idle' ? (
             <>
-              {params.mediaType === 'movie' || params.mediaType === 'tv' ? (
+              {params.mediaType === 'movie' ||
+              params.mediaType === 'tv' ||
+              params.mediaType === 'people' ? (
                 <>
                   {data.map((media, index) => (
                     <Grid
@@ -134,21 +174,22 @@ export default function List() {
                           : media.name
                       }
                       sx={{
-                        // display: 'flex',
-                        // justifyContent: 'center',
-                        // flex: '1',
-                        display: { sx: 'initial', sm: 'grid' },
+                        display: { xs: 'initial', sm: 'grid' },
                         justifyContent: 'start',
+                        width: 'inherit',
                       }}
                     >
                       <Box sx={{ display: { xs: 'none', sm: 'inherit' } }}>
-                        <Card
-                          mediaType={params.mediaType}
-                          media={media}
-                          type='lists'
-                        />
+                        <Card mediaType={params.mediaType} media={media} />
                       </Box>
-                      <Box sx={{ display: { xs: 'inherit', sm: 'none' } }}>
+                      <Box
+                        sx={{
+                          display: {
+                            xs: 'inherit',
+                            sm: 'none',
+                          },
+                        }}
+                      >
                         <HorizontalCard
                           selected={
                             params.mediaType === 'movie'
@@ -189,19 +230,24 @@ export default function List() {
                             display: { sx: 'initial', sm: 'grid' },
                             justifyContent: 'start',
                             mt: 0,
-                            // display: 'flex',
-                            // justifyContent: 'center',
-                            // flex: '1',
+                            width: 'inherit',
                           }}
                         >
                           <Box sx={{ display: { xs: 'none', sm: 'flex' } }}>
                             <Card
                               mediaType={params.mediaType}
                               media={info}
-                              type='lists'
+                              bestSellers={true}
                             />
                           </Box>
-                          <Box sx={{ display: { xs: 'inherit', sm: 'none' } }}>
+                          <Box
+                            sx={{
+                              display: {
+                                xs: 'inherit',
+                                sm: 'none',
+                              },
+                            }}
+                          >
                             <HorizontalCard
                               selected={
                                 params.mediaType === 'movie'
@@ -233,7 +279,11 @@ export default function List() {
           ) : (
             <>
               {[...Array(20).keys()].map((item, index) => (
-                <Grid item sx={{ display: 'flex' }} key={index}>
+                <Grid
+                  item
+                  sx={{ display: { xs: 'none', sm: 'flex' } }}
+                  key={index}
+                >
                   <Box
                     sx={{
                       display: 'flex',
@@ -263,6 +313,50 @@ export default function List() {
                       height={10}
                       sx={{ mb: 2, ml: 1 }}
                     />
+                  </Box>
+                </Grid>
+              ))}
+              {[...Array(20).keys()].map((item, index) => (
+                <Grid item xs={12} key={index} sx={{ gridColumn: '1/-1' }}>
+                  <Box
+                    sx={{
+                      display: { xs: 'grid', sm: 'none' },
+                      gridTemplateColumns: '100px 1fr',
+                      boxShadow: '0 2px 8px rgb(0 0 0 / 25%)',
+                    }}
+                  >
+                    <Box>
+                      <Skeleton
+                        animation='wave'
+                        variant='rectangular'
+                        width={`100%`}
+                        height={100}
+                        sx={{ mb: 0 }}
+                      />
+                    </Box>
+                    <Box>
+                      <Skeleton
+                        animation='wave'
+                        variant='rectangular'
+                        width={170}
+                        height={16}
+                        sx={{ my: 2, ml: 1 }}
+                      />
+                      <Skeleton
+                        animation='wave'
+                        variant='rectangular'
+                        width={140}
+                        height={10}
+                        sx={{ mb: 2, ml: 1 }}
+                      />
+                      <Skeleton
+                        animation='wave'
+                        variant='rectangular'
+                        width={'90%'}
+                        height={10}
+                        sx={{ mb: 2, ml: 1 }}
+                      />
+                    </Box>
                   </Box>
                 </Grid>
               ))}
