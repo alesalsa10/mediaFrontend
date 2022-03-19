@@ -19,7 +19,7 @@ const { default: axios } = require('axios');
 
 export default function List() {
   let params = useParams();
-  console.log(params)
+  console.log(params);
   const [data, setData] = useState([]);
   const [error, setError] = useState();
   const [status, setStatus] = useState('loading');
@@ -371,19 +371,22 @@ export default function List() {
           md={10}
           sx={{ justifyContent: 'center', display: 'flex' }}
         >
-          <Button
-            variant='contained'
-            sx={{ py: 1, px: 3, lineHeight: 1 }}
-            onClick={handleViewMore}
-            fullWidth
-          >
-            {showMore && status !== 'loading' ? (
-              <CircularProgress color='inherit' size={'1.2rem'} />
-            ) : (
-              <span style={{ fontSize: '1.2rem' }}>Load More</span>
-            )}
-            {/* <CircularProgress color='inherit' size={'1.2rem'}/> */}
-          </Button>
+          {status !== 'loading' ? (
+            <Button
+              variant='contained'
+              sx={{ py: 1, px: 3, lineHeight: 1 }}
+              onClick={handleViewMore}
+              fullWidth
+            >
+              {showMore? (
+                <CircularProgress color='inherit' size={'1.2rem'} />
+              ) : (
+                <span style={{ fontSize: '1.2rem' }}>Load More</span>
+              )}
+            </Button>
+          ) : (
+            <></>
+          )}
         </Grid>
       ) : (
         <></>
