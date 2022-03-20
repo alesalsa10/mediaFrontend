@@ -34,6 +34,16 @@ export default function HorizontalCard({
     }
   };
 
+  const selectBookLink = (book) => {
+    if (book.id) {
+      return book.id;
+    } else if (book.primary_isbn10) {
+      return `isbn/${book.primary_isbn10}`;
+    } else {
+      return `isbn/${book.primary_isbn13}`;
+    }
+  };
+
   const selectKey = (book, index) => {
     if (bestSellers) {
       return book.primary_isbn10;
@@ -88,7 +98,7 @@ export default function HorizontalCard({
             ? 'movie'
             : 'tv'
         }/${
-          selected === 'Books' ? movie.primary_isbn10 || movie.id : movie.id
+          selected === 'Books' ? selectBookLink(movie) : movie.id
         }`}
         component='img'
         sx={{
@@ -140,7 +150,7 @@ export default function HorizontalCard({
                 ? 'movie'
                 : 'tv'
             }/${
-              selected === 'Books' ? movie.primary_isbn10 || movie.id : movie.id
+              selected === 'Books' ? selectBookLink(movie) : movie.id
             }`}
             variant='inherit'
             color='inherit'

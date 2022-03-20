@@ -34,6 +34,8 @@ function App() {
               <Route path='/' element={<Home />} />
               <Route path='/search' element={<SearchResults />} />
               <Route path={`/:mediaType/lists/:listType`} element={<List />} />
+              <Route path='/:mediaType/:id' element={<Media />} />
+              <Route path='/:mediaType/isbn/:id' element={<Media />} />
             </Route>
           </Routes>
         </Fragment>

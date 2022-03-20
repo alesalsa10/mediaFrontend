@@ -7,7 +7,6 @@ import {
   Select,
   Skeleton,
   Typography,
-  Card as MaterialCard,
 } from '@mui/material';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -74,11 +73,12 @@ export default function Trending({ mediaType }) {
           <Swiper
             style={{ padding: '1px 0px' }}
             modules={[Navigation]}
-            spaceBetween={25}
+            spaceBetween={15}
             loop={true}
             loopedSlides={1}
-            navigation={{ clickable: true }}
             slidesPerView='auto'
+            // navigation={true}
+            navigation
           >
             {data.map((media) => (
               <SwiperSlide
@@ -91,10 +91,10 @@ export default function Trending({ mediaType }) {
                   boxShadow: '0 2px 8px rgb(0 0 0 / 25%)',
                   width: 'fit-content',
                   height: 'auto',
-                  borderRadius: '3px'
+                  borderRadius: '3px',
                 }}
               >
-                <Card mediaType={mediaType} media={media} type='carousel'/>
+                <Card mediaType={mediaType} media={media} type='carousel' />
               </SwiperSlide>
             ))}
           </Swiper>

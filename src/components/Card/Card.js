@@ -34,6 +34,16 @@ export default function Card({ mediaType, media, type, bestSellers }) {
     }
   };
 
+  const selectBookLink = (book) =>{
+    if (book.id){
+      return book.id
+    }else if(book.primary_isbn10){
+      return `isbn/${book.primary_isbn10}`
+    }else {
+      return `isbn/${book.primary_isbn13}`
+    }
+  }
+
   const baseImgUrl = 'https://image.tmdb.org/t/p/original';
 
   return (
@@ -55,7 +65,7 @@ export default function Card({ mediaType, media, type, bestSellers }) {
             ? 'movie'
             : 'tv'
         }/${
-          mediaType === 'book' ? media.primary_isbn10 || media.id : media.id
+          mediaType === 'book' ? selectBookLink(media): media.id
         }`}
         sx={{ ':hover': { color: 'primary.main' } }}
         className={styles.cardWrapper}
@@ -144,7 +154,7 @@ export default function Card({ mediaType, media, type, bestSellers }) {
                 ? 'movie'
                 : 'tv'
             }/${
-              mediaType === 'book' ? media.primary_isbn10 || media.id : media.id
+              mediaType === 'book' ? selectBookLink(media) : media.id
             }`}
             variant='inherit'
             color='inherit'
