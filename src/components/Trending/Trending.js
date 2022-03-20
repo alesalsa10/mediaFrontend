@@ -70,34 +70,35 @@ export default function Trending({ mediaType }) {
           </Grid>
         </Grid>
         {data && !error && status === 'idle' ? (
-          <Swiper
-            style={{ padding: '1px 0px' }}
-            modules={[Navigation]}
-            spaceBetween={15}
-            loop={true}
-            loopedSlides={1}
-            slidesPerView='auto'
-            // navigation={true}
-            navigation
-          >
-            {data.map((media) => (
-              <SwiperSlide
-                key={
-                  mediaType === 'movie' || mediaType === 'book'
-                    ? media.title
-                    : media.name
-                }
-                style={{
-                  boxShadow: '0 2px 8px rgb(0 0 0 / 25%)',
-                  width: 'fit-content',
-                  height: 'auto',
-                  borderRadius: '3px',
-                }}
-              >
-                <Card mediaType={mediaType} media={media} type='carousel' />
-              </SwiperSlide>
-            ))}
-          </Swiper>
+          <div className={`swiper-container ${mediaType === 'movie' ? 'slider1': 'slider2'}`}>
+            <Swiper
+              style={{ padding: '1px 0px' }}
+              modules={[Navigation]}
+              spaceBetween={15}
+              loop={true}
+              loopedSlides={1}
+              slidesPerView='auto'
+              navigation
+            >
+              {data.map((media, index) => (
+                <SwiperSlide
+                  key={
+                    mediaType === 'movie' || mediaType === 'book'
+                      ? media.title + index
+                      : media.name + index
+                  }
+                  style={{
+                    boxShadow: '0 2px 8px rgb(0 0 0 / 25%)',
+                    width: 'fit-content',
+                    height: 'auto',
+                    borderRadius: '3px',
+                  }}
+                >
+                  <Card mediaType={mediaType} media={media} type='carousel' />
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          </div>
         ) : !data && error && status === 'idle' ? (
           <Grid item xs={12} sx={{ gridColumn: '1/-1' }}>
             <Alert severity='error' variant='outlined' p={2}>
