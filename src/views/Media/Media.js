@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Overview from '../../components/Overview/Overview';
 import { useParams, useLocation } from 'react-router-dom';
+import { Grid } from '@mui/material';
+import TopBillCast from '../../components/TopBillCast/TopBillCast';
 
 const { default: axios } = require('axios');
 
@@ -9,7 +11,7 @@ export default function Media() {
   const [error, setError] = useState();
   const [status, setStatus] = useState('loading');
   const [hasTrailer, setHasTrailer] = useState(false);
-  const [videoKey, setVideoKey] = useState()
+  const [videoKey, setVideoKey] = useState();
 
   let params = useParams();
   console.log(params);
@@ -34,12 +36,12 @@ export default function Media() {
             media.official
           ) {
             setHasTrailer(true);
-            setVideoKey(media.key)
+            setVideoKey(media.key);
             break;
           }
         }
-      }else {
-        setHasTrailer(false)
+      } else {
+        setHasTrailer(false);
       }
 
       setData(response.data);
@@ -107,12 +109,29 @@ export default function Media() {
       ) : status === 'idle' && error && !data ? (
         <>error</>
       ) : (
-        <Overview
-          mediaDetails={data.mediaDetails}
-          mediaType={params.mediaType}
-          hasTrailer={hasTrailer}
-          videoKey={videoKey}
-        />
+        <Grid container>
+          <Grid item>
+            <Overview
+              mediaDetails={data.mediaDetails}
+              mediaType={params.mediaType}
+              hasTrailer={hasTrailer}
+              videoKey={videoKey}
+            />
+          </Grid>
+          {params.mediaType !== 'book' ? (
+            <Grid container>
+              <Grid item xs={12}>
+                <TopBillCast
+                  cast={data.mediaDetails.credits.cast}
+                  mediaType={params.mediaType}
+                  mediaId={params.id}
+                />
+              </Grid>
+            </Grid>
+          ) : (
+            <></>
+          )}
+        </Grid>
       )}
     </>
   );

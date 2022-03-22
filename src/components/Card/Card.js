@@ -34,15 +34,15 @@ export default function Card({ mediaType, media, type, bestSellers }) {
     }
   };
 
-  const selectBookLink = (book) =>{
-    if (book.id){
-      return book.id
-    }else if(book.primary_isbn10){
-      return `isbn/${book.primary_isbn10}`
-    }else {
-      return `isbn/${book.primary_isbn13}`
+  const selectBookLink = (book) => {
+    if (book.id) {
+      return book.id;
+    } else if (book.primary_isbn10) {
+      return `isbn/${book.primary_isbn10}`;
+    } else {
+      return `isbn/${book.primary_isbn13}`;
     }
-  }
+  };
 
   const baseImgUrl = 'https://image.tmdb.org/t/p/original';
 
@@ -64,9 +64,7 @@ export default function Card({ mediaType, media, type, bestSellers }) {
             : mediaType === 'movie'
             ? 'movie'
             : 'tv'
-        }/${
-          mediaType === 'book' ? selectBookLink(media): media.id
-        }`}
+        }/${mediaType === 'book' ? selectBookLink(media) : media.id}`}
         sx={{ ':hover': { color: 'primary.main' } }}
         className={styles.cardWrapper}
       >
@@ -153,9 +151,7 @@ export default function Card({ mediaType, media, type, bestSellers }) {
                 : mediaType === 'person'
                 ? 'movie'
                 : 'tv'
-            }/${
-              mediaType === 'book' ? selectBookLink(media) : media.id
-            }`}
+            }/${mediaType === 'book' ? selectBookLink(media) : media.id}`}
             variant='inherit'
             color='inherit'
             underline='none'
@@ -200,7 +196,11 @@ export default function Card({ mediaType, media, type, bestSellers }) {
             {media.known_for.length > 0 ? (
               <>
                 {media.known_for.map((item, index) => (
-                  <React.Fragment key={index}>{item.title}</React.Fragment>
+                  <React.Fragment key={index}>
+                    {`${item.title || item.name}${
+                      index === media.known_for.length - 1 ? '' : ', '
+                    }`}
+                  </React.Fragment>
                 ))}
               </>
             ) : (

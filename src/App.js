@@ -13,6 +13,7 @@ import WithNav from './components/Navigation/WithNav';
 import Media from './views/Media/Media';
 import List from './views/List/List';
 import SearchResults from './views/SearchResults/SearchResults';
+import FullCast from './views/FullCast/FullCast';
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
               <Route path='/search' element={<SearchResults />} />
               <Route path={`/:mediaType/lists/:listType`} element={<List />} />
               <Route path='/:mediaType/:id' element={<Media />} />
+              <Route path='/:mediaType/:id/full_cast' element={<FullCast />} />
               <Route path='/:mediaType/isbn/:id' element={<Media />} />
             </Route>
           </Routes>

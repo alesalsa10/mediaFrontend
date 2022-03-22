@@ -80,9 +80,10 @@ export default function Overview({
     <Box
       sx={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(2, auto)',
+        gridTemplateColumns: {xs: '1fr', sm: 'repeat(2, auto)'},
         p: 3,
         gridGap: '1rem',
+        alignItems: 'center'
       }}
     >
       <Box
@@ -114,13 +115,14 @@ export default function Overview({
             sm: 300,
           },
           borderRadius: 3,
+          justifySelf: {xs: 'center', sm: 'auto'}
         }}
       ></Box>
       <Box>
         <Typography
           variant='h5'
           component={'div'}
-          //sx={{ paddingLeft: '0.5rem' }}
+          sx={{ py: '0.5rem' }}
         >
           {mediaType === 'movie'
             ? capitalizeTitle(mediaDetails.title)
@@ -136,7 +138,7 @@ export default function Overview({
           )
         </Typography>
 
-        <Typography variant='body2' component={'div'}>
+        <Typography variant='body2' component={'div'} sx={{py: '0.5rem'}}>
           {mediaType !== 'book' ? (
             <>
               {cert ? (
@@ -199,7 +201,7 @@ export default function Overview({
         {mediaType !== 'book' ? (
           <Box
             sx={{
-              //pl: '0.5rem',
+              py: '0.5rem',
               display: 'flex',
               flexDirection: 'row',
               //justifyContent: 'space-between',
@@ -235,12 +237,16 @@ export default function Overview({
                 })}
               />
             </Box>
+            <Box sx={{ alignSelf: 'center' }}>
+              <FavoriteIcon />
+            </Box>
 
             {hasTrailer ? (
               <Box sx={{ alignSelf: 'center' }}>
                 <Button variant='text' onClick={handleOpen}>
                   Play Trailer
                 </Button>
+
                 <Modal
                   open={open}
                   onClose={handleClose}

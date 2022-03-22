@@ -97,9 +97,7 @@ export default function HorizontalCard({
             : selected === 'Movies'
             ? 'movie'
             : 'tv'
-        }/${
-          selected === 'Books' ? selectBookLink(movie) : movie.id
-        }`}
+        }/${selected === 'Books' ? selectBookLink(movie) : movie.id}`}
         component='img'
         sx={{
           width: 100,
@@ -149,9 +147,7 @@ export default function HorizontalCard({
                 : selected === 'Movies'
                 ? 'movie'
                 : 'tv'
-            }/${
-              selected === 'Books' ? selectBookLink(movie) : movie.id
-            }`}
+            }/${selected === 'Books' ? selectBookLink(movie) : movie.id}`}
             variant='inherit'
             color='inherit'
             underline='none'
@@ -210,7 +206,9 @@ export default function HorizontalCard({
                     sx={{ flexGrow: '1', flexShrink: '1', flexBasis: '0' }}
                     key={index}
                   >
-                    {`${item.title}${index === movie.known_for.length -1 ? '': ', '}`}
+                    {`${item.title || item.name}${
+                      index === movie.known_for.length - 1 ? '' : ', '
+                    }`}
                   </Box>
                 ))}
               </>
