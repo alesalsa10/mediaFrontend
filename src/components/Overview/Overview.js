@@ -1,6 +1,6 @@
 import { Button, Modal, Typography } from '@mui/material';
-import { Box, height } from '@mui/system';
-import React, { Fragment } from 'react';
+import { Box } from '@mui/system';
+import React, { Fragment, useState, useEffect } from 'react';
 import moment from 'moment';
 import placeholder from '../../assets/placeholder.png';
 import { buildStyles, CircularProgressbar } from 'react-circular-progressbar';
@@ -10,8 +10,14 @@ import 'react-circular-progressbar/dist/styles.css';
 
 const baseImgUrl = 'https://image.tmdb.org/t/p/original';
 
-export default function Overview({ mediaDetails, mediaType, videoKey, hasTrailer }) {
-  const [open, setOpen] = React.useState(false);
+export default function Overview({
+  mediaDetails,
+  mediaType,
+  videoKey,
+  hasTrailer,
+}) {
+  const [open, setOpen] = useState(false);
+  const [cert, setCert] = useState('');
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const timeConvert = (n) => {
@@ -42,12 +48,41 @@ export default function Overview({ mediaDetails, mediaType, videoKey, hasTrailer
     return arr.join(' ');
   };
 
+  useEffect(() => {
+    if (mediaType === 'movie') {
+      for (const media of mediaDetails.release_dates.results) {
+        if (media.iso_3166_1 === 'US') {
+          console.log(media);
+          setCert(media.release_dates[0].certification);
+          break;
+        }
+      }
+    } else if (mediaType === 'tv') {
+      for (const media of mediaDetails.content_ratings.results) {
+        if (media.iso_3166_1 === 'US') {
+          console.log(media);
+          setCert(media.rating);
+          break;
+        }
+      }
+    }
+  }, []);
+
+  const selectDescription = () => {
+    if (!mediaDetails.volumeInfo.description) {
+      return 'No Description Available';
+    } else {
+      return mediaDetails.volumeInfo.description;
+    }
+  };
+
   return (
     <Box
       sx={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(2, max-content)',
+        gridTemplateColumns: 'repeat(2, auto)',
         p: 3,
+        gridGap: '1rem',
       }}
     >
       <Box
@@ -85,7 +120,7 @@ export default function Overview({ mediaDetails, mediaType, videoKey, hasTrailer
         <Typography
           variant='h5'
           component={'div'}
-          sx={{ paddingLeft: '0.5rem' }}
+          //sx={{ paddingLeft: '0.5rem' }}
         >
           {mediaType === 'movie'
             ? capitalizeTitle(mediaDetails.title)
@@ -104,13 +139,33 @@ export default function Overview({ mediaDetails, mediaType, videoKey, hasTrailer
         <Typography variant='body2' component={'div'}>
           {mediaType !== 'book' ? (
             <>
-              <span style={{ paddingLeft: '0.5rem' }}>
-                {moment(mediaDetails.release_date).format('MM/DD/YYYY')}
-              </span>
-              <span> - </span>
+              {cert ? (
+                <span
+                  style={{
+                    // marginLeft: '0.5rem',
+                    marginRight: '0.5rem',
+                    border: '1px solid black',
+                    padding: '0.1rem',
+                  }}
+                >
+                  {cert}
+                </span>
+              ) : (
+                <></>
+              )}
+              {mediaType === 'movie' ? (
+                <>
+                  <span>
+                    {moment(mediaDetails.release_date).format('MM/DD/YYYY')}
+                  </span>
+                  <span> - </span>
+                </>
+              ) : (
+                <></>
+              )}
             </>
           ) : (
-            <span style={{ paddingLeft: '0.5rem' }}>
+            <span>
               {moment(mediaDetails.volumeInfo.publishedDate).format(
                 'MM/DD/YYYY'
               )}
@@ -129,7 +184,13 @@ export default function Overview({ mediaDetails, mediaType, videoKey, hasTrailer
                 ))}
                 <span> - </span>
               </span>
-              <span>{timeConvert(mediaDetails.runtime)}</span>
+              <span>
+                {timeConvert(
+                  mediaType === 'movie'
+                    ? mediaDetails.runtime
+                    : mediaDetails.episode_run_time
+                )}
+              </span>
             </>
           ) : (
             <></>
@@ -138,10 +199,10 @@ export default function Overview({ mediaDetails, mediaType, videoKey, hasTrailer
         {mediaType !== 'book' ? (
           <Box
             sx={{
-              pl: '0.5rem',
+              //pl: '0.5rem',
               display: 'flex',
               flexDirection: 'row',
-              justifyContent: 'space-between',
+              //justifyContent: 'space-between',
             }}
           >
             <Box
@@ -173,15 +234,8 @@ export default function Overview({ mediaDetails, mediaType, videoKey, hasTrailer
                   height: '60px',
                 })}
               />
-              {/* <Box sx={{ fontWeight: 700, alignSelf: 'center', px: '0.5rem' }}>
-                <Box>User</Box>
-                <Box>Score</Box>
-              </Box> */}
             </Box>
 
-            <Box sx={{ alignSelf: 'center' }}>
-              <FavoriteIcon />
-            </Box>
             {hasTrailer ? (
               <Box sx={{ alignSelf: 'center' }}>
                 <Button variant='text' onClick={handleOpen}>
@@ -234,6 +288,57 @@ export default function Overview({ mediaDetails, mediaType, videoKey, hasTrailer
         ) : (
           <></>
         )}
+        {mediaType === 'movie' && mediaDetails.tagline ? (
+          <Typography
+            variant={'h6'}
+            component={'div'}
+            color='text.secondary'
+            sx={{
+              px: '0.5rem',
+              textAlign: 'left',
+              flexGrow: 1,
+              display: 'grid',
+              alignContent: 'end',
+              //pb: 3,
+            }}
+          >
+            {mediaDetails.tagline}
+          </Typography>
+        ) : (
+          <></>
+        )}
+        <Typography
+          variant={'h6'}
+          component={'div'}
+          color='text.primary'
+          sx={{
+            px: '0.5rem',
+            textAlign: 'left',
+            flexGrow: 1,
+            display: 'grid',
+            alignContent: 'end',
+            //pb: 3,
+          }}
+        >
+          Overview
+        </Typography>
+        <Typography
+          variant={'body2'}
+          component={'div'}
+          color='text.primary'
+          sx={{
+            px: '0.5rem',
+            textAlign: 'left',
+            flexGrow: 1,
+            display: 'grid',
+            alignContent: 'end',
+            pb: 3,
+          }}
+        >
+          {mediaType !== 'book'
+            ? `${mediaDetails.overview}`
+            : selectDescription(mediaDetails)}
+        </Typography>
       </Box>
     </Box>
   );
