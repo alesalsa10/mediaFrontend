@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import Overview from '../../components/Overview/Overview';
 import { useParams, useLocation } from 'react-router-dom';
-import { Grid } from '@mui/material';
+import { Alert, Grid, Skeleton } from '@mui/material';
 import TopBillCast from '../../components/TopBillCast/TopBillCast';
+import { Box } from '@mui/system';
+import { Swiper, SwiperSlide } from 'swiper/react';
 
 const { default: axios } = require('axios');
 
@@ -101,13 +103,105 @@ export default function Media() {
     } else {
       setError('Invalid media type');
     }
+    // setStatus('loading');
+    // setData();
+    // setError();
   }, [params]);
   return (
     <>
       {status === 'loading' && !error && !data ? (
-        <>loading</>
-      ) : status === 'idle' && error && !data ? (
-        <>error</>
+        //<Grid container>
+        //<Grid item xs={12} sx={{ pl: 2 }}>
+        <>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: { xs: 'column', sm: 'row' },
+              flexGrow: 1,
+              flexShrink: 1,
+              flexBasis: '0%',
+              mx: 2,
+            }}
+          >
+            <Box sx={{ alignSelf: { xs: 'center', sm: '' } }}>
+              <Skeleton
+                sx={{
+                  width: { xs: 150, sm: 200 },
+                  height: { xs: 250, sm: 350 },
+                  transform: 'scale(1,1)',
+                  my: 1,
+                }}
+              />
+            </Box>
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                p: { xs: 0, sm: 2 },
+                width: '100%',
+              }}
+            >
+              <Skeleton height={30} width={'50%'} />
+              <Skeleton height={25} width={'25%'} sx={{ my: 2 }} />
+              <Skeleton height={20} width={'100%'} />{' '}
+              <Skeleton height={20} width={'100%'} />{' '}
+              <Skeleton height={20} width={'75%'} />
+            </Box>
+          </Box>
+          {params.mediaType !== 'book' ? (
+            <>
+              <Box sx={{ px: 1, pt: 3 }}>
+                <Skeleton width={75} height={30} />
+              </Box>
+              <Box
+                sx={{
+                  p: 1,
+                  display: 'flex',
+                  flexDirection: 'row',
+                  overflow: 'hidden',
+                  gap: '10px',
+                }}
+              >
+                <>
+                  {[...Array(5).keys()].map((item, index) => (
+                    <Box key={index}>
+                      <Skeleton
+                        animation='wave'
+                        variant='rectangular'
+                        width={150}
+                        height={250}
+                        sx={{ mb: 2 }}
+                      />
+                      <Skeleton
+                        animation='wave'
+                        variant='rectangular'
+                        width={130}
+                        height={16}
+                        sx={{ mb: 2 }}
+                      />
+                      <Skeleton
+                        animation='wave'
+                        variant='rectangular'
+                        width={110}
+                        height={10}
+                        sx={{ mb: 2 }}
+                      />
+                    </Box>
+                  ))}
+                </>
+              </Box>
+            </>
+          ) : (
+            <></>
+          )}
+        </>
+      ) : //</></Grid>
+      //</Grid>
+      status === 'idle' && error && !data ? (
+        <Alert severity='error' variant='outlined' p={2}>
+          {error}
+        </Alert>
       ) : (
         <Grid container>
           <Grid item>

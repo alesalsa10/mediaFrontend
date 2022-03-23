@@ -1,10 +1,10 @@
-import {  Grid, Skeleton } from '@mui/material';
+import { Grid, Skeleton } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import SearchMenu from '../../components/SearchMenu/SearchMenu';
 import { Card as MaterialCard } from '@mui/material';
 import { Box } from '@mui/system';
-import HorizontalCard from '../../components/HorizontalCardWrapper/HorizontalCardWrapper';
+import HorizontalCardWrapper from '../../components/HorizontalCardWrapper/HorizontalCardWrapper';
 const { default: axios } = require('axios');
 
 export default function SearchResults() {
@@ -18,7 +18,7 @@ export default function SearchResults() {
 
   let responseObj = {
     Movies: [],
-    "TV Shows": [],
+    'TV Shows': [],
     People: [],
     Books: [],
   };
@@ -29,16 +29,18 @@ export default function SearchResults() {
       const response = await axios.get(
         `http://localhost:3000/media/search/all?search_query=${searchQuery}`
       );
-      response.data.results.forEach((item) => {
-        if (item.media_type === 'movie') {
-          responseObj.Movies.push(item);
-        } else if (item.media_type === 'tv') {
-          responseObj['TV Shows'].push(item);
-        } else if (item.media_type === 'person') {
-          responseObj.People.push(item);
-        }
-      });
-      console.log(responseObj);
+      if (response.data.results.length > 0) {
+        response.data.results.forEach((item) => {
+          if (item.media_type === 'movie') {
+            responseObj.Movies.push(item);
+          } else if (item.media_type === 'tv') {
+            responseObj['TV Shows'].push(item);
+          } else if (item.media_type === 'person') {
+            responseObj.People.push(item);
+          }
+        });
+        console.log(responseObj);
+      }
     } catch (e) {
       console.log(e);
       responseObj.Movies = e.response.data.Msg;
@@ -55,12 +57,17 @@ export default function SearchResults() {
         `http://localhost:3000/book/search?search_query=${searchQuery}`
       );
       console.log(response.data);
-      response.data.items.forEach((item) => {
-        responseObj.Books.push(item);
-      });
-      setData(responseObj);
-      console.log(responseObj);
-      setStatus('idle');
+      if (response.data.totalItems !== 0) {
+        response.data.items.forEach((item) => {
+          responseObj.Books.push(item);
+        });
+        setData(responseObj);
+        console.log(responseObj);
+        setStatus('idle');
+      }else {
+        setStatus('idle');
+        responseObj.Books = 'There are no Books matching this query'
+      }
     } catch (e) {
       console.log(e);
       responseObj.Books = e.response.data.Msg;
@@ -143,7 +150,7 @@ export default function SearchResults() {
             ))}
           </Grid>
         ) : (
-          <HorizontalCard selected={selected} data={data}/>
+          <HorizontalCardWrapper selected={selected} data={data} />
         )}
       </Grid>
     </Grid>

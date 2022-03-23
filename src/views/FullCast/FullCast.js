@@ -1,4 +1,4 @@
-import { Box, Grid, Link, Typography } from '@mui/material';
+import { Alert, Box, Grid, Link, Skeleton, Typography } from '@mui/material';
 import axios from 'axios';
 import React, { useState, useEffect, Fragment } from 'react';
 import { useParams } from 'react-router-dom';
@@ -37,22 +37,21 @@ export default function FullCast() {
       ] of response.data.mediaDetails.credits.crew.entries()) {
         if (sorted.some((e) => e.department === item.department)) {
           /* contains the element we're looking for */
-          let index = sorted.findIndex((e) => e.department === item.department );
-          sorted[index].crew.push(item)
-
-        }else {
+          let index = sorted.findIndex((e) => e.department === item.department);
+          sorted[index].crew.push(item);
+        } else {
           sorted.push({
             department: item.department,
-            crew: [item]
-          })
+            crew: [item],
+          });
         }
       }
 
-     // console.log(sorted)
-     let sortedObject = {sorted};
+      // console.log(sorted)
+      let sortedObject = { sorted };
 
-      setData({...response.data, ...sortedObject});
-      console.log(data)
+      setData({ ...response.data, ...sortedObject });
+      console.log(data);
       setError();
       setStatus('idle');
     } catch (error) {
@@ -69,6 +68,9 @@ export default function FullCast() {
     } else {
       setError('Invalid media type');
     }
+    // setStatus('idle');
+    // setData();
+    // setError('something went wrong')
   }, [params]);
 
   const baseImgUrl = 'https://image.tmdb.org/t/p/original';
@@ -76,9 +78,128 @@ export default function FullCast() {
   return (
     <>
       {status === 'loading' && !error && !data ? (
-        <>loading</>
+        <>
+          <Grid container>
+            <Grid item xs={12} p={0}>
+              <Box sx={{ display: 'flex', flexDirection: 'row', p: 1 }}>
+                <Box>
+                  <Skeleton width={60} height={150} />
+                </Box>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    pl: 1,
+                  }}
+                >
+                  <Skeleton width={200} height={30} />
+                  <Skeleton width={150} height={16} />
+                </Box>
+              </Box>
+            </Grid>
+          </Grid>
+          <Grid container>
+            <Grid item xs={12} sm={6}>
+              <Box sx={{ p: 1 }}>
+                <Skeleton height={24} width={75} />
+                {[...Array(20).keys()].map((item, index) => (
+                  <Box
+                    key={index}
+                    sx={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      py: 1,
+                    }}
+                  >
+                    <Box>
+                      <Skeleton
+                        animation='wave'
+                        variant='rectangular'
+                        width={80}
+                        height={80}
+                        sx={{ mb: 0, borderRadius: 3 }}
+                      />
+                    </Box>
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                        pl: 1,
+                      }}
+                    >
+                      <Skeleton
+                        animation='wave'
+                        variant='rectangular'
+                        width={170}
+                        height={16}
+                        sx={{ mb: 1 }}
+                      />
+                      <Skeleton
+                        animation='wave'
+                        variant='rectangular'
+                        width={140}
+                        height={10}
+                      />
+                    </Box>
+                  </Box>
+                ))}
+              </Box>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <Box sx={{ p: 1 }}>
+                <Skeleton height={24} width={75} />
+                {[...Array(20).keys()].map((item, index) => (
+                  <Box
+                    key={index + index}
+                    sx={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      py: 1,
+                    }}
+                  >
+                    <Box>
+                      <Skeleton
+                        animation='wave'
+                        variant='rectangular'
+                        width={80}
+                        height={80}
+                        sx={{ mb: 0, borderRadius: 3 }}
+                      />
+                    </Box>
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                        pl: 1,
+                      }}
+                    >
+                      <Skeleton
+                        animation='wave'
+                        variant='rectangular'
+                        width={170}
+                        height={16}
+                        sx={{ mb: 1 }}
+                      />
+                      <Skeleton
+                        animation='wave'
+                        variant='rectangular'
+                        width={140}
+                        height={10}
+                      />
+                    </Box>
+                  </Box>
+                ))}
+              </Box>
+            </Grid>
+          </Grid>
+        </>
       ) : status === 'idle' && error && !data ? (
-        <>error</>
+        <Alert severity='error' variant='outlined' sx={{p:2, m:2}}>
+          {error}
+        </Alert>
       ) : (
         <>
           <Grid container>
@@ -150,7 +271,7 @@ export default function FullCast() {
                   Cast ({data.mediaDetails.credits.cast.length})
                   {data.mediaDetails.credits.cast.map((actor, index) => (
                     <Box
-                      key={index}
+                      key={index + actor.name}
                       sx={{ display: 'flex', flexDirection: 'row' }}
                     >
                       <Link href={`/people/${actor.id}`}>
@@ -194,9 +315,11 @@ export default function FullCast() {
               <Box sx={{ p: 2 }}>
                 <Typography variant='h6'>
                   Crew ({data.mediaDetails.credits.crew.length})
-                  {data.sorted.map((department) => (
-                    <Fragment>
-                      <Typography sx={{fontWeight: 600}}>{department.department}</Typography>
+                  {data.sorted.map((department, index) => (
+                    <Fragment key={department.department + index}>
+                      <Typography sx={{ fontWeight: 600 }}>
+                        {department.department}
+                      </Typography>
                       {department.crew.map((actor, index) => (
                         <Box
                           key={index}

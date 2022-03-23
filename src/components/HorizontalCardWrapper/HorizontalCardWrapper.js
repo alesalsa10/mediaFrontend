@@ -1,20 +1,9 @@
 import React from 'react';
-import moment from 'moment';
 import { Alert, Link, Typography } from '@mui/material';
-import { Box } from '@mui/system';
-import placeholder from '../../assets/placeholder.png';
 import HorizontalCard from '../HorizontalCard/HorizontalCard';
 
 export default function HorizontalCardWrapper({ selected, data }) {
-  const capitalizeTitle = (title) => {
-    const arr = title.split(' ');
-    for (var i = 0; i < arr.length; i++) {
-      arr[i] = arr[i].charAt(0).toUpperCase() + arr[i].slice(1).toLowerCase();
-    }
-    return arr.join(' ');
-  };
-
-  const baseImgUrl = 'https://image.tmdb.org/t/p/original';
+  
 
   return (
     <>
