@@ -29,6 +29,7 @@ export default function SearchResults() {
       const response = await axios.get(
         `http://localhost:3000/media/search/all?search_query=${searchQuery}`
       );
+      console.log(response.data.results);
       if (response.data.results.length > 0) {
         response.data.results.forEach((item) => {
           if (item.media_type === 'movie') {
@@ -39,14 +40,19 @@ export default function SearchResults() {
             responseObj.People.push(item);
           }
         });
-        console.log(responseObj);
+      } else {
+        responseObj.Movies = 'No Movies matching this query were found';
+        responseObj['TV Shows'] = 'No TV Shows matching this query were found';
+        responseObj.People = 'No People matching this query were found';
       }
+      console.log(responseObj);
     } catch (e) {
       console.log(e);
       responseObj.Movies = e.response.data.Msg;
-      responseObj.TV = e.response.data.Msg;
+      responseObj['TV Shows'] = e.response.data.Msg;
+      responseObj.People = e.response.data.Msg;
       //setData(responseObj);
-      setStatus('idle');
+      //setStatus('idle');
     }
   };
 
@@ -64,9 +70,10 @@ export default function SearchResults() {
         setData(responseObj);
         console.log(responseObj);
         setStatus('idle');
-      }else {
+      } else {
+        setData(responseObj)
         setStatus('idle');
-        responseObj.Books = 'There are no Books matching this query'
+        responseObj.Books = 'There are no Books matching this query';
       }
     } catch (e) {
       console.log(e);

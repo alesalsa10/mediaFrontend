@@ -1,4 +1,11 @@
-import { Card, CardContent, CardMedia, Grid, Link, Typography } from '@mui/material';
+import {
+  Card,
+  CardContent,
+  CardMedia,
+  Grid,
+  Link,
+  Typography,
+} from '@mui/material';
 import React from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper';
@@ -89,7 +96,7 @@ export default function TopBillCast({ cast, mediaType, mediaId }) {
           sx={{ ':hover': { color: 'primary.main' } }}
         >
           <Typography gutterBottom variant='h6' component='div'>
-            Full Cast & Crew
+            View Full Cast & Crew
           </Typography>
         </Link>
       </Grid>

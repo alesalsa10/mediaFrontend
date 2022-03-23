@@ -5,6 +5,7 @@ import { Alert, Grid, Skeleton } from '@mui/material';
 import TopBillCast from '../../components/TopBillCast/TopBillCast';
 import { Box } from '@mui/system';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import Recommendation from '../../components/Recommendation/Recommendation';
 
 const { default: axios } = require('axios');
 
@@ -225,6 +226,7 @@ export default function Media() {
           ) : (
             <></>
           )}
+          {params.mediaType !== 'book' ? <Recommendation /> : <></>}
         </Grid>
       )}
     </>

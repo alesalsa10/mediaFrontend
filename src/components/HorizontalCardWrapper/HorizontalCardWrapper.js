@@ -1,10 +1,9 @@
 import React from 'react';
-import { Alert, Link, Typography } from '@mui/material';
+import { Alert, Typography } from '@mui/material';
 import HorizontalCard from '../HorizontalCard/HorizontalCard';
 
 export default function HorizontalCardWrapper({ selected, data }) {
-  
-
+  console.log(data)
   return (
     <>
       {typeof data[selected] === 'string' ? (
