@@ -16,7 +16,7 @@ export default function FullCast() {
     //http://localhost:3000/media/getById/movie/1420
     try {
       const response = await axios.get(
-        `http://localhost:3000/media/getById/${params.mediaType}/${params.id}`
+        `http://localhost:3000/media/getById/${params.mediaType}/${params.id.split('-')[0]}`
       );
       console.log(response.data);
 

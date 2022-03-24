@@ -26,7 +26,7 @@ export default function Media() {
     //http://localhost:3000/media/getById/movie/1420
     try {
       const response = await axios.get(
-        `http://localhost:3000/media/getById/${params.mediaType}/${params.id}`
+        `http://localhost:3000/media/getById/${params.mediaType}/${params.id.split('-')[0]}`
       );
       console.log(response.data);
 
@@ -66,7 +66,7 @@ export default function Media() {
     //http://localhost:3000/book/e3_6vQEACAAJ
     try {
       const response = await axios.get(
-        `http://localhost:3000/book/${params.id}`
+        `http://localhost:3000/book/${params.id.split('-')[0]}`
       );
       console.log(response.data);
       setData(response.data);
@@ -86,7 +86,7 @@ export default function Media() {
     //http://localhost:3000/book/isbn/1101885688
     try {
       const response = await axios.get(
-        `http://localhost:3000/book/isbn/${params.id}`
+        `http://localhost:3000/book/isbn/${params.id.split('-')[0]}`
       );
       console.log(response.data);
       setData(response.data);
@@ -102,60 +102,49 @@ export default function Media() {
     }
   };
 
-  const getSeason = async () => {
-    //http://localhost:3000/media/tv/season/1420/3
-    try {
-      const response = await axios.get(
-        `http://localhost:3000/media/tv/${params.id}/season/${params.seasonNumber}`
-      );
-      console.log(response.data);
-      setData(response.data);
-      setError();
-      setStatus('idle');
-      setIsError(false)
-    } catch (error) {
-      console.log(error.response.data);
-      setIsError(true);
-      setStatus('idle');
-      setError(error.response.data.Msg);
-      setData();
-    }
-  };
+  // const getSeason = async () => {
+  //   //http://localhost:3000/media/tv/season/1420/3
+  //   try {
+  //     const response = await axios.get(
+  //       `http://localhost:3000/media/tv/${params.id}/season/${params.seasonNumber}`
+  //     );
+  //     console.log(response.data);
+  //     setData(response.data);
+  //     setError();
+  //     setStatus('idle');
+  //     setIsError(false)
+  //   } catch (error) {
+  //     console.log(error.response.data);
+  //     setIsError(true);
+  //     setStatus('idle');
+  //     setError(error.response.data.Msg);
+  //     setData();
+  //   }
+  // };
 
-  const getEpisode = async () => {
-    //http://localhost:3000/book/isbn/1101885688
-    try {
-      const response = await axios.get(
-        `http://localhost:3000/media/tv/season/${params.id}/${params.seasonNumber}/episode/${params.episodeNumber}`
-      );
-      console.log(response.data);
-      setData(response.data);
-      setError();
-      setStatus('idle');
-      setIsError(false)
-    } catch (error) {
-      console.log(error.response.data);
-      setIsError(true)
-      setError(error.response.data.Msg);
-      setData();
-      setStatus('idle');
-    }
-  };
+  // const getEpisode = async () => {
+  //   //http://localhost:3000/book/isbn/1101885688
+  //   try {
+  //     const response = await axios.get(
+  //       `http://localhost:3000/media/tv/season/${params.id}/${params.seasonNumber}/episode/${params.episodeNumber}`
+  //     );
+  //     console.log(response.data);
+  //     setData(response.data);
+  //     setError();
+  //     setStatus('idle');
+  //     setIsError(false)
+  //   } catch (error) {
+  //     console.log(error.response.data);
+  //     setIsError(true)
+  //     setError(error.response.data.Msg);
+  //     setData();
+  //     setStatus('idle');
+  //   }
+  // };
 
   useEffect(() => {
     if (params.mediaType === 'movie' || params.mediaType === 'tv') {
-      //getMediaById();
-      console.log(location.pathname.split('/'));
-      if (location.pathname.split('/').length === 3) {
-        getMediaById();
-      } else if (
-        location.pathname.includes('episode') &&
-        location.pathname.includes('season')
-      ) {
-        getEpisode();
-      } else if (location.pathname.includes('season')) {
-        getSeason();
-      }
+      getMediaById();
     } else if (location.pathname.includes('isbn')) {
       getBookByIsbn();
     } else if (params.mediaType === 'book') {
@@ -254,7 +243,7 @@ export default function Media() {
             <></>
           )}
         </>
-      ) : //</Grid>
+      ) : 
       status === 'idle' && isError && !data ? (
         <Alert severity='error' variant='outlined' sx={{p:2, m:2}}>
           {error}
@@ -269,7 +258,7 @@ export default function Media() {
               videoKey={videoKey}
             />
           </Grid>
-          {/* {params.mediaType !== 'book' ? (
+          {params.mediaType !== 'book' ? (
             <Grid container>
               <Grid item xs={12}>
                 <TopBillCast
@@ -282,7 +271,7 @@ export default function Media() {
           ) : (
             <></>
           )}
-          {params.mediaType !== 'book' ? <Recommendation /> : <></>} */}
+          {params.mediaType !== 'book' ? <Recommendation /> : <></>}
         </Grid>
       )}
     </>

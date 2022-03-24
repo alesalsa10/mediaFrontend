@@ -14,7 +14,8 @@ import Media from './views/Media/Media';
 import List from './views/List/List';
 import SearchResults from './views/SearchResults/SearchResults';
 import FullCast from './views/FullCast/FullCast';
-
+import Season from './views/Season/Season';
+import Episode from './views/Episode/Episode';
 function App() {
   return (
     <>
@@ -35,17 +36,17 @@ function App() {
               <Route path='/' element={<Home />} />
               <Route path='/search' element={<SearchResults />} />
               <Route path={`/:mediaType/lists/:listType`} element={<List />} />
+
               <Route path='/:mediaType/:id' element={<Media />} />
-              <Route
-                path='/:mediaType/:id/season/:seasonNumber'
-                element={<Media />}
-              />
-              <Route
-                path='/:mediaType/:id/season/:seasonNumber/episode/:episodeNumber'
-                element={<Media />}
-              />
+
               <Route path='/:mediaType/:id/full_cast' element={<FullCast />} />
               <Route path='/:mediaType/isbn/:id' element={<Media />} />
+
+              <Route path='/tv/:id/season/:seasonNumber' element={<Season />} />
+              <Route
+                path='/tv/:id/season/:seasonNumber/episode/:episodeNumber'
+                element={<Episode />}
+              />
             </Route>
           </Routes>
         </Fragment>

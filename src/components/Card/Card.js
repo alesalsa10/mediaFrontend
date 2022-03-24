@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { Box, CardContent, CardMedia, Link, Typography } from '@mui/material';
 
 import moment from 'moment';
@@ -10,6 +10,8 @@ import 'react-circular-progressbar/dist/styles.css';
 import placeholder from '../../assets/placeholder.png';
 
 export default function Card({ mediaType, media, type, bestSellers }) {
+  const [width, setWidth] = useState();
+  const refElement = useRef();
   const capitalizeTitle = (title) => {
     const arr = title.split(' ');
     for (var i = 0; i < arr.length; i++) {
@@ -36,13 +38,40 @@ export default function Card({ mediaType, media, type, bestSellers }) {
 
   const selectBookLink = (book) => {
     if (book.id) {
-      return book.id;
+      return `${book.id}-${book.volumeInfo.toLowerCase().split(' ').join('')}`;
     } else if (book.primary_isbn10) {
-      return `isbn/${book.primary_isbn10}`;
+      return `isbn/${book.primary_isbn10}-${book.title
+        .toLowerCase()
+        .split(' ')
+        .join('-')}`;
     } else {
-      return `isbn/${book.primary_isbn13}`;
+      return `isbn/${book.primary_isbn13}-${book.title
+        .toLowerCase()
+        .split(' ')
+        .join('-')}`;
     }
   };
+
+  const selectMediaLink = () => {
+    if (mediaType === 'movie') {
+      return `${media.id}-${media.title.toLowerCase().split(' ').join('-')}`;
+    } else {
+      return `${media.id}-${media.name.toLowerCase().split(' ').join('-')}`;
+    }
+  };
+
+  const getListSize = () => {
+    const newWidth = refElement.current.clientWidth;
+    setWidth(newWidth);
+  };
+
+  useEffect(() => {
+    getListSize();
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener('resize', getListSize);
+  }, []);
 
   const baseImgUrl = 'https://image.tmdb.org/t/p/original';
 
@@ -64,11 +93,12 @@ export default function Card({ mediaType, media, type, bestSellers }) {
             : mediaType === 'movie'
             ? 'movie'
             : 'tv'
-        }/${mediaType === 'book' ? selectBookLink(media) : media.id}`}
+        }/${mediaType === 'book' ? selectBookLink(media) : selectMediaLink()}`}
         sx={{ ':hover': { color: 'primary.main' } }}
         className={styles.cardWrapper}
       >
         <CardMedia
+          ref={refElement}
           component='img'
           src={
             mediaType === 'book'
@@ -87,16 +117,17 @@ export default function Card({ mediaType, media, type, bestSellers }) {
           }
           alt={media.title}
           sx={{
-            // width: type !== 'lists' ? 200 : '100%',
-            // height: { xs: '300px', sm: 'auto' },
             width: {
-              xs: type === 'carousel' ? '100%' : '100%',
+              xs: type === 'carousel' ? 'auto' : '100%',
             },
             height: {
-              xs: type === 'carousel' ? 300 : 'auto',
+              xs: type === 'carousel' ? 200 : 'auto',
+              sm: type === 'carousel' ? 300 : 'auto',
             },
             borderTopRightRadius: '3px',
             borderTopLeftRadius: '3px',
+            // my:2,
+            // px:0.5
           }}
         />
         {mediaType === 'book' ? (
@@ -135,6 +166,7 @@ export default function Card({ mediaType, media, type, bestSellers }) {
         sx={{
           px: 0,
           //width: 200,
+          width: width,
         }}
       >
         <Typography
@@ -151,7 +183,9 @@ export default function Card({ mediaType, media, type, bestSellers }) {
                 : mediaType === 'person'
                 ? 'movie'
                 : 'tv'
-            }/${mediaType === 'book' ? selectBookLink(media) : media.id}`}
+            }/${
+              mediaType === 'book' ? selectBookLink(media) : selectMediaLink()
+            }`}
             variant='inherit'
             color='inherit'
             underline='none'

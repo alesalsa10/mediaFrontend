@@ -36,11 +36,25 @@ export default function HorizontalCard({
 
   const selectBookLink = (book) => {
     if (book.id) {
-      return book.id;
+      return `${book.id}-${book.volumeInfo.toLowerCase().split(' ').join('')}`;
     } else if (book.primary_isbn10) {
-      return `isbn/${book.primary_isbn10}`;
+      return `isbn/${book.primary_isbn10}-${book.title
+        .toLowerCase()
+        .split(' ')
+        .join('-')}`;
     } else {
-      return `isbn/${book.primary_isbn13}`;
+      return `isbn/${book.primary_isbn13}-${book.title
+        .toLowerCase()
+        .split(' ')
+        .join('-')}`;
+    }
+  };
+
+  const selectMediaLink = () => {
+    if (selected === 'Movies') {
+      return `${movie.id}-${movie.title.split(' ').join('-')}`;
+    } else {
+      return `${movie.id}-${movie.name.split(' ').join('-')}`;
     }
   };
 
@@ -97,7 +111,7 @@ export default function HorizontalCard({
             : selected === 'Movies'
             ? 'movie'
             : 'tv'
-        }/${selected === 'Books' ? selectBookLink(movie) : movie.id}`}
+        }/${selected === 'Books' ? selectBookLink(movie) : selectMediaLink()}`}
         component='img'
         sx={{
           width: 100,
@@ -147,7 +161,7 @@ export default function HorizontalCard({
                 : selected === 'Movies'
                 ? 'movie'
                 : 'tv'
-            }/${selected === 'Books' ? selectBookLink(movie) : movie.id}`}
+            }/${selected === 'Books' ? selectBookLink(movie) : selectMediaLink()}`}
             variant='inherit'
             color='inherit'
             underline='none'

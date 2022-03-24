@@ -24,6 +24,7 @@ export default function Trending({ mediaType }) {
   const [filter, setFilter] = useState('day');
   const [data, setData] = useState();
   const [error, setError] = useState();
+  const[isError, setIsError] = useState(false);
   const [status, setStatus] = useState('loading');
 
   const getTrendingmedias = async (filter) => {
@@ -35,9 +36,11 @@ export default function Trending({ mediaType }) {
       console.log(response.data);
       setData(response.data.results);
       setError();
+      setIsError(false)
       setStatus('idle');
     } catch (e) {
       console.log();
+      setIsError(true)
       setError(e.response.data.Msg);
       setData();
       setStatus('idle');
@@ -69,7 +72,7 @@ export default function Trending({ mediaType }) {
             </FormControl>
           </Grid>
         </Grid>
-        {data && !error && status === 'idle' ? (
+        {data && !isError && status === 'idle' ? (
           <div className={`swiper-container ${mediaType === 'movie' ? 'slider1': 'slider2'}`}>
             <Swiper
               style={{ padding: '1px 0px' }}
@@ -99,7 +102,7 @@ export default function Trending({ mediaType }) {
               ))}
             </Swiper>
           </div>
-        ) : !data && error && status === 'idle' ? (
+        ) : !data && isError && status === 'idle' ? (
           <Grid item xs={12} sx={{ gridColumn: '1/-1' }}>
             <Alert severity='error' variant='outlined' p={2}>
               {error}
