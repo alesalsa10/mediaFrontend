@@ -13,12 +13,14 @@ export default function Media() {
   const [data, setData] = useState();
   const [error, setError] = useState();
   const [status, setStatus] = useState('loading');
+  const[isError, setIsError] = useState(false)
   const [hasTrailer, setHasTrailer] = useState(false);
   const [videoKey, setVideoKey] = useState();
 
   let params = useParams();
   console.log(params);
   const location = useLocation();
+  console.log(location);
 
   const getMediaById = async () => {
     //http://localhost:3000/media/getById/movie/1420
@@ -50,11 +52,13 @@ export default function Media() {
       setData(response.data);
       setError();
       setStatus('idle');
+      setIsError(false)
     } catch (error) {
-      console.log(error);
-      setError(error.data.response.Msg);
-      setData();
+      console.log(error.response.data);
+      setIsError(true)
       setStatus('idle');
+      setError(error.response.data.Msg);
+      setData();
     }
   };
 
@@ -68,9 +72,11 @@ export default function Media() {
       setData(response.data);
       setError();
       setStatus('idle');
+      setIsError(false)
     } catch (error) {
       console.log(error);
-      setError(error.data.response.Msg);
+      setIsError(true)
+      setError(error.response.data.Msg);
       setData();
       setStatus('idle');
     }
@@ -86,9 +92,51 @@ export default function Media() {
       setData(response.data);
       setError();
       setStatus('idle');
+      setIsError(false)
     } catch (error) {
       console.log(error);
-      setError(error.data.response.Msg);
+      setIsError(true)
+      setError(error.response.data.Msg);     
+      setData();
+      setStatus('idle');
+    }
+  };
+
+  const getSeason = async () => {
+    //http://localhost:3000/media/tv/season/1420/3
+    try {
+      const response = await axios.get(
+        `http://localhost:3000/media/tv/${params.id}/season/${params.seasonNumber}`
+      );
+      console.log(response.data);
+      setData(response.data);
+      setError();
+      setStatus('idle');
+      setIsError(false)
+    } catch (error) {
+      console.log(error.response.data);
+      setIsError(true);
+      setStatus('idle');
+      setError(error.response.data.Msg);
+      setData();
+    }
+  };
+
+  const getEpisode = async () => {
+    //http://localhost:3000/book/isbn/1101885688
+    try {
+      const response = await axios.get(
+        `http://localhost:3000/media/tv/season/${params.id}/${params.seasonNumber}/episode/${params.episodeNumber}`
+      );
+      console.log(response.data);
+      setData(response.data);
+      setError();
+      setStatus('idle');
+      setIsError(false)
+    } catch (error) {
+      console.log(error.response.data);
+      setIsError(true)
+      setError(error.response.data.Msg);
       setData();
       setStatus('idle');
     }
@@ -96,7 +144,18 @@ export default function Media() {
 
   useEffect(() => {
     if (params.mediaType === 'movie' || params.mediaType === 'tv') {
-      getMediaById();
+      //getMediaById();
+      console.log(location.pathname.split('/'));
+      if (location.pathname.split('/').length === 3) {
+        getMediaById();
+      } else if (
+        location.pathname.includes('episode') &&
+        location.pathname.includes('season')
+      ) {
+        getEpisode();
+      } else if (location.pathname.includes('season')) {
+        getSeason();
+      }
     } else if (location.pathname.includes('isbn')) {
       getBookByIsbn();
     } else if (params.mediaType === 'book') {
@@ -110,9 +169,7 @@ export default function Media() {
   }, [params]);
   return (
     <>
-      {status === 'loading' && !error && !data ? (
-        //<Grid container>
-        //<Grid item xs={12} sx={{ pl: 2 }}>
+      {status === 'loading' && !isError && !data ? (
         <>
           <Box
             sx={{
@@ -197,10 +254,9 @@ export default function Media() {
             <></>
           )}
         </>
-      ) : //</></Grid>
-      //</Grid>
-      status === 'idle' && error && !data ? (
-        <Alert severity='error' variant='outlined' p={2}>
+      ) : //</Grid>
+      status === 'idle' && isError && !data ? (
+        <Alert severity='error' variant='outlined' sx={{p:2, m:2}}>
           {error}
         </Alert>
       ) : (
@@ -213,7 +269,7 @@ export default function Media() {
               videoKey={videoKey}
             />
           </Grid>
-          {params.mediaType !== 'book' ? (
+          {/* {params.mediaType !== 'book' ? (
             <Grid container>
               <Grid item xs={12}>
                 <TopBillCast
@@ -226,7 +282,7 @@ export default function Media() {
           ) : (
             <></>
           )}
-          {params.mediaType !== 'book' ? <Recommendation /> : <></>}
+          {params.mediaType !== 'book' ? <Recommendation /> : <></>} */}
         </Grid>
       )}
     </>

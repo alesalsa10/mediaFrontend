@@ -36,6 +36,14 @@ function App() {
               <Route path='/search' element={<SearchResults />} />
               <Route path={`/:mediaType/lists/:listType`} element={<List />} />
               <Route path='/:mediaType/:id' element={<Media />} />
+              <Route
+                path='/:mediaType/:id/season/:seasonNumber'
+                element={<Media />}
+              />
+              <Route
+                path='/:mediaType/:id/season/:seasonNumber/episode/:episodeNumber'
+                element={<Media />}
+              />
               <Route path='/:mediaType/:id/full_cast' element={<FullCast />} />
               <Route path='/:mediaType/isbn/:id' element={<Media />} />
             </Route>

@@ -16,6 +16,7 @@ export default function Overview({
   videoKey,
   hasTrailer,
 }) {
+  console.log(mediaType)
   const [open, setOpen] = useState(false);
   const [cert, setCert] = useState('');
   const handleOpen = () => setOpen(true);
