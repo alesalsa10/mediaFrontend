@@ -112,35 +112,61 @@ export default function HorizontalCard({
             ? 'movie'
             : 'tv'
         }/${selected === 'Books' ? selectBookLink(movie) : selectMediaLink()}`}
-        component='img'
-        sx={{
-          width: 100,
-          borderTopLeftRadius: 3,
-          borderBottomLeftRadius: 3,
-        }}
-        src={
-          selected === 'Books'
-            ? selectImg(movie)
-            : selected === 'People'
-            ? !movie.profile_path
+        //component='img'
+        // sx={{
+        //   width: 100,
+        //   borderTopLeftRadius: 3,
+        //   borderBottomLeftRadius: 3,
+        // }}
+        // src={
+        //   selected === 'Books'
+        //     ? selectImg(movie)
+        //     : selected === 'People'
+        //     ? !movie.profile_path
+        //       ? placeholder
+        //       : `${baseImgUrl}${movie.profile_path}`
+        //     : selected === 'Movies'
+        //     ? !movie.poster_path
+        //       ? placeholder
+        //       : `${baseImgUrl}${movie.poster_path}`
+        //     : !movie.poster_path
+        //     ? placeholder
+        //     : `${baseImgUrl}/${movie.poster_path}`
+        // }
+        // alt={movie.title || movie.name}
+      >
+        <Box
+          component='img'
+          sx={{
+            width: 100,
+            borderTopLeftRadius: 3,
+            borderBottomLeftRadius: 3,
+            height: '100%'
+          }}
+          src={
+            selected === 'Books'
+              ? selectImg(movie)
+              : selected === 'People'
+              ? !movie.profile_path
+                ? placeholder
+                : `${baseImgUrl}${movie.profile_path}`
+              : selected === 'Movies'
+              ? !movie.poster_path
+                ? placeholder
+                : `${baseImgUrl}${movie.poster_path}`
+              : !movie.poster_path
               ? placeholder
-              : `${baseImgUrl}${movie.profile_path}`
-            : selected === 'Movies'
-            ? !movie.poster_path
-              ? placeholder
-              : `${baseImgUrl}${movie.poster_path}`
-            : !movie.poster_path
-            ? placeholder
-            : `${baseImgUrl}/${movie.poster_path}`
-        }
-        alt={movie.title}
-      ></Link>
+              : `${baseImgUrl}/${movie.poster_path}`
+          }
+          alt={movie.title || movie.name}
+        />
+      </Link>
       <Box
         sx={{
           justifySelf: 'start',
           display: 'flex',
           flexDirection: 'column',
-          alignSelf: selected === 'People' ? 'center' : '',
+          alignSelf:  'center' 
         }}
       >
         <Typography
@@ -161,7 +187,9 @@ export default function HorizontalCard({
                 : selected === 'Movies'
                 ? 'movie'
                 : 'tv'
-            }/${selected === 'Books' ? selectBookLink(movie) : selectMediaLink()}`}
+            }/${
+              selected === 'Books' ? selectBookLink(movie) : selectMediaLink()
+            }`}
             variant='inherit'
             color='inherit'
             underline='none'
@@ -242,7 +270,7 @@ export default function HorizontalCard({
               flexGrow: 1,
               display: 'grid',
               alignContent: 'end',
-              pb: 3,
+              //pb: 3,
             }}
           >
             {selected !== 'Books'

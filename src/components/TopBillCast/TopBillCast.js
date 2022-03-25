@@ -6,7 +6,7 @@ import {
   Link,
   Typography,
 } from '@mui/material';
-import React from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper';
 
@@ -16,7 +16,22 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 
 export default function TopBillCast({ cast, mediaType, mediaId }) {
-  console.log(cast);
+  const [width, setWidth] = useState();
+  const refElement = useRef();
+
+  const getListSize = () => {
+    const newWidth = refElement.current.clientWidth;
+    setWidth(newWidth);
+  };
+
+  useEffect(() => {
+    getListSize();
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener('resize', getListSize);
+  }, []);
+
   const baseImgUrl = 'https://image.tmdb.org/t/p/original';
 
   return (
@@ -48,9 +63,10 @@ export default function TopBillCast({ cast, mediaType, mediaId }) {
                 }}
               >
                 {/* <Card mediaType={mediaType} media={media} type='carousel' /> */}
-                <Card sx={{ width: 170, boxShadow: 'none' }}>
+                <Card sx={{ boxShadow: 'none' }}>
                   <Link href={`/people/${actor.id}`}>
                     <CardMedia
+                    ref={refElement}
                       component='img'
                       image={
                         !actor.profile_path
@@ -59,12 +75,12 @@ export default function TopBillCast({ cast, mediaType, mediaId }) {
                       }
                       alt={actor.name}
                       sx={{
-                        width: 170,
+                        width: {xs: 130, sm:170}
                       }}
                     />
                   </Link>
 
-                  <CardContent>
+                  <CardContent sx={{width: width, px:0}}>
                     <Link
                       href={`/people/${actor.id}`}
                       variant='inherit'
@@ -72,12 +88,12 @@ export default function TopBillCast({ cast, mediaType, mediaId }) {
                       underline='none'
                       sx={{ ':hover': { color: 'primary.main' } }}
                     >
-                      <Typography gutterBottom variant='h5' component='div'>
+                      <Typography gutterBottom variant='h5' component='div' sx={{px:0.5}}>
                         {actor.name}
                       </Typography>
                     </Link>
 
-                    <Typography variant='body2' color='text.secondary'>
+                    <Typography variant='body2' color='text.secondary' sx={{px:0.5}}>
                       {actor.character}
                     </Typography>
                   </CardContent>
