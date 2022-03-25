@@ -7,6 +7,7 @@ import { buildStyles, CircularProgressbar } from 'react-circular-progressbar';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 
 import 'react-circular-progressbar/dist/styles.css';
+import MediaSideline from '../MediaSideline/MediaSideline';
 
 const baseImgUrl = 'https://image.tmdb.org/t/p/original';
 
@@ -346,6 +347,9 @@ export default function Overview({
             ? `${mediaDetails.overview}`
             : selectDescription(mediaDetails)}
         </Typography>
+        {
+          mediaType !== 'book'? <MediaSideline media={mediaDetails} mediaType={mediaType} />:<></>
+        }
       </Box>
     </Box>
   );

@@ -9,6 +9,7 @@ export default function FullCast() {
   const [data, setData] = useState();
   const [error, setError] = useState();
   const [status, setStatus] = useState('loading');
+  const [isError, setIsError] = useState(false);
 
   let params = useParams();
 
@@ -16,7 +17,9 @@ export default function FullCast() {
     //http://localhost:3000/media/getById/movie/1420
     try {
       const response = await axios.get(
-        `http://localhost:3000/media/getById/${params.mediaType}/${params.id.split('-')[0]}`
+        `http://localhost:3000/media/getById/${params.mediaType}/${
+          params.id.split('-')[0]
+        }`
       );
       console.log(response.data);
 
@@ -54,9 +57,11 @@ export default function FullCast() {
       console.log(data);
       setError();
       setStatus('idle');
+      setIsError(false);
     } catch (error) {
       console.log(error);
       setError(error.data.response.Msg);
+      setIsError(true)
       setData();
       setStatus('idle');
     }
@@ -66,6 +71,7 @@ export default function FullCast() {
     if (params.mediaType === 'movie' || params.mediaType === 'tv') {
       getMediaById();
     } else {
+      setIsError(true)
       setError('Invalid media type');
     }
     // setStatus('idle');
@@ -77,7 +83,7 @@ export default function FullCast() {
 
   return (
     <>
-      {status === 'loading' && !error && !data ? (
+      {status === 'loading' && !isError && !data ? (
         <>
           <Grid container>
             <Grid item xs={12} p={0}>
@@ -196,8 +202,8 @@ export default function FullCast() {
             </Grid>
           </Grid>
         </>
-      ) : status === 'idle' && error && !data ? (
-        <Alert severity='error' variant='outlined' sx={{p:2, m:2}}>
+      ) : status === 'idle' && isError && !data ? (
+        <Alert severity='error' variant='outlined' sx={{ p: 2, m: 2 }}>
           {error}
         </Alert>
       ) : (
@@ -269,60 +275,11 @@ export default function FullCast() {
               <Box sx={{ p: 2 }}>
                 <Typography variant='h6'>
                   Cast ({data.mediaDetails.credits.cast.length})
-                  {data.mediaDetails.credits.cast.map((actor, index) => (
-                    <Box
-                      key={index + actor.name}
-                      sx={{ display: 'flex', flexDirection: 'row' }}
-                    >
-                      <Link href={`/people/${actor.id}`}>
+                  {data.mediaDetails.credits.cast.length > 0 ? (
+                    <>
+                      {data.mediaDetails.credits.cast.map((actor, index) => (
                         <Box
-                          component={'img'}
-                          src={
-                            !actor.profile_path
-                              ? placeholder
-                              : `${baseImgUrl}${actor.profile_path}`
-                          }
-                          sx={{ width: 50, borderRadius: '3px' }}
-                        ></Box>
-                      </Link>
-                      <Box
-                        sx={{
-                          justifyContent: 'center',
-                          flexDirection: 'column',
-                          display: 'flex',
-                          pl: 2,
-                        }}
-                      >
-                        <Link
-                          href={`/people/${actor.id}`}
-                          variant='inherit'
-                          color='inherit'
-                          underline='none'
-                          sx={{ ':hover': { color: 'primary.main' } }}
-                        >
-                          <Typography variant='h6'>{actor.name}</Typography>
-                        </Link>
-                        <Typography variant='body2' color={'text.secondary'}>
-                          {actor.character}
-                        </Typography>
-                      </Box>
-                    </Box>
-                  ))}
-                </Typography>
-              </Box>
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <Box sx={{ p: 2 }}>
-                <Typography variant='h6'>
-                  Crew ({data.mediaDetails.credits.crew.length})
-                  {data.sorted.map((department, index) => (
-                    <Fragment key={department.department + index}>
-                      <Typography sx={{ fontWeight: 600 }}>
-                        {department.department}
-                      </Typography>
-                      {department.crew.map((actor, index) => (
-                        <Box
-                          key={index}
+                          key={index + actor.name}
                           sx={{ display: 'flex', flexDirection: 'row' }}
                         >
                           <Link href={`/people/${actor.id}`}>
@@ -357,13 +314,83 @@ export default function FullCast() {
                               variant='body2'
                               color={'text.secondary'}
                             >
-                              {actor.job}
+                              {actor.character}
                             </Typography>
                           </Box>
                         </Box>
                       ))}
-                    </Fragment>
-                  ))}
+                    </>
+                  ) : (
+                    <Typography sx={{ textAlign: 'left', m: 1 }}>
+                      No cast available
+                    </Typography>
+                  )}
+                </Typography>
+              </Box>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <Box sx={{ p: 2 }}>
+                <Typography variant='h6'>
+                  Crew ({data.mediaDetails.credits.crew.length})
+                  {data.mediaDetails.credits.crew.length > 0 ? (
+                    <>
+                      {data.sorted.map((department, index) => (
+                        <Fragment key={department.department + index}>
+                          <Typography sx={{ fontWeight: 600 }}>
+                            {department.department}
+                          </Typography>
+                          {department.crew.map((actor, index) => (
+                            <Box
+                              key={index}
+                              sx={{ display: 'flex', flexDirection: 'row' }}
+                            >
+                              <Link href={`/people/${actor.id}`}>
+                                <Box
+                                  component={'img'}
+                                  src={
+                                    !actor.profile_path
+                                      ? placeholder
+                                      : `${baseImgUrl}${actor.profile_path}`
+                                  }
+                                  sx={{ width: 50, borderRadius: '3px' }}
+                                ></Box>
+                              </Link>
+                              <Box
+                                sx={{
+                                  justifyContent: 'center',
+                                  flexDirection: 'column',
+                                  display: 'flex',
+                                  pl: 2,
+                                }}
+                              >
+                                <Link
+                                  href={`/people/${actor.id}`}
+                                  variant='inherit'
+                                  color='inherit'
+                                  underline='none'
+                                  sx={{ ':hover': { color: 'primary.main' } }}
+                                >
+                                  <Typography variant='h6'>
+                                    {actor.name}
+                                  </Typography>
+                                </Link>
+                                <Typography
+                                  variant='body2'
+                                  color={'text.secondary'}
+                                >
+                                  {actor.job}
+                                </Typography>
+                              </Box>
+                            </Box>
+                          ))}
+                        </Fragment>
+                      ))}
+                    </>
+                  ) : (
+                    <Typography sx={{ textAlign: 'left', m: 1 }}>
+                      No cast available
+                    </Typography>
+                  )}
                 </Typography>
               </Box>
             </Grid>

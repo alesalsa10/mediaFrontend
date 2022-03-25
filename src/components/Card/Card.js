@@ -65,11 +65,13 @@ export default function Card({ mediaType, media, type, bestSellers }) {
     setWidth(newWidth);
   };
 
-  useEffect(() => {
-    getListSize();
-  }, []);
+  const handleImageLoad = (event) => {
+    setWidth(event.target.clientWidth);
+  };
+
 
   useEffect(() => {
+    window.addEventListener('resize', handleImageLoad);
     window.addEventListener('resize', getListSize);
   }, []);
 
@@ -97,8 +99,9 @@ export default function Card({ mediaType, media, type, bestSellers }) {
         sx={{ ':hover': { color: 'primary.main' } }}
         className={styles.cardWrapper}
       >
-        <CardMedia
+        <Box
           ref={refElement}
+          onLoad={handleImageLoad}
           component='img'
           src={
             mediaType === 'book'
@@ -118,11 +121,11 @@ export default function Card({ mediaType, media, type, bestSellers }) {
           alt={media.title}
           sx={{
             width: {
-              xs: type === 'carousel' ? 'auto' : '100%',
+              xs: 'auto',
             },
             height: {
-              xs: type === 'carousel' ? 200 : 'auto',
-              sm: type === 'carousel' ? 300 : 'auto',
+              xs: 200,
+              sm: 300,
             },
             borderTopRightRadius: '3px',
             borderTopLeftRadius: '3px',
@@ -138,9 +141,9 @@ export default function Card({ mediaType, media, type, bestSellers }) {
               <div className={styles.layer}>
                 <CircularProgressbar
                   value={media.vote_average * 10}
-                  text={`${media.vote_average * 10}%`}
+                  text={`${parseFloat((media.vote_average * 10).toFixed(1))}`}
                   background
-                  backgroundPadding={6}
+                  backgroundPadding={4}
                   styles={buildStyles({
                     backgroundColor: '#282b29',
                     textColor: '#fff',
@@ -162,11 +165,11 @@ export default function Card({ mediaType, media, type, bestSellers }) {
           </>
         )}
       </Link>
-      <CardContent
+      <Box
         sx={{
           px: 0,
-          //width: 200,
           width: width,
+          pt: 3,
         }}
       >
         <Typography
@@ -244,7 +247,7 @@ export default function Card({ mediaType, media, type, bestSellers }) {
         ) : (
           <></>
         )}
-      </CardContent>
+      </Box>
     </Box>
   );
 }

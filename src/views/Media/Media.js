@@ -4,7 +4,6 @@ import { useParams, useLocation } from 'react-router-dom';
 import { Alert, Grid, Skeleton, Box} from '@mui/material';
 import TopBillCast from '../../components/TopBillCast/TopBillCast';
 import Recommendation from '../../components/Recommendation/Recommendation';
-import MediaSideline from '../../components/MediaSideline/MediaSideline';
 
 const { default: axios } = require('axios');
 
@@ -147,6 +146,7 @@ export default function Media() {
     } else if (params.mediaType === 'book') {
       getBookById();
     } else {
+      setIsError(true)
       setError('Invalid media type');
     }
     // setStatus('loading');
@@ -247,7 +247,7 @@ export default function Media() {
         </Alert>
       ) : (
         <Grid container>
-          <Grid item>
+          <Grid item sx={{}}>
             <Overview
               mediaDetails={data.mediaDetails}
               mediaType={params.mediaType}
@@ -257,21 +257,21 @@ export default function Media() {
           </Grid>
           {params.mediaType !== 'book' ? (
             <Grid container>
-              <Grid item xs={12} sm={9}>
+              <Grid item xs={12}>
                 <TopBillCast
                   cast={data.mediaDetails.credits.cast}
                   mediaType={params.mediaType}
                   mediaId={params.id}
                 />
               </Grid>
-              <Grid item xs={12} sm={3}>
+              {/* <Grid item xs={12} sm={3}>
                 <MediaSideline media={data.mediaDetails} mediaType={params.mediaType}/>
-              </Grid>
+              </Grid> */}
             </Grid>
           ) : (
             <></>
           )}
-          {/* {params.mediaType !== 'book' ? <Recommendation /> : <></>} */}
+          {params.mediaType !== 'book' ? <Recommendation recommendations={data.mediaDetails.recommendations.results}/> : <></>}
         </Grid>
       )}
     </>

@@ -145,13 +145,9 @@ export default function List() {
           container
           spacing={1}
           sx={{
-            display: { xs: status === 'loading' ? 'flex' : 'grid' },
+            display: {xs: 'block', sm: 'flex'},
             justifyContent: 'center',
             gap: 2,
-            gridTemplateColumns: {
-              xs: '',
-              sm: 'repeat(auto-fill, minmax(200px, 1fr))',
-            },
             justifyItems: 'center',
             px: 1,
           }}
@@ -179,7 +175,11 @@ export default function List() {
                         width: 'inherit',
                       }}
                     >
-                      <Box sx={{ display: { xs: 'none', sm: 'inherit' } }}>
+                      <Box
+                        sx={{
+                          display: { xs: 'none', sm: 'inherit' },
+                        }}
+                      >
                         <Card mediaType={params.mediaType} media={media} />
                       </Box>
                       <Box
@@ -378,7 +378,7 @@ export default function List() {
               onClick={handleViewMore}
               fullWidth
             >
-              {showMore? (
+              {showMore ? (
                 <CircularProgress color='inherit' size={'1.2rem'} />
               ) : (
                 <span style={{ fontSize: '1.2rem' }}>Load More</span>
