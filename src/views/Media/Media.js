@@ -245,6 +245,7 @@ export default function Media() {
                   cast={data.mediaDetails.credits.cast}
                   mediaType={params.mediaType}
                   mediaId={params.id}
+                  
                 />
               </Grid>
             </Grid>

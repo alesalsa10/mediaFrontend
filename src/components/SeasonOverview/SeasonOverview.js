@@ -50,109 +50,16 @@ export default function SeasonOverview({ mediaDetails, hasTrailer, videoKey }) {
         <Typography variant='h5' component={'div'} sx={{ py: '0.5rem' }}>
           {capitalizeTitle()}
         </Typography>
-
-        {/* {mediaType !== 'book' ? (
-          <Box
-            sx={{
-              py: '0.5rem',
-              display: 'flex',
-              flexDirection: 'row',
-              //justifyContent: 'space-between',
-            }}
-          >
-            <Box
-              sx={{
-                height: 60,
-                width: 60,
-                display: 'flex',
-                flexDirection: 'row',
-              }}
-            >
-              <CircularProgressbar
-                value={mediaDetails.vote_average * 10}
-                text={`${mediaDetails.vote_average * 10}%`}
-                background
-                backgroundPadding={6}
-                styles={buildStyles({
-                  backgroundColor: '#282b29',
-                  textColor: '#fff',
-                  pathColor:
-                    mediaDetails.vote_average * 10 >= 70
-                      ? '#21d07a'
-                      : mediaDetails.vote_average * 10 > 50 &&
-                        mediaDetails.vote_average * 10 < 70
-                      ? '#d2d531'
-                      : '#d53f31',
-                  trailColor: 'transparent',
-                  textSize: '30px',
-                  width: '60px',
-                  height: '60px',
-                })}
-              />
-            </Box>
-            <Box sx={{ alignSelf: 'center' }}>
-              <FavoriteIcon />
-            </Box>
-
-            {hasTrailer ? (
-              <Box sx={{ alignSelf: 'center' }}>
-                <Button variant='text' onClick={handleOpen}>
-                  Play Trailer
-                </Button>
-
-                <Modal
-                  open={open}
-                  onClose={handleClose}
-                  aria-labelledby='modal-modal-title'
-                  aria-describedby='modal-modal-description'
-                >
-                  <Box
-                    sx={{
-                      position: 'absolute',
-                      top: '50%',
-                      left: '50%',
-                      transform: 'translate(-50%, -50%)',
-                      width: {
-                        xs: '95vw',
-                        md: '70vw',
-                      },
-                      height: {
-                        xs: '80vh',
-                        md: '55vh',
-                      },
-                      bgcolor: 'background.paper',
-                      //border: '2px solid #000',
-                      boxShadow: 24,
-                      p: 0,
-                    }}
-                  >
-                    <iframe
-                      width='100%'
-                      height='100%'
-                      src={`https://www.youtube.com/embed/${videoKey}?&autoplay=1`}
-                      frameBorder='0'
-                      allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
-                      allowFullScreen
-                      title='Embedded youtube'
-                    />
-                  </Box>
-                </Modal>
-              </Box>
-            ) : (
-              <Box sx={{ alignSelf: 'center' }}>
-                <FavoriteIcon />
-              </Box>
-            )}
-          </Box>
-        ) : (
-          <></>
-        )} */}
+        <Typography variant='h6' component={'div'} sx={{ py: '0.5rem' }}>
+          {mediaDetails.name} (
+          {moment(mediaDetails.air_date).format('MM/DD/YYYY') || 'No air date available'})
+        </Typography>
         <Typography
           variant={'h6'}
           component={'div'}
           color='text.primary'
           sx={{
-            px: '0.5rem',
+            //px: '0.5rem',
             textAlign: 'left',
             flexGrow: 1,
             display: 'grid',
@@ -162,12 +69,12 @@ export default function SeasonOverview({ mediaDetails, hasTrailer, videoKey }) {
         >
           Overview
         </Typography>
-        {/* <Typography
+        <Typography
           variant={'body2'}
           component={'div'}
           color='text.primary'
           sx={{
-            px: '0.5rem',
+            //px: '0.5rem',
             textAlign: 'left',
             flexGrow: 1,
             display: 'grid',
@@ -176,7 +83,7 @@ export default function SeasonOverview({ mediaDetails, hasTrailer, videoKey }) {
           }}
         >
           {mediaDetails.overview || 'No overview available'}
-        </Typography> */}
+        </Typography>
         {/* {mediaType !== 'book' ? (
           <MediaSideline media={mediaDetails} mediaType={mediaType} />
         ) : (

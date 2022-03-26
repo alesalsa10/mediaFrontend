@@ -4,13 +4,14 @@ import { useParams } from 'react-router-dom';
 import { Box } from '@mui/system';
 import { Alert, Grid, Skeleton } from '@mui/material';
 import SeasonOverview from '../../components/SeasonOverview/SeasonOverview';
+import TopBillCast from '../../components/TopBillCast/TopBillCast';
 
 export default function Season() {
   const params = useParams();
 
   const [data, setData] = useState();
   const [error, setError] = useState();
-  const [status, setStatus] = useState('idle');
+  const [status, setStatus] = useState('loading');
   const [isError, setIsError] = useState(false);
   const [hasTrailer, setHasTrailer] = useState(false);
   const [videoKey, setVideoKey] = useState();
@@ -151,14 +152,14 @@ export default function Season() {
         </Alert>
       ) : (
         <Grid container>
-          <Grid item sx={{}}>
+          <Grid item>
             <SeasonOverview
               mediaDetails={data.mediaDetails}
-              //hasTrailer={hasTrailer}
-              //videoKey={videoKey}
+              hasTrailer={hasTrailer}
+              videoKey={videoKey}
             />
           </Grid>
-          {/* {params.mediaType !== 'book' ? (
+          {data.mediaDetails.credits.cast.length > 0 ? (
             <Grid container>
               <Grid item xs={12}>
                 <TopBillCast
@@ -170,7 +171,7 @@ export default function Season() {
             </Grid>
           ) : (
             <></>
-          )} */}
+          )}
         </Grid>
       )}
     </>

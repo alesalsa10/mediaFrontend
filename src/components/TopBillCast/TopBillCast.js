@@ -33,6 +33,10 @@ export default function TopBillCast({ cast, mediaType, mediaId }) {
    window.addEventListener('resize', getListSize);
  }, []);
 
+ const getTopBillCast = () =>{
+   
+ }
+
 
   const baseImgUrl = 'https://image.tmdb.org/t/p/original';
 
@@ -56,7 +60,7 @@ export default function TopBillCast({ cast, mediaType, mediaId }) {
                 slidesPerView='auto'
                 navigation
               >
-                {cast.slice(0, 10).map((actor, index) => (
+                {cast.slice(0, 6).map((actor, index) => (
                   <SwiperSlide
                     key={actor.name}
                     style={{

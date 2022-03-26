@@ -6,6 +6,7 @@ import placeholder from '../../assets/placeholder.png';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 export default function FullCast() {
+  //type will be movie, tv, seasaon, episode, book
   const [data, setData] = useState();
   const [error, setError] = useState();
   const [status, setStatus] = useState('loading');
