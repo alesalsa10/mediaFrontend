@@ -42,7 +42,7 @@ function App() {
               <Route path='/:mediaType/:id/full_cast' element={<FullCast />} />
               <Route path='/:mediaType/isbn/:id' element={<Media />} />
 
-              <Route path='/tv/:id/season/:seasonNumber' element={<Season />} />
+              <Route path='/tv/:id/seasons/:seasonNumber' element={<Season />} />
               <Route
                 path='/tv/:id/season/:seasonNumber/episode/:episodeNumber'
                 element={<Episode />}

@@ -48,53 +48,7 @@ export default function Recommendation({ recommendations }) {
                     }}
                   >
                     <Card  mediaType={media.media_type} media={media} type='carousel'/>
-                    {/* <Card sx={{ boxShadow: 'none' }}>
-                      <Link
-                        href={`/${media.media_type}/${selectMediaLink(media)}`}
-                      >
-                        <CardMedia
-                          ref={refElement}
-                          onLoad={handleImageLoad}
-                          component='img'
-                          image={
-                            !media.poster_path
-                              ? placeholder
-                              : `${baseImgUrl}${media.poster_path}`
-                          }
-                          alt={
-                            media.media_type === 'movie'
-                              ? media.title
-                              : media.name
-                          }
-                          sx={{
-                            width: { xs: 130, sm: 170 },
-                          }}
-                        />
-                      </Link>
-
-                      <CardContent sx={{ width: width, px: 0}}>
-                        <Link
-                          href={`/${media.media_type}/${selectMediaLink(
-                            media
-                          )}`}
-                          variant='inherit'
-                          color='inherit'
-                          underline='none'
-                          sx={{ ':hover': { color: 'primary.main' } }}
-                        >
-                          <Typography
-                            gutterBottom
-                            variant='h5'
-                            component='div'
-                            sx={{ px: 0.5 }}
-                          >
-                            {media.media_type === 'movie'
-                              ? media.title
-                              : media.name}
-                          </Typography>
-                        </Link>
-                      </CardContent>
-                    </Card> */}
+                    
                   </SwiperSlide>
                 ))}
               </Swiper>

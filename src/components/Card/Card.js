@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { Box, CardContent, CardMedia, Link, Typography } from '@mui/material';
+import { Box, Link, Typography } from '@mui/material';
 
 import moment from 'moment';
 import { buildStyles, CircularProgressbar } from 'react-circular-progressbar';
@@ -120,17 +120,19 @@ export default function Card({ mediaType, media, type, bestSellers }) {
           }
           alt={media.title}
           sx={{
-            width: {
-              xs: 'auto',
-            },
-            height: {
-              xs: 200,
-              sm: 300,
+            // width: {
+            //   xs: 'auto',
+            // },
+            // height: {
+            //   xs: 200,
+            //   sm: 300,
+            // },
+            width:{
+              xs: 130,
+              sm: 170
             },
             borderTopRightRadius: '3px',
             borderTopLeftRadius: '3px',
-            // my:2,
-            // px:0.5
           }}
         />
         {mediaType === 'book' ? (

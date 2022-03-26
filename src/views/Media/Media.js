@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import Overview from '../../components/Overview/Overview';
 import { useParams, useLocation } from 'react-router-dom';
-import { Alert, Grid, Skeleton, Box} from '@mui/material';
+import { Alert, Grid, Skeleton, Box } from '@mui/material';
 import TopBillCast from '../../components/TopBillCast/TopBillCast';
 import Recommendation from '../../components/Recommendation/Recommendation';
+import SeasonsCarousel from '../../components/SeasonsCarousel/SeasonsCarousel';
 
 const { default: axios } = require('axios');
 
@@ -11,7 +12,7 @@ export default function Media() {
   const [data, setData] = useState();
   const [error, setError] = useState();
   const [status, setStatus] = useState('loading');
-  const[isError, setIsError] = useState(false)
+  const [isError, setIsError] = useState(false);
   const [hasTrailer, setHasTrailer] = useState(false);
   const [videoKey, setVideoKey] = useState();
 
@@ -22,7 +23,9 @@ export default function Media() {
     //http://localhost:3000/media/getById/movie/1420
     try {
       const response = await axios.get(
-        `http://localhost:3000/media/getById/${params.mediaType}/${params.id.split('-')[0]}`
+        `http://localhost:3000/media/getById/${params.mediaType}/${
+          params.id.split('-')[0]
+        }`
       );
       console.log(response.data);
 
@@ -48,10 +51,10 @@ export default function Media() {
       setData(response.data);
       setError();
       setStatus('idle');
-      setIsError(false)
+      setIsError(false);
     } catch (error) {
       console.log(error.response.data);
-      setIsError(true)
+      setIsError(true);
       setStatus('idle');
       setError(error.response.data.Msg);
       setData();
@@ -68,10 +71,10 @@ export default function Media() {
       setData(response.data);
       setError();
       setStatus('idle');
-      setIsError(false)
+      setIsError(false);
     } catch (error) {
       console.log(error);
-      setIsError(true)
+      setIsError(true);
       setError(error.response.data.Msg);
       setData();
       setStatus('idle');
@@ -88,35 +91,16 @@ export default function Media() {
       setData(response.data);
       setError();
       setStatus('idle');
-      setIsError(false)
+      setIsError(false);
     } catch (error) {
       console.log(error);
-      setIsError(true)
-      setError(error.response.data.Msg);     
+      setIsError(true);
+      setError(error.response.data.Msg);
       setData();
       setStatus('idle');
     }
   };
 
-  // const getSeason = async () => {
-  //   //http://localhost:3000/media/tv/season/1420/3
-  //   try {
-  //     const response = await axios.get(
-  //       `http://localhost:3000/media/tv/${params.id}/season/${params.seasonNumber}`
-  //     );
-  //     console.log(response.data);
-  //     setData(response.data);
-  //     setError();
-  //     setStatus('idle');
-  //     setIsError(false)
-  //   } catch (error) {
-  //     console.log(error.response.data);
-  //     setIsError(true);
-  //     setStatus('idle');
-  //     setError(error.response.data.Msg);
-  //     setData();
-  //   }
-  // };
 
   // const getEpisode = async () => {
   //   //http://localhost:3000/book/isbn/1101885688
@@ -146,7 +130,7 @@ export default function Media() {
     } else if (params.mediaType === 'book') {
       getBookById();
     } else {
-      setIsError(true)
+      setIsError(true);
       setError('Invalid media type');
     }
     // setStatus('loading');
@@ -240,9 +224,8 @@ export default function Media() {
             <></>
           )}
         </>
-      ) : 
-      status === 'idle' && isError && !data ? (
-        <Alert severity='error' variant='outlined' sx={{p:2, m:2}}>
+      ) : status === 'idle' && isError && !data ? (
+        <Alert severity='error' variant='outlined' sx={{ p: 2, m: 2 }}>
           {error}
         </Alert>
       ) : (
@@ -264,14 +247,25 @@ export default function Media() {
                   mediaId={params.id}
                 />
               </Grid>
-              {/* <Grid item xs={12} sm={3}>
-                <MediaSideline media={data.mediaDetails} mediaType={params.mediaType}/>
-              </Grid> */}
             </Grid>
           ) : (
             <></>
           )}
-          {params.mediaType !== 'book' ? <Recommendation recommendations={data.mediaDetails.recommendations.results}/> : <></>}
+          {params.mediaType === 'tv' ? (
+            <SeasonsCarousel
+              seasons={data.mediaDetails.seasons}
+              //name={data.mediaDetails.name}
+            />
+          ) : (
+            <></>
+          )}
+          {params.mediaType !== 'book' ? (
+            <Recommendation
+              recommendations={data.mediaDetails.recommendations.results}
+            />
+          ) : (
+            <></>
+          )}
         </Grid>
       )}
     </>

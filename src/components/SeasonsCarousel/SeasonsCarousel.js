@@ -1,49 +1,54 @@
 import {
-  Card,
-  CardContent,
-  CardMedia,
   Grid,
-  Link,
   Typography,
+  Card,
+  Link,
+  CardMedia,
+  CardContent,
 } from '@mui/material';
 import React, { useState, useRef, useEffect } from 'react';
-import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper';
+import { Swiper, SwiperSlide } from 'swiper/react';
+// import Card from '../Card/Card'
+import { useLocation } from 'react-router-dom';
 
 import placeholder from '../../assets/placeholder.png';
 
-import 'swiper/css';
-import 'swiper/css/navigation';
-
-export default function TopBillCast({ cast, mediaType, mediaId }) {
+export default function SeasonsCarousel({ seasons, name }) {
   const [width, setWidth] = useState();
   const refElement = useRef();
 
- const getListSize = () => {
-   const newWidth = refElement.current.clientWidth;
-   setWidth(newWidth);
- };
+  const getListSize = () => {
+    const newWidth = refElement.current.clientWidth;
+    setWidth(newWidth);
+  };
 
- const handleImageLoad = (event) => {
-   setWidth(event.target.clientWidth);
- };
+  const handleImageLoad = (event) => {
+    setWidth(event.target.clientWidth);
+  };
 
- useEffect(() => {
-   window.addEventListener('resize', handleImageLoad);
-   window.addEventListener('resize', getListSize);
- }, []);
-
-
+  useEffect(() => {
+    window.addEventListener('resize', handleImageLoad);
+    window.addEventListener('resize', getListSize);
+  }, []);
   const baseImgUrl = 'https://image.tmdb.org/t/p/original';
 
+  const location = useLocation();
+  console.log(location);
+  const filsteredSeasons = seasons.filter(
+    (season) => !isNaN(season.name.split(' ')[1])
+  );
+  console.log(seasons, filsteredSeasons);
   return (
-    <Grid container>
-      <Grid item sx={{ px: 3, pt: 3 }}>
-        <Typography component={'h2'} variant='hy'>
-          Top Billed Cast
-        </Typography>
+    <>
+      <Grid container>
+        <Grid item sx={{ px: 3, pt: 3 }}>
+          <Typography component={'h2'} variant='hy'>
+            Seasons
+          </Typography>
+        </Grid>
       </Grid>
-      {cast.length > 0 ? (
+      {filsteredSeasons.length > 0 ? (
         <>
           <Grid item sx={{ p: 3 }} xs={12}>
             <div className={`swiper-container ${'actors'}`}>
@@ -56,9 +61,11 @@ export default function TopBillCast({ cast, mediaType, mediaId }) {
                 slidesPerView='auto'
                 navigation
               >
-                {cast.slice(0, 10).map((actor, index) => (
+                {filsteredSeasons.map((media, index) => (
                   <SwiperSlide
-                    key={actor.name}
+                    key={
+                      media.media_type === 'movie' ? media.title : media.name
+                    }
                     style={{
                       boxShadow: '0 2px 8px rgb(0 0 0 / 25%)',
                       width: 'fit-content',
@@ -66,34 +73,36 @@ export default function TopBillCast({ cast, mediaType, mediaId }) {
                       borderRadius: '3px',
                     }}
                   >
-                    {/* <Card mediaType='people' media={actor} type='carousel' /> */}
+                    {/* <Card  mediaType={'tv'} media={media} type='carousel'/> */}
                     <Card sx={{ boxShadow: 'none' }}>
-                      <Link href={`/people/${actor.id}`}>
+                      <Link
+                        href={`${location.pathname}/seasons/${
+                          media.name.split(' ')[1]
+                        }`}
+                      >
                         <CardMedia
                           ref={refElement}
                           onLoad={handleImageLoad}
                           component='img'
                           image={
-                            !actor.profile_path
+                            !media.poster_path
                               ? placeholder
-                              : `${baseImgUrl}${actor.profile_path}`
+                              : `${baseImgUrl}${media.poster_path}`
                           }
-                          alt={actor.name}
+                          alt={
+                            media.name
+                          }
                           sx={{
-                            width: {
-                              xs: 'auto',
-                            },
-                            height: {
-                              xs: 200,
-                              sm: 300,
-                            },
+                            width: { xs: 130, sm: 170 },
                           }}
                         />
                       </Link>
 
                       <CardContent sx={{ width: width, px: 0 }}>
                         <Link
-                          href={`/people/${actor.id}`}
+                          href={`${location.pathname}/seasons/${
+                            media.name.split(' ')[1]
+                          }`}
                           variant='inherit'
                           color='inherit'
                           underline='none'
@@ -105,17 +114,11 @@ export default function TopBillCast({ cast, mediaType, mediaId }) {
                             component='div'
                             sx={{ px: 0.5 }}
                           >
-                            {actor.name}
+                            {media.media_type === 'movie'
+                              ? media.title
+                              : media.name}
                           </Typography>
                         </Link>
-
-                        <Typography
-                          variant='body2'
-                          color='text.secondary'
-                          sx={{ px: 0.5 }}
-                        >
-                          {actor.character}
-                        </Typography>
                       </CardContent>
                     </Card>
                   </SwiperSlide>
@@ -123,25 +126,12 @@ export default function TopBillCast({ cast, mediaType, mediaId }) {
               </Swiper>
             </div>
           </Grid>
-          <Grid item px={3}>
-            <Link
-              href={`/${mediaType}/${mediaId}/full_cast`}
-              variant='inherit'
-              color='inherit'
-              underline='none'
-              sx={{ ':hover': { color: 'primary.main' } }}
-            >
-              <Typography gutterBottom variant='h6' component='div'>
-                View Full Cast & Crew
-              </Typography>
-            </Link>
-          </Grid>
         </>
       ) : (
-        <Typography sx={{ textAlign: 'left', m: 1 }}>
-          No cast information available
+        <Typography sx={{ textAlign: 'left', my: 1, mx: 3 }}>
+          No Seasons found
         </Typography>
       )}
-    </Grid>
+    </>
   );
 }
