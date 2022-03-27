@@ -62,17 +62,107 @@ export default function FullCast() {
     } catch (error) {
       console.log(error);
       setError(error.data.response.Msg);
-      setIsError(true)
+      setIsError(true);
       setData();
       setStatus('idle');
     }
   };
 
+  const getSeason = async () => {
+    //http://localhost:3000/media/getById/movie/1420
+    try {
+      const response = await axios.get(
+        `http://localhost:3000/media/tv/${params.id.split('-')[0]}/season/${
+          params.seasonNumber
+        }`
+      );
+      console.log(response.data);
+
+      let sorted = [];
+      for (const [
+        index,
+        item,
+      ] of response.data.mediaDetails.credits.crew.entries()) {
+        if (sorted.some((e) => e.department === item.department)) {
+          /* contains the element we're looking for */
+          let index = sorted.findIndex((e) => e.department === item.department);
+          sorted[index].crew.push(item);
+        } else {
+          sorted.push({
+            department: item.department,
+            crew: [item],
+          });
+        }
+      }
+
+      // console.log(sorted)
+      let sortedObject = { sorted };
+
+      setData({ ...response.data, ...sortedObject });
+      console.log(data);
+      setError();
+      setStatus('idle');
+      setIsError(false);
+    } catch (error) {
+      console.log(error);
+      setError(error.data.response.Msg);
+      setIsError(true);
+      setData();
+      setStatus('idle');
+    }
+  };
+
+  const getEpisode = async () => {
+    //http://localhost:3000/media/getById/movie/1420
+    try {
+      const response = await axios.get(
+        `http://localhost:3000/media/tv/season/${params.id}/${params.seasonNumber}/episode/${params.episodeNumber}`
+      );
+      console.log(response.data);
+      let sorted = [];
+      for (const [
+        index,
+        item,
+      ] of response.data.mediaDetails.credits.crew.entries()) {
+        if (sorted.some((e) => e.department === item.department)) {
+          /* contains the element we're looking for */
+          let index = sorted.findIndex((e) => e.department === item.department);
+          sorted[index].crew.push(item);
+        } else {
+          sorted.push({
+            department: item.department,
+            crew: [item],
+          });
+        }
+      }
+
+      // console.log(sorted)
+      let sortedObject = { sorted };
+
+      setData({ ...response.data, ...sortedObject });
+      console.log(data);
+      setError();
+      setStatus('idle');
+      setIsError(false);
+    } catch (error) {
+      console.log(error);
+      setError(error.data.response.Msg);
+      setIsError(true);
+      setData();
+      setStatus('idle');
+    }
+  };
+
+
   useEffect(() => {
     if (params.mediaType === 'movie' || params.mediaType === 'tv') {
       getMediaById();
+    } else if (params.seasonNumber && params.episodeNumber) {
+      getEpisode();
+    } else if (params.seasonNumber) {
+      getSeason();
     } else {
-      setIsError(true)
+      setIsError(true);
       setError('Invalid media type');
     }
     // setStatus('idle');
@@ -235,7 +325,7 @@ export default function FullCast() {
                   }}
                 >
                   <Link
-                    href={`/${params.mediaType}/${params.id}`}
+                    href={`/people/${'/'}`}
                     variant='h5'
                     color='inherit'
                     underline='none'

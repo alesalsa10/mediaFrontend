@@ -15,28 +15,43 @@ import placeholder from '../../assets/placeholder.png';
 import 'swiper/css';
 import 'swiper/css/navigation';
 
-export default function TopBillCast({ cast, mediaType, mediaId }) {
+export default function TopBillCast({ cast, mediaType, mediaId, params }) {
   const [width, setWidth] = useState();
   const refElement = useRef();
 
- const getListSize = () => {
-   const newWidth = refElement.current.clientWidth;
-   setWidth(newWidth);
- };
+  const getListSize = () => {
+    const newWidth = refElement.current.clientWidth;
+    setWidth(newWidth);
+  };
 
- const handleImageLoad = (event) => {
-   setWidth(event.target.clientWidth);
- };
+  const handleImageLoad = (event) => {
+    setWidth(event.target.clientWidth);
+  };
 
- useEffect(() => {
-   window.addEventListener('resize', handleImageLoad);
-   window.addEventListener('resize', getListSize);
- }, []);
+  const createFullCastLink = () => {
+    if (params.mediaType === 'movie' || params.mediaType === 'tv') {
+      if (params.mediaType === 'movie') {
+        return `/movie/${params.id}/full_cast`;
+      } else {
+        return `/tv/${params.id}/full_cast`;
+      }
+    } else if (params.seasonNumber && params.episodeNumber) {
+      //getEpisode();
+      return `/tv/${params.id}/seasons/${
+        params.seasonNumber
+      }/episode/${params.episodeNumber}/full_cast`;
+    } else if (params.seasonNumber) {
+      //getSeason();
+      return `/tv/${params.id}/seasons/${
+        params.seasonNumber
+      }/full_cast`;
+    }
+  };
 
- const getTopBillCast = () =>{
-   
- }
-
+  useEffect(() => {
+    window.addEventListener('resize', handleImageLoad);
+    window.addEventListener('resize', getListSize);
+  }, []);
 
   const baseImgUrl = 'https://image.tmdb.org/t/p/original';
 
@@ -84,12 +99,12 @@ export default function TopBillCast({ cast, mediaType, mediaId }) {
                           }
                           alt={actor.name}
                           sx={{
+                            // width: {
+                            //   xs: 'auto',
+                            // },
                             width: {
-                              xs: 'auto',
-                            },
-                            height: {
-                              xs: 200,
-                              sm: 300,
+                              xs: 130,
+                              sm: 170,
                             },
                           }}
                         />
@@ -129,7 +144,7 @@ export default function TopBillCast({ cast, mediaType, mediaId }) {
           </Grid>
           <Grid item px={3}>
             <Link
-              href={`/${mediaType}/${mediaId}/full_cast`}
+              href={createFullCastLink()}
               variant='inherit'
               color='inherit'
               underline='none'

@@ -166,6 +166,7 @@ export default function Season() {
                   cast={data.mediaDetails.credits.cast}
                   mediaType={params.mediaType}
                   mediaId={params.id}
+                  params={params}
                 />
               </Grid>
             </Grid>

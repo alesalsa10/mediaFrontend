@@ -41,7 +41,7 @@ function App() {
 
               <Route path='/:mediaType/:id/full_cast' element={<FullCast />} />
               <Route
-                path='/tv/:id/season/:seasonNumber/full_cast'
+                path='/tv/:id/seasons/:seasonNumber/full_cast'
                 element={<FullCast />}
               />
               {/* <Route

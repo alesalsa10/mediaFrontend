@@ -102,25 +102,6 @@ export default function Media() {
   };
 
 
-  // const getEpisode = async () => {
-  //   //http://localhost:3000/book/isbn/1101885688
-  //   try {
-  //     const response = await axios.get(
-  //       `http://localhost:3000/media/tv/season/${params.id}/${params.seasonNumber}/episode/${params.episodeNumber}`
-  //     );
-  //     console.log(response.data);
-  //     setData(response.data);
-  //     setError();
-  //     setStatus('idle');
-  //     setIsError(false)
-  //   } catch (error) {
-  //     console.log(error.response.data);
-  //     setIsError(true)
-  //     setError(error.response.data.Msg);
-  //     setData();
-  //     setStatus('idle');
-  //   }
-  // };
 
   useEffect(() => {
     if (params.mediaType === 'movie' || params.mediaType === 'tv') {
@@ -245,6 +226,7 @@ export default function Media() {
                   cast={data.mediaDetails.credits.cast}
                   mediaType={params.mediaType}
                   mediaId={params.id}
+                  params={params}
                   
                 />
               </Grid>

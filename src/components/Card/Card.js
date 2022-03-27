@@ -120,13 +120,6 @@ export default function Card({ mediaType, media, type, bestSellers }) {
           }
           alt={media.title}
           sx={{
-            // width: {
-            //   xs: 'auto',
-            // },
-            // height: {
-            //   xs: 200,
-            //   sm: 300,
-            // },
             width:{
               xs: 130,
               sm: 170
