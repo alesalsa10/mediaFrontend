@@ -11,12 +11,12 @@ import EpisodesCarousel from '../../components/EpisodesCarousel/EpisodesCarousel
 export default function Season() {
   const params = useParams();
 
-  const [data, setData] = useState();
-  const [error, setError] = useState();
-  const [loading, setLoading] = useState(true);
-  const [isError, setIsError] = useState(false);
+  const [state, setState] = useState({loading: true, response: null, error: null})
+
   const [hasTrailer, setHasTrailer] = useState(false);
   const [videoKey, setVideoKey] = useState();
+
+
 
   const getSeason = async () => {
     //http://localhost:3000/media/tv/season/1420/3
@@ -45,16 +45,19 @@ export default function Season() {
       } else {
         setHasTrailer(false);
       }
-      setData(response.data);
-      setError();
-      setLoading(false);
-      setIsError(false);
+      setState({
+        loading: false,
+        response: response.data,
+        error: null,
+      });
+
     } catch (error) {
       console.log(error.response.data.Msg);
-      setIsError(true);
-      setLoading(false);
-      setError(error.response.data.Msg);
-      //setData();
+      setState({
+        loading: false,
+        response: null,
+        error: error.response.data.Msg,
+      });
     }
   };
 
@@ -70,16 +73,19 @@ export default function Season() {
 
       setHasTrailer(false);
 
-      setData(response.data);
-      setError();
-      setLoading(false);
-      setIsError(false);
+      setState({
+        loading: false,
+        response: response.data,
+        error: null
+      })
+
     } catch (error) {
-      setIsError(true);
-      setLoading(false);
-      setError(error.response.data.Msg);
-      console.log(error.response.data.Msg);
-      
+      console.log(error.response.data.Msg);      
+      setState({
+        loading: false,
+        response: null,
+        error: error.response.data.Msg
+      })
     }
   };
 
@@ -87,15 +93,19 @@ export default function Season() {
     if (params.seasonNumber && params.episodeNumber) {
       getEpisode();
     } else if (params.seasonNumber) {
-      getSeason();
+      //getSeason();
     } else {
-      setIsError(true);
-      setError('This page does not exist');
+
+     setState({
+       loading: false,
+       response: null,
+       error: 'This page does not exist',
+     });
     }
   }, [params]);
   return (
     <>
-      {loading && !isError && !data ? (
+      {state.loading && !state.error ? (
         <>
           <Box
             sx={{
@@ -180,26 +190,26 @@ export default function Season() {
             <></>
           )}
         </>
-      ) : (!loading && isError && !data) ? (
+      ) : !state.loading && state.error ? (
         <Alert severity='error' variant='outlined' sx={{ p: 2, m: 2 }}>
-          {error}
+          {state.error}
         </Alert>
       ) : (
         <Grid container>
           <Grid item>
             <SeasonOverview
-              mediaDetails={data.mediaDetails}
+              mediaDetails={state.response.mediaDetails}
               hasTrailer={hasTrailer}
               videoKey={videoKey}
             />
           </Grid>
           {params.seasonNumber &&
           !params.episodeNumber &&
-          data.mediaDetails.credits.cast.length > 0 ? (
+          state.response.mediaDetails.credits.cast.length > 0 ? (
             <Grid container>
               <Grid item xs={12}>
                 <TopBillCast
-                  cast={data.mediaDetails.credits.cast}
+                  cast={state.response.mediaDetails.credits.cast}
                   mediaType={params.mediaType}
                   mediaId={params.id}
                   params={params}
@@ -208,11 +218,11 @@ export default function Season() {
             </Grid>
           ) : params.seasonNumber &&
             params.episodeNumber &&
-            data.mediaDetails.guest_stars.length > 0 ? (
+            state.response.mediaDetails.guest_stars.length > 0 ? (
             <Grid container>
               <Grid item xs={12}>
                 <TopBillCast
-                  cast={data.mediaDetails.guest_stars}
+                  cast={state.response.mediaDetails.guest_stars}
                   mediaType={params.mediaType}
                   mediaId={params.id}
                   params={params}
@@ -224,11 +234,11 @@ export default function Season() {
           )}
           {params.seasonNumber &&
           !params.episodeNumber &&
-          data.mediaDetails.episodes.length > 0 &&
+          state.response.mediaDetails.episodes.length > 0 &&
           params.seasonNumber ? (
             <Grid container>
               <Grid item xs={12}>
-                <EpisodesCarousel episodes={data.mediaDetails.episodes} />
+                <EpisodesCarousel episodes={state.response.mediaDetails.episodes} />
               </Grid>
             </Grid>
           ) : (

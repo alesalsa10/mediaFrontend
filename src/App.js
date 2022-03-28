@@ -15,7 +15,6 @@ import List from './views/List/List';
 import SearchResults from './views/SearchResults/SearchResults';
 import FullCast from './views/FullCast/FullCast';
 import Season from './views/Season/Season';
-import Episode from './views/Episode/Episode';
 function App() {
   return (
     <>
