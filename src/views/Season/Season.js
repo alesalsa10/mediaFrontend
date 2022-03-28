@@ -13,7 +13,7 @@ export default function Season() {
 
   const [data, setData] = useState();
   const [error, setError] = useState();
-  const [status, setStatus] = useState('loading');
+  const [loading, setLoading] = useState(true);
   const [isError, setIsError] = useState(false);
   const [hasTrailer, setHasTrailer] = useState(false);
   const [videoKey, setVideoKey] = useState();
@@ -47,14 +47,14 @@ export default function Season() {
       }
       setData(response.data);
       setError();
-      setStatus('idle');
+      setLoading(false);
       setIsError(false);
     } catch (error) {
       console.log(error.response.data.Msg);
       setIsError(true);
-      setStatus('idle');
+      setLoading(false);
       setError(error.response.data.Msg);
-      setData();
+      //setData();
     }
   };
 
@@ -71,21 +71,19 @@ export default function Season() {
       setHasTrailer(false);
 
       setData(response.data);
-      console.log(data);
       setError();
-      setStatus('idle');
+      setLoading(false);
       setIsError(false);
     } catch (error) {
-      console.log(error.response.data.Msg);
       setIsError(true);
+      setLoading(false);
       setError(error.response.data.Msg);
-      setData();
-      setStatus('idle');
+      console.log(error.response.data.Msg);
+      
     }
   };
 
   useEffect(() => {
-    //getSeason();
     if (params.seasonNumber && params.episodeNumber) {
       getEpisode();
     } else if (params.seasonNumber) {
@@ -97,7 +95,7 @@ export default function Season() {
   }, [params]);
   return (
     <>
-      {status === 'loading' && !isError && !data ? (
+      {loading && !isError && !data ? (
         <>
           <Box
             sx={{
@@ -182,7 +180,7 @@ export default function Season() {
             <></>
           )}
         </>
-      ) : status === 'idle' && isError && !data ? (
+      ) : (!loading && isError && !data) ? (
         <Alert severity='error' variant='outlined' sx={{ p: 2, m: 2 }}>
           {error}
         </Alert>

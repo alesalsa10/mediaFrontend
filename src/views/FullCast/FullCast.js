@@ -61,7 +61,7 @@ export default function FullCast() {
       setIsError(false);
     } catch (error) {
       console.log(error);
-      setError(error.data.response.Msg);
+      setError(error.response.data.Msg);
       setIsError(true);
       setData();
       setStatus('idle');
@@ -105,7 +105,7 @@ export default function FullCast() {
       setIsError(false);
     } catch (error) {
       console.log(error);
-      setError(error.data.response.Msg);
+      setError(error.response.data.Msg);
       setIsError(true);
       setData();
       setStatus('idle');
@@ -160,7 +160,7 @@ export default function FullCast() {
       setIsError(false);
     } catch (error) {
       console.log(error);
-      setError(error.data.response.Msg);
+      setError(error.response.response.Msg);
       setIsError(true);
       setData();
       setStatus('idle');
