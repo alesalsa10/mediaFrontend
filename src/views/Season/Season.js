@@ -5,6 +5,8 @@ import { Box } from '@mui/system';
 import { Alert, Grid, Skeleton } from '@mui/material';
 import SeasonOverview from '../../components/SeasonOverview/SeasonOverview';
 import TopBillCast from '../../components/TopBillCast/TopBillCast';
+import SeasonsCarousel from '../../components/SeasonsCarousel/SeasonsCarousel';
+import EpisodesCarousel from '../../components/EpisodesCarousel/EpisodesCarousel';
 
 export default function Season() {
   const params = useParams();
@@ -48,7 +50,7 @@ export default function Season() {
       setStatus('idle');
       setIsError(false);
     } catch (error) {
-      console.log(error.response.data);
+      console.log(error.response.data.Msg);
       setIsError(true);
       setStatus('idle');
       setError(error.response.data.Msg);
@@ -56,8 +58,42 @@ export default function Season() {
     }
   };
 
+  const getEpisode = async () => {
+    //http://localhost:3000/media/getById/movie/1420
+    try {
+      const response = await axios.get(
+        `http://localhost:3000/media/tv/${params.id.split('-')[0]}/season/${
+          params.seasonNumber
+        }/episode/${params.episodeNumber}`
+      );
+      console.log(response.data);
+
+      setHasTrailer(false);
+
+      setData(response.data);
+      console.log(data);
+      setError();
+      setStatus('idle');
+      setIsError(false);
+    } catch (error) {
+      console.log(error.response.data.Msg);
+      setIsError(true);
+      setError(error.response.data.Msg);
+      setData();
+      setStatus('idle');
+    }
+  };
+
   useEffect(() => {
-    getSeason();
+    //getSeason();
+    if (params.seasonNumber && params.episodeNumber) {
+      getEpisode();
+    } else if (params.seasonNumber) {
+      getSeason();
+    } else {
+      setIsError(true);
+      setError('This page does not exist');
+    }
   }, [params]);
   return (
     <>
@@ -159,7 +195,9 @@ export default function Season() {
               videoKey={videoKey}
             />
           </Grid>
-          {data.mediaDetails.credits.cast.length > 0 ? (
+          {params.seasonNumber &&
+          !params.episodeNumber &&
+          data.mediaDetails.credits.cast.length > 0 ? (
             <Grid container>
               <Grid item xs={12}>
                 <TopBillCast
@@ -168,6 +206,31 @@ export default function Season() {
                   mediaId={params.id}
                   params={params}
                 />
+              </Grid>
+            </Grid>
+          ) : params.seasonNumber &&
+            params.episodeNumber &&
+            data.mediaDetails.guest_stars.length > 0 ? (
+            <Grid container>
+              <Grid item xs={12}>
+                <TopBillCast
+                  cast={data.mediaDetails.guest_stars}
+                  mediaType={params.mediaType}
+                  mediaId={params.id}
+                  params={params}
+                />
+              </Grid>
+            </Grid>
+          ) : (
+            <></>
+          )}
+          {params.seasonNumber &&
+          !params.episodeNumber &&
+          data.mediaDetails.episodes.length > 0 &&
+          params.seasonNumber ? (
+            <Grid container>
+              <Grid item xs={12}>
+                <EpisodesCarousel episodes={data.mediaDetails.episodes} />
               </Grid>
             </Grid>
           ) : (

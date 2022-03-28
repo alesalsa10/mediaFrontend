@@ -56,8 +56,8 @@ function App() {
                 element={<Season />}
               />
               <Route
-                path='/tv/:id/season/:seasonNumber/episode/:episodeNumber'
-                element={<Episode />}
+                path='/tv/:id/seasons/:seasonNumber/episodes/:episodeNumber'
+                element={<Season />}
               />
             </Route>
           </Routes>

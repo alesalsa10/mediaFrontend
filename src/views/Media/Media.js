@@ -237,7 +237,6 @@ export default function Media() {
           {params.mediaType === 'tv' ? (
             <SeasonsCarousel
               seasons={data.mediaDetails.seasons}
-              //name={data.mediaDetails.name}
             />
           ) : (
             <></>

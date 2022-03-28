@@ -112,6 +112,20 @@ export default function FullCast() {
     }
   };
 
+  const capitalizeTitle = (title) => {
+    const arr = title.split(' ');
+    for (var i = 0; i < arr.length; i++) {
+      arr[i] = arr[i].charAt(0).toUpperCase() + arr[i].slice(1).toLowerCase();
+    }
+    return arr.join(' ');
+  };
+
+  const getTitle = () => {
+    let unformattedTitle = params.id.split('-');
+    unformattedTitle = unformattedTitle.slice(1).join(' ');
+    return capitalizeTitle(unformattedTitle);
+  };
+
   const getEpisode = async () => {
     //http://localhost:3000/media/getById/movie/1420
     try {
@@ -153,7 +167,6 @@ export default function FullCast() {
     }
   };
 
-
   useEffect(() => {
     if (params.mediaType === 'movie' || params.mediaType === 'tv') {
       getMediaById();
@@ -171,6 +184,26 @@ export default function FullCast() {
   }, [params]);
 
   const baseImgUrl = 'https://image.tmdb.org/t/p/original';
+
+  const createLink = ()=>{
+    if (params.mediaType === 'movie' || params.mediaType === 'tv') {
+        return `/${params.mediaType}/${params.id}`
+    } else if (params.seasonNumber && params.episodeNumber) {
+      return `tv/${params.id}/seasons/${params.seasonNumber}`
+    } else if (params.seasonNumber) {
+      return `/tv/${params.id}`
+    }
+  }
+
+  const createSubTitle = ()=>{
+    if (params.mediaType === 'movie' || params.mediaType === 'tv') {
+      return `Back to Main`;
+    } else if (params.seasonNumber && params.episodeNumber) {
+      return `Back to Season ${params.seasonNumber}`;
+    } else if (params.seasonNumber) {
+      return `Back to Main`;
+    }
+  }
 
   return (
     <>
@@ -302,7 +335,7 @@ export default function FullCast() {
           <Grid container>
             <Grid item xs={12} p={0}>
               <Box sx={{ display: 'flex', flexDirection: 'row', p: 2 }}>
-                <Link href={`/${params.mediaType}/${params.id}`}>
+                <Link href={createLink()}>
                   <Box
                     component={'img'}
                     src={
@@ -325,25 +358,19 @@ export default function FullCast() {
                   }}
                 >
                   <Link
-                    href={`/people/${'/'}`}
+                    href={createLink()}
                     variant='h5'
                     color='inherit'
                     underline='none'
                     sx={{ ':hover': { color: 'text.secondary' } }}
                   >
                     <Typography variant='h6'>
-                      {params.mediaType === 'movie'
-                        ? data.mediaDetails.title
-                        : data.mediaDetails.name}{' '}
-                      (
-                      {params.mediaType === 'movie'
-                        ? data.mediaDetails.release_date.split('-')[0]
-                        : data.mediaDetails.first_air_date.split('-')[0]}
-                      )
+                      {getTitle()}{' '}
+                      
                     </Typography>
                   </Link>
                   <Link
-                    href={`/${params.mediaType}/${params.id}`}
+                    href={createLink()}
                     variant='h5'
                     color='text.primary'
                     underline='none'
@@ -354,7 +381,7 @@ export default function FullCast() {
                   >
                     <Typography sx={{ display: 'flex', flexDirection: 'row' }}>
                       <ArrowBackIcon />
-                      <Typography component={'span'}>Back to main</Typography>
+                      <Typography component={'span'}>{createSubTitle()}</Typography>
                     </Typography>
                   </Link>
                 </Box>

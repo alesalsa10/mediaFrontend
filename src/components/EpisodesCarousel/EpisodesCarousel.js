@@ -9,14 +9,12 @@ import {
 import React, { useState, useRef, useEffect } from 'react';
 import { Navigation } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
-// import Card from '../Card/Card'
-import { useLocation } from 'react-router-dom';
+import { useLocation, params, useParams } from 'react-router-dom';
 
 import placeholder from '../../assets/placeholder.png';
 
-export default function SeasonsCarousel({ seasons }) {
+export default function EpisodesCarousel({ episodes }) {
   const [width, setWidth] = useState();
-  const [filtered, setFiltered] = useState([]);
   const refElement = useRef();
 
   const getListSize = () => {
@@ -35,26 +33,18 @@ export default function SeasonsCarousel({ seasons }) {
   const baseImgUrl = 'https://image.tmdb.org/t/p/original';
 
   const location = useLocation();
+  const params = useParams()
 
-  useEffect(() => {
-      const filsteredSeasons = seasons.filter(
-        (season) => !isNaN(season.name.split(' ')[1])
-      );
-      setFiltered(filsteredSeasons);
-
-  }, [seasons]);
-
-  //console.log(seasons, filsteredSeasons);
   return (
     <>
       <Grid container>
         <Grid item sx={{ px: 3, pt: 3 }}>
           <Typography component={'h2'} variant='hy'>
-            Seasons
+            Episodes
           </Typography>
         </Grid>
       </Grid>
-      {filtered.length > 0 ? (
+      {episodes.length > 0 ? (
         <>
           <Grid item sx={{ p: 3 }} xs={12}>
             <div className={`swiper-container ${'actors'}`}>
@@ -67,11 +57,9 @@ export default function SeasonsCarousel({ seasons }) {
                 slidesPerView='auto'
                 navigation
               >
-                {filtered.map((media, index) => (
+                {episodes.map((media, index) => (
                   <SwiperSlide
-                    key={
-                      media.media_type === 'movie' ? media.title : media.name
-                    }
+                    key={media.name}
                     style={{
                       boxShadow: '0 2px 8px rgb(0 0 0 / 25%)',
                       width: 'fit-content',
@@ -82,18 +70,16 @@ export default function SeasonsCarousel({ seasons }) {
                     {/* <Card  mediaType={'tv'} media={media} type='carousel'/> */}
                     <Card sx={{ boxShadow: 'none' }}>
                       <Link
-                        href={`${location.pathname}/seasons/${
-                          media.name.split(' ')[1]
-                        }`}
+                        href={`/tv/${params.id}/seasons/${params.seasonNumber}/episodes/${media.episode_number}`}
                       >
                         <CardMedia
                           ref={refElement}
                           onLoad={handleImageLoad}
                           component='img'
                           image={
-                            !media.poster_path
+                            !media.still_path
                               ? placeholder
-                              : `${baseImgUrl}${media.poster_path}`
+                              : `${baseImgUrl}${media.still_path}`
                           }
                           alt={media.name}
                           sx={{
@@ -104,9 +90,7 @@ export default function SeasonsCarousel({ seasons }) {
 
                       <CardContent sx={{ width: width, px: 0 }}>
                         <Link
-                          href={`${location.pathname}/seasons/${
-                            media.name.split(' ')[1]
-                          }`}
+                          href={`/tv/${params.id}/seasons/${params.seasonNumber}/episodes/${media.episode_number}`}
                           variant='inherit'
                           color='inherit'
                           underline='none'
@@ -133,7 +117,7 @@ export default function SeasonsCarousel({ seasons }) {
         </>
       ) : (
         <Typography sx={{ textAlign: 'left', my: 1, mx: 3 }}>
-          No Seasons found
+          No Episodes found
         </Typography>
       )}
     </>
