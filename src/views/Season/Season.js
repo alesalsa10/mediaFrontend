@@ -218,11 +218,11 @@ export default function Season() {
             </Grid>
           ) : params.seasonNumber &&
             params.episodeNumber &&
-            state.response.mediaDetails.guest_stars.length > 0 ? (
+            state.response.mediaDetails.credits.cast.length > 0 ? (
             <Grid container>
               <Grid item xs={12}>
                 <TopBillCast
-                  cast={state.response.mediaDetails.guest_stars}
+                  cast={state.response.mediaDetails.credits.cast}
                   mediaType={params.mediaType}
                   mediaId={params.id}
                   params={params}

@@ -39,7 +39,7 @@ export default function TopBillCast({ cast, mediaType, mediaId, params }) {
       //getEpisode();
       return `/tv/${params.id}/seasons/${
         params.seasonNumber
-      }/episode/${params.episodeNumber}/full_cast`;
+      }/episodes/${params.episodeNumber}/full_cast`;
     } else if (params.seasonNumber) {
       //getSeason();
       return `/tv/${params.id}/seasons/${
@@ -59,7 +59,7 @@ export default function TopBillCast({ cast, mediaType, mediaId, params }) {
     <Grid container>
       <Grid item sx={{ px: 3, pt: 3 }}>
         <Typography component={'h2'} variant='hy'>
-          Top Billed Cast
+          Main Cast
         </Typography>
       </Grid>
       {cast.length > 0 ? (

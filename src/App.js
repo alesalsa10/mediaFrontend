@@ -36,18 +36,9 @@ function App() {
               <Route path='/search' element={<SearchResults />} />
               <Route path={`/:mediaType/lists/:listType`} element={<List />} />
 
+              <Route  path='/person/:id' />
+
               <Route path='/:mediaType/:id' element={<Media />} />
-
-              <Route path='/:mediaType/:id/full_cast' element={<FullCast />} />
-              <Route
-                path='/tv/:id/seasons/:seasonNumber/full_cast'
-                element={<FullCast />}
-              />
-              {/* <Route
-                path='/tv/:id/season/:seasonNumber/'
-                element={<FullCast />}
-              /> */}
-
               <Route path='/:mediaType/isbn/:id' element={<Media />} />
 
               <Route
@@ -57,6 +48,16 @@ function App() {
               <Route
                 path='/tv/:id/seasons/:seasonNumber/episodes/:episodeNumber'
                 element={<Season />}
+              />
+
+              <Route path='/:mediaType/:id/full_cast' element={<FullCast />} />
+              <Route
+                path='/tv/:id/seasons/:seasonNumber/full_cast'
+                element={<FullCast />}
+              />
+              <Route
+                path='/tv/:id/seasons/:seasonNumber/episodes/:episodeNumber/full_cast'
+                element={<FullCast />}
               />
             </Route>
           </Routes>

@@ -6,12 +6,11 @@ import placeholder from '../../assets/placeholder.png';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 export default function FullCast() {
-      const [state, setState] = useState({
-      loading: true,
-      response: null,
-      error: null,
-    });
-
+  const [state, setState] = useState({
+    loading: true,
+    response: null,
+    error: null,
+  });
 
   let params = useParams();
 
@@ -57,7 +56,7 @@ export default function FullCast() {
 
       setState({
         loading: false,
-        response: {...response.data, ...sortedObject},
+        response: { ...response.data, ...sortedObject },
         error: null,
       });
     } catch (error) {
@@ -106,33 +105,22 @@ export default function FullCast() {
       });
     } catch (error) {
       console.log(error);
-       setState({
-         loading: false,
-         response: null,
-         error: error.response.data.Msg,
-       });
+      setState({
+        loading: false,
+        response: null,
+        error: error.response.data.Msg,
+      });
     }
-  };
-
-  const capitalizeTitle = (title) => {
-    const arr = title.split(' ');
-    for (var i = 0; i < arr.length; i++) {
-      arr[i] = arr[i].charAt(0).toUpperCase() + arr[i].slice(1).toLowerCase();
-    }
-    return arr.join(' ');
-  };
-
-  const getTitle = () => {
-    let unformattedTitle = params.id.split('-');
-    unformattedTitle = unformattedTitle.slice(1).join(' ');
-    return capitalizeTitle(unformattedTitle);
   };
 
   const getEpisode = async () => {
-    //http://localhost:3000/media/getById/movie/1420
+    //router.get('/tv/:id/season/:seasonNumber/episode/:episodeNumber', mediaControllers.getEpisode);
+
     try {
       const response = await axios.get(
-        `http://localhost:3000/media/tv/season/${params.id}/${params.seasonNumber}/episode/${params.episodeNumber}`
+        `http://localhost:3000/media/tv/${params.id.split('-')[0]}/season/${
+          params.seasonNumber
+        }/episode/${params.episodeNumber}`
       );
       console.log(response.data);
       let sorted = [];
@@ -159,7 +147,6 @@ export default function FullCast() {
         response: { ...response.data, ...sortedObject },
         error: null,
       });
-
     } catch (error) {
       console.log(error);
       setState({
@@ -168,6 +155,20 @@ export default function FullCast() {
         error: error.response.data.Msg,
       });
     }
+  };
+
+  const capitalizeTitle = (title) => {
+    const arr = title.split(' ');
+    for (var i = 0; i < arr.length; i++) {
+      arr[i] = arr[i].charAt(0).toUpperCase() + arr[i].slice(1).toLowerCase();
+    }
+    return arr.join(' ');
+  };
+
+  const getTitle = () => {
+    let unformattedTitle = params.id.split('-');
+    unformattedTitle = unformattedTitle.slice(1).join(' ');
+    return capitalizeTitle(unformattedTitle);
   };
 
   useEffect(() => {
@@ -188,17 +189,17 @@ export default function FullCast() {
 
   const baseImgUrl = 'https://image.tmdb.org/t/p/original';
 
-  const createLink = ()=>{
+  const createLink = () => {
     if (params.mediaType === 'movie' || params.mediaType === 'tv') {
-        return `/${params.mediaType}/${params.id}`
+      return `/${params.mediaType}/${params.id}`;
     } else if (params.seasonNumber && params.episodeNumber) {
-      return `tv/${params.id}/seasons/${params.seasonNumber}`
+      return `/tv/${params.id}/seasons/${params.seasonNumber}`;
     } else if (params.seasonNumber) {
-      return `/tv/${params.id}`
+      return `/tv/${params.id}`;
     }
-  }
+  };
 
-  const createSubTitle = ()=>{
+  const createSubTitle = () => {
     if (params.mediaType === 'movie' || params.mediaType === 'tv') {
       return `Back to Main`;
     } else if (params.seasonNumber && params.episodeNumber) {
@@ -206,7 +207,7 @@ export default function FullCast() {
     } else if (params.seasonNumber) {
       return `Back to Main`;
     }
-  }
+  };
 
   return (
     <>
@@ -512,7 +513,64 @@ export default function FullCast() {
                     </>
                   ) : (
                     <Typography sx={{ textAlign: 'left', m: 1 }}>
-                      No cast available
+                      No crew available
+                    </Typography>
+                  )}
+                </Typography>
+                <Typography variant='h6'>
+                  Guest stars ({state.response.mediaDetails.credits.guest_stars.length})
+                  {state.response.mediaDetails.credits.guest_stars.length > 0 ? (
+                    <>
+                      {state.response.mediaDetails.credits.guest_stars.map(
+                        (actor, index) => (
+                          <Box
+                            key={index + actor.name}
+                            sx={{ display: 'flex', flexDirection: 'row' }}
+                          >
+                            <Link href={`/people/${actor.id}`}>
+                              <Box
+                                component={'img'}
+                                src={
+                                  !actor.profile_path
+                                    ? placeholder
+                                    : `${baseImgUrl}${actor.profile_path}`
+                                }
+                                sx={{ width: 50, borderRadius: '3px' }}
+                              ></Box>
+                            </Link>
+                            <Box
+                              sx={{
+                                justifyContent: 'center',
+                                flexDirection: 'column',
+                                display: 'flex',
+                                pl: 2,
+                              }}
+                            >
+                              <Link
+                                href={`/people/${actor.id}`}
+                                variant='inherit'
+                                color='inherit'
+                                underline='none'
+                                sx={{ ':hover': { color: 'primary.main' } }}
+                              >
+                                <Typography variant='h6'>
+                                  {actor.name}
+                                </Typography>
+                              </Link>
+                              <Typography
+                                variant='body2'
+                                color={'text.secondary'}
+                              >
+                                {actor.character}
+                              </Typography>
+                            </Box>
+                          </Box>
+                        )
+                      )}
+                    </>
+                  ) : (
+                    <Typography sx={{ textAlign: 'left', m: 1 }}>
+                      No guest stars available
                     </Typography>
                   )}
                 </Typography>
