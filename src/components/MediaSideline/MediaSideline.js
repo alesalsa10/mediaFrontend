@@ -11,7 +11,7 @@ export default function MediaSideline({ media, mediaType }) {
     }
   }
   return (
-    <Box sx={{ display: 'flex', flexDirection: {xs: 'column', sm:'row'}, justifyContent:'space-between' }}>
+    <Box sx={{ display: 'flex', flexDirection: {xs: 'column', sm:'row'}, justifyContent:'space-between', flexWrap: 'wrap'}}>
       <Box>
         <Typography variant='h6' sx={{ fontWeight: '500' }}>
           Status

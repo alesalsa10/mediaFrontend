@@ -15,6 +15,7 @@ import List from './views/List/List';
 import SearchResults from './views/SearchResults/SearchResults';
 import FullCast from './views/FullCast/FullCast';
 import Season from './views/Season/Season';
+import Person from './views/Person/Person';
 function App() {
   return (
     <>
@@ -36,7 +37,7 @@ function App() {
               <Route path='/search' element={<SearchResults />} />
               <Route path={`/:mediaType/lists/:listType`} element={<List />} />
 
-              <Route  path='/person/:id' />
+              <Route  path='/person/:id' element={<Person/>}/>
 
               <Route path='/:mediaType/:id' element={<Media />} />
               <Route path='/:mediaType/isbn/:id' element={<Media />} />

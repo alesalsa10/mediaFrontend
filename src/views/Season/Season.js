@@ -11,12 +11,14 @@ import EpisodesCarousel from '../../components/EpisodesCarousel/EpisodesCarousel
 export default function Season() {
   const params = useParams();
 
-  const [state, setState] = useState({loading: true, response: null, error: null})
+  const [state, setState] = useState({
+    loading: true,
+    response: null,
+    error: null,
+  });
 
   const [hasTrailer, setHasTrailer] = useState(false);
   const [videoKey, setVideoKey] = useState();
-
-
 
   const getSeason = async () => {
     //http://localhost:3000/media/tv/season/1420/3
@@ -50,7 +52,6 @@ export default function Season() {
         response: response.data,
         error: null,
       });
-
     } catch (error) {
       console.log(error.response.data.Msg);
       setState({
@@ -76,16 +77,15 @@ export default function Season() {
       setState({
         loading: false,
         response: response.data,
-        error: null
-      })
-
+        error: null,
+      });
     } catch (error) {
-      console.log(error.response.data.Msg);      
+      console.log(error.response.data.Msg);
       setState({
         loading: false,
         response: null,
-        error: error.response.data.Msg
-      })
+        error: error.response.data.Msg,
+      });
     }
   };
 
@@ -95,157 +95,160 @@ export default function Season() {
     } else if (params.seasonNumber) {
       getSeason();
     } else {
-
-     setState({
-       loading: false,
-       response: null,
-       error: 'This page does not exist',
-     });
+      setState({
+        loading: false,
+        response: null,
+        error: 'This page does not exist',
+      });
     }
   }, [params]);
   return (
-    <>
-      {state.loading && !state.error ? (
-        <>
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: { xs: 'column', sm: 'row' },
-              flexGrow: 1,
-              flexShrink: 1,
-              flexBasis: '0%',
-              mx: 2,
-            }}
-          >
-            <Box sx={{ alignSelf: { xs: 'center', sm: '' } }}>
-              <Skeleton
-                sx={{
-                  width: { xs: 150, sm: 200 },
-                  height: { xs: 250, sm: 350 },
-                  transform: 'scale(1,1)',
-                  my: 1,
-                }}
-              />
-            </Box>
+    <Grid container justifyContent='center'>
+      <Grid item xs={12} md={8} p={8} px={{ xs: 3, md: 0 }} py={1}>
+        {state.loading && !state.error ? (
+          <>
             <Box
               sx={{
                 display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                p: { xs: 0, sm: 2 },
-                width: '100%',
+                flexDirection: { xs: 'column', sm: 'row' },
+                flexGrow: 1,
+                flexShrink: 1,
+                flexBasis: '0%',
+                mx: 2,
               }}
             >
-              <Skeleton height={30} width={'50%'} />
-              <Skeleton height={25} width={'25%'} sx={{ my: 2 }} />
-              <Skeleton height={20} width={'100%'} />{' '}
-              <Skeleton height={20} width={'100%'} />{' '}
-              <Skeleton height={20} width={'75%'} />
-            </Box>
-          </Box>
-          {params.mediaType !== 'book' ? (
-            <>
-              <Box sx={{ px: 1, pt: 3 }}>
-                <Skeleton width={75} height={30} />
+              <Box sx={{ alignSelf: { xs: 'center', sm: '' } }}>
+                <Skeleton
+                  sx={{
+                    width: { xs: 150, sm: 200 },
+                    height: { xs: 250, sm: 350 },
+                    transform: 'scale(1,1)',
+                    my: 1,
+                  }}
+                />
               </Box>
               <Box
                 sx={{
-                  p: 1,
                   display: 'flex',
-                  flexDirection: 'row',
-                  overflow: 'hidden',
-                  gap: '10px',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  p: { xs: 0, sm: 2 },
+                  width: '100%',
                 }}
               >
-                <>
-                  {[...Array(5).keys()].map((item, index) => (
-                    <Box key={index}>
-                      <Skeleton
-                        animation='wave'
-                        variant='rectangular'
-                        width={150}
-                        height={250}
-                        sx={{ mb: 2 }}
-                      />
-                      <Skeleton
-                        animation='wave'
-                        variant='rectangular'
-                        width={130}
-                        height={16}
-                        sx={{ mb: 2 }}
-                      />
-                      <Skeleton
-                        animation='wave'
-                        variant='rectangular'
-                        width={110}
-                        height={10}
-                        sx={{ mb: 2 }}
-                      />
-                    </Box>
-                  ))}
-                </>
+                <Skeleton height={30} width={'50%'} />
+                <Skeleton height={25} width={'25%'} sx={{ my: 2 }} />
+                <Skeleton height={20} width={'100%'} />{' '}
+                <Skeleton height={20} width={'100%'} />{' '}
+                <Skeleton height={20} width={'75%'} />
               </Box>
-            </>
-          ) : (
-            <></>
-          )}
-        </>
-      ) : !state.loading && state.error ? (
-        <Alert severity='error' variant='outlined' sx={{ p: 2, m: 2 }}>
-          {state.error}
-        </Alert>
-      ) : (
-        <Grid container>
-          <Grid item>
-            <SeasonOverview
-              mediaDetails={state.response.mediaDetails}
-              hasTrailer={hasTrailer}
-              videoKey={videoKey}
-            />
-          </Grid>
-          {params.seasonNumber &&
-          !params.episodeNumber &&
-          state.response.mediaDetails.credits.cast.length > 0 ? (
-            <Grid container>
-              <Grid item xs={12}>
-                <TopBillCast
-                  cast={state.response.mediaDetails.credits.cast}
-                  mediaType={params.mediaType}
-                  mediaId={params.id}
-                  params={params}
-                />
-              </Grid>
+            </Box>
+            {params.mediaType !== 'book' ? (
+              <>
+                <Box sx={{ px: 1, pt: 3 }}>
+                  <Skeleton width={75} height={30} />
+                </Box>
+                <Box
+                  sx={{
+                    p: 1,
+                    display: 'flex',
+                    flexDirection: 'row',
+                    overflow: 'hidden',
+                    gap: '10px',
+                  }}
+                >
+                  <>
+                    {[...Array(5).keys()].map((item, index) => (
+                      <Box key={index}>
+                        <Skeleton
+                          animation='wave'
+                          variant='rectangular'
+                          width={150}
+                          height={250}
+                          sx={{ mb: 2 }}
+                        />
+                        <Skeleton
+                          animation='wave'
+                          variant='rectangular'
+                          width={130}
+                          height={16}
+                          sx={{ mb: 2 }}
+                        />
+                        <Skeleton
+                          animation='wave'
+                          variant='rectangular'
+                          width={110}
+                          height={10}
+                          sx={{ mb: 2 }}
+                        />
+                      </Box>
+                    ))}
+                  </>
+                </Box>
+              </>
+            ) : (
+              <></>
+            )}
+          </>
+        ) : !state.loading && state.error ? (
+          <Alert severity='error' variant='outlined' sx={{ p: 2, m: 2 }}>
+            {state.error}
+          </Alert>
+        ) : (
+          <Grid container>
+            <Grid item>
+              <SeasonOverview
+                mediaDetails={state.response.mediaDetails}
+                hasTrailer={hasTrailer}
+                videoKey={videoKey}
+              />
             </Grid>
-          ) : params.seasonNumber &&
-            params.episodeNumber &&
+            {params.seasonNumber &&
+            !params.episodeNumber &&
             state.response.mediaDetails.credits.cast.length > 0 ? (
-            <Grid container>
-              <Grid item xs={12}>
-                <TopBillCast
-                  cast={state.response.mediaDetails.credits.cast}
-                  mediaType={params.mediaType}
-                  mediaId={params.id}
-                  params={params}
-                />
+              <Grid container>
+                <Grid item xs={12}>
+                  <TopBillCast
+                    cast={state.response.mediaDetails.credits.cast}
+                    mediaType={params.mediaType}
+                    mediaId={params.id}
+                    params={params}
+                  />
+                </Grid>
               </Grid>
-            </Grid>
-          ) : (
-            <></>
-          )}
-          {params.seasonNumber &&
-          !params.episodeNumber &&
-          state.response.mediaDetails.episodes.length > 0 &&
-          params.seasonNumber ? (
-            <Grid container>
-              <Grid item xs={12}>
-                <EpisodesCarousel episodes={state.response.mediaDetails.episodes} />
+            ) : params.seasonNumber &&
+              params.episodeNumber &&
+              state.response.mediaDetails.credits.cast.length > 0 ? (
+              <Grid container>
+                <Grid item xs={12}>
+                  <TopBillCast
+                    cast={state.response.mediaDetails.credits.cast}
+                    mediaType={params.mediaType}
+                    mediaId={params.id}
+                    params={params}
+                  />
+                </Grid>
               </Grid>
-            </Grid>
-          ) : (
-            <></>
-          )}
-        </Grid>
-      )}
-    </>
+            ) : (
+              <></>
+            )}
+            {params.seasonNumber &&
+            !params.episodeNumber &&
+            state.response.mediaDetails.episodes.length > 0 &&
+            params.seasonNumber ? (
+              <Grid container>
+                <Grid item xs={12}>
+                  <EpisodesCarousel
+                    episodes={state.response.mediaDetails.episodes}
+                  />
+                </Grid>
+              </Grid>
+            ) : (
+              <></>
+            )}
+          </Grid>
+        )}
+      </Grid>
+    </Grid>
   );
 }

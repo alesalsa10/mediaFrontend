@@ -136,7 +136,7 @@ export default function List() {
       <Grid
         item
         xs={12}
-        md={10}
+        md={8}
         justifyContent='center'
         sx={{ textAlign: 'center', display: 'flex' }}
       >
@@ -152,7 +152,7 @@ export default function List() {
           <Header params={params} />
         )}
       </Grid>
-      <Grid item xs={12} md={10}>
+      <Grid item xs={12} md={8}>
         <Grid
           container
           spacing={1}
@@ -173,7 +173,7 @@ export default function List() {
                   {state.response.map((media, index) => (
                     <Grid
                       item
-                      xs
+                      xs='auto'
                       mb={1}
                       key={
                         params.mediaType === 'movie' ||
@@ -380,7 +380,7 @@ export default function List() {
         <Grid
           item
           xs={12}
-          md={10}
+          md={8}
           sx={{ justifyContent: 'center', display: 'flex' }}
         >
           {!state.loading ? (

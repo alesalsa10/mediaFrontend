@@ -517,63 +517,69 @@ export default function FullCast() {
                     </Typography>
                   )}
                 </Typography>
-                <Typography variant='h6'>
-                  Guest stars ({state.response.mediaDetails.credits.guest_stars.length})
-                  {state.response.mediaDetails.credits.guest_stars.length > 0 ? (
-                    <>
-                      {state.response.mediaDetails.credits.guest_stars.map(
-                        (actor, index) => (
-                          <Box
-                            key={index + actor.name}
-                            sx={{ display: 'flex', flexDirection: 'row' }}
-                          >
-                            <Link href={`/people/${actor.id}`}>
-                              <Box
-                                component={'img'}
-                                src={
-                                  !actor.profile_path
-                                    ? placeholder
-                                    : `${baseImgUrl}${actor.profile_path}`
-                                }
-                                sx={{ width: 50, borderRadius: '3px' }}
-                              ></Box>
-                            </Link>
+                {params.seasonNumber && params.episodeNumber ? (
+                  <Typography variant='h6'>
+                    Guest stars (
+                    {state.response.mediaDetails.credits.guest_stars.length})
+                    {state.response.mediaDetails.credits.guest_stars.length >
+                    0 ? (
+                      <>
+                        {state.response.mediaDetails.credits.guest_stars.map(
+                          (actor, index) => (
                             <Box
-                              sx={{
-                                justifyContent: 'center',
-                                flexDirection: 'column',
-                                display: 'flex',
-                                pl: 2,
-                              }}
+                              key={index + actor.name}
+                              sx={{ display: 'flex', flexDirection: 'row' }}
                             >
-                              <Link
-                                href={`/people/${actor.id}`}
-                                variant='inherit'
-                                color='inherit'
-                                underline='none'
-                                sx={{ ':hover': { color: 'primary.main' } }}
-                              >
-                                <Typography variant='h6'>
-                                  {actor.name}
-                                </Typography>
+                              <Link href={`/people/${actor.id}`}>
+                                <Box
+                                  component={'img'}
+                                  src={
+                                    !actor.profile_path
+                                      ? placeholder
+                                      : `${baseImgUrl}${actor.profile_path}`
+                                  }
+                                  sx={{ width: 50, borderRadius: '3px' }}
+                                ></Box>
                               </Link>
-                              <Typography
-                                variant='body2'
-                                color={'text.secondary'}
+                              <Box
+                                sx={{
+                                  justifyContent: 'center',
+                                  flexDirection: 'column',
+                                  display: 'flex',
+                                  pl: 2,
+                                }}
                               >
-                                {actor.character}
-                              </Typography>
+                                <Link
+                                  href={`/people/${actor.id}`}
+                                  variant='inherit'
+                                  color='inherit'
+                                  underline='none'
+                                  sx={{ ':hover': { color: 'primary.main' } }}
+                                >
+                                  <Typography variant='h6'>
+                                    {actor.name}
+                                  </Typography>
+                                </Link>
+                                <Typography
+                                  variant='body2'
+                                  color={'text.secondary'}
+                                >
+                                  {actor.character}
+                                </Typography>
+                              </Box>
                             </Box>
-                          </Box>
-                        )
-                      )}
-                    </>
-                  ) : (
-                    <Typography sx={{ textAlign: 'left', m: 1 }}>
-                      No guest stars available
-                    </Typography>
-                  )}
-                </Typography>
+                          )
+                        )}
+                      </>
+                    ) : (
+                      <Typography sx={{ textAlign: 'left', m: 1 }}>
+                        No guest stars available
+                      </Typography>
+                    )}
+                  </Typography>
+                ) : (
+                  <></>
+                )}
               </Box>
             </Grid>
           </Grid>

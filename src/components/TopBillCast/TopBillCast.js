@@ -87,7 +87,7 @@ export default function TopBillCast({ cast, mediaType, mediaId, params }) {
                   >
                     {/* <Card mediaType='people' media={actor} type='carousel' /> */}
                     <Card sx={{ boxShadow: 'none' }}>
-                      <Link href={`/people/${actor.id}`}>
+                      <Link href={`/people/${actor.id}-${actor.name.split(' ').join('-')}`}>
                         <CardMedia
                           ref={refElement}
                           onLoad={handleImageLoad}
@@ -99,9 +99,6 @@ export default function TopBillCast({ cast, mediaType, mediaId, params }) {
                           }
                           alt={actor.name}
                           sx={{
-                            // width: {
-                            //   xs: 'auto',
-                            // },
                             width: {
                               xs: 130,
                               sm: 170,

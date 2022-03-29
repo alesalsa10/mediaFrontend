@@ -127,136 +127,144 @@ export default function Media() {
     }
   }, [params]);
   return (
-    <>
-      {state.loading && !state.error ? (
-        <>
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: { xs: 'column', sm: 'row' },
-              flexGrow: 1,
-              flexShrink: 1,
-              flexBasis: '0%',
-              mx: 2,
-            }}
-          >
-            <Box sx={{ alignSelf: { xs: 'center', sm: '' } }}>
-              <Skeleton
-                sx={{
-                  width: { xs: 150, sm: 200 },
-                  height: { xs: 250, sm: 350 },
-                  transform: 'scale(1,1)',
-                  my: 1,
-                }}
-              />
-            </Box>
+    <Grid container justifyContent='center'>
+      <Grid item xs={12} md={8} p={8} px={{ xs: 3, md: 0 }} py={1}>
+        {state.loading && !state.error ? (
+          <>
             <Box
               sx={{
                 display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                p: { xs: 0, sm: 2 },
-                width: '100%',
+                flexDirection: { xs: 'column', sm: 'row' },
+                flexGrow: 1,
+                flexShrink: 1,
+                flexBasis: '0%',
+                mx: 2,
               }}
             >
-              <Skeleton height={30} width={'50%'} />
-              <Skeleton height={25} width={'25%'} sx={{ my: 2 }} />
-              <Skeleton height={20} width={'100%'} />{' '}
-              <Skeleton height={20} width={'100%'} />{' '}
-              <Skeleton height={20} width={'75%'} />
-            </Box>
-          </Box>
-          {params.mediaType !== 'book' ? (
-            <>
-              <Box sx={{ px: 1, pt: 3 }}>
-                <Skeleton width={75} height={30} />
+              <Box sx={{ alignSelf: { xs: 'center', sm: '' } }}>
+                <Skeleton
+                  sx={{
+                    width: { xs: 150, sm: 200 },
+                    height: { xs: 250, sm: 350 },
+                    transform: 'scale(1,1)',
+                    my: 1,
+                  }}
+                  animation='wave'
+                />
               </Box>
               <Box
                 sx={{
-                  p: 1,
                   display: 'flex',
-                  flexDirection: 'row',
-                  overflow: 'hidden',
-                  gap: '10px',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  p: { xs: 0, sm: 2 },
+                  width: '100%',
                 }}
               >
-                <>
-                  {[...Array(5).keys()].map((item, index) => (
-                    <Box key={index}>
-                      <Skeleton
-                        animation='wave'
-                        variant='rectangular'
-                        width={150}
-                        height={250}
-                        sx={{ mb: 2 }}
-                      />
-                      <Skeleton
-                        animation='wave'
-                        variant='rectangular'
-                        width={130}
-                        height={16}
-                        sx={{ mb: 2 }}
-                      />
-                      <Skeleton
-                        animation='wave'
-                        variant='rectangular'
-                        width={110}
-                        height={10}
-                        sx={{ mb: 2 }}
-                      />
-                    </Box>
-                  ))}
-                </>
-              </Box>
-            </>
-          ) : (
-            <></>
-          )}
-        </>
-      ) : !state.loading && state.error ? (
-        <Alert severity='error' variant='outlined' sx={{ p: 2, m: 2 }}>
-          {state.error}
-        </Alert>
-      ) : (
-        <Grid container>
-          <Grid item sx={{}}>
-            <Overview
-              mediaDetails={state.response.mediaDetails}
-              mediaType={params.mediaType}
-              hasTrailer={hasTrailer}
-              videoKey={videoKey}
-            />
-          </Grid>
-          {params.mediaType !== 'book' ? (
-            <Grid container>
-              <Grid item xs={12}>
-                <TopBillCast
-                  cast={state.response.mediaDetails.credits.cast}
-                  mediaType={params.mediaType}
-                  mediaId={params.id}
-                  params={params}
+                <Skeleton height={30} width={'50%'} animation='wave' />
+                <Skeleton
+                  height={25}
+                  width={'25%'}
+                  sx={{ my: 2 }}
+                  animation='wave'
                 />
-              </Grid>
+                <Skeleton height={20} width={'100%'} animation='wave' />{' '}
+                <Skeleton height={20} width={'100%'} animation='wave' />{' '}
+                <Skeleton height={20} width={'75%'} animation='wave' />
+              </Box>
+            </Box>
+            {params.mediaType !== 'book' ? (
+              <>
+                <Box sx={{ px: 1, pt: 3 }}>
+                  <Skeleton width={75} height={30} />
+                </Box>
+                <Box
+                  sx={{
+                    p: 1,
+                    display: 'flex',
+                    flexDirection: 'row',
+                    overflow: 'hidden',
+                    gap: '10px',
+                  }}
+                >
+                  <>
+                    {[...Array(5).keys()].map((item, index) => (
+                      <Box key={index}>
+                        <Skeleton
+                          animation='wave'
+                          variant='rectangular'
+                          width={150}
+                          height={250}
+                          sx={{ mb: 2 }}
+                        />
+                        <Skeleton
+                          animation='wave'
+                          variant='rectangular'
+                          width={130}
+                          height={16}
+                          sx={{ mb: 2 }}
+                        />
+                        <Skeleton
+                          animation='wave'
+                          variant='rectangular'
+                          width={110}
+                          height={10}
+                          sx={{ mb: 2 }}
+                        />
+                      </Box>
+                    ))}
+                  </>
+                </Box>
+              </>
+            ) : (
+              <></>
+            )}
+          </>
+        ) : !state.loading && state.error ? (
+          <Alert severity='error' variant='outlined' sx={{ p: 2, m: 2 }}>
+            {state.error}
+          </Alert>
+        ) : (
+          <Grid container>
+            <Grid item sx={{}}>
+              <Overview
+                mediaDetails={state.response.mediaDetails}
+                mediaType={params.mediaType}
+                hasTrailer={hasTrailer}
+                videoKey={videoKey}
+              />
             </Grid>
-          ) : (
-            <></>
-          )}
-          {params.mediaType === 'tv' ? (
-            <SeasonsCarousel seasons={state.response.mediaDetails.seasons} />
-          ) : (
-            <></>
-          )}
-          {params.mediaType !== 'book' ? (
-            <Recommendation
-              recommendations={
-                state.response.mediaDetails.recommendations.results
-              }
-            />
-          ) : (
-            <></>
-          )}
-        </Grid>
-      )}
-    </>
+            {params.mediaType !== 'book' ? (
+              <Grid container>
+                <Grid item xs={12}>
+                  <TopBillCast
+                    cast={state.response.mediaDetails.credits.cast}
+                    mediaType={params.mediaType}
+                    mediaId={params.id}
+                    params={params}
+                  />
+                </Grid>
+              </Grid>
+            ) : (
+              <></>
+            )}
+            {params.mediaType === 'tv' ? (
+              <SeasonsCarousel seasons={state.response.mediaDetails.seasons} />
+            ) : (
+              <></>
+            )}
+            {params.mediaType !== 'book' ? (
+              <Recommendation
+                recommendations={
+                  state.response.mediaDetails.recommendations.results
+                }
+              />
+            ) : (
+              <></>
+            )}
+          </Grid>
+        )}
+      </Grid>
+    </Grid>
   );
 }
