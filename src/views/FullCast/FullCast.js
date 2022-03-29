@@ -6,11 +6,12 @@ import placeholder from '../../assets/placeholder.png';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 export default function FullCast() {
-  //type will be movie, tv, seasaon, episode, book
-  const [data, setData] = useState();
-  const [error, setError] = useState();
-  const [status, setStatus] = useState('loading');
-  const [isError, setIsError] = useState(false);
+      const [state, setState] = useState({
+      loading: true,
+      response: null,
+      error: null,
+    });
+
 
   let params = useParams();
 
@@ -54,17 +55,18 @@ export default function FullCast() {
       // console.log(sorted)
       let sortedObject = { sorted };
 
-      setData({ ...response.data, ...sortedObject });
-      console.log(data);
-      setError();
-      setStatus('idle');
-      setIsError(false);
+      setState({
+        loading: false,
+        response: {...response.data, ...sortedObject},
+        error: null,
+      });
     } catch (error) {
       console.log(error);
-      setError(error.response.data.Msg);
-      setIsError(true);
-      setData();
-      setStatus('idle');
+      setState({
+        loading: false,
+        response: null,
+        error: error.response.data.Msg,
+      });
     }
   };
 
@@ -97,18 +99,18 @@ export default function FullCast() {
 
       // console.log(sorted)
       let sortedObject = { sorted };
-
-      setData({ ...response.data, ...sortedObject });
-      console.log(data);
-      setError();
-      setStatus('idle');
-      setIsError(false);
+      setState({
+        loading: false,
+        response: { ...response.data, ...sortedObject },
+        error: null,
+      });
     } catch (error) {
       console.log(error);
-      setError(error.response.data.Msg);
-      setIsError(true);
-      setData();
-      setStatus('idle');
+       setState({
+         loading: false,
+         response: null,
+         error: error.response.data.Msg,
+       });
     }
   };
 
@@ -152,18 +154,19 @@ export default function FullCast() {
 
       // console.log(sorted)
       let sortedObject = { sorted };
+      setState({
+        loading: false,
+        response: { ...response.data, ...sortedObject },
+        error: null,
+      });
 
-      setData({ ...response.data, ...sortedObject });
-      console.log(data);
-      setError();
-      setStatus('idle');
-      setIsError(false);
     } catch (error) {
       console.log(error);
-      setError(error.response.response.Msg);
-      setIsError(true);
-      setData();
-      setStatus('idle');
+      setState({
+        loading: false,
+        response: null,
+        error: error.response.data.Msg,
+      });
     }
   };
 
@@ -175,12 +178,12 @@ export default function FullCast() {
     } else if (params.seasonNumber) {
       getSeason();
     } else {
-      setIsError(true);
-      setError('Invalid media type');
+      setState({
+        loading: false,
+        response: null,
+        error: 'This page does not exist',
+      });
     }
-    // setStatus('idle');
-    // setData();
-    // setError('something went wrong')
   }, [params]);
 
   const baseImgUrl = 'https://image.tmdb.org/t/p/original';
@@ -207,7 +210,7 @@ export default function FullCast() {
 
   return (
     <>
-      {status === 'loading' && !isError && !data ? (
+      {state.loading && !state.error ? (
         <>
           <Grid container>
             <Grid item xs={12} p={0}>
@@ -326,9 +329,9 @@ export default function FullCast() {
             </Grid>
           </Grid>
         </>
-      ) : status === 'idle' && isError && !data ? (
+      ) : !state.loading && state.error ? (
         <Alert severity='error' variant='outlined' sx={{ p: 2, m: 2 }}>
-          {error}
+          {state.error}
         </Alert>
       ) : (
         <>
@@ -339,15 +342,15 @@ export default function FullCast() {
                   <Box
                     component={'img'}
                     src={
-                      !data.mediaDetails.poster_path
+                      !state.response.mediaDetails.poster_path
                         ? placeholder
-                        : `${baseImgUrl}${data.mediaDetails.poster_path}`
+                        : `${baseImgUrl}${state.response.mediaDetails.poster_path}`
                     }
                     sx={{
                       width: 60,
                       pr: 2,
                     }}
-                    alt={data.mediaDetails.id}
+                    alt={state.response.mediaDetails.id}
                   ></Box>
                 </Link>
                 <Box
@@ -364,10 +367,7 @@ export default function FullCast() {
                     underline='none'
                     sx={{ ':hover': { color: 'text.secondary' } }}
                   >
-                    <Typography variant='h6'>
-                      {getTitle()}{' '}
-                      
-                    </Typography>
+                    <Typography variant='h6'>{getTitle()} </Typography>
                   </Link>
                   <Link
                     href={createLink()}
@@ -381,7 +381,9 @@ export default function FullCast() {
                   >
                     <Typography sx={{ display: 'flex', flexDirection: 'row' }}>
                       <ArrowBackIcon />
-                      <Typography component={'span'}>{createSubTitle()}</Typography>
+                      <Typography component={'span'}>
+                        {createSubTitle()}
+                      </Typography>
                     </Typography>
                   </Link>
                 </Box>
@@ -392,51 +394,55 @@ export default function FullCast() {
             <Grid item xs={12} sm={6}>
               <Box sx={{ p: 2 }}>
                 <Typography variant='h6'>
-                  Cast ({data.mediaDetails.credits.cast.length})
-                  {data.mediaDetails.credits.cast.length > 0 ? (
+                  Cast ({state.response.mediaDetails.credits.cast.length})
+                  {state.response.mediaDetails.credits.cast.length > 0 ? (
                     <>
-                      {data.mediaDetails.credits.cast.map((actor, index) => (
-                        <Box
-                          key={index + actor.name}
-                          sx={{ display: 'flex', flexDirection: 'row' }}
-                        >
-                          <Link href={`/people/${actor.id}`}>
-                            <Box
-                              component={'img'}
-                              src={
-                                !actor.profile_path
-                                  ? placeholder
-                                  : `${baseImgUrl}${actor.profile_path}`
-                              }
-                              sx={{ width: 50, borderRadius: '3px' }}
-                            ></Box>
-                          </Link>
+                      {state.response.mediaDetails.credits.cast.map(
+                        (actor, index) => (
                           <Box
-                            sx={{
-                              justifyContent: 'center',
-                              flexDirection: 'column',
-                              display: 'flex',
-                              pl: 2,
-                            }}
+                            key={index + actor.name}
+                            sx={{ display: 'flex', flexDirection: 'row' }}
                           >
-                            <Link
-                              href={`/people/${actor.id}`}
-                              variant='inherit'
-                              color='inherit'
-                              underline='none'
-                              sx={{ ':hover': { color: 'primary.main' } }}
-                            >
-                              <Typography variant='h6'>{actor.name}</Typography>
+                            <Link href={`/people/${actor.id}`}>
+                              <Box
+                                component={'img'}
+                                src={
+                                  !actor.profile_path
+                                    ? placeholder
+                                    : `${baseImgUrl}${actor.profile_path}`
+                                }
+                                sx={{ width: 50, borderRadius: '3px' }}
+                              ></Box>
                             </Link>
-                            <Typography
-                              variant='body2'
-                              color={'text.secondary'}
+                            <Box
+                              sx={{
+                                justifyContent: 'center',
+                                flexDirection: 'column',
+                                display: 'flex',
+                                pl: 2,
+                              }}
                             >
-                              {actor.character}
-                            </Typography>
+                              <Link
+                                href={`/people/${actor.id}`}
+                                variant='inherit'
+                                color='inherit'
+                                underline='none'
+                                sx={{ ':hover': { color: 'primary.main' } }}
+                              >
+                                <Typography variant='h6'>
+                                  {actor.name}
+                                </Typography>
+                              </Link>
+                              <Typography
+                                variant='body2'
+                                color={'text.secondary'}
+                              >
+                                {actor.character}
+                              </Typography>
+                            </Box>
                           </Box>
-                        </Box>
-                      ))}
+                        )
+                      )}
                     </>
                   ) : (
                     <Typography sx={{ textAlign: 'left', m: 1 }}>
@@ -449,10 +455,10 @@ export default function FullCast() {
             <Grid item xs={12} sm={6}>
               <Box sx={{ p: 2 }}>
                 <Typography variant='h6'>
-                  Crew ({data.mediaDetails.credits.crew.length})
-                  {data.mediaDetails.credits.crew.length > 0 ? (
+                  Crew ({state.response.mediaDetails.credits.crew.length})
+                  {state.response.mediaDetails.credits.crew.length > 0 ? (
                     <>
-                      {data.sorted.map((department, index) => (
+                      {state.response.sorted.map((department, index) => (
                         <Fragment key={department.department + index}>
                           <Typography sx={{ fontWeight: 600 }}>
                             {department.department}

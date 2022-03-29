@@ -20,74 +20,87 @@ const { default: axios } = require('axios');
 export default function List() {
   let params = useParams();
   console.log(params);
-  const [data, setData] = useState([]);
-  const [error, setError] = useState();
-  const [status, setStatus] = useState('loading');
   const [page, setPage] = useState(1);
   const [showMore, setShowMore] = useState(false);
+  const [state, setState] = useState({
+    loading: true,
+    response: [],
+    error: null,
+  });
 
   const getMediaLists = async () => {
-    //setStatus('loading');
     if (!showMore) {
-      setStatus('loading');
+      setState((prevState) => ({ ...prevState, loading: true }));
     } else {
-      setStatus('idle');
+      setState((prevState) => ({ ...prevState, loading: false }));
     }
     try {
       const response = await axios.get(
         `http://localhost:3000/media/lists/${params.mediaType}/${params.listType}?page=${page}`
       );
       console.log(response.data);
-      setData([...data, ...response.data.results]);
-      setError();
-      setStatus('idle');
+      //setData([...data, ...response.data.results]);
+      setState({
+        loading: false,
+        response: [...state.response, ...response.data.results],
+        error: null,
+      });
       setShowMore(false);
-    } catch (e) {
-      console.log(e);
-      setError(e.response.data.Msg);
-      setData();
-      setStatus('idle');
+    } catch (error) {
+      console.log(error);
+      setState({
+        loading: false,
+        response: null,
+        error: error.response.data.Msg,
+      });
     }
   };
 
   const getPopularPeople = async () => {
     if (!showMore) {
-      setStatus('loading');
+      setState((prevState) => ({ ...prevState, loading: true }));
     } else {
-      setStatus('idle');
+      setState((prevState) => ({ ...prevState, loading: false }));
     }
     try {
       const response = await axios.get(
         `http://localhost:3000/people/lists/popular?page=${page}`
       );
       console.log(response.data);
-      setData([...data, ...response.data.results]);
-      setError();
-      setStatus('idle');
+      setState({
+        loading: false,
+        response: [...state.response, ...response.data.results],
+        error: null,
+      });
       setShowMore(false);
-    } catch (e) {
-      console.log(e);
-      setError(e.response.data.Msg);
-      setData();
-      setStatus('idle');
+    } catch (error) {
+      console.log(error);
+      setState({
+        loading: false,
+        response: null,
+        error: error.response.data.Msg,
+      });
     }
   };
 
   const getBestSellers = async () => {
-    setStatus('loading');
+    // setStatus('loading');
     try {
       const response = await axios.get(
         `http://localhost:3000/book/newYorkTimes/bestSellers`
       );
       console.log(response.data);
-      setData(response.data);
-      setError();
-      setStatus('idle');
-    } catch (e) {
-      console.log();
-      setError(e.response.data.Msg);
-      setData();
-      setStatus('idle');
+      setState({
+        loading: false,
+        response: response.data,
+        error: null,
+      });
+    } catch (error) {
+      setState({
+        loading: false,
+        response: null,
+        error: error.response.data.Msg,
+      });
     }
   };
 
@@ -99,13 +112,12 @@ export default function List() {
     } else if (params.mediaType === 'people') {
       getPopularPeople();
     } else {
-      setData();
-      setError('Invalid media type');
-      setStatus('idle');
+      setState({
+        loading: false,
+        response: null,
+        error: 'This page does not exist',
+      });
     }
-    // setStatus('loading');
-    // setError('')
-    // setData()
   }, [params, page]);
 
   const handleViewMore = () => {
@@ -128,7 +140,7 @@ export default function List() {
         justifyContent='center'
         sx={{ textAlign: 'center', display: 'flex' }}
       >
-        {status === 'loading' && !data && !error ? (
+        {state.loading && !state.error ? (
           <Skeleton
             animation='wave'
             variant='rectangular'
@@ -145,20 +157,20 @@ export default function List() {
           container
           spacing={1}
           sx={{
-            display: {xs: 'block', sm: 'flex'},
+            display: { xs: 'block', sm: 'flex' },
             justifyContent: 'center',
             gap: 2,
             justifyItems: 'center',
             px: 1,
           }}
         >
-          {data && !error && status === 'idle' ? (
+          {!state.loading && !state.error ? (
             <>
               {params.mediaType === 'movie' ||
               params.mediaType === 'tv' ||
               params.mediaType === 'people' ? (
                 <>
-                  {data.map((media, index) => (
+                  {state.response.map((media, index) => (
                     <Grid
                       item
                       xs
@@ -209,7 +221,7 @@ export default function List() {
                 </>
               ) : (
                 <>
-                  {data.map((media, index) => (
+                  {state.response.map((media, index) => (
                     <React.Fragment key={`${media.display_name}${index}`}>
                       <Grid item xs={12} sx={{ gridColumn: '1/-1' }}>
                         <Typography
@@ -270,10 +282,10 @@ export default function List() {
                 </>
               )}
             </>
-          ) : !data && error && status === 'idle' ? (
+          ) : !state.loading && state.error ? (
             <Grid item xs={12} sx={{ gridColumn: '1/-1' }}>
               <Alert severity='error' variant='outlined' p={2}>
-                {error}
+                {state.error}
               </Alert>
             </Grid>
           ) : (
@@ -364,14 +376,14 @@ export default function List() {
           )}
         </Grid>
       </Grid>
-      {params.mediaType !== 'book' && !error ? (
+      {params.mediaType !== 'book' && !state.error ? (
         <Grid
           item
           xs={12}
           md={10}
           sx={{ justifyContent: 'center', display: 'flex' }}
         >
-          {status !== 'loading' ? (
+          {!state.loading ? (
             <Button
               variant='contained'
               sx={{ py: 1, px: 3, lineHeight: 1 }}

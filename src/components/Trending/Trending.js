@@ -22,28 +22,30 @@ const { default: axios } = require('axios');
 
 export default function Trending({ mediaType }) {
   const [filter, setFilter] = useState('day');
-  const [data, setData] = useState();
-  const [error, setError] = useState();
-  const[isError, setIsError] = useState(false);
-  const [status, setStatus] = useState('loading');
+
+  const [state, setState] = useState({
+    loading: true,
+    response: null,
+    error: null,
+  });
 
   const getTrendingmedias = async (filter) => {
-    setStatus('loading');
     try {
       const response = await axios.get(
         `http://localhost:3000/media/trending/${mediaType}/${filter}`
       );
       console.log(response.data);
-      setData(response.data.results);
-      setError();
-      setIsError(false)
-      setStatus('idle');
-    } catch (e) {
-      console.log();
-      setIsError(true)
-      setError(e.response.data.Msg);
-      setData();
-      setStatus('idle');
+      setState({
+        loading: false,
+        response: response.data.results,
+        error: null,
+      });
+    } catch (error) {
+      setState({
+        loading: false,
+        response: null,
+        error: error.response.data.Msg,
+      });
     }
   };
 
@@ -72,8 +74,62 @@ export default function Trending({ mediaType }) {
             </FormControl>
           </Grid>
         </Grid>
-        {data && !isError && status === 'idle' ? (
-          <div className={`swiper-container ${mediaType === 'movie' ? 'slider1': 'slider2'}`}>
+
+        {state.loading && !state.error ? (
+          <Swiper
+            style={{ padding: '1px 0px' }}
+            spaceBetween={25}
+            slidesPerView='auto'
+          >
+            <>
+              {[...Array(5).keys()].map((item, index) => (
+                <SwiperSlide
+                  key={index}
+                  style={{
+                    boxShadow: '0 2px 8px rgb(0 0 0 / 25%)',
+                    width: 'fit-content',
+                    height: 'auto',
+                  }}
+                >
+                  <React.Fragment key={index}>
+                    <Skeleton
+                      animation='wave'
+                      variant='rectangular'
+                      width={250}
+                      height={300}
+                      sx={{ mb: 2 }}
+                    />
+                    <Skeleton
+                      animation='wave'
+                      variant='rectangular'
+                      width={170}
+                      height={16}
+                      sx={{ mb: 2, ml: 1 }}
+                    />
+                    <Skeleton
+                      animation='wave'
+                      variant='rectangular'
+                      width={140}
+                      height={10}
+                      sx={{ mb: 2, ml: 1 }}
+                    />
+                  </React.Fragment>
+                </SwiperSlide>
+              ))}
+            </>
+          </Swiper>
+        ) : !state.loading && state.error ? (
+          <Grid item xs={12} sx={{ gridColumn: '1/-1' }}>
+            <Alert severity='error' variant='outlined' p={2}>
+              {state.error}
+            </Alert>
+          </Grid>
+        ) : (
+          <div
+            className={`swiper-container ${
+              mediaType === 'movie' ? 'slider1' : 'slider2'
+            }`}
+          >
             <Swiper
               style={{ padding: '1px 0px' }}
               modules={[Navigation]}
@@ -83,7 +139,7 @@ export default function Trending({ mediaType }) {
               slidesPerView='auto'
               navigation
             >
-              {data.map((media, index) => (
+              {state.response.map((media, index) => (
                 <SwiperSlide
                   key={
                     mediaType === 'movie' || mediaType === 'book'
@@ -102,10 +158,46 @@ export default function Trending({ mediaType }) {
               ))}
             </Swiper>
           </div>
-        ) : !data && isError && status === 'idle' ? (
+        )}
+
+        {/* {!state.loading && state.response ? (
+          <div
+            className={`swiper-container ${
+              mediaType === 'movie' ? 'slider1' : 'slider2'
+            }`}
+          >
+            <Swiper
+              style={{ padding: '1px 0px' }}
+              modules={[Navigation]}
+              spaceBetween={15}
+              loop={true}
+              loopedSlides={1}
+              slidesPerView='auto'
+              navigation
+            >
+              {state.response.map((media, index) => (
+                <SwiperSlide
+                  key={
+                    mediaType === 'movie' || mediaType === 'book'
+                      ? media.title + index
+                      : media.name + index
+                  }
+                  style={{
+                    boxShadow: '0 2px 8px rgb(0 0 0 / 25%)',
+                    width: 'fit-content',
+                    height: 'auto',
+                    borderRadius: '3px',
+                  }}
+                >
+                  <Card mediaType={mediaType} media={media} type='carousel' />
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          </div>
+        ) : !state.loading && state.error ? (
           <Grid item xs={12} sx={{ gridColumn: '1/-1' }}>
             <Alert severity='error' variant='outlined' p={2}>
-              {error}
+              {state.error}
             </Alert>
           </Grid>
         ) : (
@@ -151,7 +243,7 @@ export default function Trending({ mediaType }) {
               ))}
             </>
           </Swiper>
-        )}
+        )} */}
       </Grid>
     </Grid>
   );

@@ -9,12 +9,14 @@ import SeasonsCarousel from '../../components/SeasonsCarousel/SeasonsCarousel';
 const { default: axios } = require('axios');
 
 export default function Media() {
-  const [data, setData] = useState();
-  const [error, setError] = useState();
-  const [status, setStatus] = useState('loading');
-  const [isError, setIsError] = useState(false);
   const [hasTrailer, setHasTrailer] = useState(false);
   const [videoKey, setVideoKey] = useState();
+    const [state, setState] = useState({
+      loading: true,
+      response: null,
+      error: null,
+    });
+
 
   let params = useParams();
   const location = useLocation();
@@ -48,16 +50,18 @@ export default function Media() {
         setHasTrailer(false);
       }
 
-      setData(response.data);
-      setError();
-      setStatus('idle');
-      setIsError(false);
+      setState({
+        loading: false,
+        response: response.data,
+        error: null,
+      });
     } catch (error) {
       console.log(error.response.data);
-      setIsError(true);
-      setStatus('idle');
-      setError(error.response.data.Msg);
-      setData();
+      setState({
+        loading: false,
+        response: null,
+        error: error.response.data.Msg,
+      });
     }
   };
 
@@ -68,16 +72,18 @@ export default function Media() {
         `http://localhost:3000/book/${params.id.split('-')[0]}`
       );
       console.log(response.data);
-      setData(response.data);
-      setError();
-      setStatus('idle');
-      setIsError(false);
+      setState({
+        loading: false,
+        response: response.data,
+        error: null,
+      });
     } catch (error) {
       console.log(error);
-      setIsError(true);
-      setError(error.response.data.Msg);
-      setData();
-      setStatus('idle');
+      setState({
+        loading: false,
+        response: null,
+        error: error.response.data.Msg,
+      });
     }
   };
 
@@ -88,16 +94,18 @@ export default function Media() {
         `http://localhost:3000/book/isbn/${params.id.split('-')[0]}`
       );
       console.log(response.data);
-      setData(response.data);
-      setError();
-      setStatus('idle');
-      setIsError(false);
+      setState({
+        loading: false,
+        response: response.data,
+        error: null,
+      });
     } catch (error) {
       console.log(error);
-      setIsError(true);
-      setError(error.response.data.Msg);
-      setData();
-      setStatus('idle');
+      setState({
+        loading: false,
+        response: null,
+        error: error.response.data.Msg,
+      });
     }
   };
 
@@ -111,16 +119,16 @@ export default function Media() {
     } else if (params.mediaType === 'book') {
       getBookById();
     } else {
-      setIsError(true);
-      setError('Invalid media type');
+     setState({
+       loading: false,
+       response: null,
+       error: 'This page does not exist',
+     });
     }
-    // setStatus('loading');
-    // setData();
-    // setError();
   }, [params]);
   return (
     <>
-      {status === 'loading' && !isError && !data ? (
+      {state.loading && !state.error ? (
         <>
           <Box
             sx={{
@@ -205,15 +213,15 @@ export default function Media() {
             <></>
           )}
         </>
-      ) : status === 'idle' && isError && !data ? (
+      ) : !state.loading && state.error ? (
         <Alert severity='error' variant='outlined' sx={{ p: 2, m: 2 }}>
-          {error}
+          {state.error}
         </Alert>
       ) : (
         <Grid container>
           <Grid item sx={{}}>
             <Overview
-              mediaDetails={data.mediaDetails}
+              mediaDetails={state.response.mediaDetails}
               mediaType={params.mediaType}
               hasTrailer={hasTrailer}
               videoKey={videoKey}
@@ -223,11 +231,10 @@ export default function Media() {
             <Grid container>
               <Grid item xs={12}>
                 <TopBillCast
-                  cast={data.mediaDetails.credits.cast}
+                  cast={state.response.mediaDetails.credits.cast}
                   mediaType={params.mediaType}
                   mediaId={params.id}
                   params={params}
-                  
                 />
               </Grid>
             </Grid>
@@ -235,15 +242,15 @@ export default function Media() {
             <></>
           )}
           {params.mediaType === 'tv' ? (
-            <SeasonsCarousel
-              seasons={data.mediaDetails.seasons}
-            />
+            <SeasonsCarousel seasons={state.response.mediaDetails.seasons} />
           ) : (
             <></>
           )}
           {params.mediaType !== 'book' ? (
             <Recommendation
-              recommendations={data.mediaDetails.recommendations.results}
+              recommendations={
+                state.response.mediaDetails.recommendations.results
+              }
             />
           ) : (
             <></>

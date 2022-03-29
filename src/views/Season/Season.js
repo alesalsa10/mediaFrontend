@@ -93,7 +93,7 @@ export default function Season() {
     if (params.seasonNumber && params.episodeNumber) {
       getEpisode();
     } else if (params.seasonNumber) {
-      //getSeason();
+      getSeason();
     } else {
 
      setState({
