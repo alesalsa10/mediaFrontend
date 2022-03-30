@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -14,9 +14,10 @@ import { useSelector, useDispatch } from 'react-redux';
 import { signin } from '../../../features/auth/authSlice';
 import Alert from '@mui/material/Alert';
 import CircularProgress from '@mui/material/CircularProgress';
-
+import { useNavigate } from 'react-router-dom';
 
 export default function Signin() {
+  let navigate = useNavigate();
   const theme = createTheme();
   const dispatch = useDispatch();
   const authData = useSelector((state) => state.auth);
@@ -31,6 +32,18 @@ export default function Signin() {
       email: email,
     };
     dispatch(signin(data));
+  };
+
+  useEffect(() => {
+    if (authData.isAuth) {
+      navigate('/');
+    }
+  }, [authData.isAuth]);
+
+  const handleRemberMeClick = (event) => {
+    event.preventDefault()
+    console.log('you clicked me');
+    
   };
 
   const checkErrors = (errors, name) => {
@@ -123,7 +136,13 @@ export default function Signin() {
               helperText={chooseHelperText(authData.errors, 'password')}
             />
             <FormControlLabel
-              control={<Checkbox value='remember' color='primary' />}
+              control={
+                <Checkbox
+                  value='remember'
+                  color='primary'
+                  onClick={handleRemberMeClick}
+                />
+              }
               label='Remember me'
             />
             <Button

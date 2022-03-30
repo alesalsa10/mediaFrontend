@@ -5,7 +5,7 @@ const initialState = {
   status: 'idle',
   errors: null,
   isAuth: false,
-  token: '',
+  user: null,
 };
 
 const createAccount = async (data) => {
@@ -66,20 +66,20 @@ export const authSlice = createSlice({
         state.status = 'idle';
         state.errors = null;
         state.isAuth = true;
-        state.token = action.payload;
+        state.user = action.payload;
       })
       .addCase(register.rejected, (state, action) => {
         state.status = 'idle';
         state.errors = action.payload;
         state.isAuth = false;
-        state.token = null;
+        state.user = null;
       })
       .addCase(signin.pending, (state) => {
         state.status = 'loading';
       })
       .addCase(signin.fulfilled, (state, action) => {
         state.status = 'idle';
-        state.token = action.payload;
+        state.user = action.payload;
         state.errors = null;
         state.isAuth = true;
       })
@@ -87,7 +87,7 @@ export const authSlice = createSlice({
         state.status = 'idle';
         state.errors = action.payload;
         state.isAuth = false;
-        state.token = null;
+        state.user = null;
       });
   },
 });
