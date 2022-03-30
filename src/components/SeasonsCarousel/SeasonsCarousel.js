@@ -7,7 +7,7 @@ import {
   CardContent,
 } from '@mui/material';
 import React, { useState, useRef, useEffect } from 'react';
-import { Navigation } from 'swiper';
+import { Scrollbar } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 // import Card from '../Card/Card'
 import { useLocation } from 'react-router-dom';
@@ -59,13 +59,14 @@ export default function SeasonsCarousel({ seasons }) {
           <Grid item sx={{ p: 3 }} xs={12}>
             <div className={`swiper-container ${'actors'}`}>
               <Swiper
-                style={{ padding: '1px 0px' }}
-                modules={[Navigation]}
+                style={{ padding: '1rem 0px' }}
+                modules={[Scrollbar]}
                 spaceBetween={15}
                 //loop={true}
                 loopedSlides={1}
                 slidesPerView='auto'
-                navigation
+                //navigation
+                scrollbar={{ draggable: true }}
               >
                 {filtered.map((media, index) => (
                   <SwiperSlide

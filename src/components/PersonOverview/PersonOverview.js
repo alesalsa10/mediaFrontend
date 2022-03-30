@@ -21,7 +21,7 @@ export default function PersonOverview({ data }) {
       sx={{
         display: 'grid',
         gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, auto)' },
-        p: 3,
+        pr: 3,
         gridGap: '1rem',
         alignItems: 'center',
       }}
@@ -42,7 +42,7 @@ export default function PersonOverview({ data }) {
           justifySelf: { xs: 'center', sm: 'auto' },
         }}
       ></Box>
-      <Box>
+      <Box sx={{overflow: 'hidden'}}>
         <Typography variant='h5' component={'div'} sx={{ py: '0.5rem' }}>
           {data.name}
         </Typography>

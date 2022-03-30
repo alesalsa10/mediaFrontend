@@ -10,11 +10,11 @@ import {
 } from '@mui/material';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation } from 'swiper';
+import { Scrollbar } from 'swiper';
 
 import 'react-circular-progressbar/dist/styles.css';
 import 'swiper/css';
-import 'swiper/css/navigation';
+import 'swiper/css/scrollbar'
 
 import Card from '../Card/Card';
 
@@ -131,13 +131,13 @@ export default function Trending({ mediaType }) {
             }`}
           >
             <Swiper
-              style={{ padding: '1px 0px' }}
-              modules={[Navigation]}
+              style={{ padding: '1rem 0px', }}
+              modules={[Scrollbar]}
               spaceBetween={15}
-              loop={true}
+              //loop={true}
               loopedSlides={1}
               slidesPerView='auto'
-              navigation
+              scrollbar={{ draggable: true }}
             >
               {state.response.map((media, index) => (
                 <SwiperSlide

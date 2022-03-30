@@ -4,11 +4,12 @@ import {
 } from '@mui/material';
 import React, { } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation } from 'swiper';
+import { Scrollbar } from 'swiper';
 
 
 import 'swiper/css';
 import 'swiper/css/navigation';
+import 'swiper/css/scrollbar';
 import Card from '../Card/Card';
 
 export default function Recommendation({ recommendations }) {
@@ -27,13 +28,14 @@ export default function Recommendation({ recommendations }) {
           <Grid item sx={{ p: 3 }} xs={12}>
             <div className={`swiper-container ${'actors'}`}>
               <Swiper
-                style={{ padding: '1px 0px' }}
-                modules={[Navigation]}
+                style={{ padding: '1rem 0px' }}
+                modules={[Scrollbar]}
                 spaceBetween={15}
-                loop={true}
+                //loop={true}
                 loopedSlides={1}
                 slidesPerView='auto'
-                navigation
+                //navigation
+                scrollbar={{ draggable: true }}
               >
                 {recommendations.map((media, index) => (
                   <SwiperSlide
@@ -47,8 +49,11 @@ export default function Recommendation({ recommendations }) {
                       borderRadius: '3px',
                     }}
                   >
-                    <Card  mediaType={media.media_type} media={media} type='carousel'/>
-                    
+                    <Card
+                      mediaType={media.media_type}
+                      media={media}
+                      type='carousel'
+                    />
                   </SwiperSlide>
                 ))}
               </Swiper>

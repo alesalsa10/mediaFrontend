@@ -3,6 +3,8 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { Alert, Box, Grid, Skeleton } from '@mui/material';
 import PersonOverview from '../../components/PersonOverview/PersonOverview';
+import PersonalInfo from '../../components/PersonalInfo/PersonalInfo';
+import AllCredits from '../../components/AllCredits/AllCredits';
 
 export default function Person() {
   const [state, setState] = useState({
@@ -135,6 +137,12 @@ export default function Person() {
           <Grid container>  
             <Grid item xs={12}>
                 <PersonOverview data={state.response}/>
+            </Grid>
+            <Grid item xs={12} sm={3}>
+              <PersonalInfo info={state.response}/>
+            </Grid>
+            <Grid item xs={12} sm={9}>
+              <AllCredits credits={state.response.combined_credits}/>
             </Grid>
           </Grid>
         )}

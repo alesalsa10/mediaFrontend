@@ -8,12 +8,13 @@ import {
 } from '@mui/material';
 import React, { useState, useRef, useEffect } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation } from 'swiper';
+import { Scrollbar } from 'swiper';
 
 import placeholder from '../../assets/placeholder.png';
 
 import 'swiper/css';
 import 'swiper/css/navigation';
+import 'swiper/css/scrollbar';
 
 export default function TopBillCast({ cast, mediaType, mediaId, params }) {
   const [width, setWidth] = useState();
@@ -67,13 +68,14 @@ export default function TopBillCast({ cast, mediaType, mediaId, params }) {
           <Grid item sx={{ p: 3 }} xs={12}>
             <div className={`swiper-container ${'actors'}`}>
               <Swiper
-                style={{ padding: '1px 0px' }}
-                modules={[Navigation]}
+                style={{ padding: '1rem 0px' }}
+                modules={[Scrollbar]}
                 spaceBetween={15}
                 //loop={true}
                 loopedSlides={1}
                 slidesPerView='auto'
-                navigation
+                //navigation
+                scrollbar={{ draggable: true }}
               >
                 {cast.slice(0, 6).map((actor, index) => (
                   <SwiperSlide
@@ -87,7 +89,11 @@ export default function TopBillCast({ cast, mediaType, mediaId, params }) {
                   >
                     {/* <Card mediaType='people' media={actor} type='carousel' /> */}
                     <Card sx={{ boxShadow: 'none' }}>
-                      <Link href={`/people/${actor.id}-${actor.name.split(' ').join('-')}`}>
+                      <Link
+                        href={`/person/${actor.id}-${actor.name
+                          .split(' ')
+                          .join('-')}`}
+                      >
                         <CardMedia
                           ref={refElement}
                           onLoad={handleImageLoad}
@@ -109,7 +115,7 @@ export default function TopBillCast({ cast, mediaType, mediaId, params }) {
 
                       <CardContent sx={{ width: width, px: 0 }}>
                         <Link
-                          href={`/people/${actor.id}`}
+                          href={`/person/${actor.id}`}
                           variant='inherit'
                           color='inherit'
                           underline='none'
