@@ -2,13 +2,13 @@ import React, { useState, useEffect } from 'react';
 import Navigation from './Navigation';
 import { Outlet } from 'react-router';
 import { useSelector, useDispatch } from 'react-redux';
-import { refreshToken } from '../../features/auth/authSlice';
+//import { refreshToken } from '../../features/auth/authSlice';
 import { Alert, CircularProgress } from '@mui/material';
 import axios from 'axios';
 import { Box } from '@mui/system';
 
 export default function WithNav() {
-  const dispatch = useDispatch();
+  //const dispatch = useDispatch();
   const authData = useSelector((state) => state.auth);
   const [state, setState] = useState({
     error: null,
@@ -42,11 +42,25 @@ export default function WithNav() {
     }
   };
 
-  // useEffect(() =>{
-  //   if(authData.isAuth && !authData.accessToken ){
-  //     dispatch(refreshToken())
+// const refresh = async () => {
+//   console.log('called')
+//   try{
+//     console.log('here')
+//     const response = await axios.get(`http://localhost:3000/auth/refresh`, {
+//       withCredentials: true,
+//     });
+//     console.log(response.data);
+//   }catch(e){
+//     return e.response.data
+//   }
+  
+// };
+
+  // useEffect(() => {
+  //   if (authData.isAuth && authData.accessToken) {
+  //    refresh()
   //   }
-  // }, [authData.isAuth, authData.accessToken])
+  // }, [authData.isAuth, authData.accessToken]);
 
   useEffect(() => {
     if (state.response) {
@@ -85,23 +99,29 @@ export default function WithNav() {
               {state.response}
             </p>
           ) : state.loading ? (
-            <Box sx={{ display: 'flex', justifyContent: 'center', paddingTop: '0.5rem' }}>
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                paddingTop: '0.5rem',
+              }}
+            >
               <CircularProgress />
             </Box>
           ) : (
-            <></>
+            <p
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                paddingTop: '0.5rem',
+              }}
+            >
+              {state.error}
+            </p>
           )}
         </Alert>
       ) : (
-        <p
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            paddingTop: '0.5rem',
-          }}
-        >
-          {state.error}
-        </p>
+        <></>
       )}
       <Outlet />
     </>

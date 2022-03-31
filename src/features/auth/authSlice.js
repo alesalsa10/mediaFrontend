@@ -30,7 +30,7 @@ const login = async (data) => {
 };
 
 const refresh = async () => {
-  const response = await axios.get(`http://localhost:3000/refresh`, {
+  const response = await axios.get(`http://localhost:3000/auth/refresh`, {
     withCredentials: true,
   });
   console.log(response.data);
@@ -65,9 +65,10 @@ export const signin = createAsyncThunk(
 
 export const refreshToken = createAsyncThunk(
   'auth/refresh',
-  async (data,{ rejectWithValue }) => {
+  async (data, { rejectWithValue }) => {
     try {
       const response = await refresh();
+      console.log(response.data);
       return response;
     } catch (err) {
       console.log(err.response.data);
@@ -119,18 +120,18 @@ export const authSlice = createSlice({
         state.isAuth = false;
         state.user = null;
       })
-      .addCase(refreshToken.pending, (state) => {
-        state.status = 'loading';
-      })
+      // .addCase(refreshToken.pending, (state) => {
+      //   //state.status = 'loading';
+      // })
       .addCase(refreshToken.fulfilled, (state, action) => {
-        state.status = 'idle';
+        //state.status = 'idle';
         state.accessToken = action.payload.accessToken;
         state.errors = null;
         state.isAuth = true;
       })
       .addCase(refreshToken.rejected, (state, action) => {
-        state.status = 'idle';
-        state.errors = action.payload;
+        //state.status = 'idle';
+        //state.errors = action.payload;
         state.isAuth = false;
         state.user = null;
         state.accessToken = null;
