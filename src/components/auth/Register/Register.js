@@ -120,7 +120,7 @@ export default function Register() {
             sx={{ mt: 3 }}
           >
             <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12}>
                 <TextField
                   autoComplete='given-name'
                   name='name'
@@ -133,29 +133,6 @@ export default function Register() {
                   value={name}
                   error={checkErrors(authData.errors, 'name')}
                   helperText={chooseHelperText(authData.errors, 'name')}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  required
-                  fullWidth
-                  id='username'
-                  label='Username'
-                  name='username'
-                  onChange={handleFieldChanges}
-                  value={username}
-                  error={
-                    checkErrors(authData.errors, 'username') ||
-                    (authData.errors &&
-                      authData.errors &&
-                      (authData.errors.Error === 'Username already in use' ||
-                        authData.errors.Error ===
-                          'Username and email already in use'))
-                  }
-                  helperText={
-                    chooseHelperText(authData.errors, 'username') ||
-                    choolseHelpter2('username')
-                  }
                 />
               </Grid>
               <Grid item xs={12}>

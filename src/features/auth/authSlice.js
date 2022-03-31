@@ -6,6 +6,8 @@ const initialState = {
   errors: null,
   isAuth: false,
   user: null,
+  accessToken: null,
+  persist: JSON.parse(localStorage.getItem('persist')) || false,
 };
 
 const createAccount = async (data) => {
@@ -23,7 +25,15 @@ const login = async (data) => {
     email: data.email,
     password: data.password,
   });
-  console.log(response.data)
+  console.log(response.data);
+  return response.data;
+};
+
+const refresh = async () => {
+  const response = await axios.get(`http://localhost:3000/refresh`, {
+    withCredentials: true,
+  });
+  console.log(response.data);
   return response.data;
 };
 
@@ -53,10 +63,28 @@ export const signin = createAsyncThunk(
   }
 );
 
+export const refreshToken = createAsyncThunk(
+  'auth/refresh',
+  async (data,{ rejectWithValue }) => {
+    try {
+      const response = await refresh();
+      return response;
+    } catch (err) {
+      console.log(err.response.data);
+      return rejectWithValue(err.response.data);
+    }
+  }
+);
+
 export const authSlice = createSlice({
   name: 'auth',
   initialState,
-  reducers: {},
+  reducers: {
+    togglePersist: (state) => {
+      state.persist = !state.persist;
+      localStorage.setItem('persist', state.persist);
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(register.pending, (state) => {
@@ -66,7 +94,8 @@ export const authSlice = createSlice({
         state.status = 'idle';
         state.errors = null;
         state.isAuth = true;
-        state.user = action.payload;
+        state.user = action.payload.user;
+        state.accessToken = action.payload.accessToken;
       })
       .addCase(register.rejected, (state, action) => {
         state.status = 'idle';
@@ -79,7 +108,8 @@ export const authSlice = createSlice({
       })
       .addCase(signin.fulfilled, (state, action) => {
         state.status = 'idle';
-        state.user = action.payload;
+        state.user = action.payload.foundUser;
+        state.accessToken = action.payload.accessToken;
         state.errors = null;
         state.isAuth = true;
       })
@@ -88,8 +118,26 @@ export const authSlice = createSlice({
         state.errors = action.payload;
         state.isAuth = false;
         state.user = null;
-      });
+      })
+      // .addCase(refreshToken.pending, (state) => {
+      //   state.status = 'loading';
+      // })
+      // .addCase(refreshToken.fulfilled, (state, action) => {
+      //   state.status = 'idle';
+      //   state.accessToken = action.payload.accessToken;
+      //   state.errors = null;
+      //   state.isAuth = true;
+      // })
+      // .addCase(refreshToken.rejected, (state, action) => {
+      //   state.status = 'idle';
+      //   state.errors = action.payload;
+      //   state.isAuth = false;
+      //   state.user = null;
+      //   state.accessToken = null;
+      // });
   },
 });
+
+export const { togglePersist } = authSlice.actions;
 
 export default authSlice.reducer;

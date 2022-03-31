@@ -11,16 +11,18 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useSelector, useDispatch } from 'react-redux';
-import { signin } from '../../../features/auth/authSlice';
+import { signin, togglePersist} from '../../../features/auth/authSlice';
 import Alert from '@mui/material/Alert';
 import CircularProgress from '@mui/material/CircularProgress';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 export default function Signin() {
   let navigate = useNavigate();
   const theme = createTheme();
   const dispatch = useDispatch();
   const authData = useSelector((state) => state.auth);
+  const location = useLocation();
+  const from = location.state?.from?.pathname || '/';
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -36,14 +38,13 @@ export default function Signin() {
 
   useEffect(() => {
     if (authData.isAuth) {
-      navigate('/');
+      navigate(from, { replace: true });
     }
   }, [authData.isAuth]);
 
   const handleRemberMeClick = (event) => {
     event.preventDefault()
-    console.log('you clicked me');
-    
+    dispatch(togglePersist())  
   };
 
   const checkErrors = (errors, name) => {
@@ -138,9 +139,10 @@ export default function Signin() {
             <FormControlLabel
               control={
                 <Checkbox
-                  value='remember'
+                  value={authData.persist}
                   color='primary'
                   onClick={handleRemberMeClick}
+                  checked={authData.persist}
                 />
               }
               label='Remember me'
