@@ -5,6 +5,7 @@ import { Alert, Grid, Skeleton, Box } from '@mui/material';
 import TopBillCast from '../../components/TopBillCast/TopBillCast';
 import Recommendation from '../../components/Recommendation/Recommendation';
 import SeasonsCarousel from '../../components/SeasonsCarousel/SeasonsCarousel';
+import Comments from '../../components/Comments/Comments';
 
 const { default: axios } = require('axios');
 
@@ -262,6 +263,7 @@ export default function Media() {
             ) : (
               <></>
             )}
+            <Comments/>
           </Grid>
         )}
       </Grid>
