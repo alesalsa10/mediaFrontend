@@ -1,5 +1,6 @@
 import { Box, Link, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 
 export default function AllCredits({ credits }) {
   const [sortedByDate, setSortedByDate] = useState([]);
@@ -58,6 +59,7 @@ export default function AllCredits({ credits }) {
               <Typography>{new Date(media.date).getFullYear()} </Typography>
               <Typography component={'span'}>
                 <Link
+                  component={RouterLink}
                   color='inherit'
                   underline='none'
                   sx={{
@@ -65,7 +67,7 @@ export default function AllCredits({ credits }) {
                     pl: 1,
                     fontWeight: 550,
                   }}
-                  href={`/${media.media_type}/${media.id}-${
+                  to={`/${media.media_type}/${media.id}-${
                     media.media_type === 'movie' ? media.title : media.name
                   }`}
                 >
@@ -84,7 +86,11 @@ export default function AllCredits({ credits }) {
       )}
       {sortedCrewByDate.length > 0 ? (
         <Box>
-          <Typography variant='h5' component={'div'} sx={{ pb: '0.5rem', pt:'1.5rem' }}>
+          <Typography
+            variant='h5'
+            component={'div'}
+            sx={{ pb: '0.5rem', pt: '1.5rem' }}
+          >
             Crew
           </Typography>
           {sortedCrewByDate.map((media, index) => (
@@ -103,12 +109,15 @@ export default function AllCredits({ credits }) {
                     ? '1px solid #dedede'
                     : '',
                 borderBottom:
-                  index === sortedCrewByDate.length - 1 ? '1px solid #dedede' : '',
+                  index === sortedCrewByDate.length - 1
+                    ? '1px solid #dedede'
+                    : '',
               }}
             >
               <Typography>{new Date(media.date).getFullYear()} </Typography>
               <Typography component={'span'}>
                 <Link
+                  component={RouterLink}
                   color='inherit'
                   underline='none'
                   sx={{
@@ -116,13 +125,12 @@ export default function AllCredits({ credits }) {
                     pl: 1,
                     fontWeight: 550,
                   }}
-                  href={`/${media.media_type}/${media.id}-${
+                  to={`/${media.media_type}/${media.id}-${
                     media.media_type === 'movie' ? media.title : media.name
                   }`}
                 >
                   {media.media_type === 'movie' ? media.title : media.name}
                 </Link>{' '}
-                
                 {media.job || 'Not available'}
               </Typography>
             </Box>

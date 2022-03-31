@@ -4,6 +4,7 @@ import React, { useState, useEffect, Fragment } from 'react';
 import { useParams } from 'react-router-dom';
 import placeholder from '../../assets/placeholder.png';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { Link as RouterLink } from 'react-router-dom';
 
 export default function FullCast() {
   const [state, setState] = useState({
@@ -339,7 +340,7 @@ export default function FullCast() {
           <Grid container>
             <Grid item xs={12} p={0}>
               <Box sx={{ display: 'flex', flexDirection: 'row', p: 2 }}>
-                <Link href={createLink()}>
+                <Link component={RouterLink} to={createLink()}>
                   <Box
                     component={'img'}
                     src={
@@ -362,7 +363,8 @@ export default function FullCast() {
                   }}
                 >
                   <Link
-                    href={createLink()}
+                    component={RouterLink}
+                    to={createLink()}
                     variant='h5'
                     color='inherit'
                     underline='none'
@@ -371,7 +373,8 @@ export default function FullCast() {
                     <Typography variant='h6'>{getTitle()} </Typography>
                   </Link>
                   <Link
-                    href={createLink()}
+                    component={RouterLink}
+                    to={createLink()}
                     variant='h5'
                     color='text.primary'
                     underline='none'
@@ -404,7 +407,10 @@ export default function FullCast() {
                             key={index + actor.name}
                             sx={{ display: 'flex', flexDirection: 'row' }}
                           >
-                            <Link href={`/people/${actor.id}`}>
+                            <Link
+                              component={RouterLink}
+                              to={`/people/${actor.id}`}
+                            >
                               <Box
                                 component={'img'}
                                 src={
@@ -424,7 +430,8 @@ export default function FullCast() {
                               }}
                             >
                               <Link
-                                href={`/people/${actor.id}`}
+                                component={RouterLink}
+                                to={`/people/${actor.id}`}
                                 variant='inherit'
                                 color='inherit'
                                 underline='none'
@@ -469,7 +476,10 @@ export default function FullCast() {
                               key={index}
                               sx={{ display: 'flex', flexDirection: 'row' }}
                             >
-                              <Link href={`/people/${actor.id}`}>
+                              <Link
+                                component={RouterLink}
+                                to={`/people/${actor.id}`}
+                              >
                                 <Box
                                   component={'img'}
                                   src={
@@ -489,7 +499,8 @@ export default function FullCast() {
                                 }}
                               >
                                 <Link
-                                  href={`/people/${actor.id}`}
+                                  component={RouterLink}
+                                  to={`/people/${actor.id}`}
                                   variant='inherit'
                                   color='inherit'
                                   underline='none'
@@ -530,7 +541,10 @@ export default function FullCast() {
                               key={index + actor.name}
                               sx={{ display: 'flex', flexDirection: 'row' }}
                             >
-                              <Link href={`/people/${actor.id}`}>
+                              <Link
+                                component={RouterLink}
+                                to={`/people/${actor.id}`}
+                              >
                                 <Box
                                   component={'img'}
                                   src={
@@ -550,7 +564,8 @@ export default function FullCast() {
                                 }}
                               >
                                 <Link
-                                  href={`/people/${actor.id}`}
+                                  component={RouterLink}
+                                  to={`/people/${actor.id}`}
                                   variant='inherit'
                                   color='inherit'
                                   underline='none'

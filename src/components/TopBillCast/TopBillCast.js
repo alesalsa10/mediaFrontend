@@ -6,6 +6,8 @@ import {
   Link,
   Typography,
 } from '@mui/material';
+import { Link as RouterLink } from 'react-router-dom';
+
 import React, { useState, useRef, useEffect } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Scrollbar } from 'swiper';
@@ -38,14 +40,10 @@ export default function TopBillCast({ cast, mediaType, mediaId, params }) {
       }
     } else if (params.seasonNumber && params.episodeNumber) {
       //getEpisode();
-      return `/tv/${params.id}/seasons/${
-        params.seasonNumber
-      }/episodes/${params.episodeNumber}/full_cast`;
+      return `/tv/${params.id}/seasons/${params.seasonNumber}/episodes/${params.episodeNumber}/full_cast`;
     } else if (params.seasonNumber) {
       //getSeason();
-      return `/tv/${params.id}/seasons/${
-        params.seasonNumber
-      }/full_cast`;
+      return `/tv/${params.id}/seasons/${params.seasonNumber}/full_cast`;
     }
   };
 
@@ -90,7 +88,8 @@ export default function TopBillCast({ cast, mediaType, mediaId, params }) {
                     {/* <Card mediaType='people' media={actor} type='carousel' /> */}
                     <Card sx={{ boxShadow: 'none' }}>
                       <Link
-                        href={`/person/${actor.id}-${actor.name
+                        component={RouterLink}
+                        to={`/person/${actor.id}-${actor.name
                           .split(' ')
                           .join('-')}`}
                       >
@@ -115,7 +114,8 @@ export default function TopBillCast({ cast, mediaType, mediaId, params }) {
 
                       <CardContent sx={{ width: width, px: 0 }}>
                         <Link
-                          href={`/person/${actor.id}`}
+                          component={RouterLink}
+                          to={`/person/${actor.id}`}
                           variant='inherit'
                           color='inherit'
                           underline='none'
@@ -147,7 +147,8 @@ export default function TopBillCast({ cast, mediaType, mediaId, params }) {
           </Grid>
           <Grid item px={3}>
             <Link
-              href={createFullCastLink()}
+              component={RouterLink}
+              to={createFullCastLink()}
               variant='inherit'
               color='inherit'
               underline='none'

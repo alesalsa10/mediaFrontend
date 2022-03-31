@@ -2,6 +2,8 @@ import { Box, Link, Typography } from '@mui/material';
 import React from 'react';
 import moment from 'moment';
 import placeholder from '../../assets/placeholder.png';
+import { Link as RouterLink } from 'react-router-dom';
+
 
 export default function HorizontalCard({
   selected,
@@ -103,7 +105,8 @@ export default function HorizontalCard({
       }
     >
       <Link
-        href={`/${
+      component={RouterLink}
+        to={`/${
           selected === 'Books'
             ? 'book'
             : selected === 'People'
@@ -179,7 +182,8 @@ export default function HorizontalCard({
           }}
         >
           <Link
-            href={`/${
+          component={RouterLink}
+            to={`/${
               selected === 'Books'
                 ? 'book'
                 : selected === 'People'

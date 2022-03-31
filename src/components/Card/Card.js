@@ -1,6 +1,8 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { Box, Link, Typography } from '@mui/material';
 
+import { Link as RouterLink } from 'react-router-dom';
+
 import moment from 'moment';
 import { buildStyles, CircularProgressbar } from 'react-circular-progressbar';
 
@@ -69,7 +71,6 @@ export default function Card({ mediaType, media, type, bestSellers }) {
     setWidth(event.target.clientWidth);
   };
 
-
   useEffect(() => {
     window.addEventListener('resize', handleImageLoad);
     window.addEventListener('resize', getListSize);
@@ -87,7 +88,8 @@ export default function Card({ mediaType, media, type, bestSellers }) {
       }}
     >
       <Link
-        href={`/${
+        component={RouterLink}
+        to={`/${
           mediaType === 'book'
             ? 'book'
             : mediaType === 'people'
@@ -120,9 +122,9 @@ export default function Card({ mediaType, media, type, bestSellers }) {
           }
           alt={media.title}
           sx={{
-            width:{
+            width: {
               xs: 130,
-              sm: 170
+              sm: 170,
             },
             borderTopRightRadius: '3px',
             borderTopLeftRadius: '3px',
@@ -173,7 +175,8 @@ export default function Card({ mediaType, media, type, bestSellers }) {
           sx={{ fontWeight: 'bold', paddingLeft: '0.5rem' }}
         >
           <Link
-            href={`/${
+            component={RouterLink}
+            to={`/${
               mediaType === 'book'
                 ? 'book'
                 : mediaType === 'person'

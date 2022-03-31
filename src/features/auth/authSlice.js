@@ -119,22 +119,22 @@ export const authSlice = createSlice({
         state.isAuth = false;
         state.user = null;
       })
-      // .addCase(refreshToken.pending, (state) => {
-      //   state.status = 'loading';
-      // })
-      // .addCase(refreshToken.fulfilled, (state, action) => {
-      //   state.status = 'idle';
-      //   state.accessToken = action.payload.accessToken;
-      //   state.errors = null;
-      //   state.isAuth = true;
-      // })
-      // .addCase(refreshToken.rejected, (state, action) => {
-      //   state.status = 'idle';
-      //   state.errors = action.payload;
-      //   state.isAuth = false;
-      //   state.user = null;
-      //   state.accessToken = null;
-      // });
+      .addCase(refreshToken.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(refreshToken.fulfilled, (state, action) => {
+        state.status = 'idle';
+        state.accessToken = action.payload.accessToken;
+        state.errors = null;
+        state.isAuth = true;
+      })
+      .addCase(refreshToken.rejected, (state, action) => {
+        state.status = 'idle';
+        state.errors = action.payload;
+        state.isAuth = false;
+        state.user = null;
+        state.accessToken = null;
+      });
   },
 });
 

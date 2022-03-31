@@ -9,6 +9,7 @@ import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import { useSelector } from 'react-redux';
 import Link from '@mui/material/Link';
+import { Link as RouterLink } from 'react-router-dom';
 import Drawer from '@mui/material/Drawer';
 import Slide from '@mui/material/Slide';
 import { Card, useScrollTrigger } from '@mui/material';
@@ -57,8 +58,8 @@ export default function Navigation() {
     },
     {
       main: 'People',
-      links: [{title: 'Popular People', link: '/people/lists/popular'}]
-    }
+      links: [{ title: 'Popular People', link: '/people/lists/popular' }],
+    },
   ];
 
   const authSettings = ['Profile', 'Logout'];
@@ -80,7 +81,8 @@ export default function Navigation() {
           <Container maxWidth='xl'>
             <Toolbar disableGutters>
               <Link
-                href='/'
+                component={RouterLink}
+                to='/'
                 sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
               >
                 <img src={logo} alt='TMDB Logo' width={140} />
@@ -118,7 +120,8 @@ export default function Navigation() {
                       {page.links.map((link) => (
                         <AccordionDetails key={link.link}>
                           <Link
-                            href={link.link}
+                            component={RouterLink}
+                            to={link.link}
                             color='inherit'
                             underline='none'
                             onClick={handleCloseNavMenu}
@@ -132,7 +135,8 @@ export default function Navigation() {
                 </Drawer>
               </Box>
               <Link
-                href='/'
+              component={RouterLink}
+                to='/'
                 sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}
               >
                 <img src={logo} alt='TMDB Logo' width={140} />
@@ -157,7 +161,8 @@ export default function Navigation() {
                     <Card className={styles.dropdownContent}>
                       {page.links.map((link) => (
                         <Link
-                          href={link.link}
+                        component={RouterLink}
+                          to={link.link}
                           //underline='none'
                           //color='inherit'
                           key={link.title}
@@ -180,7 +185,7 @@ export default function Navigation() {
                   {authData.isAuth ? (
                     <>
                       {authSettings.map((setting) => (
-                        <Link href={`/${setting}`} key={setting}>
+                        <Link  component={RouterLink} to={`/${setting}`} key={setting}>
                           <Typography textAlign='center'>{setting}</Typography>
                         </Link>
                       ))}
@@ -189,7 +194,8 @@ export default function Navigation() {
                     <>
                       {nonAuthSettings.map((setting) => (
                         <Link
-                          href={`/${setting.split(' ').join('')}`}
+                        component={RouterLink}
+                          to={`/${setting.split(' ').join('')}`}
                           key={setting}
                         >
                           <Typography textAlign='center'>{setting}</Typography>

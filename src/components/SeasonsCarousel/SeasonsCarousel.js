@@ -6,6 +6,8 @@ import {
   CardMedia,
   CardContent,
 } from '@mui/material';
+import { Link as RouterLink } from 'react-router-dom';
+
 import React, { useState, useRef, useEffect } from 'react';
 import { Scrollbar } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -83,7 +85,8 @@ export default function SeasonsCarousel({ seasons }) {
                     {/* <Card  mediaType={'tv'} media={media} type='carousel'/> */}
                     <Card sx={{ boxShadow: 'none' }}>
                       <Link
-                        href={`${location.pathname}/seasons/${
+                      component={RouterLink}
+                        to={`${location.pathname}/seasons/${
                           media.name.split(' ')[1]
                         }`}
                       >
@@ -105,7 +108,8 @@ export default function SeasonsCarousel({ seasons }) {
 
                       <CardContent sx={{ width: width, px: 0 }}>
                         <Link
-                          href={`${location.pathname}/seasons/${
+                        component={RouterLink}
+                          to={`${location.pathname}/seasons/${
                             media.name.split(' ')[1]
                           }`}
                           variant='inherit'

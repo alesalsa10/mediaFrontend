@@ -9,7 +9,8 @@ import {
 import React, { useState, useRef, useEffect } from 'react';
 import { Navigation } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { useLocation, params, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 
 import placeholder from '../../assets/placeholder.png';
 
@@ -32,8 +33,7 @@ export default function EpisodesCarousel({ episodes }) {
   }, []);
   const baseImgUrl = 'https://image.tmdb.org/t/p/original';
 
-  const location = useLocation();
-  const params = useParams()
+  const params = useParams();
 
   return (
     <>
@@ -70,7 +70,8 @@ export default function EpisodesCarousel({ episodes }) {
                     {/* <Card  mediaType={'tv'} media={media} type='carousel'/> */}
                     <Card sx={{ boxShadow: 'none' }}>
                       <Link
-                        href={`/tv/${params.id}/seasons/${params.seasonNumber}/episodes/${media.episode_number}`}
+                        component={RouterLink}
+                        to={`/tv/${params.id}/seasons/${params.seasonNumber}/episodes/${media.episode_number}`}
                       >
                         <CardMedia
                           ref={refElement}
@@ -90,7 +91,8 @@ export default function EpisodesCarousel({ episodes }) {
 
                       <CardContent sx={{ width: width, px: 0 }}>
                         <Link
-                          href={`/tv/${params.id}/seasons/${params.seasonNumber}/episodes/${media.episode_number}`}
+                          component={RouterLink}
+                          to={`/tv/${params.id}/seasons/${params.seasonNumber}/episodes/${media.episode_number}`}
                           variant='inherit'
                           color='inherit'
                           underline='none'
