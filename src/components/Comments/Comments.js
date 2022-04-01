@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import Comment from '../Comment/Comment';
+import { Box, Typography } from '@mui/material';
+import ChatIcon from '@mui/icons-material/Chat';
 
 export default function Comments({ id }) {
   const params = useParams();
@@ -43,7 +45,7 @@ export default function Comments({ id }) {
 
   useEffect(() => {
     getComments();
-  }, [params]);
+  }, [id, params]);
 
   return (
     <>
@@ -56,13 +58,26 @@ export default function Comments({ id }) {
           {state.response.length > 0 ? (
             <>
               {state.response.map((comment) => (
-                <Comment key={comment._id} comment={comment}  index={1}/>
+                <Comment key={comment._id} comment={comment} index={1} />
               ))}
             </>
           ) : (
-            <></>
+            <Box
+              sx={{
+                p: 10,
+                display: 'flex',
+                justifyContent: 'center',
+                alignContent: 'center',
+                width: '100%',
+              }}
+            >
+              <Box sx={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+                <ChatIcon />
+                <Typography variant='h6'>No Comments Yet</Typography>
+                <Typography variant='h6'>Be the first to share what you think</Typography>
+              </Box>
+            </Box>
           )}
-          {/* <Comment comment={state.response}/> */}
         </>
       )}
     </>
