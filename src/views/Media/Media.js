@@ -263,7 +263,7 @@ export default function Media() {
             ) : (
               <></>
             )}
-            <Comments/>
+            <Comments id={state.response.mediaDetails.id}/>
           </Grid>
         )}
       </Grid>

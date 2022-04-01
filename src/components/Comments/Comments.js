@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import Comment from '../Comment/Comment';
 
-export default function Comments() {
+export default function Comments({ id }) {
   const params = useParams();
   const [state, setState] = useState({
     loading: true,
@@ -26,10 +27,10 @@ export default function Comments() {
     console.log(mediaType, mediaId);
     try {
       const response = await axios.get(
-        `http://localhost:3000/comments/${mediaType}/${mediaId}`
+        `http://localhost:3000/comments/${mediaType}/${id}`
       );
       console.log(response.data);
-      setState({loading: false, response: response.data, error: null})
+      setState({ loading: false, response: response.data, error: null });
     } catch (err) {
       console.log(err.response.data.Msg);
       setState({
@@ -44,5 +45,26 @@ export default function Comments() {
     getComments();
   }, [params]);
 
-  return <div>Comments</div>;
+  return (
+    <>
+      {state.loading && !state.error ? (
+        <>loading</>
+      ) : !state.loading && state.error ? (
+        <>error</>
+      ) : (
+        <>
+          {state.response.length > 0 ? (
+            <>
+              {state.response.map((comment) => (
+                <Comment key={comment._id} comment={comment}  index={1}/>
+              ))}
+            </>
+          ) : (
+            <></>
+          )}
+          {/* <Comment comment={state.response}/> */}
+        </>
+      )}
+    </>
+  );
 }
