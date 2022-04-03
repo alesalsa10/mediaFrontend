@@ -4,21 +4,19 @@ import axios from 'axios';
 import Comment from '../Comment/Comment';
 import { Box, Button, Typography } from '@mui/material';
 import ChatIcon from '@mui/icons-material/Chat';
+import { useSelector } from 'react-redux';
 
 import ReactQuill from 'react-quill'; // ES6
 import 'react-quill/dist/quill.snow.css'; // ES6
 
-
 export default function Comments({ id }) {
+  const authData = useSelector((state) => state.auth);
+
   const modules = {
     toolbar: [
       [{ header: [1, 2, false] }],
       ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-      [
-        { list: 'ordered' },
-        { list: 'bullet' },
-        
-      ],
+      [{ list: 'ordered' }, { list: 'bullet' }],
     ],
   };
 
@@ -44,17 +42,16 @@ export default function Comments({ id }) {
   const [newComment, setNewComment] = useState({
     loading: false,
     response: null,
-    error: null
-  })
+    error: null,
+  });
 
   const [text, setText] = useState('');
 
   const handleChange = (value) => {
-    console.log(value)
     setText(value);
     if (value.replace(/<(.|\n)*?>/g, '').trim().length === 0) {
       //textarea is still empty
-      setText('')
+      setText('');
     }
   };
 
@@ -88,29 +85,40 @@ export default function Comments({ id }) {
     }
   };
 
-
-  const addComment = async() =>{
-    try{
-      const comment = await axios.post(`http://localhost:3000/comments/${params.mediaType}/${id}`, {
-        text: text
-      });
+  const addComment = async () => {
+    try {
+      const comment = await axios.post(
+        `http://localhost:3000/comments/${params.mediaType}/${id}`,
+        {
+          text: text,
+        },
+        {
+          headers: {
+            Authorization: `Token ${authData.accessToken}`,
+          },
+        }
+      );
       setNewComment({
-        loading:false,
+        loading: false,
         response: comment.data,
-        error: null
+        error: null,
       });
 
-      const newState = [comment.data, ...state.response]
+      const newState = [comment.data, ...state.response];
       setState({
         loading: false,
         response: newState,
-        error: null
-      })
-    }catch(err){
+        error: null,
+      });
+    } catch (err) {
       console.log(err.response.data.Msg);
-      setNewComment({loading: false, response: null, error: err.response.data.Msg})
+      setNewComment({
+        loading: false,
+        response: null,
+        error: err.response.data.Msg,
+      });
     }
-  }
+  };
 
   useEffect(() => {
     getComments();
@@ -134,7 +142,11 @@ export default function Comments({ id }) {
             />
           </Box>
           <Box sx={{ ml: '1rem', mb: '1rem' }}>
-            <Button variant='outlined' onClick={addComment} disabled={text === ''}>
+            <Button
+              variant='outlined'
+              onClick={addComment}
+              disabled={text === ''}
+            >
               Comment
             </Button>
           </Box>
