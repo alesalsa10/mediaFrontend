@@ -8,8 +8,32 @@ import ChatIcon from '@mui/icons-material/Chat';
 import ReactQuill from 'react-quill'; // ES6
 import 'react-quill/dist/quill.snow.css'; // ES6
 
-
 export default function Comments({ id }) {
+  const modules = {
+    toolbar: [
+      [{ header: [1, 2, false] }],
+      ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+      [
+        { list: 'ordered' },
+        { list: 'bullet' },
+        { indent: '-1' },
+        { indent: '+1' },
+      ],
+    ],
+  };
+
+  const formats = [
+    'header',
+    'bold',
+    'italic',
+    'underline',
+    'strike',
+    'blockquote',
+    'list',
+    'bullet',
+    'indent',
+  ];
+
   const params = useParams();
   const [state, setState] = useState({
     loading: true,
@@ -17,12 +41,17 @@ export default function Comments({ id }) {
     error: null,
   });
 
-  const [text, setText] = useState('')
+  const [newComment, setNewComment] = useState({
+    loading: false,
+    response: null,
+    error: null
+  })
 
-  const handleChange =(value)=> {
-    setText(value)
-  }
+  const [text, setText] = useState('');
 
+  const handleChange = (value) => {
+    setText(value);
+  };
 
   const selectMedia = () => {
     if (params.mediaType) {
@@ -54,6 +83,30 @@ export default function Comments({ id }) {
     }
   };
 
+
+  const addComment = async() =>{
+    try{
+      const comment = await axios.post(`http://localhost:3000/comments/${params.mediaType}/${id}`, {
+        text: text
+      });
+      setNewComment({
+        loading:false,
+        response: comment.data,
+        error: null
+      });
+
+      const newState = [comment.data, ...state.response]
+      setState({
+        loading: false,
+        response: newState,
+        error: null
+      })
+    }catch(err){
+      console.log(err.response.data.Msg);
+      setNewComment({loading: false, response: null, error: err.response.data.Msg})
+    }
+  }
+
   useEffect(() => {
     getComments();
   }, [id, params]);
@@ -66,8 +119,14 @@ export default function Comments({ id }) {
         <>error</>
       ) : (
         <>
-          <Box sx={{ display: 'flex', width: '100%', mb: 2 }}>
-            <ReactQuill value={text} onChange={handleChange} />
+          <Box sx={{ display: 'flex', width: '100%', mb: 2, ml: '1rem'}}>
+            <ReactQuill
+              value={text}
+              onChange={handleChange}
+              modules={modules}
+              formats={formats}
+              placeholder='Enter your comment here'
+            />
           </Box>
 
           {state.response.length > 0 ? (
@@ -105,6 +164,4 @@ export default function Comments({ id }) {
       )}
     </>
   );
-
-  
 }
