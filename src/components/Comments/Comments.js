@@ -2,11 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import Comment from '../Comment/Comment';
-import { Box, Typography } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import ChatIcon from '@mui/icons-material/Chat';
 
 import ReactQuill from 'react-quill'; // ES6
 import 'react-quill/dist/quill.snow.css'; // ES6
+
 
 export default function Comments({ id }) {
   const modules = {
@@ -16,8 +17,7 @@ export default function Comments({ id }) {
       [
         { list: 'ordered' },
         { list: 'bullet' },
-        { indent: '-1' },
-        { indent: '+1' },
+        
       ],
     ],
   };
@@ -50,7 +50,12 @@ export default function Comments({ id }) {
   const [text, setText] = useState('');
 
   const handleChange = (value) => {
+    console.log(value)
     setText(value);
+    if (value.replace(/<(.|\n)*?>/g, '').trim().length === 0) {
+      //textarea is still empty
+      setText('')
+    }
   };
 
   const selectMedia = () => {
@@ -119,7 +124,7 @@ export default function Comments({ id }) {
         <>error</>
       ) : (
         <>
-          <Box sx={{ display: 'flex', width: '100%', mb: 2, ml: '1rem'}}>
+          <Box sx={{ display: 'flex', width: '100%', mb: 2, ml: '1rem' }}>
             <ReactQuill
               value={text}
               onChange={handleChange}
@@ -127,6 +132,11 @@ export default function Comments({ id }) {
               formats={formats}
               placeholder='Enter your comment here'
             />
+          </Box>
+          <Box sx={{ ml: '1rem', mb: '1rem' }}>
+            <Button variant='outlined' onClick={addComment} disabled={text === ''}>
+              Comment
+            </Button>
           </Box>
 
           {state.response.length > 0 ? (

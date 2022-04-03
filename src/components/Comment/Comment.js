@@ -1,9 +1,15 @@
 import { Box, Typography } from '@mui/material';
 import React from 'react';
+import DOMPurify from 'dompurify';
+
 
 export default function Comment({ comment, index}) {
   const nestedComments = (comment.replies || []).map((comment) => {
     return <Comment comment={comment} key={comment._id} index={0} />;
+  });
+
+  const sanitizedData = (text) => ({
+    __html: DOMPurify.sanitize(text),
   });
 
   return (
@@ -19,7 +25,8 @@ export default function Comment({ comment, index}) {
       key={comment._id}
     >
         <Typography>{comment.postedBy.name}</Typography>
-        <Typography>{comment.text}</Typography>
+        {/* <Typography>{comment.text}</Typography> */}
+        <div dangerouslySetInnerHTML={sanitizedData(comment.text)}/>
         {nestedComments}
     </Box>
   );
