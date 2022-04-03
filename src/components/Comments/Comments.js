@@ -5,6 +5,10 @@ import Comment from '../Comment/Comment';
 import { Box, Typography } from '@mui/material';
 import ChatIcon from '@mui/icons-material/Chat';
 
+import ReactQuill from 'react-quill'; // ES6
+import 'react-quill/dist/quill.snow.css'; // ES6
+
+
 export default function Comments({ id }) {
   const params = useParams();
   const [state, setState] = useState({
@@ -12,6 +16,13 @@ export default function Comments({ id }) {
     response: [],
     error: null,
   });
+
+  const [text, setText] = useState('')
+
+  const handleChange =(value)=> {
+    setText(value)
+  }
+
 
   const selectMedia = () => {
     if (params.mediaType) {
@@ -55,6 +66,10 @@ export default function Comments({ id }) {
         <>error</>
       ) : (
         <>
+          <Box sx={{ display: 'flex', width: '100%', mb: 2 }}>
+            <ReactQuill value={text} onChange={handleChange} />
+          </Box>
+
           {state.response.length > 0 ? (
             <>
               {state.response.map((comment) => (
@@ -71,10 +86,18 @@ export default function Comments({ id }) {
                 width: '100%',
               }}
             >
-              <Box sx={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                }}
+              >
                 <ChatIcon />
                 <Typography variant='h6'>No Comments Yet</Typography>
-                <Typography variant='h6'>Be the first to share what you think</Typography>
+                <Typography variant='h6'>
+                  Be the first to share what you think
+                </Typography>
               </Box>
             </Box>
           )}
@@ -82,4 +105,6 @@ export default function Comments({ id }) {
       )}
     </>
   );
+
+  
 }
