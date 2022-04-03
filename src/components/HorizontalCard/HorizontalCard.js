@@ -4,7 +4,6 @@ import moment from 'moment';
 import placeholder from '../../assets/placeholder.png';
 import { Link as RouterLink } from 'react-router-dom';
 
-
 export default function HorizontalCard({
   selected,
   movie,
@@ -38,7 +37,7 @@ export default function HorizontalCard({
 
   const selectBookLink = (book) => {
     if (book.id) {
-      return `${book.id}-${book.volumeInfo.toLowerCase().split(' ').join('')}`;
+      return `${book.id}-${book.volumeInfo.title.toLowerCase().split(' ').join('-')}`;
     } else if (book.primary_isbn10) {
       return `isbn/${book.primary_isbn10}-${book.title
         .toLowerCase()
@@ -105,7 +104,7 @@ export default function HorizontalCard({
       }
     >
       <Link
-      component={RouterLink}
+        component={RouterLink}
         to={`/${
           selected === 'Books'
             ? 'book'
@@ -115,28 +114,6 @@ export default function HorizontalCard({
             ? 'movie'
             : 'tv'
         }/${selected === 'Books' ? selectBookLink(movie) : selectMediaLink()}`}
-        //component='img'
-        // sx={{
-        //   width: 100,
-        //   borderTopLeftRadius: 3,
-        //   borderBottomLeftRadius: 3,
-        // }}
-        // src={
-        //   selected === 'Books'
-        //     ? selectImg(movie)
-        //     : selected === 'People'
-        //     ? !movie.profile_path
-        //       ? placeholder
-        //       : `${baseImgUrl}${movie.profile_path}`
-        //     : selected === 'Movies'
-        //     ? !movie.poster_path
-        //       ? placeholder
-        //       : `${baseImgUrl}${movie.poster_path}`
-        //     : !movie.poster_path
-        //     ? placeholder
-        //     : `${baseImgUrl}/${movie.poster_path}`
-        // }
-        // alt={movie.title || movie.name}
       >
         <Box
           component='img'
@@ -144,7 +121,7 @@ export default function HorizontalCard({
             width: 100,
             borderTopLeftRadius: 3,
             borderBottomLeftRadius: 3,
-            height: '100%'
+            height: '100%',
           }}
           src={
             selected === 'Books'
@@ -169,7 +146,7 @@ export default function HorizontalCard({
           justifySelf: 'start',
           display: 'flex',
           flexDirection: 'column',
-          alignSelf:  'center' 
+          alignSelf: 'center',
         }}
       >
         <Typography
@@ -182,7 +159,7 @@ export default function HorizontalCard({
           }}
         >
           <Link
-          component={RouterLink}
+            component={RouterLink}
             to={`/${
               selected === 'Books'
                 ? 'book'

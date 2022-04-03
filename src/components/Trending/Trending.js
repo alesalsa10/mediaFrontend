@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
   Alert,
+  Box,
   FormControl,
   Grid,
   MenuItem,
@@ -50,7 +51,8 @@ export default function Trending({ mediaType }) {
   };
 
   useEffect(() => {
-    getTrendingmedias(filter);
+   getTrendingmedias(filter);
+   //setState({loading: true, error: null, response: null})
   }, [filter]);
 
   return (
@@ -76,48 +78,43 @@ export default function Trending({ mediaType }) {
         </Grid>
 
         {state.loading && !state.error ? (
-          <Swiper
-            style={{ padding: '1px 0px' }}
-            spaceBetween={25}
-            slidesPerView='auto'
+          <Box
+            sx={{
+              p: 0,
+              display: 'flex',
+              flexDirection: 'row',
+              overflow: 'hidden',
+              gap: '10px',
+            }}
           >
             <>
               {[...Array(5).keys()].map((item, index) => (
-                <SwiperSlide
-                  key={index}
-                  style={{
-                    boxShadow: '0 2px 8px rgb(0 0 0 / 25%)',
-                    width: 'fit-content',
-                    height: 'auto',
-                  }}
-                >
-                  <React.Fragment key={index}>
-                    <Skeleton
-                      animation='wave'
-                      variant='rectangular'
-                      width={250}
-                      height={300}
-                      sx={{ mb: 2 }}
-                    />
-                    <Skeleton
-                      animation='wave'
-                      variant='rectangular'
-                      width={170}
-                      height={16}
-                      sx={{ mb: 2, ml: 1 }}
-                    />
-                    <Skeleton
-                      animation='wave'
-                      variant='rectangular'
-                      width={140}
-                      height={10}
-                      sx={{ mb: 2, ml: 1 }}
-                    />
-                  </React.Fragment>
-                </SwiperSlide>
+                <Box key={index}>
+                  <Skeleton
+                    animation='wave'
+                    variant='rectangular'
+                    width={150}
+                    height={250}
+                    sx={{ mb: 2 }}
+                  />
+                  <Skeleton
+                    animation='wave'
+                    variant='rectangular'
+                    width={130}
+                    height={16}
+                    sx={{ mb: 2 }}
+                  />
+                  <Skeleton
+                    animation='wave'
+                    variant='rectangular'
+                    width={110}
+                    height={10}
+                    sx={{ mb: 2 }}
+                  />
+                </Box>
               ))}
             </>
-          </Swiper>
+          </Box>
         ) : !state.loading && state.error ? (
           <Grid item xs={12} sx={{ gridColumn: '1/-1' }}>
             <Alert severity='error' variant='outlined' p={2}>
@@ -131,7 +128,7 @@ export default function Trending({ mediaType }) {
             }`}
           >
             <Swiper
-              style={{ padding: '1rem 0px', }}
+              style={{ padding: '1rem 0px' }}
               modules={[Scrollbar]}
               spaceBetween={15}
               //loop={true}
