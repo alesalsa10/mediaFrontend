@@ -57,11 +57,6 @@ export default function Comment({
     'indent',
   ];
 
-  // const handleReplyClick = (id, index) => {
-  //   setIsOpen(!isOpen);
-  //   reply(id, index);
-  // };
-
   return (
     <Box
       sx={{

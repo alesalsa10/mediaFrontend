@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import Comment from '../Comment/Comment';
@@ -11,6 +11,7 @@ import 'react-quill/dist/quill.snow.css'; // ES6
 
 export default function Comments({ id }) {
   const authData = useSelector((state) => state.auth);
+  const commentRef = useRef([]);
 
   const modules = {
     toolbar: [
@@ -127,9 +128,9 @@ export default function Comments({ id }) {
 
   const iterateComment = (commentId, comment, content) => {
     if (Array.isArray(comment.replies)) {
-      if(comment._id === commentId){
-        comment.replies.push(content)
-      }else {
+      if (comment._id === commentId) {
+        comment.replies.push(content);
+      } else {
         comment.replies.forEach((comm) => {
           if (comm._id === commentId) {
             comm.replies.push(content);
@@ -137,12 +138,14 @@ export default function Comments({ id }) {
             iterateComment(commentId, comm, content);
           }
         });
-      } 
+      }
     }
     return comment;
   };
 
   const reply = async (commentId, index) => {
+    //(commentRef.current.replyClick());
+
     try {
       const comment = await axios.post(
         `http://localhost:3000/comments/${params.mediaType}/${id}/reply`,
@@ -156,18 +159,12 @@ export default function Comments({ id }) {
           },
         }
       );
-      console.log(comment.data)
+      console.log(comment.data);
       setNewComment({
         loading: false,
         response: comment.data,
         error: null,
       });
-      // const newState = [comment.data, ...state.response];
-      // setState({
-      //   loading: false,
-      //   response: newState,
-      //   error: null,
-      // });
       const updatedState = [...state.response];
       let stateWithReply = iterateComment(
         commentId,
@@ -175,7 +172,7 @@ export default function Comments({ id }) {
         comment.data
       );
       updatedState[index] = stateWithReply;
-      console.log(updatedState)
+      console.log(updatedState);
       setState({ loading: false, response: updatedState, error: null });
     } catch (err) {
       console.log(err.response.data.Msg);
@@ -222,6 +219,7 @@ export default function Comments({ id }) {
             <>
               {state.response.map((comment, index) => (
                 <Comment
+                  ref={commentRef}
                   key={comment._id}
                   comment={comment}
                   isFirst={true}
