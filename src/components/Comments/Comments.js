@@ -41,17 +41,23 @@ export default function Comments({ id }) {
 
   const [newComment, setNewComment] = useState({
     loading: false,
-    response: null,
     error: null,
   });
 
   const [text, setText] = useState('');
+  const [replyText, setReplyText] = useState('');
 
   const handleChange = (value) => {
     setText(value);
     if (value.replace(/<(.|\n)*?>/g, '').trim().length === 0) {
-      //textarea is still empty
       setText('');
+    }
+  };
+
+  const handleReplyText = (value) => {
+    setReplyText(value);
+    if (value.replace(/<(.|\n)*?>/g, '').trim().length === 0) {
+      setReplyText('');
     }
   };
 
@@ -100,7 +106,6 @@ export default function Comments({ id }) {
       );
       setNewComment({
         loading: false,
-        response: comment.data,
         error: null,
       });
 
@@ -110,6 +115,68 @@ export default function Comments({ id }) {
         response: newState,
         error: null,
       });
+    } catch (err) {
+      console.log(err.response.data.Msg);
+      setNewComment({
+        loading: false,
+        response: null,
+        error: err.response.data.Msg,
+      });
+    }
+  };
+
+  const iterateComment = (commentId, comment, content) => {
+    if (Array.isArray(comment.replies)) {
+      if(comment._id === commentId){
+        comment.replies.push(content)
+      }else {
+        comment.replies.forEach((comm) => {
+          if (comm._id === commentId) {
+            comm.replies.push(content);
+          } else {
+            iterateComment(commentId, comm, content);
+          }
+        });
+      } 
+    }
+    return comment;
+  };
+
+  const reply = async (commentId, index) => {
+    try {
+      const comment = await axios.post(
+        `http://localhost:3000/comments/${params.mediaType}/${id}/reply`,
+        {
+          text: replyText,
+          parentCommentId: commentId,
+        },
+        {
+          headers: {
+            Authorization: `Token ${authData.accessToken}`,
+          },
+        }
+      );
+      console.log(comment.data)
+      setNewComment({
+        loading: false,
+        response: comment.data,
+        error: null,
+      });
+      // const newState = [comment.data, ...state.response];
+      // setState({
+      //   loading: false,
+      //   response: newState,
+      //   error: null,
+      // });
+      const updatedState = [...state.response];
+      let stateWithReply = iterateComment(
+        commentId,
+        state.response[index],
+        comment.data
+      );
+      updatedState[index] = stateWithReply;
+      console.log(updatedState)
+      setState({ loading: false, response: updatedState, error: null });
     } catch (err) {
       console.log(err.response.data.Msg);
       setNewComment({
@@ -153,8 +220,16 @@ export default function Comments({ id }) {
 
           {state.response.length > 0 ? (
             <>
-              {state.response.map((comment) => (
-                <Comment key={comment._id} comment={comment} index={1} />
+              {state.response.map((comment, index) => (
+                <Comment
+                  key={comment._id}
+                  comment={comment}
+                  isFirst={true}
+                  index={index}
+                  replyText={replyText}
+                  handleReply={handleReplyText}
+                  reply={reply}
+                />
               ))}
             </>
           ) : (
