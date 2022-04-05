@@ -1,7 +1,10 @@
 import { Box, Button, Typography } from '@mui/material';
-import React, { useState } from 'react';
+import React from 'react';
 import DOMPurify from 'dompurify';
 import ReplyIcon from '@mui/icons-material/Reply';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import moment from 'moment';
 
 import ReactQuill from 'react-quill'; // ES6
 import 'react-quill/dist/quill.snow.css'; // ES6
@@ -16,8 +19,11 @@ export default function Comment({
 
   isReplyOpen,
   openReply,
-  openedReplyId
+  openedReplyId,
 }) {
+  const authData = useSelector((state) => state.auth);
+  const navigate = useNavigate();
+
   //const [isOpen, setIsOpen] = useState(false);
   const nestedComments = (comment.replies || []).map((comment) => {
     //console.log(openedReplyId)
@@ -30,7 +36,6 @@ export default function Comment({
         reply={reply}
         handleReply={handleReply}
         index={index}
-
         openedReplyId={openedReplyId}
         isReplyOpen={comment._id === openedReplyId}
         openReply={openReply}
@@ -73,17 +78,50 @@ export default function Comment({
         flexDirection: 'column',
         width: '100%',
         borderLeft: '1px solid grey',
-        marginLeft: '1rem',
+        marginLeft: '0.5rem',
         marginBottom: isFirst ? '1rem' : 0,
-        pl: 1,
+        pl: '0.5rem',
       }}
       key={comment._id}
     >
-      <Typography>{comment.postedBy.name}</Typography>
+      <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+        <Typography sx={{ mr: 1 }}>{comment.postedBy.name}</Typography>
+        <Typography variant='body2'>
+          {moment(comment.datePosted).fromNow()}
+        </Typography>
+      </Box>
       <div dangerouslySetInnerHTML={sanitizedData(comment.text)} />
-      <ReplyIcon
-      onClick={()=>openReply(comment._id)}
-      />
+      {authData.isAuth ? (
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'row',
+            cursor: 'pointer',
+            '&:hover': { color: 'primary.main' },
+            mb: '0.3rem',
+            width: 'fit-content',
+          }}
+          onClick={() => openReply(comment._id)}
+        >
+          <Typography variant='body2'>Reply</Typography>
+          <ReplyIcon fontSize='small' />
+        </Box>
+      ) : (
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'row',
+            cursor: 'pointer',
+            '&:hover': { color: 'primary.main' },
+            mb: '0.3rem',
+            width: 'fit-content',
+          }}
+          onClick={() => navigate('/signin')}
+        >
+          <Typography variant='body2'>Reply</Typography>
+          <ReplyIcon fontSize='small' />
+        </Box>
+      )}
       {isReplyOpen ? (
         <>
           <ReactQuill
@@ -93,6 +131,7 @@ export default function Comment({
             formats={formats}
             placeholder='Enter your comment here'
           />
+
           <Button
             variant='outlined'
             onClick={(e) => reply(comment._id, index)}
