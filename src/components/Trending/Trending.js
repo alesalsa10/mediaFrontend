@@ -88,7 +88,7 @@ export default function Trending({ mediaType }) {
             }}
           >
             <>
-              {[...Array(5).keys()].map((item, index) => (
+              {[...Array(15).keys()].map((item, index) => (
                 <Box key={index}>
                   <Skeleton
                     animation='wave'
@@ -157,90 +157,7 @@ export default function Trending({ mediaType }) {
           </div>
         )}
 
-        {/* {!state.loading && state.response ? (
-          <div
-            className={`swiper-container ${
-              mediaType === 'movie' ? 'slider1' : 'slider2'
-            }`}
-          >
-            <Swiper
-              style={{ padding: '1px 0px' }}
-              modules={[Navigation]}
-              spaceBetween={15}
-              loop={true}
-              loopedSlides={1}
-              slidesPerView='auto'
-              navigation
-            >
-              {state.response.map((media, index) => (
-                <SwiperSlide
-                  key={
-                    mediaType === 'movie' || mediaType === 'book'
-                      ? media.title + index
-                      : media.name + index
-                  }
-                  style={{
-                    boxShadow: '0 2px 8px rgb(0 0 0 / 25%)',
-                    width: 'fit-content',
-                    height: 'auto',
-                    borderRadius: '3px',
-                  }}
-                >
-                  <Card mediaType={mediaType} media={media} type='carousel' />
-                </SwiperSlide>
-              ))}
-            </Swiper>
-          </div>
-        ) : !state.loading && state.error ? (
-          <Grid item xs={12} sx={{ gridColumn: '1/-1' }}>
-            <Alert severity='error' variant='outlined' p={2}>
-              {state.error}
-            </Alert>
-          </Grid>
-        ) : (
-          <Swiper
-            style={{ padding: '1px 0px' }}
-            spaceBetween={25}
-            slidesPerView='auto'
-          >
-            <>
-              {[...Array(5).keys()].map((item, index) => (
-                <SwiperSlide
-                  key={index}
-                  style={{
-                    boxShadow: '0 2px 8px rgb(0 0 0 / 25%)',
-                    width: 'fit-content',
-                    height: 'auto',
-                  }}
-                >
-                  <React.Fragment key={index}>
-                    <Skeleton
-                      animation='wave'
-                      variant='rectangular'
-                      width={250}
-                      height={300}
-                      sx={{ mb: 2 }}
-                    />
-                    <Skeleton
-                      animation='wave'
-                      variant='rectangular'
-                      width={170}
-                      height={16}
-                      sx={{ mb: 2, ml: 1 }}
-                    />
-                    <Skeleton
-                      animation='wave'
-                      variant='rectangular'
-                      width={140}
-                      height={10}
-                      sx={{ mb: 2, ml: 1 }}
-                    />
-                  </React.Fragment>
-                </SwiperSlide>
-              ))}
-            </>
-          </Swiper>
-        )} */}
+       
       </Grid>
     </Grid>
   );

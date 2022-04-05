@@ -5,6 +5,8 @@ import ReplyIcon from '@mui/icons-material/Reply';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import moment from 'moment';
+import CircularProgress from '@mui/material/CircularProgress';
+
 
 import ReactQuill from 'react-quill'; // ES6
 import 'react-quill/dist/quill.snow.css'; // ES6
@@ -20,7 +22,9 @@ export default function Comment({
   isReplyOpen,
   openReply,
   openedReplyId,
+  changedComment
 }) {
+  console.log(changedComment)
   const authData = useSelector((state) => state.auth);
   const navigate = useNavigate();
 
@@ -39,6 +43,7 @@ export default function Comment({
         openedReplyId={openedReplyId}
         isReplyOpen={comment._id === openedReplyId}
         openReply={openReply}
+        changedComment={changedComment}
       />
     );
   });
@@ -132,14 +137,33 @@ export default function Comment({
             placeholder='Enter your comment here'
           />
 
-          <Button
+          {changedComment.error && !changedComment.loading ? (
+            <>error</>
+          ) : (
+            <Button
+              variant='outlined'
+              onClick={(e) => reply(comment._id, index)}
+              disabled={replyText === '' && !changedComment.loading}
+              sx={{ width: 'fit-content', mt: '1rem' }}
+            >
+              {/* Reply */}
+              {!changedComment.loading && !changedComment.response ? (
+                'Reply'
+              ) : (
+                <CircularProgress color='inherit' size={'1.2rem'} />
+              )}
+            </Button>
+          )}
+
+          {/* <Button
             variant='outlined'
             onClick={(e) => reply(comment._id, index)}
             disabled={replyText === ''}
             sx={{ width: 'fit-content', mt: '1rem' }}
           >
-            Reply
-          </Button>
+             Reply 
+            
+          </Button> */}
         </>
       ) : (
         <></>

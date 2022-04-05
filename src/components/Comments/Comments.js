@@ -43,6 +43,13 @@ export default function Comments({ id }) {
   const [newComment, setNewComment] = useState({
     loading: false,
     error: null,
+    response: null
+  });
+
+  const [changedComment, setChangedComment] = useState({
+    loading: false,
+    error: null,
+    response: null,
   });
 
   const [openedReplyId, setOpenedReplyId] = useState('');
@@ -135,13 +142,21 @@ export default function Comments({ id }) {
       if (comment._id === commentId) {
         comment.replies.unshift(content);
       } else {
-        comment.replies.forEach((comm) => {
-          if (comm._id === commentId) {
+        // comment.replies.forEach((comm) => {
+        //   if (comm._id === commentId) {
+        //     comm.replies.unshift(content);
+        //   } else {
+        //     iterateComment(commentId, comm, content);
+        //   }
+        // });
+        for(const comm of comment.replies){
+          if(comm.id === commentId){
             comm.replies.unshift(content);
-          } else {
-            iterateComment(commentId, comm, content);
+            break;
+          }else{
+            iterateComment(commentId, comm, content)
           }
-        });
+        }
       }
     }
     return comment;
@@ -149,7 +164,11 @@ export default function Comments({ id }) {
 
   const reply = async (commentId, index) => {
     let mediaType = selectMedia();
-
+    setChangedComment({
+      error: null,
+      response: null,
+      loading: true
+    })
     try {
       const comment = await axios.post(
         `http://localhost:3000/comments/${mediaType}/${id}/reply`,
@@ -164,9 +183,9 @@ export default function Comments({ id }) {
         }
       );
       console.log(comment.data);
-      setNewComment({
+      setChangedComment({
         loading: false,
-        response: comment.data,
+        response: true,
         error: null,
       });
       const updatedState = [...state.response];
@@ -181,7 +200,7 @@ export default function Comments({ id }) {
       setState({ loading: false, response: updatedState, error: null });
     } catch (err) {
       console.log(err.response.data.Msg);
-      setNewComment({
+      setChangedComment({
         loading: false,
         response: null,
         error: err.response.data.Msg,
@@ -258,6 +277,7 @@ export default function Comments({ id }) {
                   openedReplyId={openedReplyId}
                   isReplyOpen={comment._id === openedReplyId}
                   openReply={openReply}
+                  changedComment={changedComment}
                 />
               ))}
             </>
