@@ -22,7 +22,8 @@ export default function Signin() {
   const dispatch = useDispatch();
   const authData = useSelector((state) => state.auth);
   const location = useLocation();
-  const from = location.state?.from?.pathname || '/';
+  //const from = location.state?.from?.pathname || '/';
+  const hasBack = location.key !== 'default';
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -38,7 +39,13 @@ export default function Signin() {
 
   useEffect(() => {
     if (authData.isAuth) {
-      navigate(from, { replace: true });
+      //navigate(from, { replace: true });
+      //navigate(-1)
+      if(hasBack){
+        navigate(-1)
+      }else {
+        navigate('/')
+      }
     }
   }, [authData.isAuth]);
 

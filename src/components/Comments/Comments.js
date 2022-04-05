@@ -1,17 +1,17 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import Comment from '../Comment/Comment';
 import { Box, Button, Typography } from '@mui/material';
 import ChatIcon from '@mui/icons-material/Chat';
 import { useSelector } from 'react-redux';
+import { Link, Navigate } from 'react-router-dom';
 
 import ReactQuill from 'react-quill'; // ES6
 import 'react-quill/dist/quill.snow.css'; // ES6
 
 export default function Comments({ id }) {
   const authData = useSelector((state) => state.auth);
-  const commentRef = useRef([]);
 
   const modules = {
     toolbar: [
@@ -44,6 +44,8 @@ export default function Comments({ id }) {
     loading: false,
     error: null,
   });
+
+  const [openedReplyId, setOpenedReplyId] = useState('');
 
   const [text, setText] = useState('');
   const [replyText, setReplyText] = useState('');
@@ -129,11 +131,11 @@ export default function Comments({ id }) {
   const iterateComment = (commentId, comment, content) => {
     if (Array.isArray(comment.replies)) {
       if (comment._id === commentId) {
-        comment.replies.push(content);
+        comment.replies.unshift(content);
       } else {
         comment.replies.forEach((comm) => {
           if (comm._id === commentId) {
-            comm.replies.push(content);
+            comm.replies.unshift(content);
           } else {
             iterateComment(commentId, comm, content);
           }
@@ -144,8 +146,6 @@ export default function Comments({ id }) {
   };
 
   const reply = async (commentId, index) => {
-    //(commentRef.current.replyClick());
-
     try {
       const comment = await axios.post(
         `http://localhost:3000/comments/${params.mediaType}/${id}/reply`,
@@ -173,6 +173,7 @@ export default function Comments({ id }) {
       );
       updatedState[index] = stateWithReply;
       console.log(updatedState);
+      openReply('');
       setState({ loading: false, response: updatedState, error: null });
     } catch (err) {
       console.log(err.response.data.Msg);
@@ -181,6 +182,16 @@ export default function Comments({ id }) {
         response: null,
         error: err.response.data.Msg,
       });
+    }
+  };
+
+  const openReply = (id) => {
+    if (id === openedReplyId) {
+      setOpenedReplyId('');
+      //setReplyText('');
+    } else {
+      setReplyText('');
+      setOpenedReplyId(id);
     }
   };
 
@@ -205,21 +216,34 @@ export default function Comments({ id }) {
               placeholder='Enter your comment here'
             />
           </Box>
-          <Box sx={{ ml: '1rem', mb: '1rem' }}>
-            <Button
-              variant='outlined'
-              onClick={addComment}
-              disabled={text === ''}
-            >
-              Comment
-            </Button>
-          </Box>
+          {authData.isAuth ? (
+            <Box sx={{ ml: '1rem', mb: '1rem' }}>
+              <Button
+                variant='outlined'
+                onClick={addComment}
+                disabled={text === ''}
+              >
+                Comment
+              </Button>
+            </Box>
+          ) : (
+            <Box sx={{ ml: '1rem', mb: '1rem', width: '100%'}}>
+              <Button
+                fullWidth
+                variant='outlined'
+                onClick={addComment}
+                component={Link}
+                to='/signin'
+              >
+                Sign in and Join the Conversation
+              </Button>
+            </Box>
+          )}
 
           {state.response.length > 0 ? (
             <>
               {state.response.map((comment, index) => (
                 <Comment
-                  ref={commentRef}
                   key={comment._id}
                   comment={comment}
                   isFirst={true}
@@ -227,6 +251,9 @@ export default function Comments({ id }) {
                   replyText={replyText}
                   handleReply={handleReplyText}
                   reply={reply}
+                  openedReplyId={openedReplyId}
+                  isReplyOpen={comment._id === openedReplyId}
+                  openReply={openReply}
                 />
               ))}
             </>

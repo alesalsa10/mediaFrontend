@@ -13,9 +13,14 @@ export default function Comment({
   replyText,
   handleReply,
   reply,
+
+  isReplyOpen,
+  openReply,
+  openedReplyId
 }) {
-  const [isOpen, setIsOpen] = useState(false);
+  //const [isOpen, setIsOpen] = useState(false);
   const nestedComments = (comment.replies || []).map((comment) => {
+    //console.log(openedReplyId)
     return (
       <Comment
         comment={comment}
@@ -25,6 +30,10 @@ export default function Comment({
         reply={reply}
         handleReply={handleReply}
         index={index}
+
+        openedReplyId={openedReplyId}
+        isReplyOpen={comment._id === openedReplyId}
+        openReply={openReply}
       />
     );
   });
@@ -33,9 +42,9 @@ export default function Comment({
     __html: DOMPurify.sanitize(text),
   });
 
-  const replyClick = () => {
-    setIsOpen(!isOpen);
-  };
+  // const replyClick = () => {
+  //   setIsOpen(!isOpen);
+  // };
 
   const modules = {
     toolbar: [
@@ -72,8 +81,10 @@ export default function Comment({
     >
       <Typography>{comment.postedBy.name}</Typography>
       <div dangerouslySetInnerHTML={sanitizedData(comment.text)} />
-      <ReplyIcon onClick={replyClick} />
-      {isOpen ? (
+      <ReplyIcon
+      onClick={()=>openReply(comment._id)}
+      />
+      {isReplyOpen ? (
         <>
           <ReactQuill
             value={replyText}
