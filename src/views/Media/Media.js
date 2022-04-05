@@ -189,7 +189,7 @@ export default function Media() {
                   }}
                 >
                   <>
-                    {[...Array(5).keys()].map((item, index) => (
+                    {[...Array(15).keys()].map((item, index) => (
                       <Box key={index}>
                         <Skeleton
                           animation='wave'

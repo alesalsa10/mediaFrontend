@@ -65,19 +65,20 @@ export default function Comments({ id }) {
   };
 
   const selectMedia = () => {
+    console.log(params);
     if (params.mediaType) {
       return params.mediaType;
-    } else if (params.seassonNumber && params.episodeNumber) {
+    } else if (params.seasonNumber && params.episodeNumber) {
       return 'episode';
-    } else if (params.episodeNumber) {
+    } else if (params.seasonNumber) {
       return 'season';
     }
   };
 
   const getComments = async () => {
     let mediaType = selectMedia();
-    let mediaId = params.id.split('-')[0];
-    console.log(mediaType, mediaId);
+    //let mediaId = params.id.split('-')[0];
+    console.log(mediaType);
     try {
       const response = await axios.get(
         `http://localhost:3000/comments/${mediaType}/${id}`
@@ -95,9 +96,10 @@ export default function Comments({ id }) {
   };
 
   const addComment = async () => {
+    let mediaType = selectMedia();
     try {
       const comment = await axios.post(
-        `http://localhost:3000/comments/${params.mediaType}/${id}`,
+        `http://localhost:3000/comments/${mediaType}/${id}`,
         {
           text: text,
         },
@@ -146,9 +148,11 @@ export default function Comments({ id }) {
   };
 
   const reply = async (commentId, index) => {
+    let mediaType = selectMedia();
+
     try {
       const comment = await axios.post(
-        `http://localhost:3000/comments/${params.mediaType}/${id}/reply`,
+        `http://localhost:3000/comments/${mediaType}/${id}/reply`,
         {
           text: replyText,
           parentCommentId: commentId,
@@ -227,7 +231,7 @@ export default function Comments({ id }) {
               </Button>
             </Box>
           ) : (
-            <Box sx={{ ml: '1rem', mb: '1rem', width: '100%'}}>
+            <Box sx={{ ml: '1rem', mb: '1rem', width: '100%' }}>
               <Button
                 fullWidth
                 variant='outlined'

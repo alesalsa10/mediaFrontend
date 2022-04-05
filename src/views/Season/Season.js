@@ -7,6 +7,7 @@ import SeasonOverview from '../../components/SeasonOverview/SeasonOverview';
 import TopBillCast from '../../components/TopBillCast/TopBillCast';
 import SeasonsCarousel from '../../components/SeasonsCarousel/SeasonsCarousel';
 import EpisodesCarousel from '../../components/EpisodesCarousel/EpisodesCarousel';
+import Comments from '../../components/Comments/Comments';
 
 export default function Season() {
   const params = useParams();
@@ -158,7 +159,7 @@ export default function Season() {
                   }}
                 >
                   <>
-                    {[...Array(5).keys()].map((item, index) => (
+                    {[...Array(15).keys()].map((item, index) => (
                       <Box key={index}>
                         <Skeleton
                           animation='wave'
@@ -246,6 +247,7 @@ export default function Season() {
             ) : (
               <></>
             )}
+            <Comments id={state.response.mediaDetails.id} />
           </Grid>
         )}
       </Grid>

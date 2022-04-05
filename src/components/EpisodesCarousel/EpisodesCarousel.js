@@ -7,7 +7,7 @@ import {
   CardContent,
 } from '@mui/material';
 import React, { useState, useRef, useEffect } from 'react';
-import { Navigation } from 'swiper';
+import { Navigation, Scrollbar } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { useParams } from 'react-router-dom';
 import { Link as RouterLink } from 'react-router-dom';
@@ -50,12 +50,13 @@ export default function EpisodesCarousel({ episodes }) {
             <div className={`swiper-container ${'actors'}`}>
               <Swiper
                 style={{ padding: '1px 0px' }}
-                modules={[Navigation]}
+                modules={[Scrollbar]}
                 spaceBetween={15}
                 //loop={true}
                 loopedSlides={1}
                 slidesPerView='auto'
-                navigation
+                //navigation
+                scrollbar={{ draggable: true }}
               >
                 {episodes.map((media, index) => (
                   <SwiperSlide
