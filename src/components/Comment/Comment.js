@@ -7,10 +7,10 @@ import { useNavigate } from 'react-router-dom';
 import moment from 'moment';
 import CircularProgress from '@mui/material/CircularProgress';
 import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 import ReactQuill from 'react-quill'; // ES6
 import 'react-quill/dist/quill.snow.css'; // ES6
-import { CommentsDisabled } from '@mui/icons-material';
 
 export default function Comment({
   comment,
@@ -32,6 +32,8 @@ export default function Comment({
   isEditOpen,
   openEdit,
   editedComment,
+
+  handleDelete
 }) {
   const authData = useSelector((state) => state.auth);
   const navigate = useNavigate();
@@ -57,6 +59,7 @@ export default function Comment({
         isEditOpen={comment._id === editId}
         openEdit={openEdit}
         editedComment={editedComment}
+        handleDelete={handleDelete}
       />
     );
   });
@@ -176,21 +179,38 @@ export default function Comment({
               </Box>
 
               {authData.user._id === comment.postedBy._id ? (
-                <Box
-                  sx={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    cursor: 'pointer',
-                    '&:hover': { color: 'primary.main' },
-                    mb: '0.3rem',
-                    mr: '0.5rem',
-                    width: 'fit-content',
-                  }}
-                  onClick={() => openEdit(comment._id, comment.text)}
-                >
-                  <Typography variant='body2'>Edit</Typography>
-                  <EditIcon fontSize='small' />
-                </Box>
+                <>
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      cursor: 'pointer',
+                      '&:hover': { color: 'primary.main' },
+                      mb: '0.3rem',
+                      mr: '0.5rem',
+                      width: 'fit-content',
+                    }}
+                    onClick={() => openEdit(comment._id, comment.text)}
+                  >
+                    <Typography variant='body2' sx={{ mr: '0.2rem' }}>
+                      Edit
+                    </Typography>
+                    <EditIcon fontSize='small' />
+                  </Box>
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      cursor: 'pointer',
+                      '&:hover': { color: 'error.main' },
+                      mb: '0.3rem',
+                      width: 'fit-content',
+                    }}
+                    onClick={() => handleDelete(comment._id, index, isFirst && comment.replies.length === 0 ? true: false)}
+                  >
+                    <DeleteIcon fontSize='small' />
+                  </Box>
+                </>
               ) : (
                 <></>
               )}

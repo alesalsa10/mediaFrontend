@@ -207,12 +207,10 @@ export default function Comments({ id }) {
   const editIteration = (commentId, comment, content) => {
     if (Array.isArray(comment.replies)) {
       if (comment._id === commentId) {
-        console.log(comment, content);
         comment.text = content.text;
       } else {
         for (let comm of comment.replies) {
           if (comm._id === commentId) {
-            console.log(comm, content);
             comm.text = content.text;
             break;
           } else {
@@ -221,9 +219,28 @@ export default function Comments({ id }) {
         }
       }
     }
+    return comment;
+  };
+
+  const deleteIteration = (commentId, comment) => {
+    if (Array.isArray(comment.replies)) {
+      for (let [index, comm] of comment.replies.entries()) {
+        console.log(index, comm);
+        if (comm._id === commentId) {
+          comment.replies.splice(index);
+          break;
+        } else {
+          deleteIteration(commentId, comm);
+        }
+      }
+    }
     console.log(comment);
     return comment;
   };
+
+  // const mainDelete = (list, index) =>{
+  //   return list.splice(index);
+  // }
 
   const reply = async (commentId, index) => {
     let mediaType = selectMedia();
@@ -351,6 +368,69 @@ export default function Comments({ id }) {
     }
   };
 
+  const deleteComment = async (commentId, index, isFirstAndNoChildren) => {
+    try {
+      let comment = await axios.delete(
+        `http://localhost:3000/comments/delete/${commentId}`,
+        {
+          headers: {
+            Authorization: `Token ${authData.accessToken}`,
+          },
+        }
+      );
+      let updatedState = [...state.response];
+
+      if (comment.data.Msg === 'Complete Deletion') {
+        //setState({ loading: false, response: updatedState, error: null });
+        if (isFirstAndNoChildren) {
+          updatedState.splice(index, 1);
+          //const updated = mainDelete(updatedState, index)
+          //console.log(updated)
+          setState({
+            loading: false,
+            response: updatedState,
+            error: null,
+          });
+        } else {
+          let stateWithDeleted = deleteIteration(
+            commentId,
+            state.response[index]
+            //comment.data.foundComment
+          );
+          updatedState[index] = stateWithDeleted;
+          setState({
+            loading: false,
+            response: updatedState,
+            error: null,
+          });
+        }
+      } else {
+        console.log(comment.data);
+        let stateWithReply = editIteration(
+          commentId,
+          state.response[index],
+          comment.data
+        );
+        updatedState[index] = stateWithReply;
+        setState({ loading: false, response: updatedState, error: null });
+      }
+    } catch (err) {
+      console.log(err);
+      // setChangedComment({
+      //   loading: false,
+      //   response: null,
+      //   error: err.response.data.Msg,
+      // });
+      // setTimeout(() => {
+      //   setChangedComment({
+      //     error: null,
+      //     response: null,
+      //     loading: false,
+      //   });
+      // }, 5000);
+    }
+  };
+
   useEffect(() => {
     getComments();
   }, [id, params]);
@@ -408,7 +488,6 @@ export default function Comments({ id }) {
               <Button
                 fullWidth
                 variant='outlined'
-                onClick={addComment}
                 component={Link}
                 to='/signin'
               >
@@ -439,6 +518,7 @@ export default function Comments({ id }) {
                   isEditOpen={comment._id === editId}
                   openEdit={openEdit}
                   editedComment={editedComment}
+                  handleDelete={deleteComment}
                 />
               ))}
             </>
