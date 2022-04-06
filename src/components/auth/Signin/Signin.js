@@ -158,7 +158,7 @@ export default function Signin() {
               type='submit'
               fullWidth
               variant='contained'
-              sx={{ mt: 3, mb: 2 }}
+              sx={{ mt: 3, mb: 2, height: '46px' }}
             >
               {authData.status === 'loading' ? (
                 <CircularProgress color='inherit' size={'1.2rem'} />

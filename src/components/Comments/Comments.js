@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import Comment from '../Comment/Comment';
-import { Box, Button, Typography } from '@mui/material';
+import { Alert, Box, Button, CircularProgress, Typography } from '@mui/material';
 import ChatIcon from '@mui/icons-material/Chat';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -53,6 +53,7 @@ export default function Comments({ id }) {
   });
 
   const [openedReplyId, setOpenedReplyId] = useState('');
+  const [editId, setEditId] = useState('');
 
   const [text, setText] = useState('');
   const [replyText, setReplyText] = useState('');
@@ -104,6 +105,11 @@ export default function Comments({ id }) {
 
   const addComment = async () => {
     let mediaType = selectMedia();
+    setNewComment({
+      error: null,
+      response: null,
+      loading: true,
+    });
     try {
       const comment = await axios.post(
         `http://localhost:3000/comments/${mediaType}/${id}`,
@@ -119,6 +125,7 @@ export default function Comments({ id }) {
       setNewComment({
         loading: false,
         error: null,
+        response: true
       });
 
       const newState = [comment.data, ...state.response];
@@ -134,6 +141,13 @@ export default function Comments({ id }) {
         response: null,
         error: err.response.data.Msg,
       });
+      setTimeout(() => {
+        setNewComment({
+          error: null,
+          response: null,
+          loading: false,
+        });
+      }, 3000);
     }
   };
 
@@ -142,13 +156,6 @@ export default function Comments({ id }) {
       if (comment._id === commentId) {
         comment.replies.unshift(content);
       } else {
-        // comment.replies.forEach((comm) => {
-        //   if (comm._id === commentId) {
-        //     comm.replies.unshift(content);
-        //   } else {
-        //     iterateComment(commentId, comm, content);
-        //   }
-        // });
         for(const comm of comment.replies){
           if(comm.id === commentId){
             comm.replies.unshift(content);
@@ -205,6 +212,13 @@ export default function Comments({ id }) {
         response: null,
         error: err.response.data.Msg,
       });
+      setTimeout(() => {
+        setChangedComment({
+          error: null,
+          response: null,
+          loading: false,
+        });
+      }, 5000);
     }
   };
 
@@ -217,6 +231,15 @@ export default function Comments({ id }) {
       setOpenedReplyId(id);
     }
   };
+
+  const openEdit = (id) =>{
+    if (id === editId) {
+      setEditId('');
+    } else {
+      setReplyText('');
+      setEditId(id);
+    }
+  }
 
   useEffect(() => {
     getComments();
@@ -241,13 +264,29 @@ export default function Comments({ id }) {
           </Box>
           {authData.isAuth ? (
             <Box sx={{ ml: '1rem', mb: '1rem' }}>
-              <Button
+              {/* <Button
                 variant='outlined'
                 onClick={addComment}
                 disabled={text === ''}
               >
                 Comment
-              </Button>
+              </Button> */}
+              {newComment.error && !newComment.loading ? (
+                <Alert severity='error'>{newComment.error}</Alert>
+              ) : (
+                <Button
+                  variant='outlined'
+                  onClick={addComment}
+                  disabled={text === '' && !newComment.loading}
+                  sx={{ width: '100px', height: '40px', mt: '1rem' }}
+                >
+                  {newComment.loading && !newComment.response ? (
+                    <CircularProgress color='inherit' size={'1.2rem'} />
+                  ) : (
+                    'Comment'
+                  )}
+                </Button>
+              )}
             </Box>
           ) : (
             <Box sx={{ ml: '1rem', mb: '1rem', width: '100%' }}>
@@ -278,6 +317,10 @@ export default function Comments({ id }) {
                   isReplyOpen={comment._id === openedReplyId}
                   openReply={openReply}
                   changedComment={changedComment}
+
+                  editId={editId}
+                  isEditOpen={comment._id === editId}
+                  openEdit={openEdit}
                 />
               ))}
             </>

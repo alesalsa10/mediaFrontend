@@ -221,7 +221,7 @@ export default function Register() {
               type='submit'
               fullWidth
               variant='contained'
-              sx={{ mt: 3, mb: 2, lineHeight: 1, py: 1 }}
+              sx={{ mt: 3, mb: 2, height: '46px' }}
             >
               {authData.status === 'loading' ? (
                 <CircularProgress color='inherit' size={'1.2rem'}/>
