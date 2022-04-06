@@ -25,9 +25,13 @@ export default function Comment({
   openedReplyId,
   changedComment,
 
+  editText,
+  handleEdit,
+  edit,
   editId,
   isEditOpen,
   openEdit,
+  editedComment,
 }) {
   const authData = useSelector((state) => state.auth);
   const navigate = useNavigate();
@@ -38,18 +42,21 @@ export default function Comment({
         comment={comment}
         key={comment._id}
         isFirst={false}
+        index={index}
         replyText={replyText}
         reply={reply}
         handleReply={handleReply}
-        index={index}
         openedReplyId={openedReplyId}
         isReplyOpen={comment._id === openedReplyId}
         openReply={openReply}
         changedComment={changedComment}
-        
+        editText={editText}
+        handleEdit={handleEdit}
+        edit={edit}
         editId={editId}
         isEditOpen={comment._id === editId}
         openEdit={openEdit}
+        editedComment={editedComment}
       />
     );
   });
@@ -101,16 +108,50 @@ export default function Comment({
       {isEditOpen ? (
         <>
           <ReactQuill
-            //value={replyText}
-            //onChange={handleReply}
+            value={editText}
+            onChange={handleEdit}
             modules={modules}
             formats={formats}
             placeholder='Enter your comment here'
           />
+
+          {editedComment.error && !editedComment.loading ? (
+            //need to check first response from server not db
+            <Alert severity='error'>{changedComment.error}</Alert>
+          ) : (
+            <>
+              <Button
+                variant='outlined'
+                onClick={(e) => edit(comment._id, index)}
+                disabled={
+                  (editText === '' || editText === '[Deleted]') &&
+                  !editedComment.loading
+                }
+                sx={{ width: '80px', height: '40px', my: '0.5rem' }}
+              >
+                {editedComment.loading && !editedComment.response ? (
+                  <CircularProgress color='inherit' size={'1.2rem'} />
+                ) : (
+                  'Edit'
+                )}
+              </Button>
+              {editText === '[Deleted]' ? (
+                <Alert severity='warning'>
+                  Text cannot be equal to [Deleted]
+                </Alert>
+              ) : (
+                <></>
+              )}
+            </>
+          )}
+          {nestedComments}
         </>
       ) : (
         <>
-          <div dangerouslySetInnerHTML={sanitizedData(comment.text)} />
+          <div
+            style={{ marginBottom: '0.2rem' }}
+            dangerouslySetInnerHTML={sanitizedData(comment.text)}
+          />
           {authData.isAuth ? (
             <Box
               sx={{
@@ -124,7 +165,7 @@ export default function Comment({
                   flexDirection: 'row',
                   cursor: 'pointer',
                   '&:hover': { color: 'primary.main' },
-                  mb: '0.3rem',
+                  //mb: '0.3rem',
                   mr: '0.5rem',
                   width: 'fit-content',
                 }}
@@ -145,7 +186,7 @@ export default function Comment({
                     mr: '0.5rem',
                     width: 'fit-content',
                   }}
-                  onClick={() => openEdit(comment._id)}
+                  onClick={() => openEdit(comment._id, comment.text)}
                 >
                   <Typography variant='body2'>Edit</Typography>
                   <EditIcon fontSize='small' />
@@ -183,19 +224,31 @@ export default function Comment({
               {changedComment.error && !changedComment.loading ? (
                 <Alert severity='error'>{changedComment.error}</Alert>
               ) : (
-                <Button
-                  variant='outlined'
-                  onClick={(e) => reply(comment._id, index)}
-                  disabled={replyText === '' && !changedComment.loading}
-                  sx={{ width: '80px', height: '40px', mt: '1rem' }}
-                >
-                  {/* Reply */}
-                  {changedComment.loading && !changedComment.response ? (
-                    <CircularProgress color='inherit' size={'1.2rem'} />
+                <>
+                  <Button
+                    variant='outlined'
+                    onClick={(e) => reply(comment._id, index)}
+                    disabled={
+                      (replyText === '' || replyText === '[Deleted]') &&
+                      !changedComment.loading
+                    }
+                    sx={{ width: '80px', height: '40px', mt: '1rem' }}
+                  >
+                    {/* Reply */}
+                    {changedComment.loading && !changedComment.response ? (
+                      <CircularProgress color='inherit' size={'1.2rem'} />
+                    ) : (
+                      'Reply'
+                    )}
+                  </Button>
+                  {replyText === '[Deleted]' ? (
+                    <Alert severity='warning'>
+                      Text cannot be equal to [Deleted]
+                    </Alert>
                   ) : (
-                    'Reply'
+                    <></>
                   )}
-                </Button>
+                </>
               )}
             </>
           ) : (

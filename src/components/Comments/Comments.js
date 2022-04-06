@@ -2,7 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import Comment from '../Comment/Comment';
-import { Alert, Box, Button, CircularProgress, Typography } from '@mui/material';
+import {
+  Alert,
+  Box,
+  Button,
+  CircularProgress,
+  Typography,
+} from '@mui/material';
 import ChatIcon from '@mui/icons-material/Chat';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -43,11 +49,17 @@ export default function Comments({ id }) {
   const [newComment, setNewComment] = useState({
     loading: false,
     error: null,
-    response: null
+    response: null,
   });
 
   const [changedComment, setChangedComment] = useState({
     loading: false,
+    error: null,
+    response: null,
+  });
+
+  const [editedComment, setEditedComment] = useState({
+    loadng: false,
     error: null,
     response: null,
   });
@@ -57,11 +69,17 @@ export default function Comments({ id }) {
 
   const [text, setText] = useState('');
   const [replyText, setReplyText] = useState('');
+  const [editText, setEditText] = useState('');
 
   const handleChange = (value) => {
     setText(value);
     if (value.replace(/<(.|\n)*?>/g, '').trim().length === 0) {
       setText('');
+    }
+    if (value.includes('[Deleted]')) {
+      value = '[Deleted]';
+      console.log(value);
+      setText(value);
     }
   };
 
@@ -69,6 +87,23 @@ export default function Comments({ id }) {
     setReplyText(value);
     if (value.replace(/<(.|\n)*?>/g, '').trim().length === 0) {
       setReplyText('');
+    }
+    if (value.includes('[Deleted]')) {
+      value = '[Deleted]';
+      console.log(value);
+      setReplyText(value);
+    }
+  };
+
+  const handleEditText = (value) => {
+    setEditText(value);
+    if (value.replace(/<(.|\n)*?>/g, '').trim().length === 0) {
+      setEditText('');
+    }
+    if (value.includes('[Deleted]')) {
+      value = '[Deleted]';
+      console.log(value);
+      setEditText(value);
     }
   };
 
@@ -125,7 +160,7 @@ export default function Comments({ id }) {
       setNewComment({
         loading: false,
         error: null,
-        response: true
+        response: true,
       });
 
       const newState = [comment.data, ...state.response];
@@ -156,16 +191,37 @@ export default function Comments({ id }) {
       if (comment._id === commentId) {
         comment.replies.unshift(content);
       } else {
-        for(const comm of comment.replies){
-          if(comm.id === commentId){
+        for (const comm of comment.replies) {
+          if (comm._id === commentId) {
             comm.replies.unshift(content);
             break;
-          }else{
-            iterateComment(commentId, comm, content)
+          } else {
+            iterateComment(commentId, comm, content);
           }
         }
       }
     }
+    return comment;
+  };
+
+  const editIteration = (commentId, comment, content) => {
+    if (Array.isArray(comment.replies)) {
+      if (comment._id === commentId) {
+        console.log(comment, content);
+        comment.text = content.text;
+      } else {
+        for (let comm of comment.replies) {
+          if (comm._id === commentId) {
+            console.log(comm, content);
+            comm.text = content.text;
+            break;
+          } else {
+            editIteration(commentId, comm, content);
+          }
+        }
+      }
+    }
+    console.log(comment);
     return comment;
   };
 
@@ -174,8 +230,8 @@ export default function Comments({ id }) {
     setChangedComment({
       error: null,
       response: null,
-      loading: true
-    })
+      loading: true,
+    });
     try {
       const comment = await axios.post(
         `http://localhost:3000/comments/${mediaType}/${id}/reply`,
@@ -222,6 +278,58 @@ export default function Comments({ id }) {
     }
   };
 
+  const edit = async (commentId, index) => {
+    //let mediaType = selectMedia();
+    setEditedComment({
+      error: null,
+      response: null,
+      loading: true,
+    });
+    try {
+      const comment = await axios.put(
+        `http://localhost:3000/comments/edit/${commentId}`,
+        {
+          text: editText,
+        },
+        {
+          headers: {
+            Authorization: `Token ${authData.accessToken}`,
+          },
+        }
+      );
+      console.log(comment.data);
+      setEditedComment({
+        loading: false,
+        response: true,
+        error: null,
+      });
+      const updatedState = [...state.response];
+
+      let stateWithReply = editIteration(
+        commentId,
+        state.response[index],
+        comment.data.foundComment
+      );
+      updatedState[index] = stateWithReply;
+      openEdit('');
+      setState({ loading: false, response: updatedState, error: null });
+    } catch (err) {
+      console.log(err.response);
+      setEditedComment({
+        loading: false,
+        response: null,
+        error: err.response.data.Msg,
+      });
+      setTimeout(() => {
+        setEditedComment({
+          error: null,
+          response: null,
+          loading: false,
+        });
+      }, 5000);
+    }
+  };
+
   const openReply = (id) => {
     if (id === openedReplyId) {
       setOpenedReplyId('');
@@ -232,14 +340,16 @@ export default function Comments({ id }) {
     }
   };
 
-  const openEdit = (id) =>{
+  const openEdit = (id, text) => {
     if (id === editId) {
       setEditId('');
+      //setEditText(text)
     } else {
-      setReplyText('');
+      //setReplyText('');
       setEditId(id);
+      setEditText(text);
     }
-  }
+  };
 
   useEffect(() => {
     getComments();
@@ -264,28 +374,33 @@ export default function Comments({ id }) {
           </Box>
           {authData.isAuth ? (
             <Box sx={{ ml: '1rem', mb: '1rem' }}>
-              {/* <Button
-                variant='outlined'
-                onClick={addComment}
-                disabled={text === ''}
-              >
-                Comment
-              </Button> */}
               {newComment.error && !newComment.loading ? (
                 <Alert severity='error'>{newComment.error}</Alert>
               ) : (
-                <Button
-                  variant='outlined'
-                  onClick={addComment}
-                  disabled={text === '' && !newComment.loading}
-                  sx={{ width: '100px', height: '40px', mt: '1rem' }}
-                >
-                  {newComment.loading && !newComment.response ? (
-                    <CircularProgress color='inherit' size={'1.2rem'} />
+                <>
+                  <Button
+                    variant='outlined'
+                    onClick={addComment}
+                    disabled={
+                      (text === '' || text === '[Deleted]') &&
+                      !newComment.loading
+                    }
+                    sx={{ width: '100px', height: '40px', mt: '1rem' }}
+                  >
+                    {newComment.loading && !newComment.response ? (
+                      <CircularProgress color='inherit' size={'1.2rem'} />
+                    ) : (
+                      'Comment'
+                    )}
+                  </Button>
+                  {text === '[Deleted]' ? (
+                    <Alert severity='warning'>
+                      Text cannot be equal to [Deleted]
+                    </Alert>
                   ) : (
-                    'Comment'
+                    <></>
                   )}
-                </Button>
+                </>
               )}
             </Box>
           ) : (
@@ -317,10 +432,13 @@ export default function Comments({ id }) {
                   isReplyOpen={comment._id === openedReplyId}
                   openReply={openReply}
                   changedComment={changedComment}
-
+                  editText={editText}
+                  handleEdit={handleEditText}
+                  edit={edit}
                   editId={editId}
                   isEditOpen={comment._id === editId}
                   openEdit={openEdit}
+                  editedComment={editedComment}
                 />
               ))}
             </>
