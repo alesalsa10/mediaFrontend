@@ -227,7 +227,7 @@ export default function Comments({ id }) {
       for (let [index, comm] of comment.replies.entries()) {
         console.log(index, comm);
         if (comm._id === commentId) {
-          comment.replies.splice(index);
+          comment.replies.splice(index, 1);
           break;
         } else {
           deleteIteration(commentId, comm);
@@ -237,10 +237,6 @@ export default function Comments({ id }) {
     console.log(comment);
     return comment;
   };
-
-  // const mainDelete = (list, index) =>{
-  //   return list.splice(index);
-  // }
 
   const reply = async (commentId, index) => {
     let mediaType = selectMedia();
@@ -431,6 +427,10 @@ export default function Comments({ id }) {
     }
   };
 
+  const collapse = () =>{
+
+  }
+
   useEffect(() => {
     getComments();
   }, [id, params]);
@@ -443,7 +443,7 @@ export default function Comments({ id }) {
         <>error</>
       ) : (
         <>
-          <Box sx={{ display: 'flex', width: '100%', mb: 2, ml: '1rem' }}>
+          <Box sx={{ display: 'flex', width: '100%', mb: 1, ml: '1rem' }}>
             <ReactQuill
               value={text}
               onChange={handleChange}
@@ -465,7 +465,7 @@ export default function Comments({ id }) {
                       (text === '' || text === '[Deleted]') &&
                       !newComment.loading
                     }
-                    sx={{ width: '100px', height: '40px', mt: '1rem' }}
+                    sx={{ width: '100px', height: '40px', mt: '0.5rem' }}
                   >
                     {newComment.loading && !newComment.response ? (
                       <CircularProgress color='inherit' size={'1.2rem'} />
@@ -519,6 +519,7 @@ export default function Comments({ id }) {
                   openEdit={openEdit}
                   editedComment={editedComment}
                   handleDelete={deleteComment}
+                  collapse={collapse}
                 />
               ))}
             </>
