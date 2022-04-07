@@ -50,6 +50,11 @@ export default function TopBillCast({ cast, mediaType, mediaId, params }) {
   useEffect(() => {
     window.addEventListener('resize', handleImageLoad);
     window.addEventListener('resize', getListSize);
+
+    return () => {
+      window.removeEventListener('resize', handleImageLoad);
+      window.removeEventListener('scroll', getListSize);
+    };
   }, []);
 
   const baseImgUrl = 'https://image.tmdb.org/t/p/original';

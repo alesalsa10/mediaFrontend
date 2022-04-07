@@ -74,6 +74,11 @@ export default function Card({ mediaType, media, type, bestSellers }) {
   useEffect(() => {
     window.addEventListener('resize', handleImageLoad);
     window.addEventListener('resize', getListSize);
+
+    return () => {
+      window.removeEventListener('resize', handleImageLoad);
+      window.removeEventListener('scroll', getListSize);
+    };
   }, []);
 
   const baseImgUrl = 'https://image.tmdb.org/t/p/original';
