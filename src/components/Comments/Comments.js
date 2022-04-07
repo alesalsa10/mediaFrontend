@@ -19,8 +19,14 @@ import 'react-quill/dist/quill.snow.css'; // ES6
 export default function Comments({ id }) {
   const authData = useSelector((state) => state.auth);
   const [isOpen, setIsOpen] = useState(false);
-  const handleModal = () => {
-    setIsOpen(!isOpen);
+  const handleModal = (event, reason, comment, index, firstWithChildren) => {
+    console.log(comment, index, firstWithChildren)
+    if (reason !== 'backdropClick') {
+      setDeleted(comment);
+      setDeletedIndex(index)
+      setFirstWithChildren(firstWithChildren)
+      setIsOpen(!isOpen);
+    }
   };
 
   const modules = {
@@ -43,6 +49,9 @@ export default function Comments({ id }) {
     'indent',
   ];
 
+  const [deletedIndex, setDeletedIndex] = useState();
+  const [firstWithChildren, setFirstWithChildren] = useState();
+
   const params = useParams();
   const [state, setState] = useState({
     loading: true,
@@ -63,13 +72,20 @@ export default function Comments({ id }) {
   });
 
   const [editedComment, setEditedComment] = useState({
-    loadng: false,
+    loading: false,
+    error: null,
+    response: null,
+  });
+
+  const [deletedComment, setDeletedComment] = useState({
+    loading: false,
     error: null,
     response: null,
   });
 
   const [openedReplyId, setOpenedReplyId] = useState('');
   const [editId, setEditId] = useState('');
+  const [deleted, setDeleted] = useState('');
 
   const [text, setText] = useState('');
   const [replyText, setReplyText] = useState('');
@@ -146,6 +162,9 @@ export default function Comments({ id }) {
 
   const addComment = async () => {
     let mediaType = selectMedia();
+    if(newComment.loading){
+      return
+    }
     setNewComment({
       error: null,
       response: null,
@@ -246,6 +265,9 @@ export default function Comments({ id }) {
 
   const reply = async (commentId, index) => {
     let mediaType = selectMedia();
+    if (changedComment.loading) {
+      return;
+    }
     setChangedComment({
       error: null,
       response: null,
@@ -298,6 +320,9 @@ export default function Comments({ id }) {
   };
 
   const edit = async (commentId, index) => {
+    if (editedComment.loading) {
+      return;
+    }
     //let mediaType = selectMedia();
     setEditedComment({
       error: null,
@@ -370,6 +395,15 @@ export default function Comments({ id }) {
   };
 
   const deleteComment = async (commentId, index, isFirstAndNoChildren) => {
+    console.log(commentId, index, isFirstAndNoChildren)
+    if(deletedComment.loading){
+      return
+    }
+    setDeletedComment({
+      error: null,
+      response: null,
+      loading: true,
+    });
     try {
       let comment = await axios.delete(
         `http://localhost:3000/comments/delete/${commentId}`,
@@ -379,14 +413,16 @@ export default function Comments({ id }) {
           },
         }
       );
+      setDeletedComment({
+        loading: false,
+        response: true,
+        error: null,
+      });
       let updatedState = [...state.response];
 
       if (comment.data.Msg === 'Complete Deletion') {
-        //setState({ loading: false, response: updatedState, error: null });
         if (isFirstAndNoChildren) {
           updatedState.splice(index, 1);
-          //const updated = mainDelete(updatedState, index)
-          //console.log(updated)
           setState({
             loading: false,
             response: updatedState,
@@ -397,7 +433,6 @@ export default function Comments({ id }) {
           let stateWithDeleted = deleteIteration(
             commentId,
             state.response[index]
-            //comment.data.foundComment
           );
           updatedState[index] = stateWithDeleted;
           setState({
@@ -420,18 +455,18 @@ export default function Comments({ id }) {
       }
     } catch (err) {
       console.log(err);
-      // setChangedComment({
-      //   loading: false,
-      //   response: null,
-      //   error: err.response.data.Msg,
-      // });
-      // setTimeout(() => {
-      //   setChangedComment({
-      //     error: null,
-      //     response: null,
-      //     loading: false,
-      //   });
-      // }, 5000);
+      setDeletedComment({
+        loading: false,
+        response: null,
+        error: err.response.data.Msg,
+      });
+      setTimeout(() => {
+        setDeletedComment({
+          error: null,
+          response: null,
+          loading: false,
+        });
+      }, 5000);
     }
   };
 
@@ -530,7 +565,13 @@ export default function Comments({ id }) {
                   isEditOpen={comment._id === editId}
                   openEdit={openEdit}
                   editedComment={editedComment}
+
                   handleDelete={deleteComment}
+                  deletedComment={deletedComment}
+                  deleted={deleted}
+                  deletedIndex={deletedIndex}
+                  firstWithChildren={firstWithChildren}
+
                   collapse={collapse}
                   collpaseId={collapsedId}
                   isCollapsed={comment._id === collapsedId}

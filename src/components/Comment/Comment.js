@@ -36,13 +36,17 @@ export default function Comment({
   editedComment,
 
   handleDelete,
+  deletedComment,
+  deleted,
+  deletedIndex,
+  firstWithChildren,
 
   collapse,
   collpaseId,
   isCollapsed,
 
   isOpen,
-  handleModal
+  handleModal,
 }) {
   const authData = useSelector((state) => state.auth);
   const navigate = useNavigate();
@@ -69,6 +73,10 @@ export default function Comment({
         openEdit={openEdit}
         editedComment={editedComment}
         handleDelete={handleDelete}
+        deletedComment={deletedComment}
+        deleted={deleted}
+        deletedIndex={deletedIndex}
+        firstWithChildren={firstWithChildren}
         collapse={collapse}
         collpaseId={collpaseId}
         isCollapsed={comment._id === collpaseId}
@@ -101,7 +109,6 @@ export default function Comment({
     'bullet',
     'indent',
   ];
-
 
   return (
     <Box
@@ -181,7 +188,6 @@ export default function Comment({
                     />
 
                     {editedComment.error && !editedComment.loading ? (
-                      //need to check first response from server not db
                       <Alert severity='error'>{changedComment.error}</Alert>
                     ) : (
                       <>
@@ -270,7 +276,15 @@ export default function Comment({
                                 mb: '0.3rem',
                                 width: 'fit-content',
                               }}
-                              onClick={() => handleModal()}
+                              onClick={(e, reason) =>
+                                handleModal(
+                                  e,
+                                  reason,
+                                  comment,  
+                                  index,
+                                  isFirst && comment.replies.length === 0
+                                )
+                              }
                             >
                               <DeleteIcon fontSize='small' />
                             </Box>
@@ -353,7 +367,7 @@ export default function Comment({
       </Box>
       <Modal
         open={isOpen}
-        onClose={handleModal}
+        onClose={(e, reason) => handleModal(e, reason)}
         aria-labelledby='delete comment confirmation'
         aria-describedby='confirmation for delete'
         closeAfterTransition
@@ -361,7 +375,7 @@ export default function Comment({
         BackdropProps={{
           timeout: 500,
         }}
-        sx={{ backgroundColor: 'rgb(0,0,0)', opacity: 0.1 }}
+        sx={{ backgroundColor: 'gray', opacity: 0.1 }}
       >
         <Box
           sx={{
@@ -390,9 +404,9 @@ export default function Comment({
               variant='contained'
               onClick={() =>
                 handleDelete(
-                  comment._id,
-                  index,
-                  isFirst && comment.replies.length === 0 ? true : false
+                  deleted._id,
+                  deletedIndex,
+                  firstWithChildren
                 )
               }
             >
@@ -401,6 +415,28 @@ export default function Comment({
             <Button varaint='outlined' onClick={handleModal}>
               No
             </Button>
+            {deletedComment.error && !deletedComment.loading ? (
+              <Alert severity='error'>{changedComment.error}</Alert>
+            ) : !deletedComment.error && deletedComment.loading ? (
+              <Box
+                sx={{
+                  position: 'absolute',
+                  zIndex: 1000,
+                  width: '100%',
+                  height: '100%',
+                  top: '50%',
+                  left: '50%',
+                  transform: 'translate(-50%, -50%)',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <CircularProgress />
+              </Box>
+            ) : (
+              <></>
+            )}
           </Box>
         </Box>
       </Modal>
