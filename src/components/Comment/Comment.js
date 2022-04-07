@@ -1,4 +1,4 @@
-import { Alert, Box, Button, Typography } from '@mui/material';
+import { Alert, Backdrop, Box, Button, Modal, Typography } from '@mui/material';
 import React from 'react';
 import DOMPurify from 'dompurify';
 import ReplyIcon from '@mui/icons-material/Reply';
@@ -12,6 +12,7 @@ import { Link } from '@mui/material';
 
 import ReactQuill from 'react-quill'; // ES6
 import 'react-quill/dist/quill.snow.css'; // ES6
+import OpenInFullIcon from '@mui/icons-material/OpenInFull';
 
 export default function Comment({
   comment,
@@ -36,7 +37,12 @@ export default function Comment({
 
   handleDelete,
 
-  collapse
+  collapse,
+  collpaseId,
+  isCollapsed,
+
+  isOpen,
+  handleModal
 }) {
   const authData = useSelector((state) => state.auth);
   const navigate = useNavigate();
@@ -64,6 +70,10 @@ export default function Comment({
         editedComment={editedComment}
         handleDelete={handleDelete}
         collapse={collapse}
+        collpaseId={collpaseId}
+        isCollapsed={comment._id === collpaseId}
+        isOpen={isOpen}
+        handleModal={handleModal}
       />
     );
   });
@@ -92,20 +102,33 @@ export default function Comment({
     'indent',
   ];
 
+
   return (
     <Box
       sx={{ display: 'flex', width: '100%', marginTop: isFirst ? '1rem' : 0 }}
     >
       <Box
         sx={{
-          width: '3px',
-          borderLeft: '2px solid grey',
+          width: isCollapsed ? 'auto' : '3px',
+          borderLeft: isCollapsed ? '' : '2px solid grey',
           //marginBottom: isFirst ? '1rem' : 0,
           ':hover': { borderColor: 'text.primary' },
-          cursor: 'pointer'
+          cursor: 'pointer',
         }}
-        onClick={collapse}
-      ></Box>
+        onClick={() => collapse(comment._id)}
+      >
+        {isCollapsed ? (
+          <OpenInFullIcon
+            fontSize='small'
+            sx={{
+              ':hover': { borderColor: 'text.primary', cursor: 'pointer' },
+            }}
+            onClick={() => collapse(comment._id)}
+          />
+        ) : (
+          <></>
+        )}
+      </Box>
       <Box
         sx={{
           display: 'flex',
@@ -118,7 +141,7 @@ export default function Comment({
         {comment.text === '[Deleted]' ? (
           <>
             <Typography>{comment.text}</Typography>
-            {nestedComments}
+            {isCollapsed ? <></> : nestedComments}
           </>
         ) : (
           <>
@@ -143,169 +166,41 @@ export default function Comment({
               </Typography>
             </Box>
 
-            {isEditOpen ? (
-              <>
-                <ReactQuill
-                  value={editText}
-                  onChange={handleEdit}
-                  modules={modules}
-                  formats={formats}
-                  placeholder='Enter your comment here'
-                />
-
-                {editedComment.error && !editedComment.loading ? (
-                  //need to check first response from server not db
-                  <Alert severity='error'>{changedComment.error}</Alert>
-                ) : (
-                  <>
-                    <Button
-                      variant='outlined'
-                      onClick={(e) => edit(comment._id, index)}
-                      disabled={
-                        (editText === '' || editText === '[Deleted]') &&
-                        !editedComment.loading
-                      }
-                      sx={{ width: '80px', height: '40px', my: '0.5rem' }}
-                    >
-                      {editedComment.loading && !editedComment.response ? (
-                        <CircularProgress color='inherit' size={'1.2rem'} />
-                      ) : (
-                        'Edit'
-                      )}
-                    </Button>
-                    {editText === '[Deleted]' ? (
-                      <Alert severity='warning'>
-                        Text cannot be equal to [Deleted]
-                      </Alert>
-                    ) : (
-                      <></>
-                    )}
-                  </>
-                )}
-                {nestedComments}
-              </>
+            {isCollapsed ? (
+              <></>
             ) : (
               <>
-                <div
-                  style={{ marginBottom: '0.2rem' }}
-                  dangerouslySetInnerHTML={sanitizedData(comment.text)}
-                />
-                {authData.isAuth ? (
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      flexDirection: 'row',
-                    }}
-                  >
-                    <Box
-                      sx={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        cursor: 'pointer',
-                        '&:hover': { color: 'primary.main' },
-                        //mb: '0.3rem',
-                        mr: '0.5rem',
-                        width: 'fit-content',
-                      }}
-                      onClick={() => openReply(comment._id)}
-                    >
-                      <Typography variant='body2'>Reply</Typography>
-                      <ReplyIcon fontSize='small' />
-                    </Box>
-
-                    {authData.user._id === comment.postedBy._id ? (
-                      <>
-                        <Box
-                          sx={{
-                            display: 'flex',
-                            flexDirection: 'row',
-                            cursor: 'pointer',
-                            '&:hover': { color: 'primary.main' },
-                            mb: '0.3rem',
-                            mr: '0.5rem',
-                            width: 'fit-content',
-                          }}
-                          onClick={() => openEdit(comment._id, comment.text)}
-                        >
-                          <Typography variant='body2' sx={{ mr: '0.2rem' }}>
-                            Edit
-                          </Typography>
-                          <EditIcon fontSize='small' />
-                        </Box>
-                        <Box
-                          sx={{
-                            display: 'flex',
-                            flexDirection: 'row',
-                            cursor: 'pointer',
-                            '&:hover': { color: 'error.main' },
-                            mb: '0.3rem',
-                            width: 'fit-content',
-                          }}
-                          onClick={() =>
-                            handleDelete(
-                              comment._id,
-                              index,
-                              isFirst && comment.replies.length === 0
-                                ? true
-                                : false
-                            )
-                          }
-                        >
-                          <DeleteIcon fontSize='small' />
-                        </Box>
-                      </>
-                    ) : (
-                      <></>
-                    )}
-                  </Box>
-                ) : (
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      flexDirection: 'row',
-                      cursor: 'pointer',
-                      '&:hover': { color: 'primary.main' },
-                      mb: '0.3rem',
-                      width: 'fit-content',
-                    }}
-                    onClick={() => navigate('/signin')}
-                  >
-                    <Typography variant='body2'>Reply</Typography>
-                    <ReplyIcon fontSize='small' />
-                  </Box>
-                )}
-                {isReplyOpen ? (
+                {isEditOpen ? (
                   <>
                     <ReactQuill
-                      value={replyText}
-                      onChange={handleReply}
+                      value={editText}
+                      onChange={handleEdit}
                       modules={modules}
                       formats={formats}
                       placeholder='Enter your comment here'
                     />
 
-                    {changedComment.error && !changedComment.loading ? (
+                    {editedComment.error && !editedComment.loading ? (
+                      //need to check first response from server not db
                       <Alert severity='error'>{changedComment.error}</Alert>
                     ) : (
                       <>
                         <Button
                           variant='outlined'
-                          onClick={(e) => reply(comment._id, index)}
+                          onClick={(e) => edit(comment._id, index)}
                           disabled={
-                            (replyText === '' || replyText === '[Deleted]') &&
-                            !changedComment.loading
+                            (editText === '' || editText === '[Deleted]') &&
+                            !editedComment.loading
                           }
-                          sx={{ width: '80px', height: '40px', mt: '1rem' }}
+                          sx={{ width: '80px', height: '40px', my: '0.5rem' }}
                         >
-                          {/* Reply */}
-                          {changedComment.loading &&
-                          !changedComment.response ? (
+                          {editedComment.loading && !editedComment.response ? (
                             <CircularProgress color='inherit' size={'1.2rem'} />
                           ) : (
-                            'Reply'
+                            'Edit'
                           )}
                         </Button>
-                        {replyText === '[Deleted]' ? (
+                        {editText === '[Deleted]' ? (
                           <Alert severity='warning'>
                             Text cannot be equal to [Deleted]
                           </Alert>
@@ -314,16 +209,201 @@ export default function Comment({
                         )}
                       </>
                     )}
+                    {nestedComments}
                   </>
                 ) : (
-                  <></>
+                  <>
+                    <div
+                      style={{ marginBottom: '0.2rem' }}
+                      dangerouslySetInnerHTML={sanitizedData(comment.text)}
+                    />
+                    {authData.isAuth ? (
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          flexDirection: 'row',
+                        }}
+                      >
+                        <Box
+                          sx={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            cursor: 'pointer',
+                            '&:hover': { color: 'primary.main' },
+                            //mb: '0.3rem',
+                            mr: '0.5rem',
+                            width: 'fit-content',
+                          }}
+                          onClick={() => openReply(comment._id)}
+                        >
+                          <Typography variant='body2'>Reply</Typography>
+                          <ReplyIcon fontSize='small' />
+                        </Box>
+
+                        {authData.user._id === comment.postedBy._id ? (
+                          <>
+                            <Box
+                              sx={{
+                                display: 'flex',
+                                flexDirection: 'row',
+                                cursor: 'pointer',
+                                '&:hover': { color: 'primary.main' },
+                                mb: '0.3rem',
+                                mr: '0.5rem',
+                                width: 'fit-content',
+                              }}
+                              onClick={() =>
+                                openEdit(comment._id, comment.text)
+                              }
+                            >
+                              <Typography variant='body2' sx={{ mr: '0.2rem' }}>
+                                Edit
+                              </Typography>
+                              <EditIcon fontSize='small' />
+                            </Box>
+                            <Box
+                              sx={{
+                                display: 'flex',
+                                flexDirection: 'row',
+                                cursor: 'pointer',
+                                '&:hover': { color: 'error.main' },
+                                mb: '0.3rem',
+                                width: 'fit-content',
+                              }}
+                              onClick={() => handleModal()}
+                            >
+                              <DeleteIcon fontSize='small' />
+                            </Box>
+                          </>
+                        ) : (
+                          <></>
+                        )}
+                      </Box>
+                    ) : (
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          flexDirection: 'row',
+                          cursor: 'pointer',
+                          '&:hover': { color: 'primary.main' },
+                          mb: '0.3rem',
+                          width: 'fit-content',
+                        }}
+                        onClick={() => navigate('/signin')}
+                      >
+                        <Typography variant='body2'>Reply</Typography>
+                        <ReplyIcon fontSize='small' />
+                      </Box>
+                    )}
+                    {isReplyOpen ? (
+                      <>
+                        <ReactQuill
+                          value={replyText}
+                          onChange={handleReply}
+                          modules={modules}
+                          formats={formats}
+                          placeholder='Enter your comment here'
+                        />
+
+                        {changedComment.error && !changedComment.loading ? (
+                          <Alert severity='error'>{changedComment.error}</Alert>
+                        ) : (
+                          <>
+                            <Button
+                              variant='outlined'
+                              onClick={(e) => reply(comment._id, index)}
+                              disabled={
+                                (replyText === '' ||
+                                  replyText === '[Deleted]') &&
+                                !changedComment.loading
+                              }
+                              sx={{ width: '80px', height: '40px', mt: '1rem' }}
+                            >
+                              {/* Reply */}
+                              {changedComment.loading &&
+                              !changedComment.response ? (
+                                <CircularProgress
+                                  color='inherit'
+                                  size={'1.2rem'}
+                                />
+                              ) : (
+                                'Reply'
+                              )}
+                            </Button>
+                            {replyText === '[Deleted]' ? (
+                              <Alert severity='warning'>
+                                Text cannot be equal to [Deleted]
+                              </Alert>
+                            ) : (
+                              <></>
+                            )}
+                          </>
+                        )}
+                      </>
+                    ) : (
+                      <></>
+                    )}
+                    {nestedComments}
+                  </>
                 )}
-                {nestedComments}
               </>
             )}
           </>
         )}
       </Box>
+      <Modal
+        open={isOpen}
+        onClose={handleModal}
+        aria-labelledby='delete comment confirmation'
+        aria-describedby='confirmation for delete'
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+        sx={{ backgroundColor: 'rgb(0,0,0)', opacity: 0.1 }}
+      >
+        <Box
+          sx={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            maxWidth: 400,
+            bgcolor: 'background.paper',
+            border: '2px solid #000',
+            //boxShadow: 24,
+            p: 4,
+          }}
+        >
+          <Typography id='modal-modal-title' variant='h6' component='h2'>
+            Are you sure you want to delete this comment
+          </Typography>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'center',
+            }}
+          >
+            <Button
+              variant='contained'
+              onClick={() =>
+                handleDelete(
+                  comment._id,
+                  index,
+                  isFirst && comment.replies.length === 0 ? true : false
+                )
+              }
+            >
+              Yes
+            </Button>
+            <Button varaint='outlined' onClick={handleModal}>
+              No
+            </Button>
+          </Box>
+        </Box>
+      </Modal>
     </Box>
   );
 }

@@ -18,6 +18,10 @@ import 'react-quill/dist/quill.snow.css'; // ES6
 
 export default function Comments({ id }) {
   const authData = useSelector((state) => state.auth);
+  const [isOpen, setIsOpen] = useState(false);
+  const handleModal = () => {
+    setIsOpen(!isOpen);
+  };
 
   const modules = {
     toolbar: [
@@ -70,6 +74,8 @@ export default function Comments({ id }) {
   const [text, setText] = useState('');
   const [replyText, setReplyText] = useState('');
   const [editText, setEditText] = useState('');
+
+  const [collapsedId, setCollapsedId] = useState('');
 
   const handleChange = (value) => {
     setText(value);
@@ -346,7 +352,6 @@ export default function Comments({ id }) {
   const openReply = (id) => {
     if (id === openedReplyId) {
       setOpenedReplyId('');
-      //setReplyText('');
     } else {
       setReplyText('');
       setOpenedReplyId(id);
@@ -387,6 +392,7 @@ export default function Comments({ id }) {
             response: updatedState,
             error: null,
           });
+          setIsOpen(false);
         } else {
           let stateWithDeleted = deleteIteration(
             commentId,
@@ -399,6 +405,7 @@ export default function Comments({ id }) {
             response: updatedState,
             error: null,
           });
+          setIsOpen(false);
         }
       } else {
         console.log(comment.data);
@@ -409,6 +416,7 @@ export default function Comments({ id }) {
         );
         updatedState[index] = stateWithReply;
         setState({ loading: false, response: updatedState, error: null });
+        setIsOpen(false);
       }
     } catch (err) {
       console.log(err);
@@ -427,9 +435,13 @@ export default function Comments({ id }) {
     }
   };
 
-  const collapse = () =>{
-
-  }
+  const collapse = (id) => {
+    if (id === collapsedId) {
+      setCollapsedId('');
+    } else {
+      setCollapsedId(id);
+    }
+  };
 
   useEffect(() => {
     getComments();
@@ -520,6 +532,10 @@ export default function Comments({ id }) {
                   editedComment={editedComment}
                   handleDelete={deleteComment}
                   collapse={collapse}
+                  collpaseId={collapsedId}
+                  isCollapsed={comment._id === collapsedId}
+                  isOpen={isOpen}
+                  handleModal={handleModal}
                 />
               ))}
             </>
