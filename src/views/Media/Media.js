@@ -6,21 +6,48 @@ import TopBillCast from '../../components/TopBillCast/TopBillCast';
 import Recommendation from '../../components/Recommendation/Recommendation';
 import SeasonsCarousel from '../../components/SeasonsCarousel/SeasonsCarousel';
 import Comments from '../../components/Comments/Comments';
+import { useSelector } from 'react-redux';
+import { getSuggestedQuery } from '@testing-library/react';
 
 const { default: axios } = require('axios');
 
 export default function Media() {
+  const authData = useSelector((state) => state.auth);
   const [hasTrailer, setHasTrailer] = useState(false);
   const [videoKey, setVideoKey] = useState();
-    const [state, setState] = useState({
-      loading: true,
-      response: null,
-      error: null,
-    });
-
+  const [state, setState] = useState({
+    loading: true,
+    response: null,
+    error: null,
+  });
 
   let params = useParams();
   const location = useLocation();
+
+  const getUser = async () => {
+    console.log('get user called')
+    if (authData.isAuth) {
+      console.log(authData.user)
+      try {
+        const response = await axios.get(
+          `http://localhost:3000/users/${authData.user._id}`
+        );
+        console.log(response.data);
+        // setState({
+        //   loading: false,
+        //   response: response.data,
+        //   error: null,
+        // });
+      } catch (error) {
+        console.log(error);
+        // setState({
+        //   loading: false,
+        //   response: null,
+        //   error: error.response.data.Msg,
+        // });
+      }
+    }
+  };
 
   const getMediaById = async () => {
     //http://localhost:3000/media/getById/movie/1420
@@ -110,9 +137,8 @@ export default function Media() {
     }
   };
 
-
-
   useEffect(() => {
+    getUser();
     if (params.mediaType === 'movie' || params.mediaType === 'tv') {
       getMediaById();
     } else if (location.pathname.includes('isbn')) {
@@ -120,11 +146,11 @@ export default function Media() {
     } else if (params.mediaType === 'book') {
       getBookById();
     } else {
-     setState({
-       loading: false,
-       response: null,
-       error: 'This page does not exist',
-     });
+      setState({
+        loading: false,
+        response: null,
+        error: 'This page does not exist',
+      });
     }
   }, [params]);
   return (
@@ -263,7 +289,10 @@ export default function Media() {
             ) : (
               <></>
             )}
-            <Comments id={state.response.mediaDetails.id} count={state.response.foundMedia.comments.length}/>
+            <Comments
+              id={state.response.mediaDetails.id}
+              count={state.response.foundMedia.comments.length}
+            />
           </Grid>
         )}
       </Grid>

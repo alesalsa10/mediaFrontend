@@ -17,7 +17,6 @@ export default function Overview({
   videoKey,
   hasTrailer,
 }) {
-  console.log(mediaType)
   const [open, setOpen] = useState(false);
   const [cert, setCert] = useState('');
   const handleOpen = () => setOpen(true);
@@ -82,10 +81,10 @@ export default function Overview({
     <Box
       sx={{
         display: 'grid',
-        gridTemplateColumns: {xs: '1fr', sm: 'repeat(2, auto)'},
+        gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, auto)' },
         p: 3,
         gridGap: '1rem',
-        alignItems: 'center'
+        alignItems: 'center',
       }}
     >
       <Box
@@ -117,15 +116,11 @@ export default function Overview({
             sm: 300,
           },
           borderRadius: 3,
-          justifySelf: {xs: 'center', sm: 'auto'}
+          justifySelf: { xs: 'center', sm: 'auto' },
         }}
       ></Box>
       <Box>
-        <Typography
-          variant='h5'
-          component={'div'}
-          sx={{ py: '0.5rem' }}
-        >
+        <Typography variant='h5' component={'div'} sx={{ py: '0.5rem' }}>
           {mediaType === 'movie'
             ? capitalizeTitle(mediaDetails.title)
             : mediaType === 'book'
@@ -140,7 +135,7 @@ export default function Overview({
           )
         </Typography>
 
-        <Typography variant='body2' component={'div'} sx={{py: '0.5rem'}}>
+        <Typography variant='body2' component={'div'} sx={{ py: '0.5rem' }}>
           {mediaType !== 'book' ? (
             <>
               {cert ? (
@@ -169,11 +164,16 @@ export default function Overview({
               )}
             </>
           ) : (
-            <span>
-              {moment(mediaDetails.volumeInfo.publishedDate).format(
-                'MM/DD/YYYY'
-              )}
-            </span>
+            <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+              <Box>
+                {moment(mediaDetails.volumeInfo.publishedDate).format(
+                  'MM/DD/YYYY'
+                )}
+              </Box>
+              <Box sx={{ alignSelf: 'center', ml: 1, alignItems: 'center' }}>
+                <FavoriteIcon sx={{ cursor: 'pointer' }} />
+              </Box>
+            </Box>
           )}
 
           {mediaType !== 'book' ? (
@@ -239,8 +239,8 @@ export default function Overview({
                 })}
               />
             </Box>
-            <Box sx={{ alignSelf: 'center' }}>
-              <FavoriteIcon />
+            <Box sx={{ alignSelf: 'center', ml: 1 }}>
+              <FavoriteIcon sx={{ cursor: 'pointer' }} />
             </Box>
 
             {hasTrailer ? (
@@ -288,8 +288,8 @@ export default function Overview({
                 </Modal>
               </Box>
             ) : (
-              <Box sx={{ alignSelf: 'center' }}>
-                <FavoriteIcon />
+              <Box sx={{ alignSelf: 'center', ml: 1 }}>
+                <FavoriteIcon sx={{ cursor: 'pointer' }} />
               </Box>
             )}
           </Box>
@@ -347,9 +347,11 @@ export default function Overview({
             ? `${mediaDetails.overview}`
             : selectDescription(mediaDetails)}
         </Typography>
-        {
-          mediaType !== 'book'? <MediaSideline media={mediaDetails} mediaType={mediaType} />:<></>
-        }
+        {mediaType !== 'book' ? (
+          <MediaSideline media={mediaDetails} mediaType={mediaType} />
+        ) : (
+          <></>
+        )}
       </Box>
     </Box>
   );

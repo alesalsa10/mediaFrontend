@@ -145,6 +145,11 @@ export default function Comments({ id, count }) {
   };
 
   const getComments = async () => {
+    // setState({
+    //   loading: true,
+    //   error: null,
+    //   response: null
+    // })
     let mediaType = selectMedia();
     //let mediaId = params.id.split('-')[0];
     console.log(mediaType);
@@ -237,10 +242,12 @@ export default function Comments({ id, count }) {
     if (Array.isArray(comment.replies)) {
       if (comment._id === commentId) {
         comment.text = content.text;
+        comment.editedAt = content.editedAt
       } else {
         for (let comm of comment.replies) {
           if (comm._id === commentId) {
             comm.text = content.text;
+            comm.editedAt = content.editedAt
             break;
           } else {
             editIteration(commentId, comm, content);
@@ -356,7 +363,7 @@ export default function Comments({ id, count }) {
       let stateWithReply = editIteration(
         commentId,
         state.response[index],
-        comment.data.foundComment
+        comment.data
       );
       updatedState[index] = stateWithReply;
       openEdit('');
@@ -489,11 +496,15 @@ export default function Comments({ id, count }) {
   //adding comment error handling, loading state, and main error loading comments still need to be donde
 
   return (
-    <>
+    <Box sx={{mb:2, width: '100%'}}>
       {state.loading && !state.error ? (
-        <>loading</>
+        <Box sx={{width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+          <CircularProgress/>
+        </Box>
       ) : !state.loading && state.error ? (
-        <>error</>
+        <Alert severity='error'>
+          {state.error}
+        </Alert>
       ) : (
         <>
           <Box sx={{ display: 'flex', width: '100%', mb: 1, ml: '1rem' }}>
@@ -512,27 +523,33 @@ export default function Comments({ id, count }) {
                 <Alert severity='error'>{newComment.error}</Alert>
               ) : (
                 <>
-                  <Button
-                    variant='outlined'
-                    onClick={addComment}
-                    disabled={
-                      (text === '' || text === '[Deleted]') &&
-                      !newComment.loading
-                    }
-                    sx={{ width: '100px', height: '40px', mt: '0.5rem' }}
-                  >
-                    {newComment.loading && !newComment.response ? (
-                      <CircularProgress color='inherit' size={'1.2rem'} />
-                    ) : (
-                      'Comment'
-                    )}
-                  </Button>
-                  {text === '[Deleted]' ? (
-                    <Alert severity='warning'>
-                      Text cannot be equal to [Deleted]
-                    </Alert>
+                  {newComment.error && !newComment.loading ? (
+                    <Alert severity='error'>{newComment.error}</Alert>
                   ) : (
-                    <></>
+                    <>
+                      <Button
+                        variant='outlined'
+                        onClick={addComment}
+                        disabled={
+                          (text === '' || text === '[Deleted]') &&
+                          !newComment.loading
+                        }
+                        sx={{ width: '100px', height: '40px', mt: '0.5rem' }}
+                      >
+                        {newComment.loading && !newComment.response ? (
+                          <CircularProgress color='inherit' size={'1.2rem'} />
+                        ) : (
+                          'Comment'
+                        )}
+                      </Button>
+                      {text === '[Deleted]' ? (
+                        <Alert severity='warning' sx={{mt: 1}}>
+                          Text cannot be equal to [Deleted]
+                        </Alert>
+                      ) : (
+                        <></>
+                      )}
+                    </>
                   )}
                 </>
               )}
@@ -552,21 +569,27 @@ export default function Comments({ id, count }) {
 
           {state.response.length > 0 ? (
             <>
-            <Box sx={{display: 'flex', 'flexDirection': 'row', width: '100%', justifyContent: 'space-between', alignItems: 'center'}}>
-              <Typography>
-                All Comments ({count})
-              </Typography>
-              <Box>
-                <FormControl>
-                  <Select
-                    value={sort}
-                    onChange={(event) => setSort(event.target.value)}
-                  >
-                    <MenuItem value={'replies'}>Most Replies</MenuItem>
-                    <MenuItem value={'recent'}>Most Recent</MenuItem>
-                  </Select>
-                </FormControl>
-              </Box>
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  width: '100%',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                }}
+              >
+                <Typography>All Comments ({count})</Typography>
+                <Box>
+                  <FormControl>
+                    <Select
+                      value={sort}
+                      onChange={(event) => setSort(event.target.value)}
+                    >
+                      <MenuItem value={'replies'}>Most Replies</MenuItem>
+                      <MenuItem value={'recent'}>Most Recent</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Box>
               </Box>
               {state.response.map((comment, index) => (
                 <Comment
@@ -628,6 +651,6 @@ export default function Comments({ id, count }) {
           )}
         </>
       )}
-    </>
+    </Box>
   );
 }

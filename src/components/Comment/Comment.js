@@ -150,6 +150,11 @@ export default function Comment({
             <Typography>{comment.text}</Typography>
             {isCollapsed ? <></> : nestedComments}
           </>
+        ) : !comment.postedBy ? (
+          <>
+            <Typography>Deleted User</Typography>
+            {isCollapsed ? <></> : nestedComments}
+          </>
         ) : (
           <>
             <Box
@@ -169,7 +174,12 @@ export default function Comment({
                 {comment.postedBy.name}
               </Link>
               <Typography variant='body2' sx={{ color: 'text.secondary' }}>
-                {moment(comment.datePosted).fromNow()}
+                {comment.editedAt ? (
+                  <>Edited {moment(comment.editedAt).fromNow()}</>
+                ) : (
+                  moment(comment.datePosted).fromNow()
+                )}
+                {}
               </Typography>
             </Box>
 
@@ -280,7 +290,7 @@ export default function Comment({
                                 handleModal(
                                   e,
                                   reason,
-                                  comment,  
+                                  comment,
                                   index,
                                   isFirst && comment.replies.length === 0
                                 )
@@ -403,11 +413,7 @@ export default function Comment({
             <Button
               variant='contained'
               onClick={() =>
-                handleDelete(
-                  deleted._id,
-                  deletedIndex,
-                  firstWithChildren
-                )
+                handleDelete(deleted._id, deletedIndex, firstWithChildren)
               }
             >
               Yes
