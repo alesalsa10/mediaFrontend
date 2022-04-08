@@ -8,6 +8,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 
 import 'react-circular-progressbar/dist/styles.css';
 import MediaSideline from '../MediaSideline/MediaSideline';
+const { default: axios } = require('axios');
 
 const baseImgUrl = 'https://image.tmdb.org/t/p/original';
 
@@ -16,7 +17,12 @@ export default function Overview({
   mediaType,
   videoKey,
   hasTrailer,
+  user,
+  authData,
 }) {
+  const [favoritesMovieId, setFavoriteMovieId] = useState('');
+  const [favoriteTvId, setFavoriteTvId] = useState('');
+  const [userInfo, setUserInfo] = useState(user);
   const [open, setOpen] = useState(false);
   const [cert, setCert] = useState('');
   const handleOpen = () => setOpen(true);
@@ -30,6 +36,54 @@ export default function Overview({
       let hours = Math.floor(n / 60);
       let minutes = n % 60;
       return `${hours}h ${minutes}m`;
+    }
+  };
+
+  const toggleMovieFavorite = async () => {
+    try {
+      const response = await axios.put(
+        `http://localhost:3000/favorites/movie/${mediaDetails.id}`,
+        {},
+        {
+          headers: {
+            Authorization: `Token ${authData.accessToken}`,
+          },
+        }
+      );
+      console.log(response.data);
+      if (response.data.Msg === 'Bookmark created') {
+        setFavoriteMovieId(mediaDetails.id);
+      } else {
+        setUserInfo('');
+        setFavoriteMovieId('');
+      }
+    } catch (error) {
+      console.log(error);
+      //setUser(error.response.data.Msg);
+    }
+  };
+
+  const toggleTvFavorite = async () => {
+    try {
+      const response = await axios.put(
+        `http://localhost:3000/favorites/tv/${mediaDetails.id}`,
+        {},
+        {
+          headers: {
+            Authorization: `Token ${authData.accessToken}`,
+          },
+        }
+      );
+      console.log(response.data);
+      if (response.data.Msg === 'Bookmark created') {
+        setFavoriteTvId(mediaDetails.id);
+      } else {
+        setUserInfo('');
+        setFavoriteTvId('');
+      }
+    } catch (error) {
+      console.log(error);
+      //setUser(error.response.data.Msg);
     }
   };
 
@@ -171,7 +225,23 @@ export default function Overview({
                 )}
               </Box>
               <Box sx={{ alignSelf: 'center', ml: 1, alignItems: 'center' }}>
-                <FavoriteIcon sx={{ cursor: 'pointer' }} />
+                {/* <FavoriteIcon
+                  onClick={
+                    mediaType === 'movie'
+                      ? toggleMovieFavorite
+                      : toggleTvFavorite
+                  }
+                  sx={{
+                    cursor: 'pointer',
+                    color:
+                      (user &&
+                        user.favoriteTv &&
+                        user.favoriteTv.includes(mediaDetails.id)) ||
+                      favoriteTvId === mediaDetails.id
+                        ? 'red'
+                        : 'black',
+                  }}
+                /> */}
               </Box>
             </Box>
           )}
@@ -240,7 +310,23 @@ export default function Overview({
               />
             </Box>
             <Box sx={{ alignSelf: 'center', ml: 1 }}>
-              <FavoriteIcon sx={{ cursor: 'pointer' }} />
+              {/* <FavoriteIcon
+                onClick={
+                  mediaType === 'movie' ? toggleMovieFavorite : toggleTvFavorite
+                }
+                sx={{
+                  cursor: 'pointer',
+                  color:
+                    (userInfo &&
+                      userInfo.favoriteMovies &&
+                      user.favoriteMovies.includes(
+                        mediaDetails.id.toString()
+                      )) ||
+                    favoritesMovieId === mediaDetails.id
+                      ? 'red'
+                      : 'black',
+                }}
+              /> */}
             </Box>
 
             {hasTrailer ? (

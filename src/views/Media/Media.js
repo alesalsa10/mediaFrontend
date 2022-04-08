@@ -7,7 +7,6 @@ import Recommendation from '../../components/Recommendation/Recommendation';
 import SeasonsCarousel from '../../components/SeasonsCarousel/SeasonsCarousel';
 import Comments from '../../components/Comments/Comments';
 import { useSelector } from 'react-redux';
-import { getSuggestedQuery } from '@testing-library/react';
 
 const { default: axios } = require('axios');
 
@@ -20,31 +19,22 @@ export default function Media() {
     response: null,
     error: null,
   });
+  const [user, setUser] = useState(null);
 
   let params = useParams();
   const location = useLocation();
 
   const getUser = async () => {
-    console.log('get user called')
     if (authData.isAuth) {
-      console.log(authData.user)
       try {
         const response = await axios.get(
           `http://localhost:3000/users/${authData.user._id}`
         );
         console.log(response.data);
-        // setState({
-        //   loading: false,
-        //   response: response.data,
-        //   error: null,
-        // });
+        setUser(response.data)
       } catch (error) {
         console.log(error);
-        // setState({
-        //   loading: false,
-        //   response: null,
-        //   error: error.response.data.Msg,
-        // });
+        setUser(error.response.data.Msg)
       }
     }
   };
@@ -259,6 +249,8 @@ export default function Media() {
                 mediaType={params.mediaType}
                 hasTrailer={hasTrailer}
                 videoKey={videoKey}
+                user={user}
+                authData={authData}
               />
             </Grid>
             {params.mediaType !== 'book' ? (
