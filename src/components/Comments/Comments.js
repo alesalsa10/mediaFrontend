@@ -7,6 +7,9 @@ import {
   Box,
   Button,
   CircularProgress,
+  FormControl,
+  MenuItem,
+  Select,
   Typography,
 } from '@mui/material';
 import ChatIcon from '@mui/icons-material/Chat';
@@ -16,7 +19,7 @@ import { Link } from 'react-router-dom';
 import ReactQuill from 'react-quill'; // ES6
 import 'react-quill/dist/quill.snow.css'; // ES6
 
-export default function Comments({ id }) {
+export default function Comments({ id, count }) {
   const authData = useSelector((state) => state.auth);
   const [isOpen, setIsOpen] = useState(false);
   const handleModal = (event, reason, comment, index, firstWithChildren) => {
@@ -92,6 +95,7 @@ export default function Comments({ id }) {
   const [editText, setEditText] = useState('');
 
   const [collapsedId, setCollapsedId] = useState('');
+  const [sort, setSort] = useState('replies');
 
   const handleChange = (value) => {
     setText(value);
@@ -146,7 +150,7 @@ export default function Comments({ id }) {
     console.log(mediaType);
     try {
       const response = await axios.get(
-        `http://localhost:3000/comments/${mediaType}/${id}`
+        `http://localhost:3000/comments/${mediaType}/${id}?sort=${sort}`
       );
       console.log(response.data);
       setState({ loading: false, response: response.data, error: null });
@@ -480,7 +484,9 @@ export default function Comments({ id }) {
 
   useEffect(() => {
     getComments();
-  }, [id, params]);
+  }, [id, params, sort]);
+
+  //adding comment error handling, loading state, and main error loading comments still need to be donde
 
   return (
     <>
@@ -499,8 +505,9 @@ export default function Comments({ id }) {
               placeholder='Enter your comment here'
             />
           </Box>
+
           {authData.isAuth ? (
-            <Box sx={{ ml: '1rem', mb: '1rem' }}>
+            <Box sx={{ ml: '1rem', mb: '1rem', width: '100%' }}>
               {newComment.error && !newComment.loading ? (
                 <Alert severity='error'>{newComment.error}</Alert>
               ) : (
@@ -545,6 +552,22 @@ export default function Comments({ id }) {
 
           {state.response.length > 0 ? (
             <>
+            <Box sx={{display: 'flex', 'flexDirection': 'row', width: '100%', justifyContent: 'space-between', alignItems: 'center'}}>
+              <Typography>
+                All Comments ({count})
+              </Typography>
+              <Box>
+                <FormControl>
+                  <Select
+                    value={sort}
+                    onChange={(event) => setSort(event.target.value)}
+                  >
+                    <MenuItem value={'replies'}>Most Replies</MenuItem>
+                    <MenuItem value={'recent'}>Most Recent</MenuItem>
+                  </Select>
+                </FormControl>
+              </Box>
+              </Box>
               {state.response.map((comment, index) => (
                 <Comment
                   key={comment._id}
@@ -565,13 +588,11 @@ export default function Comments({ id }) {
                   isEditOpen={comment._id === editId}
                   openEdit={openEdit}
                   editedComment={editedComment}
-
                   handleDelete={deleteComment}
                   deletedComment={deletedComment}
                   deleted={deleted}
                   deletedIndex={deletedIndex}
                   firstWithChildren={firstWithChildren}
-
                   collapse={collapse}
                   collpaseId={collapsedId}
                   isCollapsed={comment._id === collapsedId}

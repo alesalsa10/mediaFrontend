@@ -263,7 +263,7 @@ export default function Media() {
             ) : (
               <></>
             )}
-            <Comments id={state.response.mediaDetails.id}/>
+            <Comments id={state.response.mediaDetails.id} count={state.response.foundMedia.comments.length}/>
           </Grid>
         )}
       </Grid>

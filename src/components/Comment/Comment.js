@@ -416,7 +416,7 @@ export default function Comment({
               No
             </Button>
             {deletedComment.error && !deletedComment.loading ? (
-              <Alert severity='error'>{changedComment.error}</Alert>
+              <Alert severity='error'>{deletedComment.error}</Alert>
             ) : !deletedComment.error && deletedComment.loading ? (
               <Box
                 sx={{
