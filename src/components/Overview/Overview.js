@@ -5,6 +5,7 @@ import moment from 'moment';
 import placeholder from '../../assets/placeholder.png';
 import { buildStyles, CircularProgressbar } from 'react-circular-progressbar';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import { useNavigate, Link } from 'react-router-dom';
 
 import 'react-circular-progressbar/dist/styles.css';
 import MediaSideline from '../MediaSideline/MediaSideline';
@@ -20,8 +21,11 @@ export default function Overview({
   user,
   authData,
 }) {
+  const navigate = useNavigate();
   const [favoritesMovieId, setFavoriteMovieId] = useState('');
   const [favoriteTvId, setFavoriteTvId] = useState('');
+  const [favoriteId, setFavoriteId] = useState('');
+  const [favoriteBookId, setFavoriteBookId] = useState('');
   const [userInfo, setUserInfo] = useState(user);
   const [open, setOpen] = useState(false);
   const [cert, setCert] = useState('');
@@ -39,10 +43,10 @@ export default function Overview({
     }
   };
 
-  const toggleMovieFavorite = async () => {
+  const toggleFavorite = async (mediaType) => {
     try {
       const response = await axios.put(
-        `http://localhost:3000/favorites/movie/${mediaDetails.id}`,
+        `http://localhost:3000/favorites/${mediaType}/${mediaDetails.id}`,
         {},
         {
           headers: {
@@ -52,37 +56,13 @@ export default function Overview({
       );
       console.log(response.data);
       if (response.data.Msg === 'Bookmark created') {
-        setFavoriteMovieId(mediaDetails.id);
+        setFavoriteId(mediaDetails.id);
       } else {
         setUserInfo('');
-        setFavoriteMovieId('');
+        setFavoriteId('');
       }
     } catch (error) {
-      console.log(error);
-      //setUser(error.response.data.Msg);
-    }
-  };
-
-  const toggleTvFavorite = async () => {
-    try {
-      const response = await axios.put(
-        `http://localhost:3000/favorites/tv/${mediaDetails.id}`,
-        {},
-        {
-          headers: {
-            Authorization: `Token ${authData.accessToken}`,
-          },
-        }
-      );
-      console.log(response.data);
-      if (response.data.Msg === 'Bookmark created') {
-        setFavoriteTvId(mediaDetails.id);
-      } else {
-        setUserInfo('');
-        setFavoriteTvId('');
-      }
-    } catch (error) {
-      console.log(error);
+      console.log(error.response.data);
       //setUser(error.response.data.Msg);
     }
   };
@@ -225,23 +205,32 @@ export default function Overview({
                 )}
               </Box>
               <Box sx={{ alignSelf: 'center', ml: 1, alignItems: 'center' }}>
-                {/* <FavoriteIcon
-                  onClick={
-                    mediaType === 'movie'
-                      ? toggleMovieFavorite
-                      : toggleTvFavorite
-                  }
-                  sx={{
-                    cursor: 'pointer',
-                    color:
-                      (user &&
-                        user.favoriteTv &&
-                        user.favoriteTv.includes(mediaDetails.id)) ||
-                      favoriteTvId === mediaDetails.id
-                        ? 'red'
-                        : 'black',
-                  }}
-                /> */}
+                {authData.isAuth ? (
+                  <FavoriteIcon
+                    onClick={() => toggleFavorite('book')}
+                    sx={{
+                      cursor: 'pointer',
+                      color:
+                        (userInfo &&
+                          userInfo.favoriteBooks &&
+                          userInfo.favoriteBooks.includes(
+                            mediaDetails.id.toString()
+                          )) ||
+                        favoriteId === mediaDetails.id.toString()
+                          ? 'red'
+                          : 'black',
+                    }}
+                  />
+                ) : (
+                  <Link to='/signin'>
+                    <FavoriteIcon
+                      sx={{
+                        cursor: 'pointer',
+                        color: 'black',
+                      }}
+                    />
+                  </Link>
+                )}
               </Box>
             </Box>
           )}
@@ -327,6 +316,21 @@ export default function Overview({
                       : 'black',
                 }}
               /> */}
+              {authData.isAuth ? (
+                <FavoriteIcon
+                  onClick={
+                    mediaType === 'movie'
+                      ? () => toggleFavorite('movie')
+                      : toggleFavorite('tv')
+                  }
+                  sx={{}}
+                />
+              ) : (
+                <Link to='/signin'>
+                  {' '}
+                  <FavoriteIcon sx={{ cursor: 'pointer', color: 'black' }} />
+                </Link>
+              )}
             </Box>
 
             {hasTrailer ? (
@@ -375,7 +379,21 @@ export default function Overview({
               </Box>
             ) : (
               <Box sx={{ alignSelf: 'center', ml: 1 }}>
-                <FavoriteIcon sx={{ cursor: 'pointer' }} />
+                {authData.isAuth ? (
+                  <FavoriteIcon
+                    onClick={
+                      mediaType === 'movie'
+                        ? () => toggleFavorite('movie')
+                        : toggleFavorite('tv')
+                    }
+                    sx={{}}
+                  />
+                ) : (
+                  <Link to='/signin'>
+                    {' '}
+                    <FavoriteIcon sx={{ cursor: 'pointer', color: 'black' }} />
+                  </Link>
+                )}
               </Box>
             )}
           </Box>

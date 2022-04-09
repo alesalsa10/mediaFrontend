@@ -23,11 +23,11 @@ export default function Comments({ id, count }) {
   const authData = useSelector((state) => state.auth);
   const [isOpen, setIsOpen] = useState(false);
   const handleModal = (event, reason, comment, index, firstWithChildren) => {
-    console.log(comment, index, firstWithChildren)
+    console.log(comment, index, firstWithChildren);
     if (reason !== 'backdropClick') {
       setDeleted(comment);
-      setDeletedIndex(index)
-      setFirstWithChildren(firstWithChildren)
+      setDeletedIndex(index);
+      setFirstWithChildren(firstWithChildren);
       setIsOpen(!isOpen);
     }
   };
@@ -171,8 +171,8 @@ export default function Comments({ id, count }) {
 
   const addComment = async () => {
     let mediaType = selectMedia();
-    if(newComment.loading){
-      return
+    if (newComment.loading) {
+      return;
     }
     setNewComment({
       error: null,
@@ -242,12 +242,12 @@ export default function Comments({ id, count }) {
     if (Array.isArray(comment.replies)) {
       if (comment._id === commentId) {
         comment.text = content.text;
-        comment.editedAt = content.editedAt
+        comment.editedAt = content.editedAt;
       } else {
         for (let comm of comment.replies) {
           if (comm._id === commentId) {
             comm.text = content.text;
-            comm.editedAt = content.editedAt
+            comm.editedAt = content.editedAt;
             break;
           } else {
             editIteration(commentId, comm, content);
@@ -406,9 +406,9 @@ export default function Comments({ id, count }) {
   };
 
   const deleteComment = async (commentId, index, isFirstAndNoChildren) => {
-    console.log(commentId, index, isFirstAndNoChildren)
-    if(deletedComment.loading){
-      return
+    console.log(commentId, index, isFirstAndNoChildren);
+    if (deletedComment.loading) {
+      return;
     }
     setDeletedComment({
       error: null,
@@ -496,15 +496,20 @@ export default function Comments({ id, count }) {
   //adding comment error handling, loading state, and main error loading comments still need to be donde
 
   return (
-    <Box sx={{mb:2, width: '100%'}}>
+    <Box sx={{ mb: 2, width: '100%' }}>
       {state.loading && !state.error ? (
-        <Box sx={{width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-          <CircularProgress/>
+        <Box
+          sx={{
+            width: '100%',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <CircularProgress />
         </Box>
       ) : !state.loading && state.error ? (
-        <Alert severity='error'>
-          {state.error}
-        </Alert>
+        <Alert severity='error'>{state.error}</Alert>
       ) : (
         <>
           <Box sx={{ display: 'flex', width: '100%', mb: 1, ml: '1rem' }}>
@@ -518,7 +523,7 @@ export default function Comments({ id, count }) {
           </Box>
 
           {authData.isAuth ? (
-            <Box sx={{ ml: '1rem', mb: '1rem', width: '100%' }}>
+            <Box sx={{ mb: '1rem', width: '100%' }}>
               {newComment.error && !newComment.loading ? (
                 <Alert severity='error'>{newComment.error}</Alert>
               ) : (
@@ -543,7 +548,7 @@ export default function Comments({ id, count }) {
                         )}
                       </Button>
                       {text === '[Deleted]' ? (
-                        <Alert severity='warning' sx={{mt: 1}}>
+                        <Alert severity='warning' sx={{ mt: 1 }}>
                           Text cannot be equal to [Deleted]
                         </Alert>
                       ) : (
@@ -576,6 +581,7 @@ export default function Comments({ id, count }) {
                   width: '100%',
                   justifyContent: 'space-between',
                   alignItems: 'center',
+                  ml: '1rem',
                 }}
               >
                 <Typography>All Comments ({count})</Typography>
@@ -591,38 +597,40 @@ export default function Comments({ id, count }) {
                   </FormControl>
                 </Box>
               </Box>
-              {state.response.map((comment, index) => (
-                <Comment
-                  key={comment._id}
-                  comment={comment}
-                  isFirst={true}
-                  index={index}
-                  replyText={replyText}
-                  handleReply={handleReplyText}
-                  reply={reply}
-                  openedReplyId={openedReplyId}
-                  isReplyOpen={comment._id === openedReplyId}
-                  openReply={openReply}
-                  changedComment={changedComment}
-                  editText={editText}
-                  handleEdit={handleEditText}
-                  edit={edit}
-                  editId={editId}
-                  isEditOpen={comment._id === editId}
-                  openEdit={openEdit}
-                  editedComment={editedComment}
-                  handleDelete={deleteComment}
-                  deletedComment={deletedComment}
-                  deleted={deleted}
-                  deletedIndex={deletedIndex}
-                  firstWithChildren={firstWithChildren}
-                  collapse={collapse}
-                  collpaseId={collapsedId}
-                  isCollapsed={comment._id === collapsedId}
-                  isOpen={isOpen}
-                  handleModal={handleModal}
-                />
-              ))}
+              <Box sx={{ ml: '1rem' }}>
+                {state.response.map((comment, index) => (
+                  <Comment
+                    key={comment._id}
+                    comment={comment}
+                    isFirst={true}
+                    index={index}
+                    replyText={replyText}
+                    handleReply={handleReplyText}
+                    reply={reply}
+                    openedReplyId={openedReplyId}
+                    isReplyOpen={comment._id === openedReplyId}
+                    openReply={openReply}
+                    changedComment={changedComment}
+                    editText={editText}
+                    handleEdit={handleEditText}
+                    edit={edit}
+                    editId={editId}
+                    isEditOpen={comment._id === editId}
+                    openEdit={openEdit}
+                    editedComment={editedComment}
+                    handleDelete={deleteComment}
+                    deletedComment={deletedComment}
+                    deleted={deleted}
+                    deletedIndex={deletedIndex}
+                    firstWithChildren={firstWithChildren}
+                    collapse={collapse}
+                    collpaseId={collapsedId}
+                    isCollapsed={comment._id === collapsedId}
+                    isOpen={isOpen}
+                    handleModal={handleModal}
+                  />
+                ))}
+              </Box>
             </>
           ) : (
             <Box
