@@ -120,6 +120,7 @@ export default function Season() {
             >
               <Box sx={{ alignSelf: { xs: 'center', sm: '' } }}>
                 <Skeleton
+                  animation='wave'
                   sx={{
                     width: { xs: 150, sm: 200 },
                     height: { xs: 250, sm: 350 },
@@ -137,11 +138,16 @@ export default function Season() {
                   width: '100%',
                 }}
               >
-                <Skeleton height={30} width={'50%'} />
-                <Skeleton height={25} width={'25%'} sx={{ my: 2 }} />
-                <Skeleton height={20} width={'100%'} />{' '}
-                <Skeleton height={20} width={'100%'} />{' '}
-                <Skeleton height={20} width={'75%'} />
+                <Skeleton height={30} width={'50%'} animation='wave' />
+                <Skeleton
+                  height={25}
+                  width={'25%'}
+                  sx={{ my: 2 }}
+                  animation='wave'
+                />
+                <Skeleton height={20} width={'100%'} animation='wave' />{' '}
+                <Skeleton height={20} width={'100%'} animation='wave' />{' '}
+                <Skeleton height={20} width={'75%'} animation='wave' />
               </Box>
             </Box>
             {params.mediaType !== 'book' ? (

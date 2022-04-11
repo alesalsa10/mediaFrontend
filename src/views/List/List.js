@@ -104,7 +104,7 @@ export default function List() {
     }
   };
 
-  useEffect(() => {
+  useEffect(() => { 
     if (params.mediaType === 'movie' || params.mediaType === 'tv') {
       getMediaLists();
     } else if (params.mediaType === 'book') {
@@ -144,7 +144,7 @@ export default function List() {
           <Skeleton
             animation='wave'
             variant='rectangular'
-            width={250}
+            width={200}
             height={16}
             sx={{ mb: 2, display: 'flex' }}
           />
@@ -307,8 +307,8 @@ export default function List() {
                     <Skeleton
                       animation='wave'
                       variant='rectangular'
-                      width={230}
-                      height={300}
+                      width={180}
+                      height={250}
                       sx={{ mb: 2 }}
                     />
                     <Skeleton

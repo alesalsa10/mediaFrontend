@@ -17,6 +17,8 @@ import FullCast from './views/FullCast/FullCast';
 import Season from './views/Season/Season';
 import Person from './views/Person/Person';
 import User from './views/User/User';
+import PrivateRoutes from './components/PriivateRoutes/PrivateRoutes';
+import Favorites from './views/Favorites/Favorites';
 function App() {
   return (
     <>
@@ -36,6 +38,11 @@ function App() {
             <Route element={<WithNav />}>
               <Route path='/' element={<Home />} />
               <Route path='/search' element={<SearchResults />} />
+
+              <Route element={<PrivateRoutes/>}>
+                  <Route  path='/favorites' element={<Favorites/>} />
+              </Route>
+
               <Route path={`/:mediaType/lists/:listType`} element={<List />} />
 
               <Route  path='/person/:id' element={<Person/>}/>

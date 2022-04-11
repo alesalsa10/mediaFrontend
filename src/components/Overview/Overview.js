@@ -5,7 +5,7 @@ import moment from 'moment';
 import placeholder from '../../assets/placeholder.png';
 import { buildStyles, CircularProgressbar } from 'react-circular-progressbar';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import { useNavigate, Link } from 'react-router-dom';
+import {  Link } from 'react-router-dom';
 
 import 'react-circular-progressbar/dist/styles.css';
 import MediaSideline from '../MediaSideline/MediaSideline';
@@ -21,11 +21,7 @@ export default function Overview({
   user,
   authData,
 }) {
-  const navigate = useNavigate();
-  const [favoritesMovieId, setFavoriteMovieId] = useState('');
-  const [favoriteTvId, setFavoriteTvId] = useState('');
   const [favoriteId, setFavoriteId] = useState('');
-  const [favoriteBookId, setFavoriteBookId] = useState('');
   const [userInfo, setUserInfo] = useState(user);
   const [open, setOpen] = useState(false);
   const [cert, setCert] = useState('');
@@ -81,6 +77,32 @@ export default function Overview({
       arr[i] = arr[i].charAt(0).toUpperCase() + arr[i].slice(1).toLowerCase();
     }
     return arr.join(' ');
+  };
+
+  const getColor = () => {
+    if (mediaType === 'tv') {
+      if (
+        (userInfo &&
+          userInfo.favoriteTv &&
+          userInfo.favoriteTv.includes(mediaDetails.id.toString())) ||
+        favoriteId === mediaDetails.id
+      ) {
+        return 'red';
+      } else {
+        return 'black';
+      }
+    } else if (mediaType === 'movie') {
+      if (
+        (userInfo &&
+          userInfo.favoriteMovies &&
+          userInfo.favoriteMovies.includes(mediaDetails.id.toString())) ||
+        favoriteId === mediaDetails.id
+      ) {
+        return 'red';
+      } else {
+        return 'black';
+      }
+    }
   };
 
   useEffect(() => {
@@ -299,31 +321,14 @@ export default function Overview({
               />
             </Box>
             <Box sx={{ alignSelf: 'center', ml: 1 }}>
-              {/* <FavoriteIcon
-                onClick={
-                  mediaType === 'movie' ? toggleMovieFavorite : toggleTvFavorite
-                }
-                sx={{
-                  cursor: 'pointer',
-                  color:
-                    (userInfo &&
-                      userInfo.favoriteMovies &&
-                      user.favoriteMovies.includes(
-                        mediaDetails.id.toString()
-                      )) ||
-                    favoritesMovieId === mediaDetails.id
-                      ? 'red'
-                      : 'black',
-                }}
-              /> */}
               {authData.isAuth ? (
                 <FavoriteIcon
                   onClick={
                     mediaType === 'movie'
                       ? () => toggleFavorite('movie')
-                      : toggleFavorite('tv')
+                      : () => toggleFavorite('tv')
                   }
-                  sx={{}}
+                  sx={{ color: getColor(), cursor: 'pointer' }}
                 />
               ) : (
                 <Link to='/signin'>
@@ -384,9 +389,9 @@ export default function Overview({
                     onClick={
                       mediaType === 'movie'
                         ? () => toggleFavorite('movie')
-                        : toggleFavorite('tv')
+                        : () => toggleFavorite('tv')
                     }
-                    sx={{}}
+                    sx={{ color: getColor(), cursor: 'pointer' }}
                   />
                 ) : (
                   <Link to='/signin'>

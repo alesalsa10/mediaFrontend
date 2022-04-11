@@ -539,7 +539,7 @@ export default function Comments({ id, count }) {
                           (text === '' || text === '[Deleted]') &&
                           !newComment.loading
                         }
-                        sx={{ width: '100px', height: '40px', mt: '0.5rem' }}
+                        sx={{ width: '100px', height: '40px', mt: '0.5rem', ml: '1rem' }}
                       >
                         {newComment.loading && !newComment.response ? (
                           <CircularProgress color='inherit' size={'1.2rem'} />

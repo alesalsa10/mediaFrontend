@@ -54,7 +54,7 @@ export default function Card({ mediaType, media, type, bestSellers }) {
     }
   };
 
-  const selectMediaLink = () => {
+const selectMediaLink = () => {
     if (mediaType === 'movie') {
       return `${media.id}-${media.title.toLowerCase().split(' ').join('-')}`;
     } else {
@@ -63,8 +63,12 @@ export default function Card({ mediaType, media, type, bestSellers }) {
   };
 
   const getListSize = () => {
-    const newWidth = refElement.current.clientWidth;
-    setWidth(newWidth);
+    // const newWidth = refElement.current.clientWidth;
+    // setWidth(newWidth);
+    if (refElement && refElement.current) {
+      const newWidth = refElement.current.clientWidth;
+      setWidth(newWidth);
+    }
   };
 
   const handleImageLoad = (event) => {
@@ -186,7 +190,7 @@ export default function Card({ mediaType, media, type, bestSellers }) {
                 ? 'book'
                 : mediaType === 'person'
                 ? 'person'
-                : mediaType === 'person'
+                : mediaType === 'movie'
                 ? 'movie'
                 : 'tv'
             }/${

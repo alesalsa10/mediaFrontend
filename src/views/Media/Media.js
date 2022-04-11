@@ -193,7 +193,7 @@ export default function Media() {
             {params.mediaType !== 'book' ? (
               <>
                 <Box sx={{ px: 1, pt: 3 }}>
-                  <Skeleton width={75} height={30} />
+                  <Skeleton width={75} height={30} animation='wave' />
                 </Box>
                 <Box
                   sx={{

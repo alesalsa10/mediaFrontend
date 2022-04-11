@@ -11,20 +11,28 @@ export default function MediaSideline({ media, mediaType }) {
     }
   }
   return (
-    <Box sx={{ display: 'flex', flexDirection: {xs: 'column', sm:'row'}, justifyContent:'space-between', flexWrap: 'wrap'}}>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: { xs: 'column', sm: 'row' },
+        justifyContent: 'space-between',
+        flexWrap: 'wrap',
+        gap: '0.3rem'
+      }}
+    >
       <Box>
         <Typography variant='h6' sx={{ fontWeight: '500' }}>
           Status
         </Typography>
         <Typography variant='body1' sx={{ pb: 1 }}>
-          {media.status}
+          {media.status || 'Not available'}
         </Typography>
       </Box>
       <Box>
         <Typography variant='h6' sx={{ fontWeight: '500' }}>
           Original Language
         </Typography>
-        <Typography sx={{ pb: 1 }}>{langName || 'No Name here'}</Typography>
+        <Typography sx={{ pb: 1 }}>{langName || 'Not available'}</Typography>
       </Box>
       <Box>
         {mediaType === 'movie' ? (
@@ -36,7 +44,7 @@ export default function MediaSideline({ media, mediaType }) {
               {new Intl.NumberFormat('en-US', {
                 style: 'currency',
                 currency: 'USD',
-              }).format(media.budget) || 'Budget not found'}
+              }).format(media.budget) || 'Not available'}
             </Typography>
           </>
         ) : (
@@ -53,7 +61,7 @@ export default function MediaSideline({ media, mediaType }) {
               {new Intl.NumberFormat('en-US', {
                 style: 'currency',
                 currency: 'USD',
-              }).format(media.revenue) || 'Revenue not found'}
+              }).format(media.revenue) || 'Not available'}
             </Typography>
           </>
         ) : (
@@ -66,7 +74,9 @@ export default function MediaSideline({ media, mediaType }) {
             <Typography variant='h6' sx={{ fontWeight: '500' }}>
               Type
             </Typography>
-            <Typography variant='body1'>{media.type}</Typography>
+            <Typography variant='body1'>
+              {media.type || 'Not available'}
+            </Typography>
           </>
         ) : (
           <></>

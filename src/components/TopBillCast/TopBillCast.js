@@ -23,8 +23,13 @@ export default function TopBillCast({ cast, mediaType, mediaId, params }) {
   const refElement = useRef();
 
   const getListSize = () => {
-    const newWidth = refElement.current.clientWidth;
-    setWidth(newWidth);
+    // const newWidth = refElement.current.clientWidth;
+    // setWidth(newWidth);
+
+    if (refElement && refElement.current) {
+      const newWidth = refElement.current.clientWidth;
+      setWidth(newWidth);
+    }
   };
 
   const handleImageLoad = (event) => {
