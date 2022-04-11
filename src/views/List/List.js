@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   Alert,
   Grid,
@@ -17,9 +17,21 @@ import HorizontalCard from '../../components/HorizontalCard/HorizontalCard';
 
 const { default: axios } = require('axios');
 
+function usePrevious(value) {
+  const ref = useRef();
+  useEffect(() => {
+    ref.current = value;
+  });
+  return ref.current;
+}
+
 export default function List() {
   let params = useParams();
+  const [paramState, setParamState] = useState(params);
+  const prevAmount = usePrevious(paramState);
+  console.log(prevAmount);
   console.log(params);
+
   const [page, setPage] = useState(1);
   const [showMore, setShowMore] = useState(false);
   const [state, setState] = useState({
@@ -40,12 +52,23 @@ export default function List() {
         `http://localhost:3000/media/lists/${params.mediaType}/${params.listType}?page=${page}`
       );
       console.log(response.data);
-      //setData([...data, ...response.data.results]);
-      setState({
-        loading: false,
-        response: [...state.response, ...response.data.results],
-        error: null,
-      });
+
+      if (prevAmount && prevAmount.mediaType && prevAmount.listType) {
+        if(prevAmount.mediaType !== params.mediaType || prevAmount.listType !== params.listType){
+          setState({
+            loading: false,
+            response: response.data.results,
+            error: null,
+          });
+        }
+      } else {
+        setState({
+          loading: false,
+          response: [...state.response, ...response.data.results],
+          error: null,
+        });
+      }
+
       setShowMore(false);
     } catch (error) {
       console.log(error);
@@ -68,11 +91,24 @@ export default function List() {
         `http://localhost:3000/people/lists/popular?page=${page}`
       );
       console.log(response.data);
-      setState({
-        loading: false,
-        response: [...state.response, ...response.data.results],
-        error: null,
-      });
+      if (prevAmount && prevAmount.mediaType && prevAmount.listType) {
+        if (
+          prevAmount.mediaType !== params.mediaType ||
+          prevAmount.listType !== params.listType
+        ) {
+          setState({
+            loading: false,
+            response: response.data.results,
+            error: null,
+          });
+        }
+      } else {
+        setState({
+          loading: false,
+          response: [...state.response, ...response.data.results],
+          error: null,
+        });
+      }
       setShowMore(false);
     } catch (error) {
       console.log(error);
@@ -105,8 +141,7 @@ export default function List() {
     }
   };
 
-  useEffect(() => { 
-    
+  useEffect(() => {
     if (params.mediaType === 'movie' || params.mediaType === 'tv') {
       getMediaLists();
     } else if (params.mediaType === 'book') {
