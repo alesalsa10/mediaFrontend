@@ -51,11 +51,19 @@ export default function HorizontalCard({
     }
   };
 
+  // const jhk = () => {
+  //   if (mediaType === 'movie') {
+  //     return `${media.id}-${media.title.toLowerCase().split(' ').join('-')}`;
+  //   } else {
+  //     return `${media.id}-${media.name.toLowerCase().split(' ').join('-')}`;
+  //   }
+  // };
+
   const selectMediaLink = () => {
     if (selected === 'Movies') {
-      return `${movie.id}-${movie.title.split(' ').join('-')}`;
+      return `${movie.id}-${movie.title.toLowerCase().split(' ').join('-')}`;
     } else {
-      return `${movie.id}-${movie.name.split(' ').join('-')}`;
+      return `${movie.id}-${movie.name.toLowerCase().split(' ').join('-')}`;
     }
   };
 

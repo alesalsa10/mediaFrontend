@@ -40,8 +40,11 @@ export default function Card({ mediaType, media, type, bestSellers }) {
 
   const selectBookLink = (book) => {
     if (book.id) {
-      return `${book.id}-${book.volumeInfo.toLowerCase().split(' ').join('')}`;
-    } else if (book.primary_isbn10) {
+      return `${book.id}-${book.volumeInfo.title
+        .toLowerCase()
+        .split(' ')
+        .join('')}`;
+    } else if (book.primary_isbn10 && book.primary_isbn10 !== 'None') {
       return `isbn/${book.primary_isbn10}-${book.title
         .toLowerCase()
         .split(' ')
@@ -54,7 +57,7 @@ export default function Card({ mediaType, media, type, bestSellers }) {
     }
   };
 
-const selectMediaLink = () => {
+  const selectMediaLink = () => {
     if (mediaType === 'movie') {
       return `${media.id}-${media.title.toLowerCase().split(' ').join('-')}`;
     } else {
@@ -201,9 +204,18 @@ const selectMediaLink = () => {
             underline='none'
             sx={{ ':hover': { color: 'primary.main' } }}
           >
-            {mediaType === 'movie' || mediaType === 'book'
+            {/* {mediaType === 'movie' || mediaType === 'book'
               ? capitalizeTitle(media.title)
-              : media.name}
+              : media.name} */}
+            {mediaType === 'movie'
+              ? capitalizeTitle(media.title)
+              : mediaType === 'tv' || mediaType === 'people'
+              ? capitalizeTitle(media.name)
+              : mediaType === 'book'
+              ? bestSellers
+                ? capitalizeTitle(media.title)
+                : capitalizeTitle(media.volumeInfo.title)
+              : ''}
           </Link>
         </Typography>
         {mediaType !== 'people' ? (

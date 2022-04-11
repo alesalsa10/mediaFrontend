@@ -62,7 +62,7 @@ export default function Navigation() {
     },
   ];
 
-  const authSettings = ['Profile', 'Logout'];
+  const authSettings = ['Profile', 'Logout', 'Favorites'];
   const nonAuthSettings = ['Sign In', 'Register'];
   const [anchorElNav, setAnchorElNav] = useState(null);
 
@@ -185,7 +185,7 @@ export default function Navigation() {
                   {authData.isAuth ? (
                     <>
                       {authSettings.map((setting) => (
-                        <Link  component={RouterLink} to={`/${setting}`} key={setting}>
+                        <Link  component={RouterLink} to={`/${setting.toLowerCase()}`} key={setting}>
                           <Typography textAlign='center'>{setting}</Typography>
                         </Link>
                       ))}

@@ -29,6 +29,7 @@ export default function List() {
   });
 
   const getMediaLists = async () => {
+    
     if (!showMore) {
       setState((prevState) => ({ ...prevState, loading: true }));
     } else {
@@ -105,6 +106,7 @@ export default function List() {
   };
 
   useEffect(() => { 
+    
     if (params.mediaType === 'movie' || params.mediaType === 'tv') {
       getMediaLists();
     } else if (params.mediaType === 'book') {
