@@ -1,11 +1,11 @@
-import { Button, Modal, Typography } from '@mui/material';
+import { Alert, Button, Modal, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import React, { Fragment, useState, useEffect } from 'react';
 import moment from 'moment';
 import placeholder from '../../assets/placeholder.png';
 import { buildStyles, CircularProgressbar } from 'react-circular-progressbar';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import {  Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import 'react-circular-progressbar/dist/styles.css';
 import MediaSideline from '../MediaSideline/MediaSideline';
@@ -25,6 +25,7 @@ export default function Overview({
   const [userInfo, setUserInfo] = useState(user);
   const [open, setOpen] = useState(false);
   const [cert, setCert] = useState('');
+  const [error, setError] = useState(null);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const timeConvert = (n) => {
@@ -57,9 +58,11 @@ export default function Overview({
         setUserInfo('');
         setFavoriteId('');
       }
+      setError(null);
     } catch (error) {
       console.log(error.response.data);
       //setUser(error.response.data.Msg);
+      setError(error.response.data.Msg);
     }
   };
 
@@ -220,41 +223,50 @@ export default function Overview({
               )}
             </>
           ) : (
-            <Box sx={{ display: 'flex', flexDirection: 'row' }}>
-              <Box>
-                {moment(mediaDetails.volumeInfo.publishedDate).format(
-                  'MM/DD/YYYY'
-                )}
-              </Box>
-              <Box sx={{ alignSelf: 'center', ml: 1, alignItems: 'center' }}>
-                {authData.isAuth ? (
-                  <FavoriteIcon
-                    onClick={() => toggleFavorite('book')}
-                    sx={{
-                      cursor: 'pointer',
-                      color:
-                        (userInfo &&
-                          userInfo.favoriteBooks &&
-                          userInfo.favoriteBooks.includes(
-                            mediaDetails.id.toString()
-                          )) ||
-                        favoriteId === mediaDetails.id.toString()
-                          ? 'red'
-                          : 'black',
-                    }}
-                  />
-                ) : (
-                  <Link to='/signin'>
+            <>
+              <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+                <Box>
+                  {moment(mediaDetails.volumeInfo.publishedDate).format(
+                    'MM/DD/YYYY'
+                  )}
+                </Box>
+                <Box sx={{ alignSelf: 'center', ml: 1, alignItems: 'center' }}>
+                  {authData.isAuth ? (
                     <FavoriteIcon
+                      onClick={() => toggleFavorite('book')}
                       sx={{
                         cursor: 'pointer',
-                        color: 'black',
+                        color:
+                          (userInfo &&
+                            userInfo.favoriteBooks &&
+                            userInfo.favoriteBooks.includes(
+                              mediaDetails.id.toString()
+                            )) ||
+                          favoriteId === mediaDetails.id.toString()
+                            ? 'red'
+                            : 'black',
                       }}
                     />
-                  </Link>
-                )}
+                  ) : (
+                    <Link to='/signin'>
+                      <FavoriteIcon
+                        sx={{
+                          cursor: 'pointer',
+                          color: 'black',
+                        }}
+                      />
+                    </Link>
+                  )}
+                </Box>
               </Box>
-            </Box>
+              {error ? (
+                <Alert variant='outlined' severity='error'>
+                  {error}
+                </Alert>
+              ) : (
+                <></>
+              )}
+            </>
           )}
 
           {mediaType !== 'book' ? (
@@ -282,107 +294,45 @@ export default function Overview({
           )}
         </Typography>
         {mediaType !== 'book' ? (
-          <Box
-            sx={{
-              py: '0.5rem',
-              display: 'flex',
-              flexDirection: 'row',
-              //justifyContent: 'space-between',
-            }}
-          >
+          <>
             <Box
               sx={{
-                height: 60,
-                width: 60,
+                py: '0.5rem',
                 display: 'flex',
                 flexDirection: 'row',
+                //justifyContent: 'space-between',
               }}
             >
-              <CircularProgressbar
-                value={mediaDetails.vote_average * 10}
-                text={`${mediaDetails.vote_average * 10}%`}
-                background
-                backgroundPadding={6}
-                styles={buildStyles({
-                  backgroundColor: '#282b29',
-                  textColor: '#fff',
-                  pathColor:
-                    mediaDetails.vote_average * 10 >= 70
-                      ? '#21d07a'
-                      : mediaDetails.vote_average * 10 > 50 &&
-                        mediaDetails.vote_average * 10 < 70
-                      ? '#d2d531'
-                      : '#d53f31',
-                  trailColor: 'transparent',
-                  textSize: '30px',
-                  width: '60px',
-                  height: '60px',
-                })}
-              />
-            </Box>
-            <Box sx={{ alignSelf: 'center', ml: 1 }}>
-              {authData.isAuth ? (
-                <FavoriteIcon
-                  onClick={
-                    mediaType === 'movie'
-                      ? () => toggleFavorite('movie')
-                      : () => toggleFavorite('tv')
-                  }
-                  sx={{ color: getColor(), cursor: 'pointer' }}
+              <Box
+                sx={{
+                  height: 60,
+                  width: 60,
+                  display: 'flex',
+                  flexDirection: 'row',
+                }}
+              >
+                <CircularProgressbar
+                  value={mediaDetails.vote_average * 10}
+                  text={`${mediaDetails.vote_average * 10}%`}
+                  background
+                  backgroundPadding={6}
+                  styles={buildStyles({
+                    backgroundColor: '#282b29',
+                    textColor: '#fff',
+                    pathColor:
+                      mediaDetails.vote_average * 10 >= 70
+                        ? '#21d07a'
+                        : mediaDetails.vote_average * 10 > 50 &&
+                          mediaDetails.vote_average * 10 < 70
+                        ? '#d2d531'
+                        : '#d53f31',
+                    trailColor: 'transparent',
+                    textSize: '30px',
+                    width: '60px',
+                    height: '60px',
+                  })}
                 />
-              ) : (
-                <Link to='/signin'>
-                  {' '}
-                  <FavoriteIcon sx={{ cursor: 'pointer', color: 'black' }} />
-                </Link>
-              )}
-            </Box>
-
-            {hasTrailer ? (
-              <Box sx={{ alignSelf: 'center' }}>
-                <Button variant='text' onClick={handleOpen}>
-                  Play Trailer
-                </Button>
-
-                <Modal
-                  open={open}
-                  onClose={handleClose}
-                  aria-labelledby='modal-modal-title'
-                  aria-describedby='modal-modal-description'
-                >
-                  <Box
-                    sx={{
-                      position: 'absolute',
-                      top: '50%',
-                      left: '50%',
-                      transform: 'translate(-50%, -50%)',
-                      width: {
-                        xs: '95vw',
-                        md: '70vw',
-                      },
-                      height: {
-                        xs: '80vh',
-                        md: '55vh',
-                      },
-                      bgcolor: 'background.paper',
-                      //border: '2px solid #000',
-                      boxShadow: 24,
-                      p: 0,
-                    }}
-                  >
-                    <iframe
-                      width='100%'
-                      height='100%'
-                      src={`https://www.youtube.com/embed/${videoKey}?&autoplay=1`}
-                      frameBorder='0'
-                      allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
-                      allowFullScreen
-                      title='Embedded youtube'
-                    />
-                  </Box>
-                </Modal>
               </Box>
-            ) : (
               <Box sx={{ alignSelf: 'center', ml: 1 }}>
                 {authData.isAuth ? (
                   <FavoriteIcon
@@ -400,8 +350,81 @@ export default function Overview({
                   </Link>
                 )}
               </Box>
+
+              {hasTrailer ? (
+                <Box sx={{ alignSelf: 'center' }}>
+                  <Button variant='text' onClick={handleOpen}>
+                    Play Trailer
+                  </Button>
+
+                  <Modal
+                    open={open}
+                    onClose={handleClose}
+                    aria-labelledby='modal-modal-title'
+                    aria-describedby='modal-modal-description'
+                  >
+                    <Box
+                      sx={{
+                        position: 'absolute',
+                        top: '50%',
+                        left: '50%',
+                        transform: 'translate(-50%, -50%)',
+                        width: {
+                          xs: '95vw',
+                          md: '70vw',
+                        },
+                        height: {
+                          xs: '80vh',
+                          md: '55vh',
+                        },
+                        bgcolor: 'background.paper',
+                        //border: '2px solid #000',
+                        boxShadow: 24,
+                        p: 0,
+                      }}
+                    >
+                      <iframe
+                        width='100%'
+                        height='100%'
+                        src={`https://www.youtube.com/embed/${videoKey}?&autoplay=1`}
+                        frameBorder='0'
+                        allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
+                        allowFullScreen
+                        title='Embedded youtube'
+                      />
+                    </Box>
+                  </Modal>
+                </Box>
+              ) : (
+                <Box sx={{ alignSelf: 'center', ml: 1 }}>
+                  {authData.isAuth ? (
+                    <FavoriteIcon
+                      onClick={
+                        mediaType === 'movie'
+                          ? () => toggleFavorite('movie')
+                          : () => toggleFavorite('tv')
+                      }
+                      sx={{ color: getColor(), cursor: 'pointer' }}
+                    />
+                  ) : (
+                    <Link to='/signin'>
+                      {' '}
+                      <FavoriteIcon
+                        sx={{ cursor: 'pointer', color: 'black' }}
+                      />
+                    </Link>
+                  )}
+                </Box>
+              )}
+            </Box>
+            {error ? (
+              <Alert variant='outlined' severity='error'>
+                {error}
+              </Alert>
+            ) : (
+              <></>
             )}
-          </Box>
+          </>
         ) : (
           <></>
         )}

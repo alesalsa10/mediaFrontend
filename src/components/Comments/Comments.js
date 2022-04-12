@@ -509,7 +509,9 @@ export default function Comments({ id, count }) {
           <CircularProgress />
         </Box>
       ) : !state.loading && state.error ? (
-        <Alert severity='error'>{state.error}</Alert>
+        <Alert severity='error' variant='outlined'>
+          {state.error}
+        </Alert>
       ) : (
         <>
           <Box sx={{ display: 'flex', width: '100%', mb: 1, ml: '1rem' }}>
@@ -525,11 +527,19 @@ export default function Comments({ id, count }) {
           {authData.isAuth ? (
             <Box sx={{ mb: '1rem', width: '100%' }}>
               {newComment.error && !newComment.loading ? (
-                <Alert severity='error'>{newComment.error}</Alert>
+                <Alert severity='error' variant='outlined' sx={{ ml: '1rem' }}>
+                  {newComment.error}
+                </Alert>
               ) : (
                 <>
                   {newComment.error && !newComment.loading ? (
-                    <Alert severity='error'>{newComment.error}</Alert>
+                    <Alert
+                      severity='error'
+                      variant='outlined'
+                      sx={{ ml: '1rem', width: '100%' }}
+                    >
+                      {newComment.error}
+                    </Alert>
                   ) : (
                     <>
                       <Button
@@ -539,7 +549,12 @@ export default function Comments({ id, count }) {
                           (text === '' || text === '[Deleted]') &&
                           !newComment.loading
                         }
-                        sx={{ width: '100px', height: '40px', mt: '0.5rem', ml: '1rem' }}
+                        sx={{
+                          width: '100px',
+                          height: '40px',
+                          mt: '0.5rem',
+                          ml: '1rem',
+                        }}
                       >
                         {newComment.loading && !newComment.response ? (
                           <CircularProgress color='inherit' size={'1.2rem'} />
@@ -548,7 +563,11 @@ export default function Comments({ id, count }) {
                         )}
                       </Button>
                       {text === '[Deleted]' ? (
-                        <Alert severity='warning' sx={{ mt: 1 }}>
+                        <Alert
+                          severity='warning'
+                          sx={{ mt: 1, ml: '1rem' }}
+                          variant='outlined'
+                        >
                           Text cannot be equal to [Deleted]
                         </Alert>
                       ) : (

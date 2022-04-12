@@ -199,7 +199,9 @@ export default function Comment({
                     />
 
                     {editedComment.error && !editedComment.loading ? (
-                      <Alert severity='error'>{changedComment.error}</Alert>
+                      <Alert severity='error' variant='outlined'>
+                        {changedComment.error}
+                      </Alert>
                     ) : (
                       <>
                         <Button
@@ -218,7 +220,7 @@ export default function Comment({
                           )}
                         </Button>
                         {editText === '[Deleted]' ? (
-                          <Alert severity='warning'>
+                          <Alert severity='warning' variant='outlined'>
                             Text cannot be equal to [Deleted]
                           </Alert>
                         ) : (
@@ -331,7 +333,9 @@ export default function Comment({
                         />
 
                         {changedComment.error && !changedComment.loading ? (
-                          <Alert severity='error'>{changedComment.error}</Alert>
+                          <Alert severity='error' variant='outlined'>
+                            {changedComment.error}
+                          </Alert>
                         ) : (
                           <>
                             <Button
@@ -356,7 +360,7 @@ export default function Comment({
                               )}
                             </Button>
                             {replyText === '[Deleted]' ? (
-                              <Alert severity='warning'>
+                              <Alert severity='warning' variant='outlined'>
                                 Text cannot be equal to [Deleted]
                               </Alert>
                             ) : (

@@ -62,7 +62,7 @@ export default function Navigation() {
     },
   ];
 
-  const authSettings = ['Profile', 'Logout', 'Favorites'];
+  const authSettings = ['Profile',  'Favorites', 'Logout', ];
   const nonAuthSettings = ['Sign In', 'Register'];
   const [anchorElNav, setAnchorElNav] = useState(null);
 

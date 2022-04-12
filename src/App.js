@@ -49,7 +49,7 @@ function App() {
               />
 
               <Route path='/person/:id' element={<Person />} />
-              <Route path='/user/:id' element={<User />} />
+              <Route path='/user/:username' element={<User />} />
 
               <Route path='/:mediaType/:id' element={<Media />} />
               <Route path='/:mediaType/isbn/:id' element={<Media />} />
