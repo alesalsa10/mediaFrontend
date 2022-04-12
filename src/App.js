@@ -1,5 +1,4 @@
 import React, { Fragment } from 'react';
-//import { Counter } from './features/counter/Counter';
 import './App.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Signin from './components/auth/Signin/Signin';
@@ -19,6 +18,7 @@ import Person from './views/Person/Person';
 import User from './views/User/User';
 import PrivateRoutes from './components/PriivateRoutes/PrivateRoutes';
 import Favorites from './views/Favorites/Favorites';
+import ListWrapper from './views/ListWrapper/ListWrapper';
 function App() {
   return (
     <>
@@ -39,14 +39,17 @@ function App() {
               <Route path='/' element={<Home />} />
               <Route path='/search' element={<SearchResults />} />
 
-              <Route element={<PrivateRoutes/>}>
-                  <Route  path='/favorites' element={<Favorites/>} />
+              <Route element={<PrivateRoutes />}>
+                <Route path='/favorites' element={<Favorites />} />
               </Route>
 
-              <Route path={`/:mediaType/lists/:listType`} element={<List />} />
+              <Route
+                path={`/:mediaType/lists/:listType`}
+                element={<ListWrapper />}
+              />
 
-              <Route  path='/person/:id' element={<Person/>}/>
-              <Route path='/user/:id' element={<User/>}/>
+              <Route path='/person/:id' element={<Person />} />
+              <Route path='/user/:id' element={<User />} />
 
               <Route path='/:mediaType/:id' element={<Media />} />
               <Route path='/:mediaType/isbn/:id' element={<Media />} />

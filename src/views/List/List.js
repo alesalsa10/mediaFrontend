@@ -28,14 +28,14 @@ function usePrevious(value) {
 }
 
 
-export default function List() {
+export default function List({mediaType, listType}) {
   let params = useParams();
   const location = useLocation();
   const [loc, setLoc] = useState(location)
   
   const prevLocation = usePrevious(loc);
 
-  console.log(prevLocation, location)
+  //console.log(prevLocation, location)
 
   const [page, setPage] = useState(1);
   const [showMore, setShowMore] = useState(false);
@@ -46,39 +46,34 @@ export default function List() {
   });
 
   const getMediaLists = async () => {
-    // if (!showMore) {
-    //   setState((prevState) => ({ ...prevState, loading: true }));
-    // } else {
-    //   setState((prevState) => ({ ...prevState, loading: false }));
-    // }
-    setState({
-      loading: true,
-      response: [],
-      error: null
-    })
+    if (!showMore) {
+      setState((prevState) => ({ ...prevState, loading: true }));
+    } else {
+      setState((prevState) => ({ ...prevState, loading: false }));
+    }
     try {
       const response = await axios.get(
-        `http://localhost:3000/media/lists/${params.mediaType}/${params.listType}?page=${page}`
+        `http://localhost:3000/media/lists/${mediaType}/${listType}?page=${page}`
       );
       console.log(response.data);
-      if (
-        prevLocation &&
-        prevLocation.key && (prevLocation.key !== location.key)
-      ) {
-        console.log('page changed');
-        setState({
-          loading: false,
-          response: response.data.results,
-          error: null,
-        });
-      } else {
-        console.log('page did not change');
+      // if (
+      //   prevLocation &&
+      //   prevLocation.key && (prevLocation.key !== location.key)
+      // ) {
+        //console.log('page changed');
+        // setState({
+        //   loading: false,
+        //   response: response.data.results,
+        //   error: null,
+        // });
+      //} else {
+        //console.log('page did not change');
         setState({
           loading: false,
           response: [...state.response, ...response.data.results],
           error: null,
         });
-      }
+      //}
 
       setShowMore(false);
     } catch (error) {
@@ -102,25 +97,25 @@ export default function List() {
         `http://localhost:3000/people/lists/popular?page=${page}`
       );
       console.log(response.data);
-      if (
-        prevLocation &&
-        prevLocation.key &&
-        prevLocation.key !== location.key
-      ) {
-        console.log('page changed');
-        setState({
-          loading: false,
-          response: response.data.results,
-          error: null,
-        });
-      } else {
+      // if (
+      //   prevLocation &&
+      //   prevLocation.key &&
+      //   prevLocation.key !== location.key
+      // ) {
+        // console.log('page changed');
+        // setState({
+        //   loading: false,
+        //   response: response.data.results,
+        //   error: null,
+        // });
+      //} else {
         console.log('page did not change');
         setState({
           loading: false,
           response: [...state.response, ...response.data.results],
           error: null,
         });
-      }
+      //}
       setShowMore(false);
     } catch (error) {
       console.log(error);
@@ -133,7 +128,6 @@ export default function List() {
   };
 
   const getBestSellers = async () => {
-    // setStatus('loading');
     try {
       const response = await axios.get(
         `http://localhost:3000/book/newYorkTimes/bestSellers`
@@ -154,11 +148,11 @@ export default function List() {
   };
 
   useEffect(() => {
-    if (params.mediaType === 'movie' || params.mediaType === 'tv') {
+    if (mediaType === 'movie' || mediaType === 'tv') {
       getMediaLists();
-    } else if (params.mediaType === 'book') {
+    } else if (mediaType === 'book') {
       getBestSellers();
-    } else if (params.mediaType === 'people') {
+    } else if (mediaType === 'people') {
       getPopularPeople();
     } else {
       setState({
@@ -167,7 +161,7 @@ export default function List() {
         error: 'This page does not exist',
       });
     }
-  }, [params, page]);
+  }, [mediaType, page, listType]);
 
   const handleViewMore = () => {
     setPage((page) => page + 1);
@@ -182,6 +176,7 @@ export default function List() {
       px={1}
       py={2}
       sx={{ justifyContent: 'center' }}
+      key={`${mediaType}${listType}`}
     >
       <Grid
         item
