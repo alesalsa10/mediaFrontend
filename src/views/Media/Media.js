@@ -28,7 +28,7 @@ export default function Media() {
     if (authData.isAuth) {
       try {
         const response = await axios.get(
-          `http://localhost:3000/users/${authData.user._id}`
+          `http://localhost:3000/users/${authData.user.username}`
         );
         console.log(response.data);
         setUser(response.data)

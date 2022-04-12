@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { useState } from 'react';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -15,8 +15,10 @@ import { useSelector, useDispatch } from 'react-redux';
 import CircularProgress from '@mui/material/CircularProgress';
 import List from '@mui/material/List';
 import { ListItem, ListItemText } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 export default function Register() {
+  const navigate = useNavigate()
   const theme = createTheme();
   const dispatch = useDispatch();
   const authData = useSelector((state) => state.auth);
@@ -95,6 +97,12 @@ export default function Register() {
       }
     }
   };
+
+  useEffect(() => {
+    if (authData.isAuth) {
+      navigate('/')
+    }
+  }, [authData.isAuth]);
 
   return (
     <ThemeProvider theme={theme}>

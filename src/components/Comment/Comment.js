@@ -167,12 +167,12 @@ export default function Comment({
             >
               <Link
                 component={RouterLink}
-                to={`/user/${comment.postedBy._id}`}
+                to={`/user/${comment.postedBy.username}`}
                 underline='none'
                 sx={{ ':hover': { color: 'primary.main' }, mr: 1 }}
                 color='inherit'
               >
-                {comment.postedBy.name}
+                {comment.postedBy.username}
               </Link>
               <Typography variant='body2' sx={{ color: 'text.secondary' }}>
                 {comment.editedAt ? (
