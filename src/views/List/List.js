@@ -8,7 +8,9 @@ import {
   Box,
   CircularProgress,
 } from '@mui/material';
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
+import { BrowserHistory } from "history";
+
 
 import 'react-circular-progressbar/dist/styles.css';
 import Card from '../../components/Card/Card';
@@ -25,12 +27,15 @@ function usePrevious(value) {
   return ref.current;
 }
 
+
 export default function List() {
   let params = useParams();
-  const [paramState, setParamState] = useState(params);
-  const prevAmount = usePrevious(paramState);
-  console.log(prevAmount);
-  console.log(params);
+  const location = useLocation();
+  const [loc, setLoc] = useState(location)
+  
+  const prevLocation = usePrevious(loc);
+
+  console.log(prevLocation, location)
 
   const [page, setPage] = useState(1);
   const [showMore, setShowMore] = useState(false);
@@ -41,27 +46,33 @@ export default function List() {
   });
 
   const getMediaLists = async () => {
-    
-    if (!showMore) {
-      setState((prevState) => ({ ...prevState, loading: true }));
-    } else {
-      setState((prevState) => ({ ...prevState, loading: false }));
-    }
+    // if (!showMore) {
+    //   setState((prevState) => ({ ...prevState, loading: true }));
+    // } else {
+    //   setState((prevState) => ({ ...prevState, loading: false }));
+    // }
+    setState({
+      loading: true,
+      response: [],
+      error: null
+    })
     try {
       const response = await axios.get(
         `http://localhost:3000/media/lists/${params.mediaType}/${params.listType}?page=${page}`
       );
       console.log(response.data);
-
-      if (prevAmount && prevAmount.mediaType && prevAmount.listType) {
-        if(prevAmount.mediaType !== params.mediaType || prevAmount.listType !== params.listType){
-          setState({
-            loading: false,
-            response: response.data.results,
-            error: null,
-          });
-        }
+      if (
+        prevLocation &&
+        prevLocation.key && (prevLocation.key !== location.key)
+      ) {
+        console.log('page changed');
+        setState({
+          loading: false,
+          response: response.data.results,
+          error: null,
+        });
       } else {
+        console.log('page did not change');
         setState({
           loading: false,
           response: [...state.response, ...response.data.results],
@@ -91,18 +102,19 @@ export default function List() {
         `http://localhost:3000/people/lists/popular?page=${page}`
       );
       console.log(response.data);
-      if (prevAmount && prevAmount.mediaType && prevAmount.listType) {
-        if (
-          prevAmount.mediaType !== params.mediaType ||
-          prevAmount.listType !== params.listType
-        ) {
-          setState({
-            loading: false,
-            response: response.data.results,
-            error: null,
-          });
-        }
+      if (
+        prevLocation &&
+        prevLocation.key &&
+        prevLocation.key !== location.key
+      ) {
+        console.log('page changed');
+        setState({
+          loading: false,
+          response: response.data.results,
+          error: null,
+        });
       } else {
+        console.log('page did not change');
         setState({
           loading: false,
           response: [...state.response, ...response.data.results],
@@ -159,6 +171,7 @@ export default function List() {
 
   const handleViewMore = () => {
     setPage((page) => page + 1);
+    //setLoc(location);
     setShowMore(true);
   };
 

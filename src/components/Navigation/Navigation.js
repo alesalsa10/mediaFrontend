@@ -135,7 +135,7 @@ export default function Navigation() {
                 </Drawer>
               </Box>
               <Link
-              component={RouterLink}
+                component={RouterLink}
                 to='/'
                 sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}
               >
@@ -161,10 +161,8 @@ export default function Navigation() {
                     <Card className={styles.dropdownContent}>
                       {page.links.map((link) => (
                         <Link
-                        component={RouterLink}
+                          component={RouterLink}
                           to={link.link}
-                          //underline='none'
-                          //color='inherit'
                           key={link.title}
                         >
                           <Typography>{link.title}</Typography>
@@ -185,7 +183,11 @@ export default function Navigation() {
                   {authData.isAuth ? (
                     <>
                       {authSettings.map((setting) => (
-                        <Link  component={RouterLink} to={`/${setting.toLowerCase()}`} key={setting}>
+                        <Link
+                          component={RouterLink}
+                          to={`/${setting.toLowerCase()}`}
+                          key={setting}
+                        >
                           <Typography textAlign='center'>{setting}</Typography>
                         </Link>
                       ))}
@@ -194,7 +196,7 @@ export default function Navigation() {
                     <>
                       {nonAuthSettings.map((setting) => (
                         <Link
-                        component={RouterLink}
+                          component={RouterLink}
                           to={`/${setting.split(' ').join('')}`}
                           key={setting}
                         >
