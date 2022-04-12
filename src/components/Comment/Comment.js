@@ -48,6 +48,7 @@ export default function Comment({
   isOpen,
   handleModal,
 }) {
+  //add username to links instead of id
   const authData = useSelector((state) => state.auth);
   const navigate = useNavigate();
 

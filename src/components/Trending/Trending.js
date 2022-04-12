@@ -35,7 +35,7 @@ export default function Trending({ mediaType }) {
       const response = await axios.get(
         `http://localhost:3000/media/trending/${mediaType}/${filter}`
       );
-      console.log(response.data);
+      //console.log(response.data);
       setState({
         loading: false,
         response: response.data.results,

@@ -133,6 +133,7 @@ export default function Register() {
                   value={name}
                   error={checkErrors(authData.errors, 'name')}
                   helperText={chooseHelperText(authData.errors, 'name')}
+                  inputProps={{ maxLength: 50, minLength: 4 }}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -156,6 +157,30 @@ export default function Register() {
                     chooseHelperText(authData.errors, 'email') ||
                     choolseHelpter2('email')
                   }
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  id='username'
+                  label='Username'
+                  name='username'
+                  onChange={handleFieldChanges}
+                  value={username}
+                  error={
+                    checkErrors(authData.errors, 'username') ||
+                    (authData.errors &&
+                      authData.errors &&
+                      (authData.errors.Error === 'Username already in use' ||
+                        authData.errors.Error ===
+                          'Username and email already in use'))
+                  }
+                  helperText={
+                    chooseHelperText(authData.errors, 'username') ||
+                    choolseHelpter2('username')
+                  }
+                  inputProps={{ maxLength: 25, minLength: 3 }}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -224,9 +249,9 @@ export default function Register() {
               sx={{ mt: 3, mb: 2, height: '46px' }}
             >
               {authData.status === 'loading' ? (
-                <CircularProgress color='inherit' size={'1.2rem'}/>
+                <CircularProgress color='inherit' size={'1.2rem'} />
               ) : (
-                <span style={{fontSize: '1.2rem'}}>Sign Up</span>
+                <span style={{ fontSize: '1.2rem' }}>Sign Up</span>
               )}
             </Button>
             <Grid container justifyContent='flex-end'>
