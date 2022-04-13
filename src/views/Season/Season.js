@@ -1,17 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
 import { Box } from '@mui/system';
 import { Alert, Grid, Skeleton } from '@mui/material';
 import SeasonOverview from '../../components/SeasonOverview/SeasonOverview';
 import TopBillCast from '../../components/TopBillCast/TopBillCast';
-import SeasonsCarousel from '../../components/SeasonsCarousel/SeasonsCarousel';
 import EpisodesCarousel from '../../components/EpisodesCarousel/EpisodesCarousel';
 import Comments from '../../components/Comments/Comments';
 
-export default function Season() {
-  const params = useParams();
-
+export default function Season({seasonNumber, episodeNumber, id, mediaType, params}) {
   const [state, setState] = useState({
     loading: true,
     response: null,
@@ -25,8 +21,8 @@ export default function Season() {
     //http://localhost:3000/media/tv/season/1420/3
     try {
       const response = await axios.get(
-        `http://localhost:3000/media/tv/${params.id.split('-')[0]}/season/${
-          params.seasonNumber
+        `http://localhost:3000/media/tv/${id.split('-')[0]}/season/${
+          seasonNumber
         }`
       );
       console.log(response.data);
@@ -67,9 +63,9 @@ export default function Season() {
     //http://localhost:3000/media/getById/movie/1420
     try {
       const response = await axios.get(
-        `http://localhost:3000/media/tv/${params.id.split('-')[0]}/season/${
-          params.seasonNumber
-        }/episode/${params.episodeNumber}`
+        `http://localhost:3000/media/tv/${id.split('-')[0]}/season/${
+          seasonNumber
+        }/episode/${episodeNumber}`
       );
       console.log(response.data);
 
@@ -91,9 +87,9 @@ export default function Season() {
   };
 
   useEffect(() => {
-    if (params.seasonNumber && params.episodeNumber) {
+    if (seasonNumber && episodeNumber) {
       getEpisode();
-    } else if (params.seasonNumber) {
+    } else if (seasonNumber) {
       getSeason();
     } else {
       setState({
@@ -102,7 +98,7 @@ export default function Season() {
         error: 'This page does not exist',
       });
     }
-  }, [params]);
+  }, [seasonNumber, episodeNumber, id]);
   return (
     <Grid container justifyContent='center'>
       <Grid item xs={12} md={8} p={8} px={{ xs: 3, md: 0 }} py={1}>
@@ -150,7 +146,7 @@ export default function Season() {
                 <Skeleton height={20} width={'75%'} animation='wave' />
               </Box>
             </Box>
-            {params.mediaType !== 'book' ? (
+            {mediaType !== 'book' ? (
               <>
                 <Box sx={{ px: 1, pt: 3 }}>
                   <Skeleton width={75} height={30} />
@@ -210,28 +206,28 @@ export default function Season() {
                 videoKey={videoKey}
               />
             </Grid>
-            {params.seasonNumber &&
-            !params.episodeNumber &&
+            {seasonNumber &&
+            !episodeNumber &&
             state.response.mediaDetails.credits.cast.length > 0 ? (
               <Grid container>
                 <Grid item xs={12}>
                   <TopBillCast
                     cast={state.response.mediaDetails.credits.cast}
-                    mediaType={params.mediaType}
-                    mediaId={params.id}
+                    mediaType={mediaType}
+                    mediaId={id}
                     params={params}
                   />
                 </Grid>
               </Grid>
-            ) : params.seasonNumber &&
-              params.episodeNumber &&
+            ) : seasonNumber &&
+              episodeNumber &&
               state.response.mediaDetails.credits.cast.length > 0 ? (
               <Grid container>
                 <Grid item xs={12}>
                   <TopBillCast
                     cast={state.response.mediaDetails.credits.cast}
-                    mediaType={params.mediaType}
-                    mediaId={params.id}
+                    mediaType={mediaType}
+                    mediaId={id}
                     params={params}
                   />
                 </Grid>
@@ -239,10 +235,10 @@ export default function Season() {
             ) : (
               <></>
             )}
-            {params.seasonNumber &&
-            !params.episodeNumber &&
+            {seasonNumber &&
+            !episodeNumber &&
             state.response.mediaDetails.episodes.length > 0 &&
-            params.seasonNumber ? (
+            seasonNumber ? (
               <Grid container>
                 <Grid item xs={12}>
                   <EpisodesCarousel

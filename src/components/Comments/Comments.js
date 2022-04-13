@@ -134,7 +134,6 @@ export default function Comments({ id, count }) {
   };
 
   const selectMedia = () => {
-    console.log(params);
     if (params.mediaType) {
       return params.mediaType;
     } else if (params.seasonNumber && params.episodeNumber) {
@@ -151,8 +150,6 @@ export default function Comments({ id, count }) {
     //   response: null
     // })
     let mediaType = selectMedia();
-    //let mediaId = params.id.split('-')[0];
-    console.log(mediaType);
     try {
       const response = await axios.get(
         `http://localhost:3000/comments/${mediaType}/${id}?sort=${sort}`
@@ -493,7 +490,6 @@ export default function Comments({ id, count }) {
     getComments();
   }, [id, params, sort]);
 
-  //adding comment error handling, loading state, and main error loading comments still need to be donde
 
   return (
     <Box sx={{ mb: 2, width: '100%' }}>

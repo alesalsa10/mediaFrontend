@@ -19,6 +19,7 @@ import User from './views/User/User';
 import PrivateRoutes from './components/PriivateRoutes/PrivateRoutes';
 import Favorites from './views/Favorites/Favorites';
 import ListWrapper from './views/ListWrapper/ListWrapper';
+import SeasonEpisodeWrapper from './views/SeasonEpisodeWrapper/SeasonEpisodeWrapper';
 function App() {
   return (
     <>
@@ -56,11 +57,11 @@ function App() {
 
               <Route
                 path='/tv/:id/seasons/:seasonNumber'
-                element={<Season />}
+                element={<SeasonEpisodeWrapper />}
               />
               <Route
                 path='/tv/:id/seasons/:seasonNumber/episodes/:episodeNumber'
-                element={<Season />}
+                element={<SeasonEpisodeWrapper />}
               />
 
               <Route path='/:mediaType/:id/full_cast' element={<FullCast />} />

@@ -194,6 +194,41 @@ export default function Overview({
           )
         </Typography>
 
+        {mediaType === 'book' ? (
+          <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+            {mediaDetails.volumeInfo && mediaDetails.volumeInfo.categories ? (
+              <Typography variant='body2' sx={{ py: '0.5rem' }}>
+                <span>
+                  {mediaDetails.volumeInfo.categories.map((genre, index) => (
+                    <Fragment key={index}>
+                      {`${genre}${
+                        index < mediaDetails.volumeInfo.categories.length - 1
+                          ? ', '
+                          : ''
+                      }`}
+                      <span> - </span>
+                    </Fragment>
+                  ))}
+                </span>
+              </Typography>
+            ) : (
+              <></>
+            )}
+
+            {mediaDetails.volumeInfo.maturityRating ? (
+              <>
+                <Typography variant='body2' sx={{ py: '0.5rem', pl: '0.2rem' }}>
+                  <span>{mediaDetails.volumeInfo.maturityRating}</span>
+                </Typography>
+              </>
+            ) : (
+              <></>
+            )}
+          </Box>
+        ) : (
+          <></>
+        )}
+
         <Typography variant='body2' component={'div'} sx={{ py: '0.5rem' }}>
           {mediaType !== 'book' ? (
             <>
@@ -479,11 +514,7 @@ export default function Overview({
             ? `${mediaDetails.overview}`
             : selectDescription(mediaDetails)}
         </Typography>
-        {mediaType !== 'book' ? (
-          <MediaSideline media={mediaDetails} mediaType={mediaType} />
-        ) : (
-          <></>
-        )}
+        <MediaSideline media={mediaDetails} mediaType={mediaType} />
       </Box>
     </Box>
   );
