@@ -119,11 +119,11 @@ export default function Comment({
         sx={{
           width: isCollapsed ? 'auto' : '3px',
           borderLeft: isCollapsed ? '' : '2px solid grey',
-          //marginBottom: isFirst ? '1rem' : 0,
           ':hover': { borderColor: 'text.primary' },
           cursor: 'pointer',
         }}
         onClick={() => collapse(comment._id)}
+        id={comment._id}
       >
         {isCollapsed ? (
           <OpenInFullIcon

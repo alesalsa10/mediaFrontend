@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -32,6 +32,7 @@ const HideOnScroll = ({ children }) => {
 
 export default function Navigation() {
   const authData = useSelector((state) => state.auth);
+  const [authSettings, setAuthSettings] = useState();
 
   const pages2 = [
     {
@@ -62,7 +63,20 @@ export default function Navigation() {
     },
   ];
 
-  const authSettings = ['Profile',  'Favorites', 'Logout', ];
+  //const authSettings = ['Profile',  'Favorites', 'Logout', ];
+
+  useEffect(()=>{
+    if(authData.isAuth){
+      const authLinks = [
+        { title: 'Profile', link: `/user/${authData.user.username}` },
+        { title: 'Favorites', link: `/favorites` },
+        { title: 'Signout', link: `signout` },
+      ];
+      setAuthSettings(authLinks);
+    }
+  }, [authData])
+
+
   const nonAuthSettings = ['Sign In', 'Register'];
   const [anchorElNav, setAnchorElNav] = useState(null);
 
@@ -180,15 +194,15 @@ export default function Navigation() {
                 <Card
                   className={`${styles.dropdownContent} ${styles.profileDropdownContent} `}
                 >
-                  {authData.isAuth ? (
+                  {authData.isAuth && authSettings? (
                     <>
-                      {authSettings.map((setting) => (
+                      {authSettings.map((link) => (
                         <Link
                           component={RouterLink}
-                          to={`/${setting.toLowerCase()}`}
-                          key={setting}
+                          to={link.link}
+                          key={link.link}
                         >
-                          <Typography textAlign='center'>{setting}</Typography>
+                          <Typography textAlign='center'>{link.title}</Typography>
                         </Link>
                       ))}
                     </>

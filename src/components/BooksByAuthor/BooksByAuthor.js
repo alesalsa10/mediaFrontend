@@ -114,11 +114,12 @@ export default function BooksByAuthor({ author }) {
             {state.error}
           </Alert>
         ) : (
-          <Box sx={{pl: '1rem'}}>
+          <Box sx={{ pl: '1rem' }}>
             {state.response.length > 0 ? (
               <>
                 {state.response.map((book, index) => (
                   <HorizontalCard
+                    key={book + index}
                     selected={'Books'}
                     index={index}
                     movie={book}
@@ -127,7 +128,7 @@ export default function BooksByAuthor({ author }) {
               </>
             ) : (
               <Typography variant='h6'>
-                  No Other books by this author
+                No Other books by this author
               </Typography>
             )}
           </Box>

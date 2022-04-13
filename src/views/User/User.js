@@ -1,3 +1,4 @@
+import { Box, Grid } from '@mui/material';
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
@@ -32,9 +33,30 @@ export default function User() {
     }
   };
 
-  useEffect(()=>{
-    getUser()
-  }, [params.username])
+  useEffect(() => {
+    getUser();
+  }, [params.username]);
 
-  return <div>User</div>;
+  return (
+    // <Box sx={{ boxShadow: 4 }}>
+    //   <Box sx={{ mx: 1, borderBottom: '1px solid gray' }}>
+    //     <Box>
+    //       {/* {state.response} */}
+    //     </Box>
+    //     <Box></Box>
+    //   </Box>
+    //   <Box sx={{ mx: 1, borderBottom: '1px solid gray' }}></Box>
+    // </Box>
+    <Grid container justifyContent='center'>
+      <Grid item xs={12} md={8} p={8} px={{ xs: 3, md: 0 }} py={1}>
+        {state.loading && !state.error ? (
+          <>loading</>
+        ) : !state.loading && state.error ? (
+          <>error</>
+        ) : (
+          <>user content here</>
+        )}
+      </Grid>
+    </Grid>
+  );
 }
