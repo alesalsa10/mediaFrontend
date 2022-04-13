@@ -510,6 +510,11 @@ export default function Comments({ id, count }) {
         </Alert>
       ) : (
         <>
+          <Box item sx={{ pt: 3, width: '100%', pl: '1rem', pb: '1rem' }}>
+            <Typography component={'h2'} variant='hy'>
+              Comments
+            </Typography>
+          </Box>
           <Box sx={{ display: 'flex', width: '100%', mb: 1, ml: '1rem' }}>
             <ReactQuill
               value={text}

@@ -195,7 +195,15 @@ export default function Overview({
         </Typography>
 
         {mediaType === 'book' ? (
-          <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'row',
+              flexWrap: 'wrap',
+              columnGap: '1rem',
+              rowGap: '0.5rem',
+            }}
+          >
             {mediaDetails.volumeInfo && mediaDetails.volumeInfo.categories ? (
               <Typography variant='body2' sx={{ py: '0.5rem' }}>
                 <span>
@@ -218,9 +226,27 @@ export default function Overview({
             {mediaDetails.volumeInfo.maturityRating ? (
               <>
                 <Typography variant='body2' sx={{ py: '0.5rem', pl: '0.2rem' }}>
-                  <span>{mediaDetails.volumeInfo.maturityRating}</span>
+                  <span>{mediaDetails.volumeInfo.maturityRating} - </span>
                 </Typography>
               </>
+            ) : (
+              <></>
+            )}
+
+            {mediaDetails.volumeInfo.authors ? (
+              <Typography variant='body2' sx={{ py: '0.5rem' }}>
+                <span>
+                  {mediaDetails.volumeInfo.authors.map((author, index) => (
+                    <Fragment key={index + author}>
+                      {`${author}${
+                        index < mediaDetails.volumeInfo.authors.length - 1
+                          ? ', '
+                          : ''
+                      }`}
+                    </Fragment>
+                  ))}
+                </span>
+              </Typography>
             ) : (
               <></>
             )}

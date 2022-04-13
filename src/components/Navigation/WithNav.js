@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useLayoutEffect } from 'react';
 import Navigation from './Navigation';
 import { Outlet } from 'react-router';
 import { useSelector, useDispatch } from 'react-redux';
@@ -6,10 +6,12 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Alert, CircularProgress } from '@mui/material';
 import axios from 'axios';
 import { Box } from '@mui/system';
+import { useLocation } from 'react-router-dom';
 
 export default function WithNav() {
   //const dispatch = useDispatch();
   const authData = useSelector((state) => state.auth);
+  const location = useLocation();
   const [state, setState] = useState({
     error: null,
     response: null,
@@ -72,6 +74,10 @@ export default function WithNav() {
   //     };
   //   }
   // });
+
+  useLayoutEffect(() => {
+    document.documentElement.scrollTo(0, 0);
+  }, [location.pathname]);
 
   return (
     <>

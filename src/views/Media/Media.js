@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import Overview from '../../components/Overview/Overview';
 import { useParams, useLocation } from 'react-router-dom';
-import { Alert, Grid, Skeleton, Box } from '@mui/material';
+import { Alert, Grid, Skeleton, Box, Typography, Link } from '@mui/material';
 import TopBillCast from '../../components/TopBillCast/TopBillCast';
 import Recommendation from '../../components/Recommendation/Recommendation';
 import SeasonsCarousel from '../../components/SeasonsCarousel/SeasonsCarousel';
 import Comments from '../../components/Comments/Comments';
 import { useSelector } from 'react-redux';
+import BooksByAuthor from '../../components/BooksByAuthor/BooksByAuthor';
+import amazonLogo from '../../assets/amazonLogo.png';
 
 const { default: axios } = require('axios');
 
@@ -31,10 +33,10 @@ export default function Media() {
           `http://localhost:3000/users/${authData.user.username}`
         );
         console.log(response.data);
-        setUser(response.data)
+        setUser(response.data);
       } catch (error) {
         console.log(error);
-        setUser(error.response.data.Msg)
+        setUser(error.response.data.Msg);
       }
     }
   };
@@ -243,7 +245,7 @@ export default function Media() {
           </Alert>
         ) : (
           <Grid container>
-            <Grid item sx={{}}>
+            <Grid item>
               <Overview
                 mediaDetails={state.response.mediaDetails}
                 mediaType={params.mediaType}
@@ -253,6 +255,58 @@ export default function Media() {
                 authData={authData}
               />
             </Grid>
+            {params.mediaType === 'book' ? (
+              <Grid container>
+                <Grid item xs={12} sx={{ pl: '1rem' }}>
+                  {/* http://www.amazon.com/gp/search?index=books&linkCode=qs&keywords=9780751565362 */}
+                  <Box sx={{ boxShadow: 4, width: '100%', p: 2 }}>
+                    <Typography variant='h6'>Buy Print</Typography>
+                    <Link
+                      href={`http://www.amazon.com/gp/search?index=books&linkCode=qs&keywords=${state.response.mediaDetails.volumeInfo.industryIdentifiers[0].identifier}`}
+                      target='_blank'
+                      rel='noopener noreferrer'
+                      variant='inherit'
+                      color='inherit'
+                      underline='none'
+                      sx={{
+                        ':hover': {
+                          color: 'primary.main',
+                          textDecoration: 'underline',
+                        },
+                      }}
+                    >
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          flexDirection: 'row',
+                          flexWrap: 'wrap',
+                          alignItems: 'center',
+                          gap: '1rem',
+                          mt: '1rem',
+                        }}
+                      >
+                        <Box
+                          component={'img'}
+                          src={amazonLogo}
+                          alt='amazon logo'
+                        />
+                        <Typography variant={'body1'}>Buy on amazon</Typography>
+                      </Box>
+                    </Link>
+                  </Box>
+                </Grid>
+                <Grid item xs={12}>
+                  <BooksByAuthor
+                    author={state.response.mediaDetails.volumeInfo.authors.join(
+                      ' '
+                    )}
+                  />
+                </Grid>
+              </Grid>
+            ) : (
+              <></>
+            )}
+
             {params.mediaType !== 'book' ? (
               <Grid container>
                 <Grid item xs={12}>
