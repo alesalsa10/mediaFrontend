@@ -409,7 +409,9 @@ export default function FullCast() {
                           >
                             <Link
                               component={RouterLink}
-                              to={`/people/${actor.id}`}
+                              to={`/person/${actor.id}-${actor.name
+                                .split(' ')
+                                .join('-')}`}
                             >
                               <Box
                                 component={'img'}
@@ -431,7 +433,9 @@ export default function FullCast() {
                             >
                               <Link
                                 component={RouterLink}
-                                to={`/people/${actor.id}`}
+                                to={`/person/${actor.id}-${actor.name
+                                  .split(' ')
+                                  .join('-')}`}
                                 variant='inherit'
                                 color='inherit'
                                 underline='none'
@@ -478,7 +482,9 @@ export default function FullCast() {
                             >
                               <Link
                                 component={RouterLink}
-                                to={`/people/${actor.id}`}
+                                to={`/person/${actor.id}-${actor.name
+                                  .split(' ')
+                                  .join('-')}`}
                               >
                                 <Box
                                   component={'img'}
@@ -500,7 +506,9 @@ export default function FullCast() {
                               >
                                 <Link
                                   component={RouterLink}
-                                  to={`/people/${actor.id}`}
+                                  to={`/person/${actor.id}-${actor.name
+                                    .split(' ')
+                                    .join('-')}`}
                                   variant='inherit'
                                   color='inherit'
                                   underline='none'
@@ -543,7 +551,9 @@ export default function FullCast() {
                             >
                               <Link
                                 component={RouterLink}
-                                to={`/people/${actor.id}`}
+                                to={`/person/${actor.id}-${actor.name
+                                  .split(' ')
+                                  .join('-')}`}
                               >
                                 <Box
                                   component={'img'}
@@ -565,7 +575,9 @@ export default function FullCast() {
                               >
                                 <Link
                                   component={RouterLink}
-                                  to={`/people/${actor.id}`}
+                                  to={`/person/${actor.id}-${actor.name
+                                    .split(' ')
+                                    .join('-')}`}
                                   variant='inherit'
                                   color='inherit'
                                   underline='none'

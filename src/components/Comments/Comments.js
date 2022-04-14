@@ -14,12 +14,14 @@ import {
 } from '@mui/material';
 import ChatIcon from '@mui/icons-material/Chat';
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useLocation} from 'react-router-dom';
 
 import ReactQuill from 'react-quill'; // ES6
 import 'react-quill/dist/quill.snow.css'; // ES6
 
 export default function Comments({ id, count }) {
+  const { pathname, hash, key } = useLocation();
+
   const authData = useSelector((state) => state.auth);
   const [isOpen, setIsOpen] = useState(false);
   const handleModal = (event, reason, comment, index, firstWithChildren) => {
@@ -490,9 +492,28 @@ export default function Comments({ id, count }) {
     getComments();
   }, [id, params, sort]);
 
+  useEffect(() => {
+    // if not a hash link, scroll to top
+    if (state.response && !state.error && !state.loading) {
+      if (hash === '') {
+        window.scrollTo(0, 0);
+      }
+      // else scroll to id
+      else {
+        setTimeout(() => {
+          const id = hash.replace('#', '');
+          const element = document.getElementById(id);
+          if (element) {
+            element.scrollIntoView();
+            element.focus()
+          }
+        }, 0);
+      }
+    }
+  }, [pathname, hash, key, state.response, state.error, state.loading]); // do this on route change
 
   return (
-    <Box sx={{ mb: 2, width: '100%' }}>
+    <Box sx={{ mb: 2, width: '100%' }} id='comments'>
       {state.loading && !state.error ? (
         <Box
           sx={{

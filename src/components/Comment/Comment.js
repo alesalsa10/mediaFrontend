@@ -123,7 +123,6 @@ export default function Comment({
           cursor: 'pointer',
         }}
         onClick={() => collapse(comment._id)}
-        id={comment._id}
       >
         {isCollapsed ? (
           <OpenInFullIcon
@@ -143,7 +142,14 @@ export default function Comment({
           flexDirection: 'column',
           width: '100%',
           pl: '0.5rem',
+          ':focus': {
+            borderColor: 'text.secondary',
+            borderStyle: 'solid',
+            borderWidth: '1px',
+          },
         }}
+        tabIndex='-1'
+        id={comment._id}
         key={comment._id}
       >
         {comment.text === '[Deleted]' ? (
