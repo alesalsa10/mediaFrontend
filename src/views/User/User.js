@@ -1,9 +1,11 @@
-import { Box, Grid, Typography, Link } from '@mui/material';
+import { Box, Grid, Typography, Link, Alert, Skeleton } from '@mui/material';
 import React, { useState, useEffect } from 'react';
 import { useParams, Link as RouterLink, useNavigate } from 'react-router-dom';
 import moment from 'moment';
 import DOMPurify from 'dompurify';
-
+import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded';
+import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
+import CancelIcon from '@mui/icons-material/Cancel';
 const { default: axios } = require('axios');
 
 export default function User() {
@@ -87,133 +89,438 @@ export default function User() {
 
   const goToComment = (comment) => {
     let link = `${getMediaLink(comment)}#${comment._id}`;
-    console.log(link);
     navigate(link);
   };
 
   useEffect(() => {
-    getUser();
+    //getUser();
+    setState({
+      response: null,
+      loading: true,
+      error: null,
+    });
   }, [params.username]);
 
   return (
     <Grid container justifyContent='center'>
       <Grid item xs={12} md={8} p={8} px={{ xs: 3, md: 0 }} py={1}>
         {state.loading && !state.error ? (
-          <>loading</>
-        ) : !state.loading && state.error ? (
-          <>error</>
-        ) : (
-          <>
-            {state.response.comments.length > 0 ? (
-              <>
-                {state.response.comments.map((comment) => (
-                  <Box sx={{ boxShadow: 4, mb: 1 }} key={comment._id}>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: {
+                xs: 'column',
+                md: 'row-reverse',
+              },
+              gap: 1,
+            }}
+          >
+            <Box>
+              <Skeleton
+                width={150}
+                height={20}
+                animation='wave'
+                variant='text'
+              />
+              <Box
+                sx={{
+                  boxShadow: 4,
+                  p: 0.5,
+                  mb: 2,
+                  height: 'fit-content',
+                  width: 'auto',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                }}
+              >
+                <Box
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    gap: 1,
+                    alignItems: 'center',
+                    width: '100%',
+                  }}
+                >
+                  <Skeleton
+                    variant='circular'
+                    height={30}
+                    width={30}
+                    animation='wave'
+                  />
+                  <Skeleton
+                    varaint='text'
+                    height={20}
+                    width={'70%'}
+                    animation='wave'
+                  />
+                </Box>
+                <Box
+                  sx={{
+                    pt: 1,
+                    display: 'flex',
+                    flexDirection: 'row',
+                    gap: 1,
+                    width: '100%',
+                  }}
+                >
+                  <Box sx={{ width: '50%' }}>
+                    <Skeleton
+                      varaint='text'
+                      height={20}
+                      width={'95%'}
+                      animation='wave'
+                    />
+                    <Skeleton
+                      varaint='text'
+                      height={20}
+                      width={'85%'}
+                      animation='wave'
+                    />
+                  </Box>
+                  <Box sx={{ width: '50%' }}>
+                    <Skeleton
+                      varaint='text'
+                      height={20}
+                      width={'95%'}
+                      animation='wave'
+                    />
+                    <Skeleton
+                      varaint='text'
+                      height={20}
+                      width={'85%'}
+                      animation='wave'
+                    />
+                  </Box>
+                </Box>
+                <Box
+                  sx={{
+                    pt: 1,
+                    display: 'flex',
+                    flexDirection: 'row',
+                    gap: 1,
+                    alignItems: 'center',
+                    width: '100%',
+                  }}
+                >
+                  <Skeleton
+                    varaint='text'
+                    height={20}
+                    width={'85%'}
+                    animation='wave'
+                  />
+                </Box>
+              </Box>
+            </Box>
+            <Box
+              sx={{
+                width: {
+                  xs: '100%',
+                  md: '60%',
+                },
+              }}
+            >
+              <Skeleton width={150} height={20} animation='wave' />
+              {[...Array(15).keys()].map((item, index) => (
+                <Box sx={{ boxShadow: 4, mb: 1, p: 1 }} key={index}>
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      flexDirection: {
+                        xs: 'column',
+                        md: 'row',
+                      },
+                      flexWrap: 'wrap',
+                      alignItems: {
+                        xs: 'start',
+                        md: 'center',
+                      },
+                      py: 1,
+                      rowGap: '0.5rem',
+                      columnGap: '0.2rem',
+                      mx: 1,
+                      borderBottom: '1px solid gray',
+                    }}
+                  >
                     <Box
                       sx={{
                         display: 'flex',
-                        flexDirection: {
-                          xs: 'column',
-                          md: 'row',
-                        },
+                        flexDirection: 'row',
                         flexWrap: 'wrap',
-                        alignItems: {
-                          xs: 'start',
-                          md: 'center',
-                        },
-                        py: 1,
+                        alignItems: 'center',
                         rowGap: '0.5rem',
                         columnGap: '0.2rem',
-                        mx: 1,
-                        borderBottom: '1px solid gray',
                       }}
                     >
-                      <Box
-                        sx={{
-                          display: 'flex',
-                          flexDirection: 'row',
-                          flexWrap: 'wrap',
-                          alignItems: 'center',
-                          rowGap: '0.5rem',
-                          columnGap: '0.2rem',
-                        }}
-                      >
-                        <Typography variant='body1'>
-                          <Link
-                            component={RouterLink}
-                            to={`/${state.response.username}`}
-                            variant='inherit'
-                            color='inherit'
-                            underline='none'
-                            sx={{ ':hover': { color: 'primary.main' } }}
-                          >
-                            {state.response.username}
-                          </Link>
-                        </Typography>
-                        <Typography
-                          variant='body2'
-                          sx={{ color: 'text.secondary' }}
-                        >
-                          commented on
-                        </Typography>
-                      </Box>
-                      <Box>
-                        <Typography variant='body1'>
-                          <Link
-                            component={RouterLink}
-                            to={getMediaLink(comment)}
-                            variant='inherit'
-                            color='inherit'
-                            underline='none'
-                            sx={{ ':hover': { color: 'primary.main' } }}
-                          >
-                            {getMediaText(comment)}
-                          </Link>
-                        </Typography>
-                      </Box>
+                      <Skeleton
+                        animation='wave'
+                        varaint='text'
+                        height={50}
+                        width={80}
+                      />
+                      <Skeleton
+                        animation='wave'
+                        varaint='text'
+                        height={50}
+                        width={80}
+                      />
                     </Box>
-                    <Box
-                      sx={{
-                        px: 1,
-                        cursor: 'pointer',
-                        ':hover': {
-                          borderColor: 'primary.main',
-                          borderStyle: 'solid',
-                          borderWidth: '1px',
-                        },
-                      }}
-                      onClick={() => goToComment(comment)}
-                    >
-                      <Box
-                        sx={{
-                          display: 'flex',
-                          flexDirection: 'row',
-                          alignItems: 'center',
-                        }}
-                      >
-                        <Typography
-                          variant='body2'
-                          sx={{ color: 'text.secondary', mb: 1}}
-                        >
-                          {comment.editedAt ? (
-                            <>Edited {moment(comment.editedAt).fromNow()}</>
-                          ) : (
-                            moment(comment.datePosted).fromNow()
-                          )}
-                          {}
-                        </Typography>
-                      </Box>
-                      <div
-                        style={{ marginBottom: '0.2rem' }}
-                        dangerouslySetInnerHTML={sanitizedData(comment.text)}
+                    <Box>
+                      <Skeleton
+                        animation='wave'
+                        varaint='text'
+                        height={50}
+                        width={80}
                       />
                     </Box>
                   </Box>
-                ))}
-              </>
-            ) : (
-              <>This user has no comments</>
-            )}
-          </>
+                  <Box
+                    sx={{
+                      px: 1,
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                      }}
+                    >
+                      <Skeleton
+                        animation='wave'
+                        varaint='text'
+                        height={50}
+                        width={80}
+                      />
+                    </Box>
+                    <Skeleton
+                      animation='wave'
+                      varaint='text'
+                      height={50}
+                      width={80}
+                    />
+                  </Box>
+                </Box>
+              ))}
+            </Box>
+          </Box>
+        ) : !state.loading && state.error ? (
+          <Alert severity='error' variant='outlined' sx={{ p: 2, m: 2 }}>
+            {state.error}
+          </Alert>
+        ) : (
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: {
+                xs: 'column',
+                md: 'row-reverse',
+              },
+              gap: 1,
+            }}
+          >
+            <Box>
+              <Typography variant='h5'>Overview</Typography>
+              <Box
+                sx={{
+                  boxShadow: 4,
+                  p: 2,
+                  mb: 2,
+                  height: 'fit-content',
+                  width: 'auto',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                }}
+              >
+                <Box
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    gap: 1,
+                    alignItems: 'center',
+                  }}
+                >
+                  {!state.response.profilePicture ? (
+                    <AccountCircleRoundedIcon fontSize='large' />
+                  ) : (
+                    <Box
+                      component={'img'}
+                      src={state.response.profilePicture}
+                    ></Box>
+                  )}
+                  <Typography variant='h6'>
+                    {state.response.username}
+                  </Typography>
+                </Box>
+                <Box
+                  sx={{ pt: 1, display: 'flex', flexDirection: 'row', gap: 1 }}
+                >
+                  <Box>
+                    <Typography variant='body1'>Name</Typography>
+                    <Typography variant='body1'>
+                      {state.response.name}
+                    </Typography>
+                  </Box>
+                  <Box>
+                    <Typography variant='body1'>Created On</Typography>
+                    <Typography variant='body1'>
+                      {moment(state.response.createdAt).format('MMMM Do YYYY')}
+                    </Typography>
+                  </Box>
+                </Box>
+                <>
+                  {state.response.isVerified ? (
+                    <Box
+                      sx={{
+                        pt: 1,
+                        display: 'flex',
+                        flexDirection: 'row',
+                        gap: 1,
+                        alignItems: 'center',
+                      }}
+                    >
+                      <VerifiedUserIcon fontSize='medium' />
+                      <Typography variant='body2'>Verified</Typography>
+                    </Box>
+                  ) : (
+                    <Box
+                      sx={{
+                        pt: 1,
+                        display: 'flex',
+                        flexDirection: 'row',
+                        gap: 1,
+                        alignItems: 'center',
+                      }}
+                    >
+                      <CancelIcon fontSize='medium' />
+                      <Typography variant='body2'>Not Verified</Typography>
+                    </Box>
+                  )}
+                </>
+              </Box>
+            </Box>
+            <Box
+              sx={{
+                width: {
+                  xs: '100%',
+                  md: '60%',
+                },
+              }}
+            >
+              <Typography variant='h5'>Comments</Typography>
+              {state.response.comments.length > 0 ? (
+                <>
+                  {state.response.comments.map((comment) => (
+                    <Box sx={{ boxShadow: 4, mb: 1, p: 1 }} key={comment._id}>
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          flexDirection: {
+                            xs: 'column',
+                            md: 'row',
+                          },
+                          flexWrap: 'wrap',
+                          alignItems: {
+                            xs: 'start',
+                            md: 'center',
+                          },
+                          py: 1,
+                          rowGap: '0.5rem',
+                          columnGap: '0.2rem',
+                          mx: 1,
+                          borderBottom: '1px solid gray',
+                        }}
+                      >
+                        <Box
+                          sx={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            flexWrap: 'wrap',
+                            alignItems: 'center',
+                            rowGap: '0.5rem',
+                            columnGap: '0.2rem',
+                          }}
+                        >
+                          <Typography variant='body1'>
+                            <Link
+                              component={RouterLink}
+                              to={`/${state.response.username}`}
+                              variant='inherit'
+                              color='inherit'
+                              underline='none'
+                              sx={{ ':hover': { color: 'primary.main' } }}
+                            >
+                              {state.response.username}
+                            </Link>
+                          </Typography>
+                          <Typography
+                            variant='body2'
+                            sx={{ color: 'text.secondary' }}
+                          >
+                            commented on
+                          </Typography>
+                        </Box>
+                        <Box>
+                          <Typography variant='body1'>
+                            <Link
+                              component={RouterLink}
+                              to={getMediaLink(comment)}
+                              variant='inherit'
+                              color='inherit'
+                              underline='none'
+                              sx={{ ':hover': { color: 'primary.main' } }}
+                            >
+                              {getMediaText(comment)}
+                            </Link>
+                          </Typography>
+                        </Box>
+                      </Box>
+                      <Box
+                        sx={{
+                          px: 1,
+                          cursor: 'pointer',
+                          ':hover': {
+                            borderColor: 'primary.main',
+                            borderStyle: 'solid',
+                            borderWidth: '1px',
+                          },
+                        }}
+                        onClick={() => goToComment(comment)}
+                      >
+                        <Box
+                          sx={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                          }}
+                        >
+                          <Typography
+                            variant='body2'
+                            sx={{ color: 'text.secondary', mb: 1 }}
+                          >
+                            {comment.editedAt ? (
+                              <>Edited {moment(comment.editedAt).fromNow()}</>
+                            ) : (
+                              moment(comment.datePosted).fromNow()
+                            )}
+                            {}
+                          </Typography>
+                        </Box>
+                        <div
+                          style={{ marginBottom: '0.2rem' }}
+                          dangerouslySetInnerHTML={sanitizedData(comment.text)}
+                        />
+                      </Box>
+                    </Box>
+                  ))}
+                </>
+              ) : (
+                <>This user has no comments</>
+              )}
+            </Box>
+          </Box>
         )}
       </Grid>
     </Grid>
