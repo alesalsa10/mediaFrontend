@@ -93,12 +93,12 @@ export default function User() {
   };
 
   useEffect(() => {
-    //getUser();
-    setState({
-      response: null,
-      loading: true,
-      error: null,
-    });
+    getUser();
+    // setState({
+    //   response: null,
+    //   loading: true,
+    //   error: null,
+    // });
   }, [params.username]);
 
   return (
@@ -115,12 +115,13 @@ export default function User() {
               gap: 1,
             }}
           >
-            <Box>
+            <Box sx={{ width: { xs: '100%', md: '40%' } }}>
               <Skeleton
                 width={150}
                 height={20}
                 animation='wave'
                 variant='text'
+                sx={{ mb: 1 }}
               />
               <Box
                 sx={{
@@ -217,11 +218,16 @@ export default function User() {
               sx={{
                 width: {
                   xs: '100%',
-                  md: '60%',
+                  //md: '60%',
                 },
               }}
             >
-              <Skeleton width={150} height={20} animation='wave' />
+              <Skeleton
+                width={150}
+                height={20}
+                animation='wave'
+                sx={{ mb: 1 }}
+              />
               {[...Array(15).keys()].map((item, index) => (
                 <Box sx={{ boxShadow: 4, mb: 1, p: 1 }} key={index}>
                   <Box
@@ -251,27 +257,28 @@ export default function User() {
                         alignItems: 'center',
                         rowGap: '0.5rem',
                         columnGap: '0.2rem',
+                        width: '40%',
                       }}
                     >
                       <Skeleton
                         animation='wave'
                         varaint='text'
-                        height={50}
-                        width={80}
+                        height={20}
+                        width={'50%'}
                       />
                       <Skeleton
                         animation='wave'
                         varaint='text'
-                        height={50}
-                        width={80}
+                        height={20}
+                        width={'40%'}
                       />
                     </Box>
-                    <Box>
+                    <Box sx={{ width: '55%' }}>
                       <Skeleton
                         animation='wave'
                         varaint='text'
-                        height={50}
-                        width={80}
+                        height={20}
+                        width={'70%'}
                       />
                     </Box>
                   </Box>
@@ -285,20 +292,27 @@ export default function User() {
                         display: 'flex',
                         flexDirection: 'row',
                         alignItems: 'center',
+                        width: '100%',
                       }}
                     >
                       <Skeleton
                         animation='wave'
                         varaint='text'
-                        height={50}
-                        width={80}
+                        height={20}
+                        width={100}
                       />
                     </Box>
                     <Skeleton
                       animation='wave'
                       varaint='text'
-                      height={50}
-                      width={80}
+                      height={20}
+                      width={'90%'}
+                    />
+                    <Skeleton
+                      animation='wave'
+                      varaint='text'
+                      height={20}
+                      width={'75%'}
                     />
                   </Box>
                 </Box>
@@ -320,7 +334,7 @@ export default function User() {
               gap: 1,
             }}
           >
-            <Box>
+            <Box sx={{ width: { xs: '100%', md: '45%' } }}>
               <Typography variant='h5'>Overview</Typography>
               <Box
                 sx={{
@@ -405,7 +419,7 @@ export default function User() {
               sx={{
                 width: {
                   xs: '100%',
-                  md: '60%',
+                  //md: '60%',
                 },
               }}
             >

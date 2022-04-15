@@ -7,7 +7,7 @@ import Typography from '@mui/material/Typography';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import Link from '@mui/material/Link';
 import { Link as RouterLink } from 'react-router-dom';
 import Drawer from '@mui/material/Drawer';
@@ -20,9 +20,13 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import styles from './Navigation.module.css';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import logo from '../../assets/logo.svg';
+import ModeNightOutlinedIcon from '@mui/icons-material/ModeNightOutlined';
+import Switch from '@mui/material/Switch';
+import { toggleTheme } from '../../features/themeSlice';
 
 const HideOnScroll = ({ children }) => {
   const trigger = useScrollTrigger();
+
   return (
     <Slide appear={false} direction={'down'} in={!trigger}>
       {children}
@@ -31,7 +35,10 @@ const HideOnScroll = ({ children }) => {
 };
 
 export default function Navigation() {
+  const dispatch = useDispatch();
   const authData = useSelector((state) => state.auth);
+  const theme = useSelector((state) => state.theme);
+  console.log(theme); //{isLight: boolean}
   const [authSettings, setAuthSettings] = useState();
 
   const pages2 = [
@@ -63,19 +70,17 @@ export default function Navigation() {
     },
   ];
 
-  //const authSettings = ['Profile',  'Favorites', 'Logout', ];
-
-  useEffect(()=>{
-    if(authData.isAuth){
+  useEffect(() => {
+    if (authData.isAuth) {
       const authLinks = [
         { title: 'Profile', link: `/user/${authData.user.username}` },
         { title: 'Favorites', link: `/favorites` },
+        { title: 'User Settings', link: '/settings' },
         { title: 'Signout', link: `signout` },
       ];
       setAuthSettings(authLinks);
     }
-  }, [authData])
-
+  }, [authData]);
 
   const nonAuthSettings = ['Sign In', 'Register'];
   const [anchorElNav, setAnchorElNav] = useState(null);
@@ -86,6 +91,10 @@ export default function Navigation() {
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
+  };
+
+  const handleThemeChange = (e) => {
+    dispatch(toggleTheme());
   };
 
   return (
@@ -193,8 +202,9 @@ export default function Navigation() {
                 ></AccountCircleIcon>
                 <Card
                   className={`${styles.dropdownContent} ${styles.profileDropdownContent} `}
+                  sx={{width: 'max-content'}}
                 >
-                  {authData.isAuth && authSettings? (
+                  {authData.isAuth && authSettings ? (
                     <>
                       {authSettings.map((link) => (
                         <Link
@@ -202,7 +212,9 @@ export default function Navigation() {
                           to={link.link}
                           key={link.link}
                         >
-                          <Typography textAlign='center'>{link.title}</Typography>
+                          <Typography textAlign='center'>
+                            {link.title}
+                          </Typography>
                         </Link>
                       ))}
                     </>
@@ -219,6 +231,23 @@ export default function Navigation() {
                       ))}
                     </>
                   )}
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      width: '100%',
+                      justifyContent: 'space-between',
+                    }}
+                  >
+                    <ModeNightOutlinedIcon />
+                    <Typography varaint='body1'>Dark Mode</Typography>
+                    <Switch
+                      checked={!theme.isLight}
+                      onChange={handleThemeChange}
+                      inputProps={{ 'aria-label': 'controlled' }}
+                    />
+                  </Box>
                 </Card>
               </Box>
             </Toolbar>

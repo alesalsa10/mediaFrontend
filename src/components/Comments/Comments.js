@@ -146,11 +146,11 @@ export default function Comments({ id, count }) {
   };
 
   const getComments = async () => {
-    // setState({
-    //   loading: true,
-    //   error: null,
-    //   response: null
-    // })
+    setState({
+      loading: true,
+      error: null,
+      response: null
+    })
     let mediaType = selectMedia();
     try {
       const response = await axios.get(

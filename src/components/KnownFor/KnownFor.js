@@ -23,6 +23,11 @@ export default function KnownFor({ data }) {
   useEffect(() => {
     window.addEventListener('resize', handleImageLoad);
     window.addEventListener('resize', getListSize);
+
+    return () => {
+      window.removeEventListener('resize', handleImageLoad);
+      window.removeEventListener('scroll', getListSize);
+    };
   }, []);
   return (
     <>
