@@ -129,6 +129,7 @@ export default function Navigation() {
                   onClose={handleCloseNavMenu}
                   sx={{
                     display: { xs: 'block', md: 'none' },
+                    bgcolor: 'background.paper',
                   }}
                 >
                   {pages2.map((page) => (
@@ -181,12 +182,22 @@ export default function Navigation() {
                       {page.main}
                     </Button>
 
-                    <Card className={styles.dropdownContent}>
+                    <Card
+                      className={styles.dropdownContent}
+                      sx={{
+                        bgcolor: 'background.paper',
+                        color: 'text.primary',
+                      }}
+                    >
                       {page.links.map((link) => (
                         <Link
                           component={RouterLink}
                           to={link.link}
                           key={link.title}
+                          sx={{
+                            color: 'text.primary',
+                            ':hover': { bgcolor: 'divider' },
+                          }}
                         >
                           <Typography>{link.title}</Typography>
                         </Link>
@@ -195,14 +206,17 @@ export default function Navigation() {
                   </div>
                 ))}
               </Box>
-              <Box sx={{ flexGrow: 0 }} className={styles.dropdown}>
+              <Box
+                sx={{ flexGrow: 0, color: 'text.primary' }}
+                className={styles.dropdown}
+              >
                 <AccountCircleIcon
-                  sx={{ p: 0 }}
+                  sx={{ p: 0, color: 'white'}}
                   fontSize='large'
                 ></AccountCircleIcon>
                 <Card
                   className={`${styles.dropdownContent} ${styles.profileDropdownContent} `}
-                  sx={{width: 'max-content'}}
+                  sx={{ width: 'max-content' }}
                 >
                   {authData.isAuth && authSettings ? (
                     <>
@@ -211,6 +225,10 @@ export default function Navigation() {
                           component={RouterLink}
                           to={link.link}
                           key={link.link}
+                          sx={{
+                            color: 'text.primary',
+                            ':hover': { bgcolor: 'divider' },
+                          }}
                         >
                           <Typography textAlign='center'>
                             {link.title}
@@ -225,6 +243,10 @@ export default function Navigation() {
                           component={RouterLink}
                           to={`/${setting.split(' ').join('')}`}
                           key={setting}
+                          sx={{
+                            color: 'text.primary',
+                            ':hover': { bgcolor: 'divider' },
+                          }}
                         >
                           <Typography textAlign='center'>{setting}</Typography>
                         </Link>

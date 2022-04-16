@@ -15,7 +15,7 @@ import { Scrollbar } from 'swiper';
 
 import 'react-circular-progressbar/dist/styles.css';
 import 'swiper/css';
-import 'swiper/css/scrollbar'
+import 'swiper/css/scrollbar';
 
 import Card from '../Card/Card';
 
@@ -51,13 +51,21 @@ export default function Trending({ mediaType }) {
   };
 
   useEffect(() => {
-   getTrendingmedias(filter);
-   //setState({loading: true, error: null, response: null})
+    getTrendingmedias(filter);
+    //setState({loading: true, error: null, response: null})
   }, [filter]);
 
   return (
     <Grid container justifyContent='center'>
-      <Grid item xs={12} md={8} p={8} px={{ xs: 3, md: 0 }} py={1}>
+      <Grid
+        item
+        xs={12}
+        md={8}
+        p={8}
+        px={{ xs: 3, md: 0 }}
+        py={1}
+        sx={{ bgColor: 'background.primary', color: 'text.primary' }}
+      >
         <Grid container pb={2} alignItems='center'>
           <Grid item pr={2}>
             <Typography variant='h5' component={'div'}>
@@ -65,7 +73,7 @@ export default function Trending({ mediaType }) {
             </Typography>
           </Grid>
           <Grid item>
-            <FormControl>
+            <FormControl color={'primary'} size='small'>
               <Select
                 value={filter}
                 onChange={(event) => setFilter(event.target.value)}
@@ -156,8 +164,6 @@ export default function Trending({ mediaType }) {
             </Swiper>
           </div>
         )}
-
-       
       </Grid>
     </Grid>
   );

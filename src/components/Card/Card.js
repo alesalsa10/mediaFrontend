@@ -97,6 +97,10 @@ export default function Card({ mediaType, media, type, bestSellers }) {
         justifyContent: 'space-between',
         flexDirection: 'column',
         boxShadow: type === 'carousel' ? '' : '0 2px 8px rgb(0 0 0 / 25%)',
+        backgroundColor: 'background.paper',
+        color: 'text.primary',
+        pb: 1,
+        height: '100%',
       }}
     >
       <Link
@@ -147,27 +151,27 @@ export default function Card({ mediaType, media, type, bestSellers }) {
         ) : (
           <>
             {mediaType !== 'people' ? (
-              <div className={styles.layer}>
-                <CircularProgressbar
-                  value={media.vote_average * 10}
-                  text={`${parseFloat((media.vote_average * 10).toFixed(1))}`}
-                  background
-                  backgroundPadding={4}
-                  styles={buildStyles({
-                    backgroundColor: '#282b29',
-                    textColor: '#fff',
-                    pathColor:
-                      media.vote_average * 10 >= 70
-                        ? '#21d07a'
-                        : media.vote_average * 10 > 50 &&
-                          media.vote_average * 10 < 70
-                        ? '#d2d531'
-                        : '#d53f31',
-                    trailColor: 'transparent',
-                    textSize: '30px',
-                  })}
-                />
-              </div>
+                <div className={styles.layer}>
+                  <CircularProgressbar
+                    value={media.vote_average * 10}
+                    text={`${parseFloat((media.vote_average * 10).toFixed(1))}`}
+                    background
+                    backgroundPadding={4}
+                    styles={buildStyles({
+                      backgroundColor: '#282b29',
+                      textColor: '#fff',
+                      pathColor:
+                        media.vote_average * 10 >= 70
+                          ? '#21d07a'
+                          : media.vote_average * 10 > 50 &&
+                            media.vote_average * 10 < 70
+                          ? '#d2d531'
+                          : '#d53f31',
+                      trailColor: 'transparent',
+                      textSize: '30px',
+                    })}
+                  />
+                </div>
             ) : (
               <></>
             )}
@@ -178,7 +182,13 @@ export default function Card({ mediaType, media, type, bestSellers }) {
         sx={{
           px: 0,
           width: width,
-          pt: 3,
+          //pt: 3,
+          display: 'flex',
+          flexDirection: 'column',
+          //alignContent: 'center'
+          //position: 'relative',
+          height: '100%',
+          justifyContent: 'center',
         }}
       >
         <Typography
