@@ -1,11 +1,6 @@
 import { Box, Grid, Typography } from '@mui/material';
 import React from 'react';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Scrollbar } from 'swiper';
 
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/scrollbar';
 import Card from '../Card/Card';
 
 export default function Recommendation({ recommendations }) {
@@ -13,7 +8,7 @@ export default function Recommendation({ recommendations }) {
     <>
       <Grid container>
         <Grid item sx={{ px: 3, pt: 3 }}>
-          <Typography component={'h2'} variant='hy'>
+          <Typography component={'h2'} variant='h5' sx={{color: 'text.primary'}}>
             Recommendations
           </Typography>
         </Grid>

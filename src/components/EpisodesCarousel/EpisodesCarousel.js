@@ -5,10 +5,9 @@ import {
   Link,
   CardMedia,
   CardContent,
+  Box,
 } from '@mui/material';
 import React, { useState, useRef, useEffect } from 'react';
-import { Navigation, Scrollbar } from 'swiper';
-import { Swiper, SwiperSlide } from 'swiper/react';
 import { useParams } from 'react-router-dom';
 import { Link as RouterLink } from 'react-router-dom';
 
@@ -39,7 +38,7 @@ export default function EpisodesCarousel({ episodes }) {
     <>
       <Grid container>
         <Grid item sx={{ px: 3, pt: 3 }}>
-          <Typography component={'h2'} variant='hy'>
+          <Typography component={'h2'} variant='h6' sx={{color: 'text.primary'}}>
             Episodes
           </Typography>
         </Grid>
@@ -47,75 +46,71 @@ export default function EpisodesCarousel({ episodes }) {
       {episodes.length > 0 ? (
         <>
           <Grid item sx={{ p: 3 }} xs={12}>
-            <div className={`swiper-container ${'actors'}`}>
-              <Swiper
-                style={{ padding: '1px 0px' }}
-                modules={[Scrollbar]}
-                spaceBetween={15}
-                //loop={true}
-                loopedSlides={1}
-                slidesPerView='auto'
-                //navigation
-                scrollbar={{ draggable: true }}
-              >
-                {episodes.map((media, index) => (
-                  <SwiperSlide
-                    key={media.name}
-                    style={{
-                      boxShadow: '0 2px 8px rgb(0 0 0 / 25%)',
-                      width: 'fit-content',
-                      height: 'auto',
-                      borderRadius: '3px',
-                    }}
+            <Box
+              className={'scrollList'}
+              sx={{
+                py: 1,
+                display: 'flex',
+                flexDirection: 'row',
+                overflowX: 'scroll',
+                gap: '10px',
+              }}
+            >
+              {episodes.map((media, index) => (
+                <Card
+                  sx={{
+                    overflow: 'visible',
+                    backgroundColor: 'background.paper',
+                    color: 'text.primary',
+                    display: 'flex',
+                    flexDirection: 'column',
+                  }}
+                  key={media.name}
+                >
+                  <Link
+                    component={RouterLink}
+                    to={`/tv/${params.id}/seasons/${params.seasonNumber}/episodes/${media.episode_number}`}
                   >
-                    {/* <Card  mediaType={'tv'} media={media} type='carousel'/> */}
-                    <Card sx={{ boxShadow: 'none' }}>
-                      <Link
-                        component={RouterLink}
-                        to={`/tv/${params.id}/seasons/${params.seasonNumber}/episodes/${media.episode_number}`}
-                      >
-                        <CardMedia
-                          ref={refElement}
-                          onLoad={handleImageLoad}
-                          component='img'
-                          image={
-                            !media.still_path
-                              ? placeholder
-                              : `${baseImgUrl}${media.still_path}`
-                          }
-                          alt={media.name}
-                          sx={{
-                            width: { xs: 130, sm: 170 },
-                          }}
-                        />
-                      </Link>
+                    <CardMedia
+                      ref={refElement}
+                      onLoad={handleImageLoad}
+                      component='img'
+                      image={
+                        !media.still_path
+                          ? placeholder
+                          : `${baseImgUrl}${media.still_path}`
+                      }
+                      alt={media.name}
+                      sx={{
+                        width: { xs: 130, sm: 170 },
+                      }}
+                    />
+                  </Link>
 
-                      <CardContent sx={{ width: width, px: 0 }}>
-                        <Link
-                          component={RouterLink}
-                          to={`/tv/${params.id}/seasons/${params.seasonNumber}/episodes/${media.episode_number}`}
-                          variant='inherit'
-                          color='inherit'
-                          underline='none'
-                          sx={{ ':hover': { color: 'primary.main' } }}
-                        >
-                          <Typography
-                            gutterBottom
-                            variant='h5'
-                            component='div'
-                            sx={{ px: 0.5 }}
-                          >
-                            {media.media_type === 'movie'
-                              ? media.title
-                              : media.name}
-                          </Typography>
-                        </Link>
-                      </CardContent>
-                    </Card>
-                  </SwiperSlide>
-                ))}
-              </Swiper>
-            </div>
+                  <CardContent sx={{ width: width, px: 0 }}>
+                    <Link
+                      component={RouterLink}
+                      to={`/tv/${params.id}/seasons/${params.seasonNumber}/episodes/${media.episode_number}`}
+                      variant='inherit'
+                      color='inherit'
+                      underline='none'
+                      sx={{ ':hover': { color: 'primary.main' } }}
+                    >
+                      <Typography
+                        gutterBottom
+                        variant='h5'
+                        component='div'
+                        sx={{ px: 0.5 }}
+                      >
+                        {media.media_type === 'movie'
+                          ? media.title
+                          : media.name}
+                      </Typography>
+                    </Link>
+                  </CardContent>
+                </Card>
+              ))}
+            </Box>
           </Grid>
         </>
       ) : (

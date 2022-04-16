@@ -1,8 +1,6 @@
 import { Grid, Typography, Alert, Box, Skeleton } from '@mui/material';
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Scrollbar } from 'swiper';
 import Card from '../../components/Card/Card';
 
 const { default: axios } = require('axios');
@@ -201,38 +199,31 @@ export default function Favorites() {
                         <Typography>Favorite Movies</Typography>
                       </Grid>
                       <div className={`swiper-container movies`}>
-                        <Swiper
-                          style={{ padding: '1rem 0px' }}
-                          modules={[Scrollbar]}
-                          spaceBetween={15}
-                          loopedSlides={1}
-                          slidesPerView='auto'
-                          scrollbar={{ draggable: true }}
+                        <Box
+                          className={'scrollList'}
+                          sx={{
+                            py: 1,
+                            display: 'flex',
+                            flexDirection: 'row',
+                            overflowX: 'scroll',
+                            gap: '10px',
+                          }}
                         >
                           {state.response.movies.map((media, index) => (
                             <React.Fragment key={media.title + index}>
                               {!media.error ? (
-                                <SwiperSlide
+                                <Card
                                   key={media.title + index}
-                                  style={{
-                                    boxShadow: '0 2px 8px rgb(0 0 0 / 25%)',
-                                    width: 'fit-content',
-                                    height: 'auto',
-                                    borderRadius: '3px',
-                                  }}
-                                >
-                                  <Card
-                                    mediaType={'movie'}
-                                    media={media}
-                                    type='carousel'
-                                  />
-                                </SwiperSlide>
+                                  mediaType={'movie'}
+                                  media={media}
+                                  type='carousel'
+                                />
                               ) : (
                                 <></>
                               )}
                             </React.Fragment>
                           ))}
-                        </Swiper>
+                        </Box>
                       </div>
                     </>
                   ) : (
@@ -249,38 +240,31 @@ export default function Favorites() {
                         <Typography>Favorite TV Series</Typography>
                       </Grid>
                       <div className={`swiper-container movies`}>
-                        <Swiper
-                          style={{ padding: '1rem 0px' }}
-                          modules={[Scrollbar]}
-                          spaceBetween={15}
-                          loopedSlides={1}
-                          slidesPerView='auto'
-                          scrollbar={{ draggable: true }}
+                        <Box
+                          className={'scrollList'}
+                          sx={{
+                            py: 1,
+                            display: 'flex',
+                            flexDirection: 'row',
+                            overflowX: 'scroll',
+                            gap: '10px',
+                          }}
                         >
                           {state.response.Tv.map((media, index) => (
                             <React.Fragment key={media.title + index}>
                               {!media.error ? (
-                                <SwiperSlide
+                                <Card
                                   key={media.name + index}
-                                  style={{
-                                    boxShadow: '0 2px 8px rgb(0 0 0 / 25%)',
-                                    width: 'fit-content',
-                                    height: 'auto',
-                                    borderRadius: '3px',
-                                  }}
-                                >
-                                  <Card
-                                    mediaType={'tv'}
-                                    media={media}
-                                    type='carousel'
-                                  />
-                                </SwiperSlide>
+                                  mediaType={'tv'}
+                                  media={media}
+                                  type='carousel'
+                                />
                               ) : (
                                 <></>
                               )}
                             </React.Fragment>
                           ))}
-                        </Swiper>
+                        </Box>
                       </div>
                     </>
                   ) : (
@@ -297,38 +281,31 @@ export default function Favorites() {
                         <Typography>Favorite Books</Typography>
                       </Grid>
                       <div className={`swiper-container movies`}>
-                        <Swiper
-                          style={{ padding: '1rem 0px' }}
-                          modules={[Scrollbar]}
-                          spaceBetween={15}
-                          loopedSlides={1}
-                          slidesPerView='auto'
-                          scrollbar={{ draggable: true }}
+                        <Box
+                          className={'scrollList'}
+                          sx={{
+                            py: 1,
+                            display: 'flex',
+                            flexDirection: 'row',
+                            overflowX: 'scroll',
+                            gap: '10px',
+                          }}
                         >
                           {state.response.books.map((media, index) => (
                             <React.Fragment key={media.title + index}>
                               {!media.error ? (
-                                <SwiperSlide
+                                <Card
                                   key={media.volumeInfo.title + index}
-                                  style={{
-                                    boxShadow: '0 2px 8px rgb(0 0 0 / 25%)',
-                                    width: 'fit-content',
-                                    height: 'auto',
-                                    borderRadius: '3px',
-                                  }}
-                                >
-                                  <Card
-                                    mediaType={'book'}
-                                    media={media}
-                                    type='carousel'
-                                  />
-                                </SwiperSlide>
+                                  mediaType={'book'}
+                                  media={media}
+                                  type='carousel'
+                                />
                               ) : (
                                 <></>
                               )}
                             </React.Fragment>
                           ))}
-                        </Swiper>
+                        </Box>
                       </div>
                     </>
                   ) : (

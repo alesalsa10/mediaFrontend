@@ -88,10 +88,12 @@ export default function HorizontalCard({
       sx={{
         display: 'grid',
         gridTemplateColumns: '100px 1fr',
-        boxShadow: '0 2px 8px rgb(0 0 0 / 25%)',
+        boxShadow: 1,
         mb: 1,
         borderTopRightRadius: 3,
         borderBottomRightRadius: 3,
+        backgroundColor: 'background.paper',
+        color: 'text.primary'
       }}
       key={
         selected === 'Movies'

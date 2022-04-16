@@ -26,6 +26,8 @@ export default function SeasonOverview({ mediaDetails, hasTrailer, videoKey }) {
         p: 3,
         gridGap: '1rem',
         alignItems: 'center',
+        backgroundColor: 'background.paper',
+        color: 'text.primary',
       }}
     >
       <Box

@@ -62,7 +62,7 @@ export default function TopBillCast({ cast, mediaType, mediaId, params }) {
   return (
     <Grid container>
       <Grid item sx={{ px: 3, pt: 3 }}>
-        <Typography component={'h2'} variant='hy'>
+        <Typography component={'h2'} variant='h5' sx={{color: 'text.primary'}}>
           Main Cast
         </Typography>
       </Grid>
@@ -80,9 +80,18 @@ export default function TopBillCast({ cast, mediaType, mediaId, params }) {
               }}
             >
               {cast.slice(0, 6).map((actor, index) => (
-                <Box key={index} sx={{boxShadow: 1, borderRadius: 1}}>
+                <Card
+                  key={index}
+                  sx={{
+                    overflow: 'visible',
+                    backgroundColor: 'background.paper',
+                    color: 'text.primary',
+                    display: 'flex',
+                    flexDirection: 'column'
+                  }}
+                >
                   <Link
-                    sx={{width: 'fit-content'}}
+                    sx={{ width: 'fit-content' }}
                     component={RouterLink}
                     to={`/person/${actor.id}-${actor.name
                       .split(' ')
@@ -107,7 +116,17 @@ export default function TopBillCast({ cast, mediaType, mediaId, params }) {
                     />
                   </Link>
 
-                  <CardContent sx={{ width: width, px: 0 }}>
+                  <CardContent
+                    sx={{
+                      height: '100%',
+                      width: width,
+                      px: 0,
+                      alignContent: 'center',
+                      justifyContent: 'center',
+                      display: 'flex',
+                      flexDirection: 'column'
+                    }}
+                  >
                     <Link
                       component={RouterLink}
                       to={`/person/${actor.id}`}
@@ -134,7 +153,7 @@ export default function TopBillCast({ cast, mediaType, mediaId, params }) {
                       {actor.character}
                     </Typography>
                   </CardContent>
-                </Box>
+                </Card>
               ))}
             </Box>
           </Grid>
