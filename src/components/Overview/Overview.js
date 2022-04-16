@@ -92,7 +92,7 @@ export default function Overview({
       ) {
         return 'red';
       } else {
-        return 'black';
+        return 'text.primary';
       }
     } else if (mediaType === 'movie') {
       if (
@@ -103,7 +103,7 @@ export default function Overview({
       ) {
         return 'red';
       } else {
-        return 'black';
+        return 'text.primary';
       }
     }
   };
@@ -144,6 +144,9 @@ export default function Overview({
         p: 3,
         gridGap: '1rem',
         alignItems: 'center',
+        backgroundColor: 'background.paper',
+        color: 'text.primary',
+        borderRadius: 3
       }}
     >
       <Box
@@ -305,7 +308,7 @@ export default function Overview({
                             )) ||
                           favoriteId === mediaDetails.id.toString()
                             ? 'red'
-                            : 'black',
+                            : 'text.primary',
                       }}
                     />
                   ) : (
@@ -313,7 +316,7 @@ export default function Overview({
                       <FavoriteIcon
                         sx={{
                           cursor: 'pointer',
-                          color: 'black',
+                          color: 'text.primary',
                         }}
                       />
                     </Link>
@@ -407,7 +410,7 @@ export default function Overview({
                 ) : (
                   <Link to='/signin'>
                     {' '}
-                    <FavoriteIcon sx={{ cursor: 'pointer', color: 'black' }} />
+                    <FavoriteIcon sx={{ cursor: 'pointer', color: 'text.primary' }} />
                   </Link>
                 )}
               </Box>
@@ -471,7 +474,7 @@ export default function Overview({
                     <Link to='/signin'>
                       {' '}
                       <FavoriteIcon
-                        sx={{ cursor: 'pointer', color: 'black' }}
+                        sx={{ cursor: 'pointer', color: 'text.primary' }}
                       />
                     </Link>
                   )}

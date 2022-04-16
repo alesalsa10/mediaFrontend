@@ -10,12 +10,7 @@ import {
   Typography,
 } from '@mui/material';
 
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Scrollbar } from 'swiper';
-
 import 'react-circular-progressbar/dist/styles.css';
-import 'swiper/css';
-import 'swiper/css/scrollbar';
 
 import Card from '../Card/Card';
 
@@ -130,39 +125,25 @@ export default function Trending({ mediaType }) {
             </Alert>
           </Grid>
         ) : (
-          <div
-            className={`swiper-container ${
-              mediaType === 'movie' ? 'slider1' : 'slider2'
-            }`}
+          <Box
+            className={'scrollList'}
+            sx={{
+              p: 1,
+              display: 'flex',
+              flexDirection: 'row',
+              overflowX: 'scroll',
+              gap: '10px',
+            }}
           >
-            <Swiper
-              style={{ padding: '1rem 0px' }}
-              modules={[Scrollbar]}
-              spaceBetween={15}
-              //loop={true}
-              loopedSlides={1}
-              slidesPerView='auto'
-              scrollbar={{ draggable: true }}
-            >
-              {state.response.map((media, index) => (
-                <SwiperSlide
-                  key={
-                    mediaType === 'movie' || mediaType === 'book'
-                      ? media.title + index
-                      : media.name + index
-                  }
-                  style={{
-                    boxShadow: '0 2px 8px rgb(0 0 0 / 25%)',
-                    width: 'fit-content',
-                    height: 'auto',
-                    borderRadius: '3px',
-                  }}
-                >
-                  <Card mediaType={mediaType} media={media} type='carousel' />
-                </SwiperSlide>
-              ))}
-            </Swiper>
-          </div>
+            {state.response.map((media, index) => (
+              <Card
+                mediaType={mediaType}
+                media={media}
+                type='carousel'
+                key={index}
+              />
+            ))}
+          </Box>
         )}
       </Grid>
     </Grid>

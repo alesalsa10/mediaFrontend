@@ -1,4 +1,5 @@
 import {
+  Box,
   Card,
   CardContent,
   CardMedia,
@@ -9,14 +10,9 @@ import {
 import { Link as RouterLink } from 'react-router-dom';
 
 import React, { useState, useRef, useEffect } from 'react';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Scrollbar } from 'swiper';
 
 import placeholder from '../../assets/placeholder.png';
 
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/scrollbar';
 
 export default function TopBillCast({ cast, mediaType, mediaId, params }) {
   const [width, setWidth] = useState();
@@ -74,86 +70,74 @@ export default function TopBillCast({ cast, mediaType, mediaId, params }) {
       {cast.length > 0 ? (
         <>
           <Grid item sx={{ p: 3 }} xs={12}>
-            <div className={`swiper-container ${'actors'}`}>
-              <Swiper
-                style={{ padding: '1rem 0px' }}
-                modules={[Scrollbar]}
-                spaceBetween={15}
-                //loop={true}
-                loopedSlides={1}
-                slidesPerView='auto'
-                //navigation
-                scrollbar={{ draggable: true }}
-              >
-                {cast.slice(0, 6).map((actor, index) => (
-                  <SwiperSlide
-                    key={actor.name}
-                    style={{
-                      boxShadow: '0 2px 8px rgb(0 0 0 / 25%)',
-                      width: 'fit-content',
-                      height: 'auto',
-                      borderRadius: '3px',
-                    }}
+            <Box
+              className={'scrollList'}
+              sx={{
+                p: 1,
+                display: 'flex',
+                flexDirection: 'row',
+                overflowX: 'scroll',
+                gap: '10px',
+                //width: 'fit-content'
+              }}
+            >
+              {cast.slice(0, 6).map((actor, index) => (
+                <Card key={index} sx={{width: 'fit-content'}}>
+                  <Link
+                    component={RouterLink}
+                    to={`/person/${actor.id}-${actor.name
+                      .split(' ')
+                      .join('-')}`}
                   >
-                    {/* <Card mediaType='people' media={actor} type='carousel' /> */}
-                    <Card sx={{ boxShadow: 'none' }}>
-                      <Link
-                        component={RouterLink}
-                        to={`/person/${actor.id}-${actor.name
-                          .split(' ')
-                          .join('-')}`}
+                    <CardMedia
+                      ref={refElement}
+                      onLoad={handleImageLoad}
+                      component='img'
+                      image={
+                        !actor.profile_path
+                          ? placeholder
+                          : `${baseImgUrl}${actor.profile_path}`
+                      }
+                      alt={actor.name}
+                      sx={{
+                        width: {
+                          xs: 130,
+                          sm: 170,
+                        },
+                      }}
+                    />
+                  </Link>
+
+                  <CardContent sx={{ width: width, px: 0 }}>
+                    <Link
+                      component={RouterLink}
+                      to={`/person/${actor.id}`}
+                      variant='inherit'
+                      color='inherit'
+                      underline='none'
+                      sx={{ ':hover': { color: 'primary.main' } }}
+                    >
+                      <Typography
+                        gutterBottom
+                        variant='h5'
+                        component='div'
+                        sx={{ px: 0.5 }}
                       >
-                        <CardMedia
-                          ref={refElement}
-                          onLoad={handleImageLoad}
-                          component='img'
-                          image={
-                            !actor.profile_path
-                              ? placeholder
-                              : `${baseImgUrl}${actor.profile_path}`
-                          }
-                          alt={actor.name}
-                          sx={{
-                            width: {
-                              xs: 130,
-                              sm: 170,
-                            },
-                          }}
-                        />
-                      </Link>
+                        {actor.name}
+                      </Typography>
+                    </Link>
 
-                      <CardContent sx={{ width: width, px: 0 }}>
-                        <Link
-                          component={RouterLink}
-                          to={`/person/${actor.id}`}
-                          variant='inherit'
-                          color='inherit'
-                          underline='none'
-                          sx={{ ':hover': { color: 'primary.main' } }}
-                        >
-                          <Typography
-                            gutterBottom
-                            variant='h5'
-                            component='div'
-                            sx={{ px: 0.5 }}
-                          >
-                            {actor.name}
-                          </Typography>
-                        </Link>
-
-                        <Typography
-                          variant='body2'
-                          color='text.secondary'
-                          sx={{ px: 0.5 }}
-                        >
-                          {actor.character}
-                        </Typography>
-                      </CardContent>
-                    </Card>
-                  </SwiperSlide>
-                ))}
-              </Swiper>
-            </div>
+                    <Typography
+                      variant='body2'
+                      color='text.secondary'
+                      sx={{ px: 0.5 }}
+                    >
+                      {actor.character}
+                    </Typography>
+                  </CardContent>
+                </Card>
+              ))}
+            </Box>
           </Grid>
           <Grid item px={3}>
             <Link

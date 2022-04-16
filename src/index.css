@@ -13,3 +13,17 @@
   border-top: 1px solid #ccc;
   width: 100%;
 }
+
+.scrollList::-webkit-scrollbar {
+  height: 10px
+}
+
+.scrollList::-webkit-scrollbar-track {
+  background: darkgrey;        /* color of the tracking area */
+  border-radius: 20px;
+}
+
+.scrollList::-webkit-scrollbar-thumb {
+  background-color: rgb(122, 120, 120);    /* color of the scroll thumb */
+  border-radius: 20px;       /* roundness of the scroll thumb */
+}

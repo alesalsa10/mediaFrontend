@@ -96,11 +96,10 @@ export default function Card({ mediaType, media, type, bestSellers }) {
         display: 'flex',
         justifyContent: 'space-between',
         flexDirection: 'column',
-        boxShadow: type === 'carousel' ? '' : '0 2px 8px rgb(0 0 0 / 25%)',
+        boxShadow: '0 2px 8px rgb(0 0 0 / 25%)',
         backgroundColor: 'background.paper',
         color: 'text.primary',
         pb: 1,
-        height: '100%',
       }}
     >
       <Link
@@ -182,11 +181,8 @@ export default function Card({ mediaType, media, type, bestSellers }) {
         sx={{
           px: 0,
           width: width,
-          //pt: 3,
           display: 'flex',
           flexDirection: 'column',
-          //alignContent: 'center'
-          //position: 'relative',
           height: '100%',
           justifyContent: 'center',
         }}
