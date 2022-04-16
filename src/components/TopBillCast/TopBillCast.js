@@ -13,7 +13,6 @@ import React, { useState, useRef, useEffect } from 'react';
 
 import placeholder from '../../assets/placeholder.png';
 
-
 export default function TopBillCast({ cast, mediaType, mediaId, params }) {
   const [width, setWidth] = useState();
   const refElement = useRef();
@@ -73,17 +72,17 @@ export default function TopBillCast({ cast, mediaType, mediaId, params }) {
             <Box
               className={'scrollList'}
               sx={{
-                p: 1,
+                py: 1,
                 display: 'flex',
                 flexDirection: 'row',
                 overflowX: 'scroll',
                 gap: '10px',
-                //width: 'fit-content'
               }}
             >
               {cast.slice(0, 6).map((actor, index) => (
-                <Card key={index} sx={{width: 'fit-content'}}>
+                <Box key={index} sx={{boxShadow: 1, borderRadius: 1}}>
                   <Link
+                    sx={{width: 'fit-content'}}
                     component={RouterLink}
                     to={`/person/${actor.id}-${actor.name
                       .split(' ')
@@ -135,7 +134,7 @@ export default function TopBillCast({ cast, mediaType, mediaId, params }) {
                       {actor.character}
                     </Typography>
                   </CardContent>
-                </Card>
+                </Box>
               ))}
             </Box>
           </Grid>

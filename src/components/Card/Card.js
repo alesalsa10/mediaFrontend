@@ -96,10 +96,11 @@ export default function Card({ mediaType, media, type, bestSellers }) {
         display: 'flex',
         justifyContent: 'space-between',
         flexDirection: 'column',
-        boxShadow: '0 2px 8px rgb(0 0 0 / 25%)',
+        boxShadow: 1,
         backgroundColor: 'background.paper',
         color: 'text.primary',
         pb: 1,
+        borderRadius: 1
       }}
     >
       <Link

@@ -24,7 +24,7 @@ export default function Recommendation({ recommendations }) {
             <Box
               className={'scrollList'}
               sx={{
-                p: 1,
+                py: 1,
                 display: 'flex',
                 flexDirection: 'row',
                 overflowX: 'scroll',
