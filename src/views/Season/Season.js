@@ -199,7 +199,7 @@ export default function Season({seasonNumber, episodeNumber, id, mediaType, para
           </Alert>
         ) : (
           <Grid container>
-            <Grid item>
+            <Grid item xs={12}>
               <SeasonOverview
                 mediaDetails={state.response.mediaDetails}
                 hasTrailer={hasTrailer}

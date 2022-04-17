@@ -61,7 +61,7 @@ export default function Header({ params }) {
   }, [params])
 
   //mediaType and listType
-  return <Typography variant='h5' component='div' sx={{py:1}}>
+  return <Typography variant='h5' component='div' sx={{py:1, color: 'text.primary'}}>
     {content}
   </Typography>;
 }

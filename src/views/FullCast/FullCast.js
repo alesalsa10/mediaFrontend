@@ -351,6 +351,9 @@ export default function FullCast() {
                     sx={{
                       width: 60,
                       pr: 2,
+                      backgroundColor: '#a7a7a8',
+                      mr:1,
+                      borderRadius: 1
                     }}
                     alt={state.response.mediaDetails.id}
                   ></Box>
@@ -360,6 +363,8 @@ export default function FullCast() {
                     display: 'flex',
                     flexDirection: 'column',
                     justifyContent: 'center',
+                    // backgroundColor: 'background.paper',
+                    // color: 'text.primary',
                   }}
                 >
                   <Link
@@ -370,7 +375,9 @@ export default function FullCast() {
                     underline='none'
                     sx={{ ':hover': { color: 'text.secondary' } }}
                   >
-                    <Typography variant='h6'>{getTitle()} </Typography>
+                    <Typography variant='h6' sx={{ color: 'text.primary' }}>
+                      {getTitle()}{' '}
+                    </Typography>
                   </Link>
                   <Link
                     component={RouterLink}
@@ -397,7 +404,12 @@ export default function FullCast() {
           <Grid container>
             <Grid item xs={12} sm={6}>
               <Box sx={{ p: 2 }}>
-                <Typography variant='h6'>
+                <Typography
+                  variant='h6'
+                  sx={{
+                    color: 'text.primary',
+                  }}
+                >
                   Cast ({state.response.mediaDetails.credits.cast.length})
                   {state.response.mediaDetails.credits.cast.length > 0 ? (
                     <>
@@ -405,7 +417,12 @@ export default function FullCast() {
                         (actor, index) => (
                           <Box
                             key={index + actor.name}
-                            sx={{ display: 'flex', flexDirection: 'row' }}
+                            sx={{
+                              display: 'flex',
+                              flexDirection: 'row',
+                              mb: 1,
+                              boxShadow: 1,
+                            }}
                           >
                             <Link
                               component={RouterLink}
@@ -420,7 +437,13 @@ export default function FullCast() {
                                     ? placeholder
                                     : `${baseImgUrl}${actor.profile_path}`
                                 }
-                                sx={{ width: 50, borderRadius: '3px' }}
+                                sx={{
+                                  width: 50,
+                                  height: '100%',
+                                  borderTopLeftRadius: '4px',
+                                  borderBottomLeftRadius: '4px',
+                                  backgroundColor: '#a7a7a8',
+                                }}
                               ></Box>
                             </Link>
                             <Box
@@ -429,6 +452,11 @@ export default function FullCast() {
                                 flexDirection: 'column',
                                 display: 'flex',
                                 pl: 2,
+                                backgroundColor: 'background.paper',
+                                color: 'text.primary',
+                                width: '100%',
+                                borderTopRightRadius: '4px',
+                                borderBottomRightRadius: '4px',
                               }}
                             >
                               <Link
@@ -457,7 +485,9 @@ export default function FullCast() {
                       )}
                     </>
                   ) : (
-                    <Typography sx={{ textAlign: 'left', m: 1 }}>
+                    <Typography
+                      sx={{ textAlign: 'left', m: 1, color: 'text.primary' }}
+                    >
                       No cast available
                     </Typography>
                   )}
@@ -466,19 +496,24 @@ export default function FullCast() {
             </Grid>
             <Grid item xs={12} sm={6}>
               <Box sx={{ p: 2 }}>
-                <Typography variant='h6'>
+                <Typography variant='h6' sx={{ color: 'text.primary' }}>
                   Crew ({state.response.mediaDetails.credits.crew.length})
                   {state.response.mediaDetails.credits.crew.length > 0 ? (
                     <>
                       {state.response.sorted.map((department, index) => (
                         <Fragment key={department.department + index}>
-                          <Typography sx={{ fontWeight: 600 }}>
+                          <Typography sx={{ fontWeight: 600, mb: 1 }}>
                             {department.department}
                           </Typography>
                           {department.crew.map((actor, index) => (
                             <Box
                               key={index}
-                              sx={{ display: 'flex', flexDirection: 'row' }}
+                              sx={{
+                                display: 'flex',
+                                flexDirection: 'row',
+                                mb: 1,
+                                boxShadow: 1,
+                              }}
                             >
                               <Link
                                 component={RouterLink}
@@ -493,7 +528,13 @@ export default function FullCast() {
                                       ? placeholder
                                       : `${baseImgUrl}${actor.profile_path}`
                                   }
-                                  sx={{ width: 50, borderRadius: '3px' }}
+                                  sx={{
+                                    width: 50,
+                                    height: '100%',
+                                    borderTopLeftRadius: '4px',
+                                    borderBottomLeftRadius: '4px',
+                                    backgroundColor: '#a7a7a8',
+                                  }}
                                 ></Box>
                               </Link>
                               <Box
@@ -502,6 +543,11 @@ export default function FullCast() {
                                   flexDirection: 'column',
                                   display: 'flex',
                                   pl: 2,
+                                  backgroundColor: 'background.paper',
+                                  color: 'text.primary',
+                                  width: '100%',
+                                  borderTopRightRadius: '4px',
+                                  borderBottomRightRadius: '4px',
                                 }}
                               >
                                 <Link
@@ -562,7 +608,11 @@ export default function FullCast() {
                                       ? placeholder
                                       : `${baseImgUrl}${actor.profile_path}`
                                   }
-                                  sx={{ width: 50, borderRadius: '3px' }}
+                                  sx={{
+                                    width: 50,
+                                    borderRadius: '3px',
+                                    backgroundColor: '#a7a7a8',
+                                  }}
                                 ></Box>
                               </Link>
                               <Box

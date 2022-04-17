@@ -146,7 +146,8 @@ export default function Overview({
         alignItems: 'center',
         backgroundColor: 'background.paper',
         color: 'text.primary',
-        borderRadius: 3
+        borderRadius: 1,
+        boxShadow: 1,
       }}
     >
       <Box
@@ -410,7 +411,9 @@ export default function Overview({
                 ) : (
                   <Link to='/signin'>
                     {' '}
-                    <FavoriteIcon sx={{ cursor: 'pointer', color: 'text.primary' }} />
+                    <FavoriteIcon
+                      sx={{ cursor: 'pointer', color: 'text.primary' }}
+                    />
                   </Link>
                 )}
               </Box>

@@ -166,7 +166,7 @@ export default function TopBillCast({ cast, mediaType, mediaId, params }) {
               underline='none'
               sx={{ ':hover': { color: 'primary.main' } }}
             >
-              <Typography gutterBottom variant='h6' component='div'>
+              <Typography gutterBottom variant='h6' component='div' sx={{color: 'text.primary'}}>
                 View Full Cast & Crew
               </Typography>
             </Link>

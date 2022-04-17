@@ -28,6 +28,7 @@ export default function SeasonOverview({ mediaDetails, hasTrailer, videoKey }) {
         alignItems: 'center',
         backgroundColor: 'background.paper',
         color: 'text.primary',
+        boxShadow: 1,
       }}
     >
       <Box
@@ -44,8 +45,9 @@ export default function SeasonOverview({ mediaDetails, hasTrailer, videoKey }) {
             xs: 150,
             sm: 300,
           },
-          borderRadius: 3,
+          borderRadius: 1,
           justifySelf: { xs: 'center', sm: 'auto' },
+          backgroundColor: '#a7a7a8',
         }}
       ></Box>
       <Box>
@@ -54,7 +56,9 @@ export default function SeasonOverview({ mediaDetails, hasTrailer, videoKey }) {
         </Typography>
         <Typography variant='h6' component={'div'} sx={{ py: '0.5rem' }}>
           {mediaDetails.name} (
-          {moment(mediaDetails.air_date).format('MM/DD/YYYY') || 'No air date available'})
+          {moment(mediaDetails.air_date).format('MM/DD/YYYY') ||
+            'No air date available'}
+          )
         </Typography>
         <Typography
           variant={'h6'}

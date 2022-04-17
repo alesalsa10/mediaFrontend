@@ -38,7 +38,11 @@ export default function EpisodesCarousel({ episodes }) {
     <>
       <Grid container>
         <Grid item sx={{ px: 3, pt: 3 }}>
-          <Typography component={'h2'} variant='h6' sx={{color: 'text.primary'}}>
+          <Typography
+            component={'h2'}
+            variant='h6'
+            sx={{ color: 'text.primary' }}
+          >
             Episodes
           </Typography>
         </Grid>
@@ -83,11 +87,21 @@ export default function EpisodesCarousel({ episodes }) {
                       alt={media.name}
                       sx={{
                         width: { xs: 130, sm: 170 },
+                        backgroundColor: '#a7a7a8',
                       }}
                     />
                   </Link>
 
-                  <CardContent sx={{ width: width, px: 0 }}>
+                  <CardContent
+                    sx={{
+                      width: width,
+                      px: 0,
+                      height: '100%',
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center'
+                    }}
+                  >
                     <Link
                       component={RouterLink}
                       to={`/tv/${params.id}/seasons/${params.seasonNumber}/episodes/${media.episode_number}`}
