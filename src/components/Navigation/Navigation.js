@@ -23,6 +23,11 @@ import logo from '../../assets/logo.svg';
 import ModeNightOutlinedIcon from '@mui/icons-material/ModeNightOutlined';
 import Switch from '@mui/material/Switch';
 import { toggleTheme } from '../../features/themeSlice';
+import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded';
+import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
+import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
+import LoginRoundedIcon from '@mui/icons-material/LoginRounded';
+import AppRegistrationRoundedIcon from '@mui/icons-material/AppRegistrationRounded';
 
 const HideOnScroll = ({ children }) => {
   const trigger = useScrollTrigger();
@@ -211,7 +216,7 @@ export default function Navigation() {
                 className={styles.dropdown}
               >
                 <AccountCircleIcon
-                  sx={{ p: 0, color: 'white'}}
+                  sx={{ p: 0, color: 'white' }}
                   fontSize='large'
                 ></AccountCircleIcon>
                 <Card
@@ -230,9 +235,39 @@ export default function Navigation() {
                             ':hover': { bgcolor: 'divider' },
                           }}
                         >
-                          <Typography textAlign='center'>
-                            {link.title}
-                          </Typography>
+                          <Box
+                            sx={{
+                              display: 'flex',
+                              flexDirection: 'row',
+                              alignItems: 'center',
+                            }}
+                          >
+                            {/* <AccountCircleIcon fontSize='small' sx={{mr:1}}/> */}
+                            {link.title === 'Profile' ? (
+                              <AccountCircleIcon
+                                fontSize='small'
+                                sx={{ mr: 1 }}
+                              />
+                            ) : link.title === 'Favorites' ? (
+                              <FavoriteRoundedIcon
+                                fontSize='small'
+                                sx={{ mr: 1 }}
+                              />
+                            ) : link.title === 'User Settings' ? (
+                              <SettingsRoundedIcon
+                                fontSize='small'
+                                sx={{ mr: 1 }}
+                              />
+                            ) : (
+                              <LogoutRoundedIcon
+                                fontSize='small'
+                                sx={{ mr: 1 }}
+                              />
+                            )}
+                            <Typography textAlign='center'>
+                              {link.title}
+                            </Typography>
+                          </Box>
                         </Link>
                       ))}
                     </>
@@ -248,7 +283,28 @@ export default function Navigation() {
                             ':hover': { bgcolor: 'divider' },
                           }}
                         >
-                          <Typography textAlign='center'>{setting}</Typography>
+                          <Box
+                            sx={{
+                              display: 'flex',
+                              flexDirection: 'row',
+                              alignItems: 'center',
+                            }}
+                          >
+                            {setting === 'Register' ? (
+                              <AppRegistrationRoundedIcon
+                                fontSize='small'
+                                sx={{ mx: 1 }}
+                              />
+                            ) : (
+                              <LoginRoundedIcon
+                                fontSize='small'
+                                sx={{ mx: 1 }}
+                              />
+                            )}
+                            <Typography textAlign='center'>
+                              {setting}
+                            </Typography>
+                          </Box>
                         </Link>
                       ))}
                     </>
