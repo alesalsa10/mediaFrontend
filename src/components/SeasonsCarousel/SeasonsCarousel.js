@@ -83,7 +83,7 @@ export default function SeasonsCarousel({ seasons }) {
                     color: 'text.primary',
                     display: 'flex',
                     flexDirection: 'column',
-                    boxShadow: 4
+                    boxShadow: 4,
                   }}
                   key={media.media_type === 'movie' ? media.title : media.name}
                 >
@@ -140,7 +140,9 @@ export default function SeasonsCarousel({ seasons }) {
       ) : (
         <Grid container>
           <Grid item xs={12}>
-            <Typography sx={{ textAlign: 'left', my: 1 }}>
+            <Typography
+              sx={{ textAlign: 'left', my: 1, color: 'text.primary' }}
+            >
               No Seasons found
             </Typography>
           </Grid>

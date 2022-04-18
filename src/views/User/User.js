@@ -332,7 +332,7 @@ export default function User() {
                 md: 'row-reverse',
               },
               gap: 1,
-              color: 'text.primary'
+              color: 'text.primary',
             }}
           >
             <Box sx={{ width: { xs: '100%', md: '45%' } }}>
@@ -347,7 +347,7 @@ export default function User() {
                   display: 'flex',
                   flexDirection: 'column',
                   alignItems: 'center',
-                  backgroundColor: 'background.paper'
+                  backgroundColor: 'background.paper',
                 }}
               >
                 <Box
@@ -429,7 +429,15 @@ export default function User() {
               {state.response.comments.length > 0 ? (
                 <>
                   {state.response.comments.map((comment) => (
-                    <Box sx={{ boxShadow: 4, mb: 1, p: 1, backgroundColor: 'background.paper' }} key={comment._id}>
+                    <Box
+                      sx={{
+                        boxShadow: 4,
+                        mb: 1,
+                        p: 1,
+                        backgroundColor: 'background.paper',
+                      }}
+                      key={comment._id}
+                    >
                       <Box
                         sx={{
                           display: 'flex',
@@ -459,17 +467,11 @@ export default function User() {
                             columnGap: '0.2rem',
                           }}
                         >
-                          <Typography variant='body1'>
-                            <Link
-                              component={RouterLink}
-                              to={`/${state.response.username}`}
-                              variant='inherit'
-                              color='inherit'
-                              underline='none'
-                              sx={{ ':hover': { color: 'primary.main' } }}
-                            >
-                              {state.response.username}
-                            </Link>
+                          <Typography
+                            variant='body1'
+                            sx={{ color: 'text.primary' }}
+                          >
+                            {state.response.username}
                           </Typography>
                           <Typography
                             variant='body2'
