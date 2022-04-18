@@ -33,7 +33,6 @@ export default function Search() {
   };
 
   const handleSearchClick = (e) => {
-    console.log('you pressed the search button');
     let searchQuery = search.split(' ').join('+');
     navigate(`/search?name=${searchQuery}`);
   };
@@ -44,8 +43,7 @@ export default function Search() {
         item
         xs={12}
         md={8}
-        border={1}
-        borderColor='devider'
+        boxShadow={4}
         px={1}
         py={2}
         sx={{ bgcolor: 'background.paper' , color: 'text.primary'}}

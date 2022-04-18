@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Alert from '@mui/material/Alert';
-import Container from '@mui/material/Container';
+import { Grid } from '@mui/material';
 
 const axios = require('axios').default;
 
@@ -28,20 +28,22 @@ export default function VerifyEmail() {
   }, [token.token]);
 
   return (
-    <Container>
-      {data ? (
-        <>
-          <Alert variant='outlined' severity='success'>
-            {data}
-          </Alert>
-        </>
-      ) : (
-        <>
-          <Alert variant='outlined' severity='error'>
-            {error}
-          </Alert>
-        </>
-      )}
-    </Container>
+    <Grid container justifyContent={'center'}>
+      <Grid item xs={12}>
+        {data ? (
+          <>
+            <Alert variant='outlined' severity='success'>
+              {data}
+            </Alert>
+          </>
+        ) : (
+          <>
+            <Alert variant='outlined' severity='error'>
+              {error}
+            </Alert>
+          </>
+        )}
+      </Grid>
+    </Grid>
   );
 }

@@ -96,11 +96,11 @@ export default function Card({ mediaType, media, type, bestSellers }) {
         display: 'flex',
         justifyContent: 'space-between',
         flexDirection: 'column',
-        boxShadow: 1,
+        boxShadow: 4,
         backgroundColor: 'background.paper',
         color: 'text.primary',
         pb: 1,
-        borderRadius: 1
+        borderRadius: 1,
       }}
     >
       <Link
@@ -144,6 +144,7 @@ export default function Card({ mediaType, media, type, bestSellers }) {
             },
             borderTopRightRadius: '3px',
             borderTopLeftRadius: '3px',
+            backgroundColor: '#a7a7a8',
           }}
         />
         {mediaType === 'book' ? (
@@ -151,27 +152,27 @@ export default function Card({ mediaType, media, type, bestSellers }) {
         ) : (
           <>
             {mediaType !== 'people' ? (
-                <div className={styles.layer}>
-                  <CircularProgressbar
-                    value={media.vote_average * 10}
-                    text={`${parseFloat((media.vote_average * 10).toFixed(1))}`}
-                    background
-                    backgroundPadding={4}
-                    styles={buildStyles({
-                      backgroundColor: '#282b29',
-                      textColor: '#fff',
-                      pathColor:
-                        media.vote_average * 10 >= 70
-                          ? '#21d07a'
-                          : media.vote_average * 10 > 50 &&
-                            media.vote_average * 10 < 70
-                          ? '#d2d531'
-                          : '#d53f31',
-                      trailColor: 'transparent',
-                      textSize: '30px',
-                    })}
-                  />
-                </div>
+              <div className={styles.layer}>
+                <CircularProgressbar
+                  value={media.vote_average * 10}
+                  text={`${parseFloat((media.vote_average * 10).toFixed(1))}`}
+                  background
+                  backgroundPadding={4}
+                  styles={buildStyles({
+                    backgroundColor: '#282b29',
+                    textColor: '#fff',
+                    pathColor:
+                      media.vote_average * 10 >= 70
+                        ? '#21d07a'
+                        : media.vote_average * 10 > 50 &&
+                          media.vote_average * 10 < 70
+                        ? '#d2d531'
+                        : '#d53f31',
+                    trailColor: 'transparent',
+                    textSize: '30px',
+                  })}
+                />
+              </div>
             ) : (
               <></>
             )}

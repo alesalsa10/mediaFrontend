@@ -26,28 +26,34 @@ export default function PersonalInfo({ info }) {
     }
   };
 
-const getAge = (dateString)=> {
-  var today = new Date();
-  var birthDate = new Date(dateString);
-  var age = today.getFullYear() - birthDate.getFullYear();
-  var m = today.getMonth() - birthDate.getMonth();
-  if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-    age--;
-  }
-  return age;
-}
-
-  const getBirthday = () =>{
-    if(info.birthday){
-        return `${info.birthday} (${getAge(info.birthday)} years old)`
-    }else {
-        return 'Birthday not available'
+  const getAge = (dateString) => {
+    var today = new Date();
+    var birthDate = new Date(dateString);
+    var age = today.getFullYear() - birthDate.getFullYear();
+    var m = today.getMonth() - birthDate.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
     }
-  }
+    return age;
+  };
 
+  const getBirthday = () => {
+    if (info.birthday) {
+      return `${info.birthday} (${getAge(info.birthday)} years old)`;
+    } else {
+      return 'Birthday not available';
+    }
+  };
 
   return (
-    <Box>
+    <Box
+      sx={{
+        backgroundColor: 'background.paper',
+        color: 'text.primary',
+        pl: 1,
+        borderRadius: 1,
+      }}
+    >
       <Typography
         variant='h6'
         component={'div'}

@@ -171,7 +171,7 @@ export default function Favorites() {
           </Alert>
         ) : (
           <>
-            <Grid container>
+            <Grid container sx={{color: 'text.primary'}}>
               {state.response.movies &&
               state.response.movies.length === 0 &&
               state.response.Tv &&
@@ -195,8 +195,8 @@ export default function Favorites() {
                 <>
                   {state.response.movies && state.response.movies.length > 0 ? (
                     <>
-                      <Grid item xs={12}>
-                        <Typography>Favorite Movies</Typography>
+                      <Grid item xs={12} py={1}>
+                        <Typography varaint='h6'>Favorite Movies</Typography>
                       </Grid>
                       <div className={`swiper-container movies`}>
                         <Box
@@ -227,17 +227,19 @@ export default function Favorites() {
                       </div>
                     </>
                   ) : (
-                    <Grid>
-                      <Typography variant='h4'>
-                        {' '}
-                        No Movies in your Favorites
-                      </Typography>
+                    <Grid container>
+                      <Grid item xs={12} py={1}>
+                        <Typography variant='h5'>
+                          {' '}
+                          No Movies in your Favorites
+                        </Typography>
+                      </Grid>
                     </Grid>
                   )}
                   {state.response.Tv && state.response.Tv.length > 0 ? (
                     <>
-                      <Grid item xs={12}>
-                        <Typography>Favorite TV Series</Typography>
+                      <Grid item xs={12} py={1}>
+                        <Typography varaint='h6'>Favorite TV Series</Typography>
                       </Grid>
                       <div className={`swiper-container movies`}>
                         <Box
@@ -268,17 +270,19 @@ export default function Favorites() {
                       </div>
                     </>
                   ) : (
-                    <Grid>
-                      <Typography variant='h4'>
-                        {' '}
-                        No TV Series in your Favorites
-                      </Typography>
+                    <Grid container>
+                      <Grid item xs={12} py={1}>
+                        <Typography variant='h5'>
+                          {' '}
+                          No TV Series in your Favorites
+                        </Typography>
+                      </Grid>
                     </Grid>
                   )}
                   {state.response.books && state.response.books.length > 0 ? (
                     <>
-                      <Grid item xs={12}>
-                        <Typography>Favorite Books</Typography>
+                      <Grid item xs={12} py={1}>
+                        <Typography variant='h6'>Favorite Books</Typography>
                       </Grid>
                       <div className={`swiper-container movies`}>
                         <Box
@@ -309,11 +313,13 @@ export default function Favorites() {
                       </div>
                     </>
                   ) : (
-                    <Grid>
-                      <Typography variant='h4'>
-                        {' '}
-                        No Books in your Favorites
-                      </Typography>
+                    <Grid container>
+                      <Grid item xs={12} py={1}>
+                        <Typography variant='h5'>
+                          {' '}
+                          No Books in your Favorites
+                        </Typography>
+                      </Grid>
                     </Grid>
                   )}
                 </>

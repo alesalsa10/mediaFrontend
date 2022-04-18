@@ -8,17 +8,15 @@ import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useSelector, useDispatch } from 'react-redux';
 import { signin, togglePersist} from '../../../features/auth/authSlice';
 import Alert from '@mui/material/Alert';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useNavigate, useLocation } from 'react-router-dom';
 
+
 export default function Signin() {
   let navigate = useNavigate();
-  const theme = createTheme();
   const dispatch = useDispatch();
   const authData = useSelector((state) => state.auth);
   const location = useLocation();
@@ -88,17 +86,21 @@ export default function Signin() {
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      <Container component='main' maxWidth='xs'>
-        <CssBaseline />
+    <Grid container justifyContent={'center'}>
+      <Grid item>
         <Box
+          maxWidth={'sm'}
           sx={{
             marginTop: 8,
+            mx: 2,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            boxShadow: 3,
+            boxShadow: 4,
             p: 2,
+            color: 'text.primary',
+            backgroundColor: 'background.paper',
+            borderRadius: 1,
           }}
         >
           <Typography component='h1' variant='h5'>
@@ -180,7 +182,7 @@ export default function Signin() {
             </Grid>
           </Box>
         </Box>
-      </Container>
-    </ThemeProvider>
+      </Grid>
+    </Grid>
   );
 }

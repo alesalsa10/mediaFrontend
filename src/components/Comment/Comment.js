@@ -113,7 +113,12 @@ export default function Comment({
 
   return (
     <Box
-      sx={{ display: 'flex', width: '100%', marginTop: isFirst ? '1rem' : 0 }}
+      sx={{
+        display: 'flex',
+        width: '100%',
+        marginTop: isFirst ? '1rem' : 0,
+        color: 'text.primary',
+      }}
     >
       <Box
         sx={{
@@ -142,11 +147,6 @@ export default function Comment({
           flexDirection: 'column',
           width: '100%',
           pl: '0.5rem',
-          ':focus': {
-            borderColor: 'text.secondary',
-            borderStyle: 'solid',
-            borderWidth: '1px',
-          },
         }}
         tabIndex='-1'
         id={comment._id}
@@ -176,7 +176,7 @@ export default function Comment({
                 to={`/user/${comment.postedBy.username}`}
                 underline='none'
                 sx={{ ':hover': { color: 'primary.main' }, mr: 1 }}
-                color='inherit'
+                color='text.primary'
               >
                 {comment.postedBy.username}
               </Link>
@@ -196,13 +196,15 @@ export default function Comment({
               <>
                 {isEditOpen ? (
                   <>
-                    <ReactQuill
-                      value={editText}
-                      onChange={handleEdit}
-                      modules={modules}
-                      formats={formats}
-                      placeholder='Enter your comment here'
-                    />
+                    <Box sx={{ backgroundColor: 'background.paper' }}>
+                      <ReactQuill
+                        value={editText}
+                        onChange={handleEdit}
+                        modules={modules}
+                        formats={formats}
+                        placeholder='Enter your comment here'
+                      />
+                    </Box>
 
                     {editedComment.error && !editedComment.loading ? (
                       <Alert severity='error' variant='outlined'>
@@ -330,13 +332,15 @@ export default function Comment({
                     )}
                     {isReplyOpen ? (
                       <>
-                        <ReactQuill
-                          value={replyText}
-                          onChange={handleReply}
-                          modules={modules}
-                          formats={formats}
-                          placeholder='Enter your comment here'
-                        />
+                        <Box sx={{backgroundColor: 'background.paper'}}>
+                          <ReactQuill
+                            value={replyText}
+                            onChange={handleReply}
+                            modules={modules}
+                            formats={formats}
+                            placeholder='Enter your comment here'
+                          />
+                        </Box>
 
                         {changedComment.error && !changedComment.loading ? (
                           <Alert severity='error' variant='outlined'>

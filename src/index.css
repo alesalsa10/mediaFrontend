@@ -27,3 +27,25 @@
   background-color: rgb(122, 120, 120);    /* color of the scroll thumb */
   border-radius: 20px;       /* roundness of the scroll thumb */
 }
+
+#ql-stroke{
+  fill: none;
+  stroke: white;
+}
+
+#ql-header{
+  color: white
+}
+
+#ql-fill{
+  fill: white;
+  stroke: white
+}
+
+#ql-blank::before{
+  color: white
+}
+
+#ql-picker-options{
+  background-color: #121212;
+}

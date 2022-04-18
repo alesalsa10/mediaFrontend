@@ -14,12 +14,14 @@ import {
 } from '@mui/material';
 import ChatIcon from '@mui/icons-material/Chat';
 import { useSelector } from 'react-redux';
-import { Link, useLocation} from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 import ReactQuill from 'react-quill'; // ES6
 import 'react-quill/dist/quill.snow.css'; // ES6
 
 export default function Comments({ id, count }) {
+  const theme = useSelector((state) => state.theme);
+
   const { pathname, hash, key } = useLocation();
 
   const authData = useSelector((state) => state.auth);
@@ -149,8 +151,8 @@ export default function Comments({ id, count }) {
     setState({
       loading: true,
       error: null,
-      response: null
-    })
+      response: null,
+    });
     let mediaType = selectMedia();
     try {
       const response = await axios.get(
@@ -488,6 +490,35 @@ export default function Comments({ id, count }) {
     }
   };
 
+  useEffect(() =>{
+    if(!theme.isLight){
+      setTimeout(() =>{
+        let qlStroke = Array.from(document.getElementsByClassName('ql-stroke'));
+        qlStroke.forEach((element) => {
+          element.id = 'ql-stroke';
+        });
+        let qlHeader = Array.from(document.getElementsByClassName('ql-header'));
+        qlHeader.forEach((element) => {
+          element.id = 'ql-header';
+        });
+        let qlFill = Array.from(document.getElementsByClassName('ql-fill'));
+        qlFill.forEach((element) => {
+          element.id = 'ql-fill';
+        });
+        let qlBlank = Array.from(document.getElementsByClassName('ql-blank'));
+        qlBlank.forEach((element) => {
+          element.id = 'ql-blank';
+        });
+        let qlPickerOptions = Array.from(
+          document.getElementsByClassName('ql-picker-options')
+        );
+        qlPickerOptions.forEach((element) => {
+          element.id = 'ql-picker-options';
+        });
+      }, 0)
+    }
+  }, )
+
   useEffect(() => {
     getComments();
   }, [id, params, sort]);
@@ -505,7 +536,7 @@ export default function Comments({ id, count }) {
           const element = document.getElementById(id);
           if (element) {
             element.scrollIntoView();
-            element.focus()
+            element.focus();
           }
         }, 0);
       }
@@ -513,7 +544,12 @@ export default function Comments({ id, count }) {
   }, [pathname, hash, key, state.response, state.error, state.loading]); // do this on route change
 
   return (
-    <Box sx={{ mb: 2, width: '100%' }} id='comments'>
+    <Box
+      sx={{
+        mb: 2,
+        width: '100%',
+      }}
+    >
       {state.loading && !state.error ? (
         <Box
           sx={{
@@ -526,17 +562,37 @@ export default function Comments({ id, count }) {
           <CircularProgress />
         </Box>
       ) : !state.loading && state.error ? (
-        <Alert severity='error' variant='outlined'>
+        <Alert
+          severity='error'
+          variant='outlined'
+          sx={{ color: 'text.primary' }}
+        >
           {state.error}
         </Alert>
       ) : (
         <>
-          <Box item sx={{ pt: 3, width: '100%', pl: '1rem', pb: '1rem' }}>
-            <Typography component={'h2'} variant='hy'>
+          <Box
+            item
+            sx={{
+              pt: 3,
+              width: '100%',
+              pb: '1rem',
+              color: 'text.primary',
+            }}
+          >
+            <Typography component={'h2'} variant='h6'>
               Comments
             </Typography>
           </Box>
-          <Box sx={{ display: 'flex', width: '100%', mb: 1, ml: '1rem' }}>
+          <Box
+            sx={{
+              display: 'flex',
+              width: '100%',
+              mb: 1,
+              color: 'text.primary',
+              backgroundColor: 'background.paper',
+            }}
+          >
             <ReactQuill
               value={text}
               onChange={handleChange}
@@ -549,7 +605,7 @@ export default function Comments({ id, count }) {
           {authData.isAuth ? (
             <Box sx={{ mb: '1rem', width: '100%' }}>
               {newComment.error && !newComment.loading ? (
-                <Alert severity='error' variant='outlined' sx={{ ml: '1rem' }}>
+                <Alert severity='error' variant='outlined'>
                   {newComment.error}
                 </Alert>
               ) : (
@@ -558,7 +614,7 @@ export default function Comments({ id, count }) {
                     <Alert
                       severity='error'
                       variant='outlined'
-                      sx={{ ml: '1rem', width: '100%' }}
+                      sx={{ width: '100%' }}
                     >
                       {newComment.error}
                     </Alert>
@@ -575,7 +631,6 @@ export default function Comments({ id, count }) {
                           width: '100px',
                           height: '40px',
                           mt: '0.5rem',
-                          ml: '1rem',
                         }}
                       >
                         {newComment.loading && !newComment.response ? (
@@ -587,7 +642,7 @@ export default function Comments({ id, count }) {
                       {text === '[Deleted]' ? (
                         <Alert
                           severity='warning'
-                          sx={{ mt: 1, ml: '1rem' }}
+                          sx={{ mt: 1 }}
                           variant='outlined'
                         >
                           Text cannot be equal to [Deleted]
@@ -601,7 +656,7 @@ export default function Comments({ id, count }) {
               )}
             </Box>
           ) : (
-            <Box sx={{ ml: '1rem', mb: '1rem', width: '100%' }}>
+            <Box sx={{ mb: '1rem', width: '100%' }}>
               <Button
                 fullWidth
                 variant='outlined'
@@ -622,7 +677,7 @@ export default function Comments({ id, count }) {
                   width: '100%',
                   justifyContent: 'space-between',
                   alignItems: 'center',
-                  ml: '1rem',
+                  color: 'text.primary',
                 }}
               >
                 <Typography>All Comments ({count})</Typography>
@@ -638,7 +693,7 @@ export default function Comments({ id, count }) {
                   </FormControl>
                 </Box>
               </Box>
-              <Box sx={{ ml: '1rem' }}>
+              <Box>
                 {state.response.map((comment, index) => (
                   <Comment
                     key={comment._id}
@@ -688,6 +743,7 @@ export default function Comments({ id, count }) {
                   display: 'flex',
                   flexDirection: 'column',
                   alignItems: 'center',
+                  color: 'text.primary'
                 }}
               >
                 <ChatIcon />

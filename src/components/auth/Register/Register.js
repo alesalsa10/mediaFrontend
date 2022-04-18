@@ -1,15 +1,11 @@
 import React, {useEffect} from 'react';
 import { useState } from 'react';
 import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-//import FormControlLabel from '@mui/material/FormControlLabel';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { register } from '../../../features/auth/authSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -19,7 +15,6 @@ import { useNavigate } from 'react-router-dom';
 
 export default function Register() {
   const navigate = useNavigate()
-  const theme = createTheme();
   const dispatch = useDispatch();
   const authData = useSelector((state) => state.auth);
 
@@ -105,17 +100,21 @@ export default function Register() {
   }, [authData.isAuth]);
 
   return (
-    <ThemeProvider theme={theme}>
-      <Container component='main' maxWidth='xs'>
-        <CssBaseline />
+    <Grid container justifyContent={'center'}>
+      <Grid item>
         <Box
+          maxWidth={'sm'}
           sx={{
             marginTop: 8,
+            mx: 2,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            boxShadow: 3,
+            boxShadow: 4,
             p: 2,
+            color: 'text.primary',
+            backgroundColor: 'background.paper',
+            borderRadius: 1,
           }}
         >
           <Typography component='h1' variant='h5'>
@@ -271,7 +270,7 @@ export default function Register() {
             </Grid>
           </Box>
         </Box>
-      </Container>
-    </ThemeProvider>
+      </Grid>
+    </Grid>
   );
 }

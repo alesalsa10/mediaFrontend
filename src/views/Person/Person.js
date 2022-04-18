@@ -49,7 +49,6 @@ export default function Person() {
   return (
     <Grid container justifyContent='center'>
       <Grid item xs={12} md={8} p={8} px={{ xs: 3, md: 0 }} py={1}>
-        
         {state.loading && !state.error ? (
           <>
             <Box
@@ -80,7 +79,7 @@ export default function Person() {
                   justifyContent: 'center',
                   p: { xs: 0, sm: 2 },
                   width: '100%',
-                  overflow: 'hidden'
+                  overflow: 'hidden',
                 }}
               >
                 <Skeleton height={30} width={'50%'} animation='wave' />
@@ -119,30 +118,29 @@ export default function Person() {
                           height={16}
                           sx={{ mb: 2 }}
                         />
-                        
                       </Box>
                     ))}
                   </>
                 </Box>
               </Box>
             </Box>
-
-            
           </>
         ) : !state.loading && state.error ? (
           <Alert severity='error' variant='outlined' sx={{ p: 2, m: 2 }}>
             {state.error}
           </Alert>
         ) : (
-          <Grid container>  
+          <Grid container>
             <Grid item xs={12}>
-                <PersonOverview data={state.response}/>
+              <PersonOverview data={state.response} />
             </Grid>
-            <Grid item xs={12} sm={3}>
-              <PersonalInfo info={state.response}/>
+            <Grid item xs={12} sm={3} mt={1}>
+              <PersonalInfo info={state.response} />
             </Grid>
-            <Grid item xs={12} sm={9}>
-              <AllCredits credits={state.response.combined_credits}/>
+            <Grid item xs={12} sm={1}>
+            </Grid>
+            <Grid item xs={12} sm={8} mt={1}>
+              <AllCredits credits={state.response.combined_credits} />
             </Grid>
           </Grid>
         )}

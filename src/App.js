@@ -34,7 +34,7 @@ function App() {
 
   return (
     <ThemeProvider theme={myTheme}>
-      <div style={{ backgroundColor: theme.isLight ? '' : '#3b3a3a' }}>
+      <div style={{ backgroundColor: theme.isLight ? '' : '#3b3a3a', minHeight: '100vh'}}>
         <Router>
           <Fragment>
             <Routes>

@@ -147,7 +147,7 @@ export default function Overview({
         backgroundColor: 'background.paper',
         color: 'text.primary',
         borderRadius: 1,
-        boxShadow: 1,
+        boxShadow: 4,
       }}
     >
       <Box
@@ -180,6 +180,7 @@ export default function Overview({
           },
           borderRadius: 3,
           justifySelf: { xs: 'center', sm: 'auto' },
+          backgroundColor: '#a7a7a8',
         }}
       ></Box>
       <Box>
@@ -463,25 +464,26 @@ export default function Overview({
                   </Modal>
                 </Box>
               ) : (
-                <Box sx={{ alignSelf: 'center', ml: 1 }}>
-                  {authData.isAuth ? (
-                    <FavoriteIcon
-                      onClick={
-                        mediaType === 'movie'
-                          ? () => toggleFavorite('movie')
-                          : () => toggleFavorite('tv')
-                      }
-                      sx={{ color: getColor(), cursor: 'pointer' }}
-                    />
-                  ) : (
-                    <Link to='/signin'>
-                      {' '}
-                      <FavoriteIcon
-                        sx={{ cursor: 'pointer', color: 'text.primary' }}
-                      />
-                    </Link>
-                  )}
-                </Box>
+                // <Box sx={{ alignSelf: 'center', ml: 1 }}>
+                //   {authData.isAuth ? (
+                //     <FavoriteIcon
+                //       onClick={
+                //         mediaType === 'movie'
+                //           ? () => toggleFavorite('movie')
+                //           : () => toggleFavorite('tv')
+                //       }
+                //       sx={{ color: getColor(), cursor: 'pointer' }}
+                //     />
+                //   ) : (
+                //     <Link to='/signin'>
+                //       {' '}
+                //       <FavoriteIcon
+                //         sx={{ cursor: 'pointer', color: 'text.primary' }}
+                //       />
+                //     </Link>
+                //   )}
+                // </Box>
+                <></>
               )}
             </Box>
             {error ? (

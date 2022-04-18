@@ -31,6 +31,11 @@ export default function SeasonsCarousel({ seasons }) {
   useEffect(() => {
     window.addEventListener('resize', handleImageLoad);
     window.addEventListener('resize', getListSize);
+
+    return () => {
+      window.removeEventListener('resize', handleImageLoad);
+      window.removeEventListener('scroll', getListSize);
+    };
   }, []);
   const baseImgUrl = 'https://image.tmdb.org/t/p/original';
 
@@ -47,7 +52,7 @@ export default function SeasonsCarousel({ seasons }) {
   return (
     <>
       <Grid container>
-        <Grid item sx={{ px: 3, pt: 3 }}>
+        <Grid item sx={{ pt: 3 }}>
           <Typography
             component={'h2'}
             variant='h5'
@@ -59,7 +64,7 @@ export default function SeasonsCarousel({ seasons }) {
       </Grid>
       {filtered.length > 0 ? (
         <>
-          <Grid item sx={{ p: 3 }} xs={12}>
+          <Grid item sx={{ py: 3 }} xs={12}>
             <Box
               className={'scrollList'}
               sx={{
@@ -78,6 +83,7 @@ export default function SeasonsCarousel({ seasons }) {
                     color: 'text.primary',
                     display: 'flex',
                     flexDirection: 'column',
+                    boxShadow: 4
                   }}
                   key={media.media_type === 'movie' ? media.title : media.name}
                 >
@@ -132,9 +138,13 @@ export default function SeasonsCarousel({ seasons }) {
           </Grid>
         </>
       ) : (
-        <Typography sx={{ textAlign: 'left', my: 1, mx: 3 }}>
-          No Seasons found
-        </Typography>
+        <Grid container>
+          <Grid item xs={12}>
+            <Typography sx={{ textAlign: 'left', my: 1 }}>
+              No Seasons found
+            </Typography>
+          </Grid>
+        </Grid>
       )}
     </>
   );

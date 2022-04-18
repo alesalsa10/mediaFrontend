@@ -147,7 +147,7 @@ export default function Media() {
   }, [params]);
   return (
     <Grid container justifyContent='center'>
-      <Grid item xs={12} md={8} p={8} px={{ xs: 3, md: 0 }} py={1}>
+      <Grid item xs={12} md={8} px={{ xs: 3, md: 0 }} py={1}>
         {state.loading && !state.error ? (
           <>
             <Box
@@ -194,7 +194,7 @@ export default function Media() {
             </Box>
             {params.mediaType !== 'book' ? (
               <>
-                <Box sx={{ px: 1, pt: 3 }}>
+                <Box sx={{ pt: 3 }}>
                   <Skeleton width={75} height={30} animation='wave' />
                 </Box>
                 <Box
@@ -255,11 +255,21 @@ export default function Media() {
                 authData={authData}
               />
             </Grid>
-            {params.mediaType === 'book' ? (
+            {params.mediaType === 'book' &&
+            state.response.mediaDetails.volumeInfo.industryIdentifiers ? (
               <Grid container>
-                <Grid item xs={12} sx={{ pl: '1rem' }}>
+                <Grid item xs={12}>
                   {/* http://www.amazon.com/gp/search?index=books&linkCode=qs&keywords=9780751565362 */}
-                  <Box sx={{ boxShadow: 4, width: '100%', p: 2 }}>
+                  <Box
+                    sx={{
+                      boxShadow: 4,
+                      width: '100%',
+                      p: 2,
+                      my: 2,
+                      backgroundColor: 'background.paper',
+                      color: 'text.primary',
+                    }}
+                  >
                     <Typography variant='h6'>Buy Print</Typography>
                     <Link
                       href={`http://www.amazon.com/gp/search?index=books&linkCode=qs&keywords=${state.response.mediaDetails.volumeInfo.industryIdentifiers[0].identifier}`}
@@ -295,12 +305,28 @@ export default function Media() {
                     </Link>
                   </Box>
                 </Grid>
+              </Grid>
+            ) : (
+              <></>
+            )}
+            {params.mediaType === 'book' &&
+            state.response.mediaDetails.volumeInfo.authors ? (
+              <Grid container>
                 <Grid item xs={12}>
                   <BooksByAuthor
                     author={state.response.mediaDetails.volumeInfo.authors.join(
                       ' '
                     )}
                   />
+                </Grid>
+              </Grid>
+            ) : params.mediaType === 'book' &&
+              !state.response.mediaDetails.volumeInfo.authors ? (
+              <Grid container py={2}>
+                <Grid item xs={12} sx={{ color: 'text.primary' }}>
+                  <Typography variant='h6'>
+                    No Other books by this author found
+                  </Typography>
                 </Grid>
               </Grid>
             ) : (

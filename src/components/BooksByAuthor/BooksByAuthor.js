@@ -46,13 +46,13 @@ export default function BooksByAuthor({ author }) {
   return (
     <Grid container justifyContent='center'>
       <Grid container>
-        <Grid item sx={{ pt: 3, pl: '1rem' }}>
-          <Typography component={'h2'} variant='h5'>
+        <Grid item sx={{ pt: 3 }}>
+          <Typography component={'h2'} variant='h5' sx={{color: 'text.primary'}}>
             More by Author
           </Typography>
         </Grid>
       </Grid>
-      <Grid item xs={12} p={8} px={{ xs: 3, md: 0 }} py={1}>
+      <Grid item xs={12} py={1}>
         {state.loading && !state.error ? (
           <Grid
             container
@@ -61,7 +61,6 @@ export default function BooksByAuthor({ author }) {
               justifyContent: 'center',
               gap: 2,
               mt: 0,
-              ml: '1rem',
             }}
           >
             {[...Array(10).keys()].map((item, index) => (
@@ -114,7 +113,7 @@ export default function BooksByAuthor({ author }) {
             {state.error}
           </Alert>
         ) : (
-          <Box sx={{ pl: '1rem' }}>
+          <Box>
             {state.response.length > 0 ? (
               <>
                 {state.response.map((book, index) => (
@@ -127,9 +126,13 @@ export default function BooksByAuthor({ author }) {
                 ))}
               </>
             ) : (
-              <Typography variant='h6'>
-                No Other books by this author
-              </Typography>
+              <Grid container>
+                <Grid item xs={12}>
+                  <Typography variant='h6'>
+                    No Other books by this author
+                  </Typography>
+                </Grid>
+              </Grid>
             )}
           </Box>
         )}

@@ -61,14 +61,18 @@ export default function TopBillCast({ cast, mediaType, mediaId, params }) {
 
   return (
     <Grid container>
-      <Grid item sx={{ px: 3, pt: 3 }}>
-        <Typography component={'h2'} variant='h5' sx={{color: 'text.primary'}}>
+      <Grid item sx={{ pt: 3 }}>
+        <Typography
+          component={'h2'}
+          variant='h5'
+          sx={{ color: 'text.primary' }}
+        >
           Main Cast
         </Typography>
       </Grid>
       {cast.length > 0 ? (
         <>
-          <Grid item sx={{ p: 3 }} xs={12}>
+          <Grid item sx={{ py: 3 }} xs={12}>
             <Box
               className={'scrollList'}
               sx={{
@@ -87,7 +91,8 @@ export default function TopBillCast({ cast, mediaType, mediaId, params }) {
                     backgroundColor: 'background.paper',
                     color: 'text.primary',
                     display: 'flex',
-                    flexDirection: 'column'
+                    flexDirection: 'column',
+                    boxShadow: 4,
                   }}
                 >
                   <Link
@@ -124,7 +129,7 @@ export default function TopBillCast({ cast, mediaType, mediaId, params }) {
                       alignContent: 'center',
                       justifyContent: 'center',
                       display: 'flex',
-                      flexDirection: 'column'
+                      flexDirection: 'column',
                     }}
                   >
                     <Link
@@ -157,7 +162,7 @@ export default function TopBillCast({ cast, mediaType, mediaId, params }) {
               ))}
             </Box>
           </Grid>
-          <Grid item px={3}>
+          <Grid item xs={12}>
             <Link
               component={RouterLink}
               to={createFullCastLink()}
@@ -166,16 +171,25 @@ export default function TopBillCast({ cast, mediaType, mediaId, params }) {
               underline='none'
               sx={{ ':hover': { color: 'primary.main' } }}
             >
-              <Typography gutterBottom variant='h6' component='div' sx={{color: 'text.primary'}}>
+              <Typography
+                gutterBottom
+                variant='h6'
+                component='div'
+                sx={{ color: 'text.primary' }}
+              >
                 View Full Cast & Crew
               </Typography>
             </Link>
           </Grid>
         </>
       ) : (
-        <Typography sx={{ textAlign: 'left', m: 1 }}>
-          No cast information available
-        </Typography>
+        <Grid container>
+          <Grid item xs={12}>
+            <Typography sx={{ textAlign: 'left', my: 1 }}>
+              No cast information available
+            </Typography>
+          </Grid>
+        </Grid>
       )}
     </Grid>
   );

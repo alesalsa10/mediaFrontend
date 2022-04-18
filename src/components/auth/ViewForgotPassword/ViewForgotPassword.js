@@ -1,11 +1,8 @@
 import React, { useState } from 'react';
 import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Alert from '@mui/material/Alert';
 import { useParams } from 'react-router-dom';
 import Grid from '@mui/material/Grid';
@@ -15,7 +12,6 @@ import CircularProgress from '@mui/material/CircularProgress';
 const axios = require('axios').default;
 
 export default function ViewForgotPassword() {
-  const theme = createTheme();
   const [password, setPassword] = useState('');
   const [data, setData] = useState();
   const [error, setError] = useState();
@@ -71,17 +67,21 @@ export default function ViewForgotPassword() {
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      <Container component='main' maxWidth='xs'>
-        <CssBaseline />
+    <Grid container justifyContent={'center'}>
+      <Grid item>
         <Box
+          maxWidth={'sm'}
           sx={{
             marginTop: 8,
+            mx: 2,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            boxShadow: 3,
+            boxShadow: 4,
             p: 2,
+            color: 'text.primary',
+            backgroundColor: 'background.paper',
+            borderRadius: 1,
           }}
         >
           {data ? (
@@ -140,7 +140,7 @@ export default function ViewForgotPassword() {
             </>
           )}
         </Box>
-      </Container>
-    </ThemeProvider>
+      </Grid>
+    </Grid>
   );
 }

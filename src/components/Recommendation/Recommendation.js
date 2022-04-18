@@ -7,15 +7,19 @@ export default function Recommendation({ recommendations }) {
   return (
     <>
       <Grid container>
-        <Grid item sx={{ px: 3, pt: 3 }}>
-          <Typography component={'h2'} variant='h5' sx={{color: 'text.primary'}}>
+        <Grid item sx={{ pt: 3 }}>
+          <Typography
+            component={'h2'}
+            variant='h5'
+            sx={{ color: 'text.primary' }}
+          >
             Recommendations
           </Typography>
         </Grid>
       </Grid>
       {recommendations.length > 0 ? (
         <>
-          <Grid item sx={{ p: 3 }} xs={12}>
+          <Grid item sx={{ py: 3 }} xs={12}>
             <Box
               className={'scrollList'}
               sx={{
@@ -39,9 +43,13 @@ export default function Recommendation({ recommendations }) {
           </Grid>
         </>
       ) : (
-        <Typography sx={{ textAlign: 'left', m: 1 }}>
-          No recommendations available
-        </Typography>
+        <Grid container>
+          <Grid item xs={12}>
+            <Typography sx={{ textAlign: 'left', my: 1 }}>
+              No recommendations available
+            </Typography>
+          </Grid>
+        </Grid>
       )}
     </>
   );

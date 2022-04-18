@@ -31,7 +31,15 @@ export default function AllCredits({ credits }) {
     }
   }, [credits.cast, credits.crew]);
   return (
-    <Box sx={{ py: '0.5rem' }}>
+    <Box
+      sx={{
+        py: '0.5rem',
+        backgroundColor: 'background.paper',
+        color: 'text.primary',
+        px: 1,
+        borderRadius: 1,
+      }}
+    >
       {sortedByDate.length > 0 ? (
         <Box>
           <Typography variant='h5' component={'div'} sx={{ pb: '0.5rem' }}>

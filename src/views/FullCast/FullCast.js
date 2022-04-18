@@ -421,7 +421,7 @@ export default function FullCast() {
                               display: 'flex',
                               flexDirection: 'row',
                               mb: 1,
-                              boxShadow: 1,
+                              boxShadow: 4,
                             }}
                           >
                             <Link
@@ -512,7 +512,7 @@ export default function FullCast() {
                                 display: 'flex',
                                 flexDirection: 'row',
                                 mb: 1,
-                                boxShadow: 1,
+                                boxShadow: 4,
                               }}
                             >
                               <Link

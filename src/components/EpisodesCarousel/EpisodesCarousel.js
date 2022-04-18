@@ -29,6 +29,11 @@ export default function EpisodesCarousel({ episodes }) {
   useEffect(() => {
     window.addEventListener('resize', handleImageLoad);
     window.addEventListener('resize', getListSize);
+
+    return () => {
+      window.removeEventListener('resize', handleImageLoad);
+      window.removeEventListener('scroll', getListSize);
+    };
   }, []);
   const baseImgUrl = 'https://image.tmdb.org/t/p/original';
 
@@ -37,7 +42,7 @@ export default function EpisodesCarousel({ episodes }) {
   return (
     <>
       <Grid container>
-        <Grid item sx={{ px: 3, pt: 3 }}>
+        <Grid item sx={{ pt: 3 }}>
           <Typography
             component={'h2'}
             variant='h6'
@@ -49,7 +54,7 @@ export default function EpisodesCarousel({ episodes }) {
       </Grid>
       {episodes.length > 0 ? (
         <>
-          <Grid item sx={{ p: 3 }} xs={12}>
+          <Grid item sx={{ py: 3 }} xs={12}>
             <Box
               className={'scrollList'}
               sx={{
@@ -68,6 +73,7 @@ export default function EpisodesCarousel({ episodes }) {
                     color: 'text.primary',
                     display: 'flex',
                     flexDirection: 'column',
+                    boxShadow: 4
                   }}
                   key={media.name}
                 >

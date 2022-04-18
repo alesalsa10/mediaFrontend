@@ -332,6 +332,7 @@ export default function User() {
                 md: 'row-reverse',
               },
               gap: 1,
+              color: 'text.primary'
             }}
           >
             <Box sx={{ width: { xs: '100%', md: '45%' } }}>
@@ -346,6 +347,7 @@ export default function User() {
                   display: 'flex',
                   flexDirection: 'column',
                   alignItems: 'center',
+                  backgroundColor: 'background.paper'
                 }}
               >
                 <Box
@@ -427,7 +429,7 @@ export default function User() {
               {state.response.comments.length > 0 ? (
                 <>
                   {state.response.comments.map((comment) => (
-                    <Box sx={{ boxShadow: 4, mb: 1, p: 1 }} key={comment._id}>
+                    <Box sx={{ boxShadow: 4, mb: 1, p: 1, backgroundColor: 'background.paper' }} key={comment._id}>
                       <Box
                         sx={{
                           display: 'flex',
@@ -482,7 +484,7 @@ export default function User() {
                               component={RouterLink}
                               to={getMediaLink(comment)}
                               variant='inherit'
-                              color='inherit'
+                              color='text.primary'
                               underline='none'
                               sx={{ ':hover': { color: 'primary.main' } }}
                             >

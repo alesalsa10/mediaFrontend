@@ -24,6 +24,11 @@ export default function PersonOverview({ data }) {
         pr: 3,
         gridGap: '1rem',
         alignItems: 'center',
+        backgroundColor: 'background.paper',
+        color: 'text.primary',
+        p: 1,
+        boxShadow: 4,
+        borderRadius: 1
       }}
     >
       <Box
@@ -40,9 +45,10 @@ export default function PersonOverview({ data }) {
           },
           borderRadius: 3,
           justifySelf: { xs: 'center', sm: 'auto' },
+          backgroundColor: '#a7a7a8',
         }}
       ></Box>
-      <Box sx={{overflow: 'hidden'}}>
+      <Box sx={{ overflow: 'hidden' }}>
         <Typography variant='h5' component={'div'} sx={{ py: '0.5rem' }}>
           {data.name}
         </Typography>
@@ -53,7 +59,7 @@ export default function PersonOverview({ data }) {
           {data.biography || 'No biography available'}
         </Typography>
         {data.combined_credits.cast.length > 0 && sortedCast.length > 0 ? (
-          <KnownFor data={sortedCast}/>
+          <KnownFor data={sortedCast} />
         ) : (
           <></>
         )}

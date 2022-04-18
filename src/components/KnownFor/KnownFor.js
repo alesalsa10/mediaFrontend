@@ -88,7 +88,17 @@ export default function KnownFor({ data }) {
               />
             </Link>
 
-            <CardContent sx={{ width: width, px: 0 }}>
+            <CardContent
+              sx={{
+                width: width,
+                px: 0,
+                height: '100%',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center'
+              }}
+            >
               <Link
                 component={RouterLink}
                 to={`/${media.media_type}/${media.id}-${
