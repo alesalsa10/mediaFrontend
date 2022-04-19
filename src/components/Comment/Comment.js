@@ -400,7 +400,7 @@ export default function Comment({
         BackdropProps={{
           timeout: 500,
         }}
-        sx={{ backgroundColor: 'gray', opacity: 0.1 }}
+        sx={{ backgroundColor: 'rgba(0,0,0,0.2)' }}
       >
         <Box
           sx={{
@@ -410,7 +410,6 @@ export default function Comment({
             transform: 'translate(-50%, -50%)',
             maxWidth: 400,
             bgcolor: 'background.paper',
-            border: '2px solid #000',
             //boxShadow: 24,
             p: 4,
           }}

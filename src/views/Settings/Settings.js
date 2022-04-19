@@ -6,6 +6,8 @@ import {
   Modal,
   Backdrop,
   TextField,
+  Alert,
+  CircularProgress,
 } from '@mui/material';
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
@@ -24,6 +26,11 @@ export default function Settings() {
   });
   const [isUsernameOpen, setIsUsernameOpen] = useState(false);
   const [username, setUsername] = useState('');
+  const [change, setChange] = useState({
+    response: null,
+    error: null,
+    loading: null,
+  });
 
   const getSelf = async () => {
     try {
@@ -51,13 +58,37 @@ export default function Settings() {
   const toggleUsername = () => {
     setIsUsernameOpen(!isUsernameOpen);
     console.log(isUsernameOpen);
+    setChange({ loading: false, response: null, error: null });
   };
 
-  const handleUsernameChange = (e) =>{
-    setUsername(e.target.value)
-  }
+  const checkErrors = (error, name) => {
+    //firs validation layer on the backend
+    if (!error) {
+      return false;
+    } else if (Array.isArray(error.errors)) {
+      return error.errors.some(function (el) {
+        return el.param === name;
+      });
+    }
+  };
+
+  const chooseHelperText = (error, name) => {
+    if (!error) {
+      return null;
+    } else if (Array.isArray(error.errors)) {
+      const obj = change.error.errors.find((el) => el.param === name);
+      if (obj) {
+        return obj.msg;
+      }
+    }
+  };
+
+  const handleUsernameChange = (e) => {
+    setUsername(e.target.value);
+  };
 
   const saveUsername = async () => {
+    setChange({ response: false, loading: true, error: false });
     try {
       const response = await axios.put(
         `${baseURL}users/username/${state.response._id}`,
@@ -73,19 +104,16 @@ export default function Settings() {
       console.log(response.data);
       setState((prevState) => ({
         ...prevState,
-        response:{
+        response: {
           ...prevState.response,
-          username: username
-        }
-      }))
-      setIsUsernameOpen(false)
+          username: username,
+        },
+      }));
+      setChange({ response: true, loading: false, error: false });
+      setIsUsernameOpen(false);
     } catch (error) {
       console.log(error);
-      // setState({
-      //   loading: false,
-      //   response: null,
-      //   error: error.response.data.Msg,
-      // });
+      setChange({ response: true, loading: false, error: error.response.data });
     }
   };
 
@@ -95,7 +123,7 @@ export default function Settings() {
 
   return (
     <Grid container justifyContent={'center'}>
-      <Grid item xs={12} md={8} py={8}>
+      <Grid item xs={12} md={8} py={8} px={{ xs: 3, md: 0 }}>
         {state.loading && !state.error ? (
           <>loading</>
         ) : !state.loading && state.error ? (
@@ -214,9 +242,8 @@ export default function Settings() {
           timeout: 500,
         }}
         sx={{
-          backgroundColor: 'background.paper',
           color: 'text.primary',
-          opacity: 0.8,
+          backgroundColor: 'rgba(0,0,0,0.2)',
         }}
       >
         <Box
@@ -226,10 +253,20 @@ export default function Settings() {
             left: '50%',
             transform: 'translate(-50%, -50%)',
             maxWidth: 400,
+            minWidth: 350,
             p: 4,
             backgroundColor: 'background.paper',
           }}
         >
+          {change.error &&
+          change.error.Msg &&
+          typeof change.error.Msg === 'string' ? (
+            <Alert severity='error' sx={{ mb: 2 }}>
+              {change.error.Msg}
+            </Alert>
+          ) : (
+            <></>
+          )}
           <Typography varaint='h6'>Update username</Typography>
           <TextField
             margin='normal'
@@ -242,13 +279,22 @@ export default function Settings() {
             autoFocus
             placeholder='Enter new username'
             inputProps={{ maxLength: 25 }}
-            //error={checkErrors(authData.errors, 'email')}
+            error={checkErrors(change.error, 'username')}
             onChange={handleUsernameChange}
-            //helperText={chooseHelperText(authData.errors, 'email')}
+            helperText={chooseHelperText(change.error, 'username')}
           />
           <Box>
-            <Button variant='outlined' onClick={saveUsername}>
-              Save Username
+            <Button
+              variant='outlined'
+              onClick={saveUsername}
+              disabled={change.loading}
+              fullWidth
+            >
+              {change.loading && !change.error ? (
+                <CircularProgress size={20} />
+              ) : (
+                'Save Username'
+              )}
             </Button>
           </Box>
         </Box>

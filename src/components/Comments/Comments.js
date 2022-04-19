@@ -736,7 +736,7 @@ export default function Comments({ id, count }) {
           ) : (
             <Box
               sx={{
-                p: 10,
+                p: {xs: 0, md: 10},
                 display: 'flex',
                 justifyContent: 'center',
                 alignContent: 'center',
