@@ -111,7 +111,8 @@ export default function Season({seasonNumber, episodeNumber, id, mediaType, para
                 flexGrow: 1,
                 flexShrink: 1,
                 flexBasis: '0%',
-                mx: 2,
+                p: 2,
+                backgroundColor: 'background.paper',
               }}
             >
               <Box sx={{ alignSelf: { xs: 'center', sm: '' } }}>
@@ -148,12 +149,12 @@ export default function Season({seasonNumber, episodeNumber, id, mediaType, para
             </Box>
             {mediaType !== 'book' ? (
               <>
-                <Box sx={{ px: 1, pt: 3 }}>
+                <Box sx={{ py: 1, pt: 3 }}>
                   <Skeleton width={75} height={30} />
                 </Box>
                 <Box
                   sx={{
-                    p: 1,
+                    py: 1,
                     display: 'flex',
                     flexDirection: 'row',
                     overflow: 'hidden',
@@ -162,27 +163,30 @@ export default function Season({seasonNumber, episodeNumber, id, mediaType, para
                 >
                   <>
                     {[...Array(15).keys()].map((item, index) => (
-                      <Box key={index}>
+                      <Box
+                        key={index}
+                        sx={{ backgroundColor: 'background.paper' }}
+                      >
                         <Skeleton
                           animation='wave'
                           variant='rectangular'
                           width={150}
                           height={250}
-                          sx={{ mb: 2 }}
+                          sx={{ mb: 2, backgroundColor: 'background.paper' }}
                         />
                         <Skeleton
                           animation='wave'
                           variant='rectangular'
-                          width={130}
+                          width={'85%'}
                           height={16}
-                          sx={{ mb: 2 }}
+                          sx={{ mb: 2, mx:1 }}
                         />
                         <Skeleton
                           animation='wave'
                           variant='rectangular'
-                          width={110}
+                          width={'70%'}
                           height={10}
-                          sx={{ mb: 2 }}
+                          sx={{ mb: 2, mx:1}}
                         />
                       </Box>
                     ))}

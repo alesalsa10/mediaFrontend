@@ -415,7 +415,7 @@ export default function Comment({
             p: 4,
           }}
         >
-          <Typography id='modal-modal-title' variant='h6' component='h2'>
+          <Typography id='modal-modal-title' variant='h6' component='h2' color={'text.primary'}>
             Are you sure you want to delete this comment
           </Typography>
           <Box

@@ -38,11 +38,11 @@ export default function Favorites() {
 
   useEffect(() => {
     getFavorites();
-    // setState({
-    //   loading: true,
-    //   error: null,
-    //   response: null,
-    // });
+    setState({
+      loading: true,
+      error: null,
+      response: null,
+    });
   }, []);
 
   return (
@@ -62,27 +62,30 @@ export default function Favorites() {
             >
               <>
                 {[...Array(15).keys()].map((item, index) => (
-                  <Box key={index}>
+                  <Box
+                    key={index}
+                    sx={{ backgroundColor: 'background.paper', mb: 2 }}
+                  >
                     <Skeleton
                       animation='wave'
                       variant='rectangular'
                       width={150}
                       height={250}
-                      sx={{ mb: 2 }}
+                      sx={{ mb: 2, backgroundColor: 'background.paper' }}
                     />
                     <Skeleton
                       animation='wave'
                       variant='rectangular'
-                      width={130}
+                      width={'85%'}
                       height={16}
-                      sx={{ mb: 2 }}
+                      sx={{ mb: 2, mx: 1 }}
                     />
                     <Skeleton
                       animation='wave'
                       variant='rectangular'
-                      width={110}
+                      width={'70%'}
                       height={10}
-                      sx={{ mb: 2 }}
+                      sx={{ mb: 2, mx: 1 }}
                     />
                   </Box>
                 ))}
@@ -100,27 +103,30 @@ export default function Favorites() {
             >
               <>
                 {[...Array(15).keys()].map((item, index) => (
-                  <Box key={index}>
+                  <Box
+                    key={index}
+                    sx={{ backgroundColor: 'background.paper', mb: 2 }}
+                  >
                     <Skeleton
                       animation='wave'
                       variant='rectangular'
                       width={150}
                       height={250}
-                      sx={{ mb: 2 }}
+                      sx={{ mb: 2, backgroundColor: 'background.paper' }}
                     />
                     <Skeleton
                       animation='wave'
                       variant='rectangular'
-                      width={130}
+                      width={'85%'}
                       height={16}
-                      sx={{ mb: 2 }}
+                      sx={{ mb: 2, mx: 1 }}
                     />
                     <Skeleton
                       animation='wave'
                       variant='rectangular'
-                      width={110}
+                      width={'70%'}
                       height={10}
-                      sx={{ mb: 2 }}
+                      sx={{ mb: 2, mx: 1 }}
                     />
                   </Box>
                 ))}
@@ -138,27 +144,30 @@ export default function Favorites() {
             >
               <>
                 {[...Array(15).keys()].map((item, index) => (
-                  <Box key={index}>
+                  <Box
+                    key={index}
+                    sx={{ backgroundColor: 'background.paper', mb: 2 }}
+                  >
                     <Skeleton
                       animation='wave'
                       variant='rectangular'
                       width={150}
                       height={250}
-                      sx={{ mb: 2 }}
+                      sx={{ mb: 2, backgroundColor: 'background.paper' }}
                     />
                     <Skeleton
                       animation='wave'
                       variant='rectangular'
-                      width={130}
+                      width={'85%'}
                       height={16}
-                      sx={{ mb: 2 }}
+                      sx={{ mb: 2, mx: 1 }}
                     />
                     <Skeleton
                       animation='wave'
                       variant='rectangular'
-                      width={110}
+                      width={'70%'}
                       height={10}
-                      sx={{ mb: 2 }}
+                      sx={{ mb: 2, mx: 1 }}
                     />
                   </Box>
                 ))}
@@ -171,7 +180,7 @@ export default function Favorites() {
           </Alert>
         ) : (
           <>
-            <Grid container sx={{color: 'text.primary'}}>
+            <Grid container sx={{ color: 'text.primary' }}>
               {state.response.movies &&
               state.response.movies.length === 0 &&
               state.response.Tv &&

@@ -43,6 +43,8 @@ export default function SearchMenu({ selected, handleChangeTab }) {
             md: 'column',
           },
           p: { xs: 0.5, md: 2 },
+          backgroundColor: 'background.paper',
+          color: 'text.primary'
         }}
       >
         <ListItemButton

@@ -244,7 +244,10 @@ export default function FullCast() {
                     sx={{
                       display: 'flex',
                       flexDirection: 'row',
-                      py: 1,
+                      p: 1,
+                      backgroundColor: 'background.paper',
+                      my: 1,
+                      borderRadius: 1,
                     }}
                   >
                     <Box>
@@ -291,7 +294,10 @@ export default function FullCast() {
                     sx={{
                       display: 'flex',
                       flexDirection: 'row',
-                      py: 1,
+                      p: 1,
+                      backgroundColor: 'background.paper',
+                      my: 1,
+                      borderRadius: 1,
                     }}
                   >
                     <Box>
@@ -350,10 +356,9 @@ export default function FullCast() {
                     }
                     sx={{
                       width: 60,
-                      pr: 2,
                       backgroundColor: '#a7a7a8',
-                      mr:1,
-                      borderRadius: 1
+                      mr: 1,
+                      borderRadius: 1,
                     }}
                     alt={state.response.mediaDetails.id}
                   ></Box>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Overview from '../../components/Overview/Overview';
 import { useParams, useLocation } from 'react-router-dom';
-import { Alert, Grid, Skeleton, Box, Typography, Link } from '@mui/material';
+import { Alert, Grid, Skeleton, Box, Typography, Link, Card as MaterialCard } from '@mui/material';
 import TopBillCast from '../../components/TopBillCast/TopBillCast';
 import Recommendation from '../../components/Recommendation/Recommendation';
 import SeasonsCarousel from '../../components/SeasonsCarousel/SeasonsCarousel';
@@ -157,7 +157,8 @@ export default function Media() {
                 flexGrow: 1,
                 flexShrink: 1,
                 flexBasis: '0%',
-                mx: 2,
+                backgroundColor: 'background.paper',
+                p: 2,
               }}
             >
               <Box sx={{ alignSelf: { xs: 'center', sm: '' } }}>
@@ -199,7 +200,7 @@ export default function Media() {
                 </Box>
                 <Box
                   sx={{
-                    p: 1,
+                    py: 1,
                     display: 'flex',
                     flexDirection: 'row',
                     overflow: 'hidden',
@@ -208,7 +209,10 @@ export default function Media() {
                 >
                   <>
                     {[...Array(15).keys()].map((item, index) => (
-                      <Box key={index}>
+                      <Box
+                        key={index}
+                        sx={{ backgroundColor: 'background.paper' }}
+                      >
                         <Skeleton
                           animation='wave'
                           variant='rectangular'
@@ -219,20 +223,88 @@ export default function Media() {
                         <Skeleton
                           animation='wave'
                           variant='rectangular'
-                          width={130}
+                          width={'85%'}
                           height={16}
-                          sx={{ mb: 2 }}
+                          sx={{ mb: 2, mx: 1 }}
                         />
                         <Skeleton
                           animation='wave'
                           variant='rectangular'
-                          width={110}
+                          width={'70%'}
                           height={10}
-                          sx={{ mb: 2 }}
+                          sx={{ mb: 2, mx: 1 }}
                         />
                       </Box>
                     ))}
                   </>
+                </Box>
+              </>
+            ) : (
+              <></>
+            )}
+            {params.mediaType === 'book' ? (
+              <>
+                <Box sx={{ backgroundColor: 'background.paper', my: 4, p: 2 }}>
+                  <Skeleton width={150} height={35} my={1} mx={1} animation='wave'/>
+                  <Skeleton width={200} height={25} my={1} mx={1}  animation='wave'/>
+                </Box>
+                <Box>
+                  <Skeleton width={150} height={35} sx={{mb:1}}/>
+                  <Grid
+                    container
+                    sx={{
+                      display: 'flex',
+                      justifyContent: 'center',
+                      gap: 2,
+                      mt: 0,
+                    }}
+                  >
+                    {[...Array(10).keys()].map((item, index) => (
+                      <Grid item xs={12} key={index}>
+                        <MaterialCard
+                          sx={{
+                            display: 'grid',
+                            gridTemplateColumns: '100px 1fr',
+                            boxShadow: '0 2px 8px rgb(0 0 0 / 25%)',
+                            backgroundColor: 'background.paper'
+                          }}
+                        >
+                          <Box>
+                            <Skeleton
+                              animation='wave'
+                              variant='rectangular'
+                              width={`100%`}
+                              height={100}
+                              sx={{ mb: 0, backgroundColor: 'background.paper' }}
+                            />
+                          </Box>
+                          <Box>
+                            <Skeleton
+                              animation='wave'
+                              variant='rectangular'
+                              width={170}
+                              height={16}
+                              sx={{ my: 2, ml: 1 }}
+                            />
+                            <Skeleton
+                              animation='wave'
+                              variant='rectangular'
+                              width={140}
+                              height={10}
+                              sx={{ mb: 2, ml: 1 }}
+                            />
+                            <Skeleton
+                              animation='wave'
+                              variant='rectangular'
+                              width={'90%'}
+                              height={10}
+                              sx={{ mb: 2, ml: 1 }}
+                            />
+                          </Box>
+                        </MaterialCard>
+                      </Grid>
+                    ))}
+                  </Grid>
                 </Box>
               </>
             ) : (
@@ -259,15 +331,14 @@ export default function Media() {
             state.response.mediaDetails.volumeInfo.industryIdentifiers ? (
               <Grid container>
                 <Grid item xs={12}>
-                  {/* http://www.amazon.com/gp/search?index=books&linkCode=qs&keywords=9780751565362 */}
                   <Box
                     sx={{
                       boxShadow: 4,
-                      width: '100%',
                       p: 2,
                       my: 2,
                       backgroundColor: 'background.paper',
                       color: 'text.primary',
+                      borderRadius: 1,
                     }}
                   >
                     <Typography variant='h6'>Buy Print</Typography>

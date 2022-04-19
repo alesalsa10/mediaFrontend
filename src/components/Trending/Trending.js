@@ -92,27 +92,27 @@ export default function Trending({ mediaType }) {
           >
             <>
               {[...Array(15).keys()].map((item, index) => (
-                <Box key={index}>
+                <Box key={index} sx={{ backgroundColor: 'background.paper' }}>
                   <Skeleton
                     animation='wave'
                     variant='rectangular'
                     width={150}
                     height={250}
-                    sx={{ mb: 2 }}
+                    sx={{ mb: 2, backgroundColor: 'background.paper' }}
                   />
                   <Skeleton
                     animation='wave'
                     variant='rectangular'
-                    width={130}
+                    width={'85%'}
                     height={16}
-                    sx={{ mb: 2 }}
+                    sx={{ m: 1 }}
                   />
                   <Skeleton
                     animation='wave'
                     variant='rectangular'
-                    width={110}
+                    width={'65%'}
                     height={10}
-                    sx={{ mb: 2 }}
+                    sx={{ m: 1 }}
                   />
                 </Box>
               ))}

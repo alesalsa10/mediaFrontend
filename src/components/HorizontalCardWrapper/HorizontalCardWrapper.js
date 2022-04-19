@@ -11,7 +11,7 @@ export default function HorizontalCardWrapper({ selected, data }) {
           {data[selected]}
         </Alert>
       ) : data[selected].length === 0 ? (
-        <Typography sx={{ textAlign: 'left' }}>
+        <Typography sx={{ textAlign: 'left', color: 'text.primary' }}>
           There are no {selected} that match your query
         </Typography>
       ) : (

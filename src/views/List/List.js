@@ -9,8 +9,6 @@ import {
   CircularProgress,
 } from '@mui/material';
 import { useParams, useLocation } from 'react-router-dom';
-import { BrowserHistory } from "history";
-
 
 import 'react-circular-progressbar/dist/styles.css';
 import Card from '../../components/Card/Card';
@@ -27,12 +25,11 @@ function usePrevious(value) {
   return ref.current;
 }
 
-
-export default function List({mediaType, listType}) {
+export default function List({ mediaType, listType }) {
   let params = useParams();
   const location = useLocation();
-  const [loc, setLoc] = useState(location)
-  
+  const [loc, setLoc] = useState(location);
+
   const prevLocation = usePrevious(loc);
 
   //console.log(prevLocation, location)
@@ -56,24 +53,11 @@ export default function List({mediaType, listType}) {
         `http://localhost:3000/media/lists/${mediaType}/${listType}?page=${page}`
       );
       console.log(response.data);
-      // if (
-      //   prevLocation &&
-      //   prevLocation.key && (prevLocation.key !== location.key)
-      // ) {
-        //console.log('page changed');
-        // setState({
-        //   loading: false,
-        //   response: response.data.results,
-        //   error: null,
-        // });
-      //} else {
-        //console.log('page did not change');
-        setState({
-          loading: false,
-          response: [...state.response, ...response.data.results],
-          error: null,
-        });
-      //}
+      setState({
+        loading: false,
+        response: [...state.response, ...response.data.results],
+        error: null,
+      });
 
       setShowMore(false);
     } catch (error) {
@@ -97,24 +81,11 @@ export default function List({mediaType, listType}) {
         `http://localhost:3000/people/lists/popular?page=${page}`
       );
       console.log(response.data);
-      // if (
-      //   prevLocation &&
-      //   prevLocation.key &&
-      //   prevLocation.key !== location.key
-      // ) {
-        // console.log('page changed');
-        // setState({
-        //   loading: false,
-        //   response: response.data.results,
-        //   error: null,
-        // });
-      //} else {
-        console.log('page did not change');
-        setState({
-          loading: false,
-          response: [...state.response, ...response.data.results],
-          error: null,
-        });
+      setState({
+        loading: false,
+        response: [...state.response, ...response.data.results],
+        error: null,
+      });
       //}
       setShowMore(false);
     } catch (error) {
@@ -272,7 +243,7 @@ export default function List({mediaType, listType}) {
                         <Typography
                           variant='h6'
                           component='div'
-                          sx={{ textAlign: 'center' }}
+                          sx={{ textAlign: 'center', color: 'text.primary' }}
                         >
                           {media.display_name}
                         </Typography>
@@ -347,6 +318,7 @@ export default function List({mediaType, listType}) {
                       justifyContent: 'space-between',
                       flexDirection: 'column',
                       boxShadow: '0 2px 8px rgb(0 0 0 / 25%)',
+                      backgroundColor: 'background.paper',
                     }}
                   >
                     <Skeleton
@@ -354,21 +326,21 @@ export default function List({mediaType, listType}) {
                       variant='rectangular'
                       width={180}
                       height={250}
-                      sx={{ mb: 2 }}
+                      sx={{ mb: 2, backgroundColor: 'background.paper' }}
                     />
                     <Skeleton
                       animation='wave'
                       variant='rectangular'
-                      width={170}
+                      width={'85%'}
                       height={16}
-                      sx={{ mb: 2, ml: 1 }}
+                      sx={{ mb: 2, mx: 1 }}
                     />
                     <Skeleton
                       animation='wave'
                       variant='rectangular'
-                      width={140}
+                      width={'70%'}
                       height={10}
-                      sx={{ mb: 2, ml: 1 }}
+                      sx={{ mb: 2, mx: 1 }}
                     />
                   </Box>
                 </Grid>
@@ -380,6 +352,7 @@ export default function List({mediaType, listType}) {
                       display: { xs: 'grid', sm: 'none' },
                       gridTemplateColumns: '100px 1fr',
                       boxShadow: '0 2px 8px rgb(0 0 0 / 25%)',
+                      backgroundColor: 'background.paper',
                     }}
                   >
                     <Box>
@@ -388,7 +361,7 @@ export default function List({mediaType, listType}) {
                         variant='rectangular'
                         width={`100%`}
                         height={100}
-                        sx={{ mb: 0 }}
+                        sx={{ mb: 0, backgroundColor: 'background.paper' }}
                       />
                     </Box>
                     <Box>
@@ -397,21 +370,21 @@ export default function List({mediaType, listType}) {
                         variant='rectangular'
                         width={170}
                         height={16}
-                        sx={{ my: 2, ml: 1 }}
+                        sx={{ my: 2, px: 1 }}
                       />
                       <Skeleton
                         animation='wave'
                         variant='rectangular'
-                        width={140}
+                        width={'80%'}
                         height={10}
-                        sx={{ mb: 2, ml: 1 }}
+                        sx={{ mb: 2, mx: 1 }}
                       />
                       <Skeleton
                         animation='wave'
                         variant='rectangular'
-                        width={'90%'}
+                        width={'65%'}
                         height={10}
-                        sx={{ mb: 2, ml: 1 }}
+                        sx={{ mb: 2, mx: 1 }}
                       />
                     </Box>
                   </Box>

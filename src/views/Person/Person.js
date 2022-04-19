@@ -58,7 +58,8 @@ export default function Person() {
                 flexGrow: 1,
                 flexShrink: 1,
                 flexBasis: '0%',
-                mx: 2,
+                backgroundColor: 'background.paper',
+                p: 2,
               }}
             >
               <Box sx={{ alignSelf: { xs: 'center', sm: '' } }}>
@@ -94,7 +95,7 @@ export default function Person() {
                 <Skeleton height={20} width={'75%'} animation='wave' />
                 <Box
                   sx={{
-                    p: 1,
+                    py: 1,
                     display: 'flex',
                     flexDirection: 'row',
                     overflow: 'hidden',
@@ -114,7 +115,7 @@ export default function Person() {
                         <Skeleton
                           animation='wave'
                           variant='rectangular'
-                          width={130}
+                          width={'85%'}
                           height={16}
                           sx={{ mb: 2 }}
                         />
@@ -124,6 +125,77 @@ export default function Person() {
                 </Box>
               </Box>
             </Box>
+            <Grid container>
+              <Grid item xs={12} sm={3} mt={1}>
+                {/* <PersonalInfo info={state.response} /> */}
+                <Box sx={{ backgroundColor: 'background.paper', p: 2 }}>
+                  <Skeleton
+                    height={25}
+                    width={'50%'}
+                    animation={'wave'}
+                    sx={{ mb: 2 }}
+                  />
+
+                  <Skeleton height={25} width={'80%'} animation={'wave'} />
+                  <Skeleton
+                    height={25}
+                    width={'60%'}
+                    animation={'wave'}
+                    sx={{ mb: 2 }}
+                  />
+                  <Skeleton height={25} width={'80%'} animation={'wave'} />
+                  <Skeleton
+                    height={25}
+                    width={'60%'}
+                    animation={'wave'}
+                    sx={{ mb: 2 }}
+                  />
+                  <Skeleton height={25} width={'80%'} animation={'wave'} />
+                  <Skeleton
+                    height={25}
+                    width={'60%'}
+                    animation={'wave'}
+                    sx={{ mb: 2 }}
+                  />
+                  <Skeleton height={25} width={'80%'} animation={'wave'} />
+                  <Skeleton
+                    height={25}
+                    width={'60%'}
+                    animation={'wave'}
+                    sx={{ mb: 2 }}
+                  />
+                  <Skeleton height={25} width={'80%'} animation={'wave'} />
+                  <Skeleton height={25} width={'60%'} animation={'wave'} />
+                </Box>
+              </Grid>
+              <Grid item xs={12} sm={1}></Grid>
+              <Grid item xs={12} sm={8} mt={1}>
+                {/* <AllCredits credits={state.response.combined_credits} /> */}
+                <Box sx={{ p: 2, backgroundColor: 'background.paper' }}>
+                  <Skeleton height={30} width={100} animation={'wave'} sx={{mb: 1}}/>
+                  <Box sx={{ border: 1, borderColor: 'text.primary' }}>
+                    {[...Array(10).keys()].map((item, index) => (
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          flexDirection: 'row',
+                          my: 1,
+                          gap: 2,
+                          borderBottom: index !== 9 ? 1 : 0,
+                          p: 2,
+                          borderColor: 'text.primary',
+                        }}
+                        key={index}
+                      >
+                        <Skeleton width={'20%'} height={20} animation='wave' />
+                        <Skeleton width={'50%'} height={20} animation='wave' />
+                        <Skeleton width={'100%'} height={20} animation='wave' />
+                      </Box>
+                    ))}
+                  </Box>
+                </Box>
+              </Grid>
+            </Grid>
           </>
         ) : !state.loading && state.error ? (
           <Alert severity='error' variant='outlined' sx={{ p: 2, m: 2 }}>
@@ -137,8 +209,7 @@ export default function Person() {
             <Grid item xs={12} sm={3} mt={1}>
               <PersonalInfo info={state.response} />
             </Grid>
-            <Grid item xs={12} sm={1}>
-            </Grid>
+            <Grid item xs={12} sm={1}></Grid>
             <Grid item xs={12} sm={8} mt={1}>
               <AllCredits credits={state.response.combined_credits} />
             </Grid>

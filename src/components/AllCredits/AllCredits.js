@@ -52,16 +52,16 @@ export default function AllCredits({ credits }) {
                 display: 'flex',
                 flexDirection: 'row',
                 p: 1,
-                borderLeft: '1px solid #dedede',
-                borderRight: '1px solid #dedede',
+                borderLeft: 1,
+                borderRight: 1,
                 borderTop:
                   index === 0 ||
                   new Date(sortedByDate[index - 1].date).getFullYear() !==
                     new Date(media.date).getFullYear()
-                    ? '1px solid #dedede'
+                    ? 1
                     : '',
                 borderBottom:
-                  index === sortedByDate.length - 1 ? '1px solid #dedede' : '',
+                  index === sortedByDate.length - 1 ? 1 : '',
               }}
             >
               <Typography>{new Date(media.date).getFullYear()} </Typography>
@@ -108,17 +108,17 @@ export default function AllCredits({ credits }) {
                 display: 'flex',
                 flexDirection: 'row',
                 p: 1,
-                borderLeft: '1px solid #dedede',
-                borderRight: '1px solid #dedede',
+                borderLeft: 1,
+                borderRight: 1,
                 borderTop:
                   index === 0 ||
                   new Date(sortedCrewByDate[index - 1].date).getFullYear() !==
                     new Date(media.date).getFullYear()
-                    ? '1px solid #dedede'
+                    ? 1
                     : '',
                 borderBottom:
                   index === sortedCrewByDate.length - 1
-                    ? '1px solid #dedede'
+                    ? 1
                     : '',
               }}
             >

@@ -133,6 +133,7 @@ export default function User() {
                   display: 'flex',
                   flexDirection: 'column',
                   alignItems: 'center',
+                  backgroundColor: 'background.paper',
                 }}
               >
                 <Box
@@ -229,7 +230,15 @@ export default function User() {
                 sx={{ mb: 1 }}
               />
               {[...Array(15).keys()].map((item, index) => (
-                <Box sx={{ boxShadow: 4, mb: 1, p: 1 }} key={index}>
+                <Box
+                  sx={{
+                    boxShadow: 4,
+                    mb: 1,
+                    p: 1,
+                    backgroundColor: 'background.paper',
+                  }}
+                  key={index}
+                >
                   <Box
                     sx={{
                       display: 'flex',
