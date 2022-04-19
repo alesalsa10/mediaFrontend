@@ -6,6 +6,11 @@ import placeholder from '../../assets/placeholder.png';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { Link as RouterLink } from 'react-router-dom';
 
+const baseURL =
+  process.env.NODE_ENV === 'production'
+    ? process.env.REACT_APP_PROD_BASE
+    : process.env.REACT_APP_LOCAL_BASE;
+
 export default function FullCast() {
   const [state, setState] = useState({
     loading: true,
@@ -19,7 +24,7 @@ export default function FullCast() {
     //http://localhost:3000/media/getById/movie/1420
     try {
       const response = await axios.get(
-        `http://localhost:3000/media/getById/${params.mediaType}/${
+        `${baseURL}media/getById/${params.mediaType}/${
           params.id.split('-')[0]
         }`
       );
@@ -74,7 +79,7 @@ export default function FullCast() {
     //http://localhost:3000/media/getById/movie/1420
     try {
       const response = await axios.get(
-        `http://localhost:3000/media/tv/${params.id.split('-')[0]}/season/${
+        `${baseURL}media/tv/${params.id.split('-')[0]}/season/${
           params.seasonNumber
         }`
       );
@@ -119,7 +124,7 @@ export default function FullCast() {
 
     try {
       const response = await axios.get(
-        `http://localhost:3000/media/tv/${params.id.split('-')[0]}/season/${
+        `${baseURL}media/tv/${params.id.split('-')[0]}/season/${
           params.seasonNumber
         }/episode/${params.episodeNumber}`
       );

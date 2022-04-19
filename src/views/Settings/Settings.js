@@ -11,7 +11,10 @@ import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
 const { default: axios } = require('axios');
-
+const baseURL =
+  process.env.NODE_ENV === 'production'
+    ? process.env.REACT_APP_PROD_BASE
+    : process.env.REACT_APP_LOCAL_BASE;
 export default function Settings() {
   const authData = useSelector((state) => state.auth);
   const [state, setState] = useState({
@@ -24,7 +27,7 @@ export default function Settings() {
 
   const getSelf = async () => {
     try {
-      const response = await axios.get(`http://localhost:3000/users/self`, {
+      const response = await axios.get(`${baseURL}users/self`, {
         headers: {
           Authorization: `Token ${authData.accessToken}`,
         },
@@ -57,7 +60,7 @@ export default function Settings() {
   const saveUsername = async () => {
     try {
       const response = await axios.put(
-        `http://localhost:3000/users/username/${state.response._id}`,
+        `${baseURL}users/username/${state.response._id}`,
         {
           username: username,
         },

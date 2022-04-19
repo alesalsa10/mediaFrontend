@@ -16,6 +16,11 @@ import Card from '../Card/Card';
 
 const { default: axios } = require('axios');
 
+const baseURL =
+  process.env.NODE_ENV === 'production'
+    ? process.env.REACT_APP_PROD_BASE
+    : process.env.REACT_APP_LOCAL_BASE;
+
 export default function Trending({ mediaType }) {
   const [filter, setFilter] = useState('day');
 
@@ -28,7 +33,7 @@ export default function Trending({ mediaType }) {
   const getTrendingmedias = async (filter) => {
     try {
       const response = await axios.get(
-        `http://localhost:3000/media/trending/${mediaType}/${filter}`
+        `${baseURL}media/trending/${mediaType}/${filter}`
       );
       //console.log(response.data);
       setState({

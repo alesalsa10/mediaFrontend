@@ -1,6 +1,11 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 const axios = require('axios').default;
 
+const baseURL =
+  process.env.NODE_ENV === 'production'
+    ? process.env.REACT_APP_PROD_BASE
+    : process.env.REACT_APP_LOCAL_BASE;
+
 const initialState = {
   status: 'idle',
   errors: null,
@@ -11,7 +16,7 @@ const initialState = {
 };
 
 const createAccount = async (data) => {
-  const response = await axios.post(`http://localhost:3000/auth/register`, {
+  const response = await axios.post(`${baseURL}auth/register`, {
     name: data.name,
     username: data.username,
     email: data.email,
@@ -21,7 +26,7 @@ const createAccount = async (data) => {
 };
 
 const login = async (data) => {
-  const response = await axios.post(`http://localhost:3000/auth/signin`, {
+  const response = await axios.post(`${baseURL}auth/signin`, {
     email: data.email,
     password: data.password,
   });
@@ -30,7 +35,7 @@ const login = async (data) => {
 };
 
 const refresh = async () => {
-  const response = await axios.get(`http://localhost:3000/auth/refresh`, {
+  const response = await axios.get(`${baseURL}auth/refresh`, {
     withCredentials: true,
   });
   console.log(response.data);

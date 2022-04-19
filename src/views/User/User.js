@@ -1,13 +1,25 @@
-import { Box, Grid, Typography, Link, Alert, Skeleton } from '@mui/material';
+import {
+  Box,
+  Grid,
+  Typography,
+  Link,
+  Alert,
+  Skeleton,
+  Avatar,
+} from '@mui/material';
 import React, { useState, useEffect } from 'react';
 import { useParams, Link as RouterLink, useNavigate } from 'react-router-dom';
 import moment from 'moment';
 import DOMPurify from 'dompurify';
-import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded';
 import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
 import CancelIcon from '@mui/icons-material/Cancel';
-const { default: axios } = require('axios');
+import { green } from '@mui/material/colors';
 
+const { default: axios } = require('axios');
+const baseURL =
+  process.env.NODE_ENV === 'production'
+    ? process.env.REACT_APP_PROD_BASE
+    : process.env.REACT_APP_LOCAL_BASE;
 export default function User() {
   const params = useParams();
   const navigate = useNavigate();
@@ -19,9 +31,7 @@ export default function User() {
 
   const getUser = async () => {
     try {
-      const response = await axios.get(
-        `http://localhost:3000/users/${params.username}`
-      );
+      const response = await axios.get(`${baseURL}users/${params.username}`);
       console.log(response.data);
       setState({
         response: response.data,
@@ -367,14 +377,10 @@ export default function User() {
                     alignItems: 'center',
                   }}
                 >
-                  {!state.response.profilePicture ? (
-                    <AccountCircleRoundedIcon fontSize='large' />
-                  ) : (
-                    <Box
-                      component={'img'}
-                      src={state.response.profilePicture}
-                    ></Box>
-                  )}
+                  <Avatar sx={{ bgcolor: green[600], color: 'text.primary' }}>
+                    {state.response.name.charAt(0)}
+                  </Avatar>
+
                   <Typography variant='h6'>
                     {state.response.username}
                   </Typography>
@@ -544,7 +550,9 @@ export default function User() {
                   ))}
                 </>
               ) : (
-                <>This user has no comments</>
+                <Typography sx={{ color: 'text.primary' }}>
+                  This user has no comments
+                </Typography>
               )}
             </Box>
           </Box>

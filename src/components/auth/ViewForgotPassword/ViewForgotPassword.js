@@ -10,7 +10,10 @@ import Link from '@mui/material/Link';
 import CircularProgress from '@mui/material/CircularProgress';
 
 const axios = require('axios').default;
-
+const baseURL =
+  process.env.NODE_ENV === 'production'
+    ? process.env.REACT_APP_PROD_BASE
+    : process.env.REACT_APP_LOCAL_BASE;
 export default function ViewForgotPassword() {
   const [password, setPassword] = useState('');
   const [data, setData] = useState();
@@ -24,7 +27,7 @@ export default function ViewForgotPassword() {
     e.preventDefault();
     try {
       const response = await axios.post(
-        `http://localhost:3000/auth/resetPassword/${token.token}`,
+        `${baseURL}auth/resetPassword/${token.token}`,
         { password: password }
       );
       setData(response.data.Msg);

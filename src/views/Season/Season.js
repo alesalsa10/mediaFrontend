@@ -6,7 +6,10 @@ import SeasonOverview from '../../components/SeasonOverview/SeasonOverview';
 import TopBillCast from '../../components/TopBillCast/TopBillCast';
 import EpisodesCarousel from '../../components/EpisodesCarousel/EpisodesCarousel';
 import Comments from '../../components/Comments/Comments';
-
+const baseURL =
+  process.env.NODE_ENV === 'production'
+    ? process.env.REACT_APP_PROD_BASE
+    : process.env.REACT_APP_LOCAL_BASE;
 export default function Season({seasonNumber, episodeNumber, id, mediaType, params}) {
   const [state, setState] = useState({
     loading: true,
@@ -21,7 +24,7 @@ export default function Season({seasonNumber, episodeNumber, id, mediaType, para
     //http://localhost:3000/media/tv/season/1420/3
     try {
       const response = await axios.get(
-        `http://localhost:3000/media/tv/${id.split('-')[0]}/season/${
+        `${baseURL}media/tv/${id.split('-')[0]}/season/${
           seasonNumber
         }`
       );
@@ -63,7 +66,7 @@ export default function Season({seasonNumber, episodeNumber, id, mediaType, para
     //http://localhost:3000/media/getById/movie/1420
     try {
       const response = await axios.get(
-        `http://localhost:3000/media/tv/${id.split('-')[0]}/season/${
+        `${baseURL}media/tv/${id.split('-')[0]}/season/${
           seasonNumber
         }/episode/${episodeNumber}`
       );

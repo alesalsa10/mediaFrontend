@@ -12,7 +12,7 @@ import Link from '@mui/material/Link';
 import { Link as RouterLink } from 'react-router-dom';
 import Drawer from '@mui/material/Drawer';
 import Slide from '@mui/material/Slide';
-import { Card, useScrollTrigger } from '@mui/material';
+import { Avatar, Card, useScrollTrigger } from '@mui/material';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
@@ -28,6 +28,8 @@ import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import LoginRoundedIcon from '@mui/icons-material/LoginRounded';
 import AppRegistrationRoundedIcon from '@mui/icons-material/AppRegistrationRounded';
+import { green } from '@mui/material/colors';
+
 
 const HideOnScroll = ({ children }) => {
   const trigger = useScrollTrigger();
@@ -215,10 +217,16 @@ export default function Navigation() {
                 sx={{ flexGrow: 0, color: 'text.primary' }}
                 className={styles.dropdown}
               >
-                <AccountCircleIcon
-                  sx={{ p: 0, color: 'white' }}
-                  fontSize='large'
-                ></AccountCircleIcon>
+                {authData.isAuth ? (
+                  <Avatar sx={{ bgcolor: green[600], color: 'text.primary' }}>
+                    {authData.user.name.charAt(0)}
+                  </Avatar>
+                ) : (
+                  <AccountCircleIcon
+                    sx={{ p: 0, color: 'white' }}
+                    fontSize='large'
+                  ></AccountCircleIcon>
+                )}
                 <Card
                   className={`${styles.dropdownContent} ${styles.profileDropdownContent} `}
                   sx={{ width: 'max-content' }}

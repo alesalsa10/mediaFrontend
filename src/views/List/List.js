@@ -16,7 +16,10 @@ import Header from '../../components/Header/Header';
 import HorizontalCard from '../../components/HorizontalCard/HorizontalCard';
 
 const { default: axios } = require('axios');
-
+const baseURL =
+  process.env.NODE_ENV === 'production'
+    ? process.env.REACT_APP_PROD_BASE
+    : process.env.REACT_APP_LOCAL_BASE;
 function usePrevious(value) {
   const ref = useRef();
   useEffect(() => {
@@ -27,12 +30,6 @@ function usePrevious(value) {
 
 export default function List({ mediaType, listType }) {
   let params = useParams();
-  const location = useLocation();
-  const [loc, setLoc] = useState(location);
-
-  const prevLocation = usePrevious(loc);
-
-  //console.log(prevLocation, location)
 
   const [page, setPage] = useState(1);
   const [showMore, setShowMore] = useState(false);
@@ -50,7 +47,7 @@ export default function List({ mediaType, listType }) {
     }
     try {
       const response = await axios.get(
-        `http://localhost:3000/media/lists/${mediaType}/${listType}?page=${page}`
+        `${baseURL}media/lists/${mediaType}/${listType}?page=${page}`
       );
       console.log(response.data);
       setState({
@@ -78,7 +75,7 @@ export default function List({ mediaType, listType }) {
     }
     try {
       const response = await axios.get(
-        `http://localhost:3000/people/lists/popular?page=${page}`
+        `${baseURL}people/lists/popular?page=${page}`
       );
       console.log(response.data);
       setState({
@@ -101,7 +98,7 @@ export default function List({ mediaType, listType }) {
   const getBestSellers = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:3000/book/newYorkTimes/bestSellers`
+        `${baseURL}book/newYorkTimes/bestSellers`
       );
       console.log(response.data);
       setState({

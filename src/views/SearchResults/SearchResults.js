@@ -6,7 +6,10 @@ import { Card as MaterialCard } from '@mui/material';
 import { Box } from '@mui/system';
 import HorizontalCardWrapper from '../../components/HorizontalCardWrapper/HorizontalCardWrapper';
 const { default: axios } = require('axios');
-
+const baseURL =
+  process.env.NODE_ENV === 'production'
+    ? process.env.REACT_APP_PROD_BASE
+    : process.env.REACT_APP_LOCAL_BASE;
 export default function SearchResults() {
   const [searchParams] = useSearchParams();
   let searchQuery = searchParams.get('name').split(' ').join('+');
@@ -27,7 +30,7 @@ export default function SearchResults() {
     //person
     try {
       const response = await axios.get(
-        `http://localhost:3000/media/search/all?search_query=${searchQuery}`
+        `${baseURL}media/search/all?search_query=${searchQuery}`
       );
       console.log(response.data.results);
       if (response.data.results.length > 0) {
@@ -60,7 +63,7 @@ export default function SearchResults() {
     //http://localhost:3000/book/search?search_query=harry+potter
     try {
       const response = await axios.get(
-        `http://localhost:3000/book/search?search_query=${searchQuery}`
+        `${baseURL}book/search?search_query=${searchQuery}`
       );
       console.log(response.data);
       if (response.data.totalItems !== 0) {

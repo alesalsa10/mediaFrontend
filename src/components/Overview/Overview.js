@@ -12,7 +12,10 @@ import MediaSideline from '../MediaSideline/MediaSideline';
 const { default: axios } = require('axios');
 
 const baseImgUrl = 'https://image.tmdb.org/t/p/original';
-
+const baseURL =
+  process.env.NODE_ENV === 'production'
+    ? process.env.REACT_APP_PROD_BASE
+    : process.env.REACT_APP_LOCAL_BASE;
 export default function Overview({
   mediaDetails,
   mediaType,
@@ -43,7 +46,7 @@ export default function Overview({
   const toggleFavorite = async (mediaType) => {
     try {
       const response = await axios.put(
-        `http://localhost:3000/favorites/${mediaType}/${mediaDetails.id}`,
+        `${baseURL}favorites/${mediaType}/${mediaDetails.id}`,
         {},
         {
           headers: {

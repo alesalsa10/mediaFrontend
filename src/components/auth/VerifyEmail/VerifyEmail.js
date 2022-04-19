@@ -5,6 +5,11 @@ import { Grid } from '@mui/material';
 
 const axios = require('axios').default;
 
+const baseURL =
+  process.env.NODE_ENV === 'production'
+    ? process.env.REACT_APP_PROD_BASE
+    : process.env.REACT_APP_LOCAL_BASE;
+
 export default function VerifyEmail() {
   const token = useParams();
   const [data, setData] = useState();
@@ -14,7 +19,7 @@ export default function VerifyEmail() {
     const verifyEmail = async () => {
       try {
         const response = await axios.post(
-          `http://localhost:3000/auth/verifyEmail/${token.token}`
+          `${baseURL}auth/verifyEmail/${token.token}`
         );
         setData(response.data.Msg);
         setError(undefined);

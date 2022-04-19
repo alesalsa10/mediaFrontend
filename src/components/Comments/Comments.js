@@ -19,6 +19,11 @@ import { Link, useLocation } from 'react-router-dom';
 import ReactQuill from 'react-quill'; // ES6
 import 'react-quill/dist/quill.snow.css'; // ES6
 
+const baseURL =
+  process.env.NODE_ENV === 'production'
+    ? process.env.REACT_APP_PROD_BASE
+    : process.env.REACT_APP_LOCAL_BASE;
+
 export default function Comments({ id, count }) {
   const theme = useSelector((state) => state.theme);
 
@@ -156,7 +161,7 @@ export default function Comments({ id, count }) {
     let mediaType = selectMedia();
     try {
       const response = await axios.get(
-        `http://localhost:3000/comments/${mediaType}/${id}?sort=${sort}`
+        `${baseURL}comments/${mediaType}/${id}?sort=${sort}`
       );
       console.log(response.data);
       setState({ loading: false, response: response.data, error: null });
@@ -182,7 +187,7 @@ export default function Comments({ id, count }) {
     });
     try {
       const comment = await axios.post(
-        `http://localhost:3000/comments/${mediaType}/${id}`,
+        `${baseURL}comments/${mediaType}/${id}`,
         {
           text: text,
         },
@@ -287,7 +292,7 @@ export default function Comments({ id, count }) {
     });
     try {
       const comment = await axios.post(
-        `http://localhost:3000/comments/${mediaType}/${id}/reply`,
+        `${baseURL}comments/${mediaType}/${id}/reply`,
         {
           text: replyText,
           parentCommentId: commentId,
@@ -343,7 +348,7 @@ export default function Comments({ id, count }) {
     });
     try {
       const comment = await axios.put(
-        `http://localhost:3000/comments/edit/${commentId}`,
+        `${baseURL}comments/edit/${commentId}`,
         {
           text: editText,
         },
@@ -418,7 +423,7 @@ export default function Comments({ id, count }) {
     });
     try {
       let comment = await axios.delete(
-        `http://localhost:3000/comments/delete/${commentId}`,
+        `${baseURL}comments/delete/${commentId}`,
         {
           headers: {
             Authorization: `Token ${authData.accessToken}`,

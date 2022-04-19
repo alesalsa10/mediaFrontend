@@ -10,6 +10,10 @@ import React, { useState, useEffect } from 'react';
 import HorizontalCard from '../HorizontalCard/HorizontalCard';
 
 const { default: axios } = require('axios');
+const baseURL =
+  process.env.NODE_ENV === 'production'
+    ? process.env.REACT_APP_PROD_BASE
+    : process.env.REACT_APP_LOCAL_BASE;
 
 export default function BooksByAuthor({ author }) {
   const [state, setState] = useState({
@@ -21,7 +25,7 @@ export default function BooksByAuthor({ author }) {
   const getBooksByAuthor = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:3000/book/byAuthor/${author}`
+        `${baseURL}book/byAuthor/${author}`
       );
       console.log(response.data);
       setState({

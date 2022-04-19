@@ -11,7 +11,10 @@ import BooksByAuthor from '../../components/BooksByAuthor/BooksByAuthor';
 import amazonLogo from '../../assets/amazonLogo.png';
 
 const { default: axios } = require('axios');
-
+const baseURL =
+  process.env.NODE_ENV === 'production'
+    ? process.env.REACT_APP_PROD_BASE
+    : process.env.REACT_APP_LOCAL_BASE;
 export default function Media() {
   const authData = useSelector((state) => state.auth);
   const [hasTrailer, setHasTrailer] = useState(false);
@@ -30,7 +33,7 @@ export default function Media() {
     if (authData.isAuth) {
       try {
         const response = await axios.get(
-          `http://localhost:3000/users/${authData.user.username}`
+          `${baseURL}users/${authData.user.username}`
         );
         console.log(response.data);
         setUser(response.data);
@@ -45,7 +48,7 @@ export default function Media() {
     //http://localhost:3000/media/getById/movie/1420
     try {
       const response = await axios.get(
-        `http://localhost:3000/media/getById/${params.mediaType}/${
+        `${baseURL}media/getById/${params.mediaType}/${
           params.id.split('-')[0]
         }`
       );
@@ -89,7 +92,7 @@ export default function Media() {
     //http://localhost:3000/book/e3_6vQEACAAJ
     try {
       const response = await axios.get(
-        `http://localhost:3000/book/${params.id.split('-')[0]}`
+        `${baseURL}book/${params.id.split('-')[0]}`
       );
       console.log(response.data);
       setState({
@@ -111,7 +114,7 @@ export default function Media() {
     //http://localhost:3000/book/isbn/1101885688
     try {
       const response = await axios.get(
-        `http://localhost:3000/book/isbn/${params.id.split('-')[0]}`
+        `${baseURL}book/isbn/${params.id.split('-')[0]}`
       );
       console.log(response.data);
       setState({

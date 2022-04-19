@@ -10,6 +10,11 @@ import { Grid } from '@mui/material';
 
 const axios = require('axios').default;
 
+const baseURL =
+  process.env.NODE_ENV === 'production'
+    ? process.env.REACT_APP_PROD_BASE
+    : process.env.REACT_APP_LOCAL_BASE;
+
 export default function ForgotPassword() {
   const [email, setEmail] = useState('');
   const [data, setData] = useState();
@@ -21,7 +26,7 @@ export default function ForgotPassword() {
     setLoading(true);
     try {
       const response = await axios.post(
-        `http://localhost:3000/auth/forgotPassword`,
+        `${baseURL}auth/forgotPassword`,
         { email: email }
       );
       setData(response.data.Msg);
