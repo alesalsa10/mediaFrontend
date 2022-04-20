@@ -45,7 +45,6 @@ export default function Navigation() {
   const dispatch = useDispatch();
   const authData = useSelector((state) => state.auth);
   const theme = useSelector((state) => state.theme);
-  console.log(theme); //{isLight: boolean}
   const [authSettings, setAuthSettings] = useState();
 
   const pages2 = [

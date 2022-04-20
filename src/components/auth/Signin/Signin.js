@@ -9,11 +9,10 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { useSelector, useDispatch } from 'react-redux';
-import { signin, togglePersist} from '../../../features/auth/authSlice';
+import { signin, togglePersist } from '../../../features/auth/authSlice';
 import Alert from '@mui/material/Alert';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useNavigate, useLocation } from 'react-router-dom';
-
 
 export default function Signin() {
   let navigate = useNavigate();
@@ -39,17 +38,21 @@ export default function Signin() {
     if (authData.isAuth) {
       //navigate(from, { replace: true });
       //navigate(-1)
-      if(hasBack){
-        navigate(-1)
-      }else {
-        navigate('/')
+      if (hasBack) {
+        navigate(-1);
+      } else {
+        navigate('/');
       }
     }
   }, [authData.isAuth]);
 
+  useEffect(() => {
+    document.title = 'Sign in';
+  }, []);
+
   const handleRemberMeClick = (event) => {
-    event.preventDefault()
-    dispatch(togglePersist())  
+    event.preventDefault();
+    dispatch(togglePersist());
   };
 
   const checkErrors = (errors, name) => {

@@ -24,7 +24,9 @@ export default function Person() {
       const response = await axios.get(
         `${baseURL}people/${params.id.split('-')[0]}`
       );
-      console.log(response.data);
+      //console.log(response.data);
+
+      document.title = response.data.name;
 
       setState({
         loading: false,
@@ -33,6 +35,8 @@ export default function Person() {
       });
     } catch (error) {
       console.log(error.response.data);
+      document.title = 'Something went wrong';
+
       setState({
         loading: false,
         response: null,
@@ -175,7 +179,12 @@ export default function Person() {
               <Grid item xs={12} sm={8} mt={1}>
                 {/* <AllCredits credits={state.response.combined_credits} /> */}
                 <Box sx={{ p: 2, backgroundColor: 'background.paper' }}>
-                  <Skeleton height={30} width={100} animation={'wave'} sx={{mb: 1}}/>
+                  <Skeleton
+                    height={30}
+                    width={100}
+                    animation={'wave'}
+                    sx={{ mb: 1 }}
+                  />
                   <Box sx={{ border: 1, borderColor: 'text.primary' }}>
                     {[...Array(10).keys()].map((item, index) => (
                       <Box

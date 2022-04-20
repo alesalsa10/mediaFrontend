@@ -6,7 +6,7 @@ import moment from 'moment';
 
 export default function SeasonOverview({ mediaDetails, hasTrailer, videoKey }) {
   const params = useParams();
-  console.log(params);
+  //console.log(params);
   const baseImgUrl = 'https://image.tmdb.org/t/p/original';
 
   const capitalizeTitle = () => {

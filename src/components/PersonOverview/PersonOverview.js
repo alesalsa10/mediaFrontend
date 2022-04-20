@@ -13,7 +13,7 @@ export default function PersonOverview({ data }) {
         (a, b) => parseFloat(b.popularity) - parseFloat(a.popularity)
       )
     );
-    console.log(sortedCast);
+    //console.log(sortedCast);
   }, []);
 
   return (

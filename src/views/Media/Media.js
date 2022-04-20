@@ -1,7 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import Overview from '../../components/Overview/Overview';
 import { useParams, useLocation } from 'react-router-dom';
-import { Alert, Grid, Skeleton, Box, Typography, Link, Card as MaterialCard } from '@mui/material';
+import {
+  Alert,
+  Grid,
+  Skeleton,
+  Box,
+  Typography,
+  Link,
+  Card as MaterialCard,
+} from '@mui/material';
 import TopBillCast from '../../components/TopBillCast/TopBillCast';
 import Recommendation from '../../components/Recommendation/Recommendation';
 import SeasonsCarousel from '../../components/SeasonsCarousel/SeasonsCarousel';
@@ -35,7 +43,7 @@ export default function Media() {
         const response = await axios.get(
           `${baseURL}users/${authData.user.username}`
         );
-        console.log(response.data);
+        //console.log(response.data);
         setUser(response.data);
       } catch (error) {
         console.log(error);
@@ -48,12 +56,11 @@ export default function Media() {
     //http://localhost:3000/media/getById/movie/1420
     try {
       const response = await axios.get(
-        `${baseURL}media/getById/${params.mediaType}/${
-          params.id.split('-')[0]
-        }`
+        `${baseURL}media/getById/${params.mediaType}/${params.id.split('-')[0]}`
       );
-      console.log(response.data);
-
+      //console.log(response.data);
+      document.title =
+        response.data.mediaDetails.title || response.data.mediaDetails.name;
       if (
         response.data.mediaDetails.videos &&
         response.data.mediaDetails.videos.results.length > 0
@@ -80,6 +87,7 @@ export default function Media() {
       });
     } catch (error) {
       console.log(error.response.data);
+      document.title = 'Something went wrong';
       setState({
         loading: false,
         response: null,
@@ -94,7 +102,9 @@ export default function Media() {
       const response = await axios.get(
         `${baseURL}book/${params.id.split('-')[0]}`
       );
-      console.log(response.data);
+      //console.log(response.data);
+      document.title = response.data.mediaDetails.volumeInfo.title;
+
       setState({
         loading: false,
         response: response.data,
@@ -116,7 +126,9 @@ export default function Media() {
       const response = await axios.get(
         `${baseURL}book/isbn/${params.id.split('-')[0]}`
       );
-      console.log(response.data);
+      //console.log(response.data);
+      document.title = response.data.mediaDetails.volumeInfo.title;
+
       setState({
         loading: false,
         response: response.data,
@@ -248,11 +260,23 @@ export default function Media() {
             {params.mediaType === 'book' ? (
               <>
                 <Box sx={{ backgroundColor: 'background.paper', my: 4, p: 2 }}>
-                  <Skeleton width={150} height={35} my={1} mx={1} animation='wave'/>
-                  <Skeleton width={200} height={25} my={1} mx={1}  animation='wave'/>
+                  <Skeleton
+                    width={150}
+                    height={35}
+                    my={1}
+                    mx={1}
+                    animation='wave'
+                  />
+                  <Skeleton
+                    width={200}
+                    height={25}
+                    my={1}
+                    mx={1}
+                    animation='wave'
+                  />
                 </Box>
                 <Box>
-                  <Skeleton width={150} height={35} sx={{mb:1}}/>
+                  <Skeleton width={150} height={35} sx={{ mb: 1 }} />
                   <Grid
                     container
                     sx={{
@@ -269,7 +293,7 @@ export default function Media() {
                             display: 'grid',
                             gridTemplateColumns: '100px 1fr',
                             boxShadow: '0 2px 8px rgb(0 0 0 / 25%)',
-                            backgroundColor: 'background.paper'
+                            backgroundColor: 'background.paper',
                           }}
                         >
                           <Box>
@@ -278,7 +302,10 @@ export default function Media() {
                               variant='rectangular'
                               width={`100%`}
                               height={100}
-                              sx={{ mb: 0, backgroundColor: 'background.paper' }}
+                              sx={{
+                                mb: 0,
+                                backgroundColor: 'background.paper',
+                              }}
                             />
                           </Box>
                           <Box>

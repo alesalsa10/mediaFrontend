@@ -54,7 +54,7 @@ export default function Overview({
           },
         }
       );
-      console.log(response.data);
+      //console.log(response.data);
       if (response.data.Msg === 'Bookmark created') {
         setFavoriteId(mediaDetails.id);
       } else {
@@ -115,7 +115,7 @@ export default function Overview({
     if (mediaType === 'movie') {
       for (const media of mediaDetails.release_dates.results) {
         if (media.iso_3166_1 === 'US') {
-          console.log(media);
+          //console.log(media);
           setCert(media.release_dates[0].certification);
           break;
         }
@@ -123,7 +123,7 @@ export default function Overview({
     } else if (mediaType === 'tv') {
       for (const media of mediaDetails.content_ratings.results) {
         if (media.iso_3166_1 === 'US') {
-          console.log(media);
+          //console.log(media);
           setCert(media.rating);
           break;
         }

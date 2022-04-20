@@ -10,7 +10,13 @@ const baseURL =
   process.env.NODE_ENV === 'production'
     ? process.env.REACT_APP_PROD_BASE
     : process.env.REACT_APP_LOCAL_BASE;
-export default function Season({seasonNumber, episodeNumber, id, mediaType, params}) {
+export default function Season({
+  seasonNumber,
+  episodeNumber,
+  id,
+  mediaType,
+  params,
+}) {
   const [state, setState] = useState({
     loading: true,
     response: null,
@@ -24,11 +30,10 @@ export default function Season({seasonNumber, episodeNumber, id, mediaType, para
     //http://localhost:3000/media/tv/season/1420/3
     try {
       const response = await axios.get(
-        `${baseURL}media/tv/${id.split('-')[0]}/season/${
-          seasonNumber
-        }`
+        `${baseURL}media/tv/${id.split('-')[0]}/season/${seasonNumber}`
       );
-      console.log(response.data);
+      //console.log(response.data);
+      document.title = `${response.data.foundMedia.mediaName} Season ${response.data.foundMedia.seasonNumber}`;
       if (
         response.data.mediaDetails.videos &&
         response.data.mediaDetails.videos.results.length > 0
@@ -54,6 +59,7 @@ export default function Season({seasonNumber, episodeNumber, id, mediaType, para
       });
     } catch (error) {
       console.log(error.response.data.Msg);
+      document.title = 'Something went wrong';
       setState({
         loading: false,
         response: null,
@@ -66,11 +72,12 @@ export default function Season({seasonNumber, episodeNumber, id, mediaType, para
     //http://localhost:3000/media/getById/movie/1420
     try {
       const response = await axios.get(
-        `${baseURL}media/tv/${id.split('-')[0]}/season/${
-          seasonNumber
-        }/episode/${episodeNumber}`
+        `${baseURL}media/tv/${
+          id.split('-')[0]
+        }/season/${seasonNumber}/episode/${episodeNumber}`
       );
-      console.log(response.data);
+      //console.log(response.data);
+      document.title = `${response.data.foundMedia.mediaName}  ${response.data.foundMedia.seasonNumber}x${response.data.foundMedia.episodeNumber}`;
 
       setHasTrailer(false);
 
@@ -81,6 +88,8 @@ export default function Season({seasonNumber, episodeNumber, id, mediaType, para
       });
     } catch (error) {
       console.log(error.response.data.Msg);
+      document.title = 'Something went wrong';
+
       setState({
         loading: false,
         response: null,
@@ -182,14 +191,14 @@ export default function Season({seasonNumber, episodeNumber, id, mediaType, para
                           variant='rectangular'
                           width={'85%'}
                           height={16}
-                          sx={{ mb: 2, mx:1 }}
+                          sx={{ mb: 2, mx: 1 }}
                         />
                         <Skeleton
                           animation='wave'
                           variant='rectangular'
                           width={'70%'}
                           height={10}
-                          sx={{ mb: 2, mx:1}}
+                          sx={{ mb: 2, mx: 1 }}
                         />
                       </Box>
                     ))}

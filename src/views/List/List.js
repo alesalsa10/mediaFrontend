@@ -14,6 +14,7 @@ import 'react-circular-progressbar/dist/styles.css';
 import Card from '../../components/Card/Card';
 import Header from '../../components/Header/Header';
 import HorizontalCard from '../../components/HorizontalCard/HorizontalCard';
+import { DoubleArrowTwoTone } from '@mui/icons-material';
 
 const { default: axios } = require('axios');
 const baseURL =
@@ -39,6 +40,54 @@ export default function List({ mediaType, listType }) {
     error: null,
   });
 
+  useEffect(() => {
+    switch (listType) {
+      case 'popular':
+        if (mediaType === 'movie') {
+          document.title = `Popular ${
+            mediaType.charAt(0).toUpperCase() + mediaType.slice(1)
+          }s`;
+        } else if (mediaType === 'people') {
+          document.title = 'Popular People';
+        } else {
+          document.title = `Popular ${mediaType.toUpperCase()} Shows`;
+        }
+        break;
+      case 'top_rated':
+        if (mediaType === 'movie') {
+          document.title = (
+            `Top Rated ${
+              mediaType.charAt(0).toUpperCase() + mediaType.slice(1)
+            }s`
+          );
+        } else {
+          document.title = `Top Rated ${mediaType.toUpperCase()} Shows`;
+        }
+        break;
+      case 'now_playing':
+        document.title = `${
+          mediaType.charAt(0).toUpperCase() + mediaType.slice(1)
+        }s Now Playing`;
+        break;
+      case 'upcoming':
+        document.title = `Upcoming ${
+          mediaType.charAt(0).toUpperCase() + mediaType.slice(1)
+        }s`;
+        break;
+      case 'airing_today':
+        document.title = `${mediaType.toUpperCase()} Shows Airing Today`;
+        break;
+      case 'on_the_air':
+        document.title = `Currenly Airing TV Shows`;
+        break;
+      case 'best_sellers':
+        document.title = `Best Selling ${mediaType}s`;
+        break;
+      default:
+        break;
+    }
+  }, [mediaType, listType]);
+
   const getMediaLists = async () => {
     if (!showMore) {
       setState((prevState) => ({ ...prevState, loading: true }));
@@ -49,7 +98,7 @@ export default function List({ mediaType, listType }) {
       const response = await axios.get(
         `${baseURL}media/lists/${mediaType}/${listType}?page=${page}`
       );
-      console.log(response.data);
+      //console.log(response.data);
       setState({
         loading: false,
         response: [...state.response, ...response.data.results],
@@ -77,7 +126,7 @@ export default function List({ mediaType, listType }) {
       const response = await axios.get(
         `${baseURL}people/lists/popular?page=${page}`
       );
-      console.log(response.data);
+      //console.log(response.data);
       setState({
         loading: false,
         response: [...state.response, ...response.data.results],
@@ -100,7 +149,7 @@ export default function List({ mediaType, listType }) {
       const response = await axios.get(
         `${baseURL}book/newYorkTimes/bestSellers`
       );
-      console.log(response.data);
+      //console.log(response.data);
       setState({
         loading: false,
         response: response.data,

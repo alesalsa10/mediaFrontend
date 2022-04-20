@@ -32,7 +32,8 @@ export default function User() {
   const getUser = async () => {
     try {
       const response = await axios.get(`${baseURL}users/${params.username}`);
-      console.log(response.data);
+      //console.log(response.data);
+      document.title = response.data.username;
       setState({
         response: response.data,
         loading: false,
@@ -40,6 +41,7 @@ export default function User() {
       });
     } catch (error) {
       console.log(error);
+      document.title = 'Something went wrong';
       setState({
         loading: false,
         response: null,

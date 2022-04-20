@@ -74,7 +74,7 @@ export default function SearchResults() {
         console.log(responseObj);
         setStatus('idle');
       } else {
-        setData(responseObj)
+        setData(responseObj);
         setStatus('idle');
         responseObj.Books = 'There are no Books matching this query';
       }
@@ -95,6 +95,7 @@ export default function SearchResults() {
     //call both apis
     searchMedia();
     searchBooks();
+    document.title = `Search Results - ${searchQuery}`;
   }, []);
 
   return (

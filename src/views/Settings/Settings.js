@@ -8,6 +8,7 @@ import {
   TextField,
   Alert,
   CircularProgress,
+  Skeleton,
 } from '@mui/material';
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
@@ -24,13 +25,15 @@ export default function Settings() {
     error: null,
     loading: true,
   });
-  const [isUsernameOpen, setIsUsernameOpen] = useState(false);
-  const [username, setUsername] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [changeText, setChangeText] = useState('');
+  const [currentPassword, setCurrentPassword] = useState('');
   const [change, setChange] = useState({
     response: null,
     error: null,
     loading: null,
   });
+  const [selectedModal, setSelectedModal] = useState();
 
   const getSelf = async () => {
     try {
@@ -55,9 +58,11 @@ export default function Settings() {
     }
   };
 
-  const toggleUsername = () => {
-    setIsUsernameOpen(!isUsernameOpen);
-    console.log(isUsernameOpen);
+  const toggleModal = (e) => {
+    setIsModalOpen(!isModalOpen);
+    setSelectedModal(e.target.id);
+    setChangeText('');
+    setCurrentPassword('');
     setChange({ loading: false, response: null, error: null });
   };
 
@@ -84,7 +89,11 @@ export default function Settings() {
   };
 
   const handleUsernameChange = (e) => {
-    setUsername(e.target.value);
+    setChangeText(e.target.value);
+  };
+
+  const handleCurrentPassword = (e) => {
+    setCurrentPassword(e.target.value);
   };
 
   const saveUsername = async () => {
@@ -93,7 +102,7 @@ export default function Settings() {
       const response = await axios.put(
         `${baseURL}users/username/${state.response._id}`,
         {
-          username: username,
+          username: changeText,
         },
         {
           headers: {
@@ -106,18 +115,116 @@ export default function Settings() {
         ...prevState,
         response: {
           ...prevState.response,
-          username: username,
+          username: changeText,
         },
       }));
       setChange({ response: true, loading: false, error: false });
-      setIsUsernameOpen(false);
+      setIsModalOpen(false);
     } catch (error) {
       console.log(error);
       setChange({ response: true, loading: false, error: error.response.data });
     }
   };
 
+  const saveName = async () => {
+    setChange({ response: false, loading: true, error: false });
+    try {
+      const response = await axios.put(
+        `${baseURL}users/name/${state.response._id}`,
+        {
+          name: changeText,
+        },
+        {
+          headers: {
+            Authorization: `Token ${authData.accessToken}`,
+          },
+        }
+      );
+      console.log(response.data);
+      setState((prevState) => ({
+        ...prevState,
+        response: {
+          ...prevState.response,
+          name: changeText,
+        },
+      }));
+      setChange({ response: true, loading: false, error: false });
+      setIsModalOpen(false);
+    } catch (error) {
+      console.log(error.response.data);
+      setChange({
+        response: true,
+        loading: false,
+        error: error.response.data,
+      });
+    }
+  };
+
+  const savePassword = async () => {
+    setChange({ response: false, loading: true, error: false });
+    try {
+      const response = await axios.post(
+        `${baseURL}auth/changePassword/`,
+        {
+          currentPassword: currentPassword,
+          newPassword: changeText,
+        },
+        {
+          headers: {
+            Authorization: `Token ${authData.accessToken}`,
+          },
+        }
+      );
+      console.log(response.data);
+      setChange({ response: true, loading: false, error: false });
+      setIsModalOpen(false);
+    } catch (error) {
+      console.log(error.response.data);
+      setChange({
+        response: true,
+        loading: false,
+        error: error.response.data,
+      });
+    }
+  };
+
+  const saveEmail = async () => {
+    setChange({ response: false, loading: true, error: false });
+    try {
+      const response = await axios.post(
+        `${baseURL}auth/changeEmail/`,
+        {
+          currentPassword: currentPassword,
+          email: changeText,
+        },
+        {
+          headers: {
+            Authorization: `Token ${authData.accessToken}`,
+          },
+        }
+      );
+      //console.log(response.data);
+      setState((prevState) => ({
+        ...prevState,
+        response: {
+          ...prevState.response,
+          email: changeText,
+        },
+      }));
+      setChange({ response: true, loading: false, error: false });
+      setIsModalOpen(false);
+    } catch (error) {
+      console.log(error.response.data);
+      setChange({
+        response: true,
+        loading: false,
+        error: error.response.data,
+      });
+    }
+  };
+
   useEffect(() => {
+    document.title = 'User Settings'
     getSelf();
   }, []);
 
@@ -125,9 +232,46 @@ export default function Settings() {
     <Grid container justifyContent={'center'}>
       <Grid item xs={12} md={8} py={8} px={{ xs: 3, md: 0 }}>
         {state.loading && !state.error ? (
-          <>loading</>
+          <Grid container>
+            <Grid
+              item
+              xs={12}
+              sx={{ color: 'text.primary', borderBottom: 1, mb: 4 }}
+            >
+              <Skeleton
+                aniamation='wave'
+                height={30}
+                width={150}
+                sx={{ mb: 1 }}
+              />
+            </Grid>
+            {[...Array(4).keys()].map((item, index) => (
+              <Grid item xs={12} sx={{ color: 'text.primary' }} key={index}>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    px: 1,
+                    mb: 1
+                  }}
+                >
+                  <Box>
+                    <Skeleton height={25} width={85} animation='wave' />
+                    <Skeleton height={20} width={150} animation='wave' />
+                  </Box>
+                  <Box>
+                    <Skeleton height={50} width={85} animation='wave' />
+                  </Box>
+                </Box>
+              </Grid>
+            ))}
+          </Grid>
         ) : !state.loading && state.error ? (
-          <>error</>
+          <Alert severity='error' variant='outlined' sx={{ p: 2, m: 2 }}>
+            {state.error}
+          </Alert>
         ) : (
           <Grid container>
             <Grid
@@ -154,7 +298,13 @@ export default function Settings() {
                   </Typography>
                 </Box>
                 <Box>
-                  <Button variant='outlined'>Change</Button>
+                  <Button
+                    variant='outlined'
+                    id='emailModal'
+                    onClick={(e) => toggleModal(e)}
+                  >
+                    Change
+                  </Button>
                 </Box>
               </Box>
             </Grid>
@@ -178,7 +328,13 @@ export default function Settings() {
                   </Typography>
                 </Box>
                 <Box>
-                  <Button variant='outlined'>Change</Button>
+                  <Button
+                    id='passwordModal'
+                    variant='outlined'
+                    onClick={(e) => toggleModal(e)}
+                  >
+                    Change
+                  </Button>
                 </Box>
               </Box>
             </Grid>
@@ -200,7 +356,11 @@ export default function Settings() {
                   </Typography>
                 </Box>
                 <Box>
-                  <Button variant='outlined' onClick={toggleUsername}>
+                  <Button
+                    id='usernameModal'
+                    variant='outlined'
+                    onClick={(e) => toggleModal(e)}
+                  >
                     Change
                   </Button>
                 </Box>
@@ -224,7 +384,13 @@ export default function Settings() {
                   </Typography>
                 </Box>
                 <Box>
-                  <Button variant='outlined'>Change</Button>
+                  <Button
+                    id='nameModal'
+                    variant='outlined'
+                    onClick={(e) => toggleModal(e)}
+                  >
+                    Change
+                  </Button>
                 </Box>
               </Box>
             </Grid>
@@ -232,8 +398,8 @@ export default function Settings() {
         )}
       </Grid>
       <Modal
-        open={isUsernameOpen}
-        onClose={toggleUsername}
+        open={isModalOpen}
+        onClose={toggleModal}
         aria-labelledby='delete comment confirmation'
         aria-describedby='confirmation for delete'
         closeAfterTransition
@@ -267,36 +433,173 @@ export default function Settings() {
           ) : (
             <></>
           )}
-          <Typography varaint='h6'>Update username</Typography>
-          <TextField
-            margin='normal'
-            required
-            fullWidth
-            id='username'
-            label='username'
-            name='username'
-            autoComplete='username'
-            autoFocus
-            placeholder='Enter new username'
-            inputProps={{ maxLength: 25 }}
-            error={checkErrors(change.error, 'username')}
-            onChange={handleUsernameChange}
-            helperText={chooseHelperText(change.error, 'username')}
-          />
-          <Box>
-            <Button
-              variant='outlined'
-              onClick={saveUsername}
-              disabled={change.loading}
-              fullWidth
-            >
-              {change.loading && !change.error ? (
-                <CircularProgress size={20} />
-              ) : (
-                'Save Username'
-              )}
-            </Button>
-          </Box>
+          {selectedModal === 'usernameModal' ? (
+            <>
+              <Typography varaint='h6'>Update username</Typography>
+              <TextField
+                margin='normal'
+                required
+                fullWidth
+                id='username'
+                label='username'
+                name='username'
+                autoComplete='username'
+                autoFocus
+                placeholder='Enter new username'
+                inputProps={{ maxLength: 25 }}
+                error={checkErrors(change.error, 'username')}
+                onChange={handleUsernameChange}
+                helperText={chooseHelperText(change.error, 'username')}
+              />
+              <Box>
+                <Button
+                  variant='outlined'
+                  onClick={saveUsername}
+                  disabled={change.loading}
+                  fullWidth
+                >
+                  {change.loading && !change.error ? (
+                    <CircularProgress size={20} />
+                  ) : (
+                    'Save Username'
+                  )}
+                </Button>
+              </Box>
+            </>
+          ) : selectedModal === 'nameModal' ? (
+            <>
+              <Typography varaint='h6'>Update name</Typography>
+              <TextField
+                margin='normal'
+                required
+                fullWidth
+                id='name'
+                label='name'
+                name='name'
+                autoComplete='name'
+                autoFocus
+                placeholder='Enter new name'
+                inputProps={{ maxLength: 25 }}
+                error={checkErrors(change.error, 'name')}
+                onChange={handleUsernameChange}
+                helperText={chooseHelperText(change.error, 'name')}
+              />
+              <Box>
+                <Button
+                  variant='outlined'
+                  onClick={saveName}
+                  disabled={change.loading}
+                  fullWidth
+                >
+                  {change.loading && !change.error ? (
+                    <CircularProgress size={20} />
+                  ) : (
+                    'Save Name'
+                  )}
+                </Button>
+              </Box>
+            </>
+          ) : selectedModal === 'passwordModal' ? (
+            <>
+              <Typography varaint='h6'>Update Password</Typography>
+              <TextField
+                margin='normal'
+                required
+                fullWidth
+                type='password'
+                id='currentPassword'
+                label='Current Password'
+                name='currentPassword'
+                autoComplete='currentPassword'
+                autoFocus
+                placeholder='Enter Current Password'
+                inputProps={{ maxLength: 25 }}
+                error={checkErrors(change.error, 'currentPassword')}
+                onChange={handleCurrentPassword}
+                helperText={chooseHelperText(change.error, 'currentPassword')}
+              />
+              <TextField
+                margin='normal'
+                required
+                fullWidth
+                type='password'
+                id='newPassword'
+                label='New Password'
+                name='newPassword'
+                autoComplete='newPassword'
+                autoFocus
+                placeholder='Enter New Password'
+                inputProps={{ maxLength: 25 }}
+                error={checkErrors(change.error, 'newPassword')}
+                onChange={handleUsernameChange}
+                helperText={chooseHelperText(change.error, 'newPassword')}
+              />
+              <Box>
+                <Button
+                  variant='outlined'
+                  onClick={savePassword}
+                  disabled={change.loading}
+                  fullWidth
+                >
+                  {change.loading && !change.error ? (
+                    <CircularProgress size={20} />
+                  ) : (
+                    'Save Password'
+                  )}
+                </Button>
+              </Box>
+            </>
+          ) : (
+            <>
+              <Typography varaint='h6'>Update Email</Typography>
+              <TextField
+                margin='normal'
+                required
+                fullWidth
+                type='password'
+                id='currentPassword'
+                label='Current Password'
+                name='currentPassword'
+                autoComplete='currentPassword'
+                autoFocus
+                placeholder='Enter Current Password'
+                inputProps={{ maxLength: 25 }}
+                error={checkErrors(change.error, 'currentPassword')}
+                onChange={handleCurrentPassword}
+                helperText={chooseHelperText(change.error, 'currentPassword')}
+              />
+              <TextField
+                margin='normal'
+                required
+                fullWidth
+                type='email'
+                id='newEmail'
+                label='New Email'
+                name='newEmail'
+                autoComplete='New Email'
+                autoFocus
+                placeholder='Enter New Email'
+                inputProps={{ maxLength: 50 }}
+                error={checkErrors(change.error, 'email')}
+                onChange={handleUsernameChange}
+                helperText={chooseHelperText(change.error, 'email')}
+              />
+              <Box>
+                <Button
+                  variant='outlined'
+                  onClick={saveEmail}
+                  disabled={change.loading}
+                  fullWidth
+                >
+                  {change.loading && !change.error ? (
+                    <CircularProgress size={20} />
+                  ) : (
+                    'Save Email'
+                  )}
+                </Button>
+              </Box>
+            </>
+          )}
         </Box>
       </Modal>
     </Grid>

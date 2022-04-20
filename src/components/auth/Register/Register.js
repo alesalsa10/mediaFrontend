@@ -93,6 +93,11 @@ export default function Register() {
     }
   };
 
+    useEffect(() => {
+      document.title = 'Register';
+    }, []);
+
+
   useEffect(() => {
     if (authData.isAuth) {
       navigate('/')

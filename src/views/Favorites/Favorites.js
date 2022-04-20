@@ -23,7 +23,7 @@ export default function Favorites() {
           Authorization: `Token ${authData.accessToken}`,
         },
       });
-      console.log(response.data);
+      //console.log(response.data);
       setState({
         loading: false,
         response: response.data,
@@ -40,6 +40,7 @@ export default function Favorites() {
   };
 
   useEffect(() => {
+    document.title = 'Your Favorites'
     getFavorites();
     setState({
       loading: true,

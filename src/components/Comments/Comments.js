@@ -32,7 +32,7 @@ export default function Comments({ id, count }) {
   const authData = useSelector((state) => state.auth);
   const [isOpen, setIsOpen] = useState(false);
   const handleModal = (event, reason, comment, index, firstWithChildren) => {
-    console.log(comment, index, firstWithChildren);
+    //console.log(comment, index, firstWithChildren);
     if (reason !== 'backdropClick') {
       setDeleted(comment);
       setDeletedIndex(index);
@@ -113,7 +113,7 @@ export default function Comments({ id, count }) {
     }
     if (value.includes('[Deleted]')) {
       value = '[Deleted]';
-      console.log(value);
+      //console.log(value);
       setText(value);
     }
   };
@@ -125,7 +125,7 @@ export default function Comments({ id, count }) {
     }
     if (value.includes('[Deleted]')) {
       value = '[Deleted]';
-      console.log(value);
+      //console.log(value);
       setReplyText(value);
     }
   };
@@ -137,7 +137,7 @@ export default function Comments({ id, count }) {
     }
     if (value.includes('[Deleted]')) {
       value = '[Deleted]';
-      console.log(value);
+     // console.log(value);
       setEditText(value);
     }
   };
@@ -163,7 +163,7 @@ export default function Comments({ id, count }) {
       const response = await axios.get(
         `${baseURL}comments/${mediaType}/${id}?sort=${sort}`
       );
-      console.log(response.data);
+      //console.log(response.data);
       setState({ loading: false, response: response.data, error: null });
     } catch (err) {
       console.log(err.response.data.Msg);
@@ -267,7 +267,7 @@ export default function Comments({ id, count }) {
   const deleteIteration = (commentId, comment) => {
     if (Array.isArray(comment.replies)) {
       for (let [index, comm] of comment.replies.entries()) {
-        console.log(index, comm);
+        //console.log(index, comm);
         if (comm._id === commentId) {
           comment.replies.splice(index, 1);
           break;
@@ -276,7 +276,7 @@ export default function Comments({ id, count }) {
         }
       }
     }
-    console.log(comment);
+    //console.log(comment);
     return comment;
   };
 
@@ -303,7 +303,7 @@ export default function Comments({ id, count }) {
           },
         }
       );
-      console.log(comment.data);
+      //console.log(comment.data);
       setChangedComment({
         loading: false,
         response: true,
@@ -316,7 +316,7 @@ export default function Comments({ id, count }) {
         comment.data
       );
       updatedState[index] = stateWithReply;
-      console.log(updatedState);
+      //console.log(updatedState);
       openReply('');
       setState({ loading: false, response: updatedState, error: null });
     } catch (err) {
@@ -358,7 +358,7 @@ export default function Comments({ id, count }) {
           },
         }
       );
-      console.log(comment.data);
+     // console.log(comment.data);
       setEditedComment({
         loading: false,
         response: true,
@@ -412,7 +412,7 @@ export default function Comments({ id, count }) {
   };
 
   const deleteComment = async (commentId, index, isFirstAndNoChildren) => {
-    console.log(commentId, index, isFirstAndNoChildren);
+    //console.log(commentId, index, isFirstAndNoChildren);
     if (deletedComment.loading) {
       return;
     }
@@ -460,7 +460,7 @@ export default function Comments({ id, count }) {
           setIsOpen(false);
         }
       } else {
-        console.log(comment.data);
+       // console.log(comment.data);
         let stateWithReply = editIteration(
           commentId,
           state.response[index],
