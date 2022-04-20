@@ -21,6 +21,7 @@ import SeasonEpisodeWrapper from './views/SeasonEpisodeWrapper/SeasonEpisodeWrap
 import Settings from './views/Settings/Settings';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useSelector } from 'react-redux';
+import MediaWrapper from './views/MediaWrapper/MediaWrapper';
 
 
 function App() {
@@ -65,8 +66,8 @@ function App() {
                 <Route path='/person/:id' element={<Person />} />
                 <Route path='/user/:username' element={<User />} />
 
-                <Route path='/:mediaType/:id' element={<Media />} />
-                <Route path='/:mediaType/isbn/:id' element={<Media />} />
+                <Route path='/:mediaType/:id' element={<MediaWrapper />} />
+                <Route path='/:mediaType/isbn/:id' element={<MediaWrapper />} />
 
                 <Route
                   path='/tv/:id/seasons/:seasonNumber'

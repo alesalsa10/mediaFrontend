@@ -17,6 +17,7 @@ import Comments from '../../components/Comments/Comments';
 import { useSelector } from 'react-redux';
 import BooksByAuthor from '../../components/BooksByAuthor/BooksByAuthor';
 import amazonLogo from '../../assets/amazonLogo.png';
+import Card from '../../components/Card/Card';
 
 const { default: axios } = require('axios');
 const baseURL =
@@ -33,6 +34,7 @@ export default function Media() {
     error: null,
   });
   const [user, setUser] = useState(null);
+  const [recommendation, setRecommendation] = useState(null);
 
   let params = useParams();
   const location = useLocation();
@@ -61,6 +63,15 @@ export default function Media() {
       //console.log(response.data);
       document.title =
         response.data.mediaDetails.title || response.data.mediaDetails.name;
+        let mediaRecommendation = await doesMediaHaveBook(
+          response.data.mediaDetails
+        );
+        console.log(mediaRecommendation);
+        if (!mediaRecommendation.error) {
+          setRecommendation(mediaRecommendation);
+        } else {
+          setRecommendation(mediaRecommendation);
+        }
       if (
         response.data.mediaDetails.videos &&
         response.data.mediaDetails.videos.results.length > 0
@@ -105,6 +116,16 @@ export default function Media() {
       //console.log(response.data);
       document.title = response.data.mediaDetails.volumeInfo.title;
 
+      let mediaRecommendation = await doesBookHaveMedia(
+        response.data.mediaDetails
+      );
+      console.log(mediaRecommendation);
+      if (!mediaRecommendation.error) {
+        setRecommendation(mediaRecommendation);
+      } else {
+        setRecommendation(mediaRecommendation);
+      }
+
       setState({
         loading: false,
         response: response.data,
@@ -128,6 +149,15 @@ export default function Media() {
       );
       //console.log(response.data);
       document.title = response.data.mediaDetails.volumeInfo.title;
+      let mediaRecommendation = await doesBookHaveMedia(
+        response.data.mediaDetails
+      );
+      console.log(mediaRecommendation);
+      if (!mediaRecommendation.error) {
+        setRecommendation(mediaRecommendation);
+      } else {
+        setRecommendation(mediaRecommendation);
+      }
 
       setState({
         loading: false,
@@ -141,6 +171,39 @@ export default function Media() {
         response: null,
         error: error.response.data.Msg,
       });
+    }
+  };
+
+  const doesBookHaveMedia = async (mediaDetails) => {
+    let authorLastName = mediaDetails.volumeInfo.authors[0].split(' ');
+    authorLastName = authorLastName[authorLastName.length - 1].replace('"', '');
+    try {
+      const response = await axios.post(`${baseURL}book/recommendation`, {
+        book_name: mediaDetails.volumeInfo.title.toLowerCase(),
+        book_author: authorLastName.toLowerCase(),
+      });
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      return { error: error.response.data.Msg };
+    }
+  };
+
+  const doesMediaHaveBook = async (mediaDetails) => {
+    //let authorLastName = mediaDetails.volumeInfo.authors[0].split(' ');
+    //authorLastName = authorLastName[authorLastName.length - 1].replace('"', '');
+    try {
+      const response = await axios.post(`${baseURL}media/recommendation`, {
+        media_name:
+          mediaDetails.title.toLowerCase() || mediaDetails.name.toLowerCase(),
+        release_year: mediaDetails.release_date || mediaDetails.first_air_date,
+      });
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      return { error: error.response.data.Msg };
     }
   };
 
@@ -357,6 +420,38 @@ export default function Media() {
                 authData={authData}
               />
             </Grid>
+
+            {params.mediaType === 'book' && !recommendation.error ? (
+              <Box sx={{ my: 1 }}>
+                <Typography variant='h6' color={'text.primary'}>
+                  You might be interested in this{' '}
+                  {recommendation.media_type === 'movie' ? 'movie' : 'TV Show'}
+                </Typography>
+                <Box sx={{ width: 'fit-content' }}>
+                  <Card
+                    mediaType={recommendation.media_type}
+                    media={recommendation}
+                  />
+                </Box>
+              </Box>
+            ) : (
+              <></>
+            )}
+            {params.mediaType !== 'book' && !recommendation.error ? (
+              <Box sx={{ my: 1 }}>
+                <Typography variant='h6' color={'text.primary'}>
+                  You might be interested in this Book
+                </Typography>
+                <Box sx={{ width: 'fit-content' }}>
+                  <Card
+                    mediaType={'book'}
+                    media={recommendation}
+                  />
+                </Box>
+              </Box>
+            ) : (
+              <></>
+            )}
             {params.mediaType === 'book' &&
             state.response.mediaDetails.volumeInfo.industryIdentifiers ? (
               <Grid container>

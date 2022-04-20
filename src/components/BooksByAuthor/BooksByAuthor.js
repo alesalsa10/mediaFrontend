@@ -27,7 +27,7 @@ export default function BooksByAuthor({ author }) {
       const response = await axios.get(
         `${baseURL}book/byAuthor/${author}`
       );
-      console.log(response.data);
+     // console.log(response.data);
       setState({
         loading: false,
         response: response.data.items || [],
