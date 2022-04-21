@@ -9,13 +9,10 @@ import { Link } from 'react-router-dom';
 
 import 'react-circular-progressbar/dist/styles.css';
 import MediaSideline from '../MediaSideline/MediaSideline';
-const { default: axios } = require('axios');
+import api from '../../services/api';
 
 const baseImgUrl = 'https://image.tmdb.org/t/p/original';
-const baseURL =
-  process.env.NODE_ENV === 'production'
-    ? process.env.REACT_APP_PROD_BASE
-    : process.env.REACT_APP_LOCAL_BASE;
+
 export default function Overview({
   mediaDetails,
   mediaType,
@@ -45,8 +42,8 @@ export default function Overview({
 
   const toggleFavorite = async (mediaType) => {
     try {
-      const response = await axios.put(
-        `${baseURL}favorites/${mediaType}/${mediaDetails.id}`,
+      const response = await api.put(
+        `favorites/${mediaType}/${mediaDetails.id}`,
         {},
         {
           headers: {

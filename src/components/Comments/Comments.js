@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import axios from 'axios';
 import Comment from '../Comment/Comment';
 import {
   Alert,
@@ -18,11 +17,8 @@ import { Link, useLocation } from 'react-router-dom';
 
 import ReactQuill from 'react-quill'; // ES6
 import 'react-quill/dist/quill.snow.css'; // ES6
+import api from '../../services/api';
 
-const baseURL =
-  process.env.NODE_ENV === 'production'
-    ? process.env.REACT_APP_PROD_BASE
-    : process.env.REACT_APP_LOCAL_BASE;
 
 export default function Comments({ id, count }) {
   const theme = useSelector((state) => state.theme);
@@ -160,8 +156,8 @@ export default function Comments({ id, count }) {
     });
     let mediaType = selectMedia();
     try {
-      const response = await axios.get(
-        `${baseURL}comments/${mediaType}/${id}?sort=${sort}`
+      const response = await api.get(
+        `comments/${mediaType}/${id}?sort=${sort}`
       );
       //console.log(response.data);
       setState({ loading: false, response: response.data, error: null });
@@ -186,8 +182,8 @@ export default function Comments({ id, count }) {
       loading: true,
     });
     try {
-      const comment = await axios.post(
-        `${baseURL}comments/${mediaType}/${id}`,
+      const comment = await api.post(
+        `comments/${mediaType}/${id}`,
         {
           text: text,
         },
@@ -291,8 +287,8 @@ export default function Comments({ id, count }) {
       loading: true,
     });
     try {
-      const comment = await axios.post(
-        `${baseURL}comments/${mediaType}/${id}/reply`,
+      const comment = await api.post(
+        `comments/${mediaType}/${id}/reply`,
         {
           text: replyText,
           parentCommentId: commentId,
@@ -347,8 +343,8 @@ export default function Comments({ id, count }) {
       loading: true,
     });
     try {
-      const comment = await axios.put(
-        `${baseURL}comments/edit/${commentId}`,
+      const comment = await api.put(
+        `comments/edit/${commentId}`,
         {
           text: editText,
         },
@@ -422,8 +418,8 @@ export default function Comments({ id, count }) {
       loading: true,
     });
     try {
-      let comment = await axios.delete(
-        `${baseURL}comments/delete/${commentId}`,
+      let comment = await api.delete(
+        `comments/delete/${commentId}`,
         {
           headers: {
             Authorization: `Token ${authData.accessToken}`,

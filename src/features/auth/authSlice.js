@@ -130,7 +130,7 @@ export const authSlice = createSlice({
       // })
       .addCase(refreshToken.fulfilled, (state, action) => {
         //state.status = 'idle';
-        state.accessToken = action.payload.accessToken;
+        state.accessToken = action.payload;
         state.errors = null;
         state.isAuth = true;
       })

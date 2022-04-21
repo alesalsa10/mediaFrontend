@@ -4,7 +4,7 @@ import Trending from '../../components/Trending/Trending';
 
 export default function Home() {
   useEffect(() => {
-    document.title = 'Media World';
+    document.title = 'Broad Media Center';
   }, []);
   return (
     <div>

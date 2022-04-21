@@ -2,12 +2,8 @@ import { Grid, Typography, Alert, Box, Skeleton } from '@mui/material';
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import Card from '../../components/Card/Card';
+import api from '../../services/api';
 
-const { default: axios } = require('axios');
-const baseURL =
-  process.env.NODE_ENV === 'production'
-    ? process.env.REACT_APP_PROD_BASE
-    : process.env.REACT_APP_LOCAL_BASE;
 export default function Favorites() {
   const authData = useSelector((state) => state.auth);
   const [state, setState] = useState({
@@ -18,7 +14,7 @@ export default function Favorites() {
 
   const getFavorites = async () => {
     try {
-      const response = await axios.get(`${baseURL}favorites/all`, {
+      const response = await api.get(`favorites/all`, {
         headers: {
           Authorization: `Token ${authData.accessToken}`,
         },
