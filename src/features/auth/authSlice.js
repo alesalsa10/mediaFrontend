@@ -11,25 +11,37 @@ const initialState = {
   errors: null,
   isAuth: false,
   user: null,
-  accessToken: null,
+  accessToken: localStorage.get('accessToken') || null,
   persist: JSON.parse(localStorage.getItem('persist')) || false,
 };
 
 const createAccount = async (data) => {
-  const response = await axios.post(`${baseURL}auth/register`, {
-    name: data.name,
-    username: data.username,
-    email: data.email,
-    password: data.password,
-  });
+  const response = await axios.post(
+    `${baseURL}auth/register`,
+    {
+      name: data.name,
+      username: data.username,
+      email: data.email,
+      password: data.password,
+    },
+    {
+      withCredentials: true,
+    }
+  );
   return response.data;
 };
 
 const login = async (data) => {
-  const response = await axios.post(`${baseURL}auth/signin`, {
-    email: data.email,
-    password: data.password,
-  });
+  const response = await axios.post(
+    `${baseURL}auth/signin`,
+    {
+      email: data.email,
+      password: data.password,
+    },
+    {
+      withCredentials: true,
+    }
+  );
   console.log(response.data);
   return response.data;
 };
@@ -73,7 +85,7 @@ export const refreshToken = createAsyncThunk(
   async (data, { rejectWithValue }) => {
     try {
       const response = await refresh();
-      console.log(response.data);
+      //console.log(response);
       return response;
     } catch (err) {
       console.log(err.response.data);
@@ -101,7 +113,13 @@ export const authSlice = createSlice({
         state.errors = null;
         state.isAuth = true;
         state.user = action.payload.user;
-        state.accessToken = action.payload.accessToken;
+        //state.accessToken = action.payload.accessToken;
+        if (state.persist) {
+          localStorage.setItem('accessToken', action.payload.accessToken);
+          state.accessToken = action.payload.accessToken;
+        } else {
+          state.accessToken = action.payload.accessToken;
+        }
       })
       .addCase(register.rejected, (state, action) => {
         state.status = 'idle';
@@ -118,6 +136,12 @@ export const authSlice = createSlice({
         state.accessToken = action.payload.accessToken;
         state.errors = null;
         state.isAuth = true;
+        if (state.persist) {
+          localStorage.setItem('accessToken', action.payload.accessToken);
+          state.accessToken = action.payload.accessToken;
+        } else {
+          state.accessToken = action.payload.accessToken;
+        }
       })
       .addCase(signin.rejected, (state, action) => {
         state.status = 'idle';
@@ -130,9 +154,15 @@ export const authSlice = createSlice({
       // })
       .addCase(refreshToken.fulfilled, (state, action) => {
         //state.status = 'idle';
-        state.accessToken = action.payload;
+        //state.accessToken = action.payload;
         state.errors = null;
         state.isAuth = true;
+        if (state.persist) {
+          localStorage.setItem('accessToken', action.payload.accessToken);
+          state.accessToken = action.payload.accessToken;
+        } else {
+          state.accessToken = action.payload.accessToken;
+        }
       })
       .addCase(refreshToken.rejected, (state, action) => {
         //state.status = 'idle';

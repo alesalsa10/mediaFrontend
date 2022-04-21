@@ -9,16 +9,18 @@ const setup = (store) => {
     },
     async (err) => {
       const originalConfig = err.config;
+      //console.log(originalConfig);
       if (
         (originalConfig.url !== '/auth/signin' ||
           originalConfig.url !== '/auth/register') &&
         err.response
       ) {
-        console.log('expired token');
         // Access Token was expired
         if (err.response.status === 401 && !originalConfig._retry) {
           originalConfig._retry = true;
-          dispatch(refreshToken());
+          await dispatch(refreshToken());
+          let state = store.getState();
+          originalConfig.headers.Authorization = `Token ${state.auth.accessToken}`;
           return axiosInstance(originalConfig);
         }
       }
