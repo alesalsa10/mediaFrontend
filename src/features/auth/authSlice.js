@@ -43,7 +43,7 @@ const login = async (data) => {
       withCredentials: true,
     }
   );
-  console.log(response.data);
+  //console.log(response.data);
   return response.data;
 };
 
@@ -51,7 +51,7 @@ const refresh = async () => {
   const response = await axios.get(`${baseURL}auth/refresh`, {
     withCredentials: true,
   });
-  console.log(response.data);
+  //console.log(response.data);
   return response.data;
 };
 
@@ -59,7 +59,7 @@ const logout = async () => {
   const response = await api.get(`auth/signout`, {
     withCredentials: true,
   });
-  console.log(response.data);
+ // console.log(response.data);
   return response.data;
 };
 
@@ -80,7 +80,7 @@ export const register = createAsyncThunk(
       const response = await createAccount(data);
       return response;
     } catch (err) {
-      console.log(err.response.data);
+      //console.log(err.response.data);
       return rejectWithValue(err.response.data);
     }
   }
@@ -93,7 +93,7 @@ export const signin = createAsyncThunk(
       const response = await login(data);
       return response;
     } catch (err) {
-      console.log(err.response.data);
+      //console.log(err.response.data);
       return rejectWithValue(err.response.data);
     }
   }
@@ -107,7 +107,7 @@ export const refreshToken = createAsyncThunk(
       //console.log(response);
       return response;
     } catch (err) {
-      console.log(err.response.data);
+      //console.log(err.response.data);
       return rejectWithValue(err.response.data);
     }
   }
@@ -121,7 +121,7 @@ export const signout = createAsyncThunk(
       //console.log(response);
       return response;
     } catch (err) {
-      console.log(err.response.data);
+      //console.log(err.response.data);
       return rejectWithValue(err.response.data);
     }
   }
@@ -135,7 +135,7 @@ export const getSelf = createAsyncThunk(
       //console.log(response);
       return response;
     } catch (err) {
-      console.log(err.response.data);
+      //console.log(err.response.data);
       return rejectWithValue(err.response.data);
     }
   }

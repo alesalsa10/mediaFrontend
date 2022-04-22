@@ -49,7 +49,7 @@ export default function Media() {
             Authorization: `Token ${authData.accessToken}`,
           },
         });
-        console.log(response.data);
+        //console.log(response.data);
         setUser(response.data);
       } catch (error) {
         console.log(error);
@@ -67,11 +67,11 @@ export default function Media() {
       //console.log(response.data);
       document.title =
         response.data.mediaDetails.title || response.data.mediaDetails.name;
-      console.log(response.data);
+      //console.log(response.data);
       let mediaRecommendation = await doesMediaHaveBook(
         response.data.mediaDetails
       );
-      console.log(mediaRecommendation);
+      //console.log(mediaRecommendation);
       if (!mediaRecommendation.error) {
         setRecommendation(mediaRecommendation);
       } else {
@@ -187,10 +187,10 @@ export default function Media() {
         book_name: mediaDetails.volumeInfo.title.toLowerCase(),
         book_author: authorLastName.toLowerCase(),
       });
-      console.log(response.data);
+      //console.log(response.data);
       return response.data;
     } catch (error) {
-      console.log(error);
+      //console.log(error);
       return { error: error.response.data.Msg };
     }
   };
@@ -207,10 +207,10 @@ export default function Media() {
             : mediaDetails.name.toLowerCase(),
         release_year: mediaDetails.release_date || mediaDetails.first_air_date,
       });
-      console.log(response.data);
+      //console.log(response.data);
       return response.data;
     } catch (error) {
-      console.log(error);
+      //console.log(error);
       return { error: error.response.data.Msg };
     }
   };
