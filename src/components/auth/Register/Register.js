@@ -99,7 +99,7 @@ export default function Register() {
 
 
   useEffect(() => {
-    if (authData.isAuth) {
+    if (authData.isAuth && authData.user) {
       navigate('/')
     }
   }, [authData.isAuth]);

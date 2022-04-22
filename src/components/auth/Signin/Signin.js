@@ -34,7 +34,7 @@ export default function Signin() {
   };
 
   useEffect(() => {
-    if (authData.isAuth) {
+    if (authData.isAuth && authData.user) {
       //navigate(from, { replace: true });
       //navigate(-1)
       if (hasBack) {
@@ -43,7 +43,7 @@ export default function Signin() {
         navigate('/');
       }
     }
-  }, [authData.isAuth]);
+  }, [authData.isAuth, authData.user]);
 
   useEffect(() => {
     document.title = 'Sign in';

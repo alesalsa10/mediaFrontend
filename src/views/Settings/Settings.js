@@ -12,12 +12,8 @@ import {
 } from '@mui/material';
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import api from '../../services/api';
 
-const { default: axios } = require('axios');
-const baseURL =
-  process.env.NODE_ENV === 'production'
-    ? process.env.REACT_APP_PROD_BASE
-    : process.env.REACT_APP_LOCAL_BASE;
 export default function Settings() {
   const authData = useSelector((state) => state.auth);
   const [state, setState] = useState({
@@ -34,10 +30,11 @@ export default function Settings() {
     loading: null,
   });
   const [selectedModal, setSelectedModal] = useState();
+  
 
   const getSelf = async () => {
     try {
-      const response = await axios.get(`${baseURL}users/self`, {
+      const response = await api.get(`users/self`, {
         headers: {
           Authorization: `Token ${authData.accessToken}`,
         },
@@ -99,8 +96,8 @@ export default function Settings() {
   const saveUsername = async () => {
     setChange({ response: false, loading: true, error: false });
     try {
-      const response = await axios.put(
-        `${baseURL}users/username/${state.response._id}`,
+      const response = await api.put(
+        `users/username/${state.response._id}`,
         {
           username: changeText,
         },
@@ -129,8 +126,8 @@ export default function Settings() {
   const saveName = async () => {
     setChange({ response: false, loading: true, error: false });
     try {
-      const response = await axios.put(
-        `${baseURL}users/name/${state.response._id}`,
+      const response = await api.put(
+        `users/name/${state.response._id}`,
         {
           name: changeText,
         },
@@ -163,8 +160,8 @@ export default function Settings() {
   const savePassword = async () => {
     setChange({ response: false, loading: true, error: false });
     try {
-      const response = await axios.post(
-        `${baseURL}auth/changePassword/`,
+      const response = await api.post(
+        `auth/changePassword/`,
         {
           currentPassword: currentPassword,
           newPassword: changeText,
@@ -191,8 +188,8 @@ export default function Settings() {
   const saveEmail = async () => {
     setChange({ response: false, loading: true, error: false });
     try {
-      const response = await axios.post(
-        `${baseURL}auth/changeEmail/`,
+      const response = await api.post(
+        `auth/changeEmail/`,
         {
           currentPassword: currentPassword,
           email: changeText,

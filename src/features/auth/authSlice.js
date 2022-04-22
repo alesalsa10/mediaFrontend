@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+
 const axios = require('axios').default;
 
 const baseURL =
@@ -9,9 +10,9 @@ const baseURL =
 const initialState = {
   status: 'idle',
   errors: null,
-  isAuth: false,
+  isAuth: !!localStorage.getItem('accessToken') || false,
   user: null,
-  accessToken: localStorage.get('accessToken') || null,
+  accessToken: localStorage.getItem('accessToken') || null,
   persist: JSON.parse(localStorage.getItem('persist')) || false,
 };
 
@@ -53,6 +54,10 @@ const refresh = async () => {
   console.log(response.data);
   return response.data;
 };
+
+const logout = async () =>{
+  
+}
 
 export const register = createAsyncThunk(
   'auth/register',
@@ -113,7 +118,7 @@ export const authSlice = createSlice({
         state.errors = null;
         state.isAuth = true;
         state.user = action.payload.user;
-        //state.accessToken = action.payload.accessToken;
+        state.isVerified = false;
         if (state.persist) {
           localStorage.setItem('accessToken', action.payload.accessToken);
           state.accessToken = action.payload.accessToken;
@@ -136,6 +141,7 @@ export const authSlice = createSlice({
         state.accessToken = action.payload.accessToken;
         state.errors = null;
         state.isAuth = true;
+        state.isVerified = action.payload.foundUser.isVerified;
         if (state.persist) {
           localStorage.setItem('accessToken', action.payload.accessToken);
           state.accessToken = action.payload.accessToken;
@@ -149,9 +155,6 @@ export const authSlice = createSlice({
         state.isAuth = false;
         state.user = null;
       })
-      // .addCase(refreshToken.pending, (state) => {
-      //   //state.status = 'loading';
-      // })
       .addCase(refreshToken.fulfilled, (state, action) => {
         //state.status = 'idle';
         //state.accessToken = action.payload;
@@ -165,7 +168,7 @@ export const authSlice = createSlice({
         }
       })
       .addCase(refreshToken.rejected, (state, action) => {
-        //state.status = 'idle';
+        state.status = 'idle';
         //state.errors = action.payload;
         state.isAuth = false;
         state.user = null;

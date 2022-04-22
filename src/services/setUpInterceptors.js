@@ -9,7 +9,7 @@ const setup = (store) => {
     },
     async (err) => {
       const originalConfig = err.config;
-      //console.log(originalConfig);
+      console.log(originalConfig);
       if (
         (originalConfig.url !== '/auth/signin' ||
           originalConfig.url !== '/auth/register') &&
