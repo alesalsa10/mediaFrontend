@@ -159,7 +159,7 @@ export const authSlice = createSlice({
         state.status = 'idle';
         state.errors = null;
         state.isAuth = true;
-        state.user = action.payload.user;
+        state.user = action.payload.foundUser;
         state.isVerified = false;
         if (state.persist) {
           localStorage.setItem('accessToken', action.payload.accessToken);
@@ -180,7 +180,6 @@ export const authSlice = createSlice({
       .addCase(signin.fulfilled, (state, action) => {
         state.status = 'idle';
         state.user = action.payload.foundUser;
-        state.accessToken = action.payload.accessToken;
         state.errors = null;
         state.isAuth = true;
         state.isVerified = action.payload.foundUser.isVerified;
