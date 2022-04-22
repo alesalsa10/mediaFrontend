@@ -1,4 +1,4 @@
-import { Alert, Typography } from '@mui/material';
+import { Alert } from '@mui/material';
 import React from 'react';
 import Navigation from '../Navigation/Navigation';
 
