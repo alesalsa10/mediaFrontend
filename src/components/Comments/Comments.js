@@ -603,7 +603,7 @@ export default function Comments({ id, count }) {
             />
           </Box>
 
-          {authData.isAuth ? (
+          {authData.isAuth && authData.user ? (
             <Box sx={{ mb: '1rem', width: '100%' }}>
               {newComment.error && !newComment.loading ? (
                 <Alert severity='error' variant='outlined'>

@@ -1,5 +1,4 @@
 import axiosInstance from './api';
-//import TokenService from './token.service';
 import { refreshToken } from '../features/auth/authSlice';
 const setup = (store) => {
   const { dispatch } = store;

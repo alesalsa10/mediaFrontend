@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import AppBar from '@mui/material/AppBar';
-//import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
@@ -9,7 +8,7 @@ import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import { useSelector, useDispatch } from 'react-redux';
 import Link from '@mui/material/Link';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import Drawer from '@mui/material/Drawer';
 import Slide from '@mui/material/Slide';
 import { Avatar, Card, useScrollTrigger } from '@mui/material';
@@ -30,13 +29,8 @@ import LoginRoundedIcon from '@mui/icons-material/LoginRounded';
 import AppRegistrationRoundedIcon from '@mui/icons-material/AppRegistrationRounded';
 import { green } from '@mui/material/colors';
 import { Alert, CircularProgress, Box } from '@mui/material';
-import axios from 'axios';
 import api from '../../services/api';
-
-const baseURL =
-  process.env.NODE_ENV === 'production'
-    ? process.env.REACT_APP_PROD_BASE
-    : process.env.REACT_APP_LOCAL_BASE;
+import { signout, getSelf } from '../../features/auth/authSlice';
 
 const HideOnScroll = ({ children }) => {
   const trigger = useScrollTrigger();
@@ -49,20 +43,11 @@ const HideOnScroll = ({ children }) => {
 };
 
 export default function Navigation() {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const authData = useSelector((state) => state.auth);
   const theme = useSelector((state) => state.theme);
   const [authSettings, setAuthSettings] = useState();
-  const [state, setState] = useState({
-    error: null,
-    response: null,
-    loading: false,
-  });
-  const [selfInfo, setSelfInfo] = useState({
-    error: null,
-    response: null,
-    loading: false,
-  });
 
   const pages2 = [
     {
@@ -93,46 +78,18 @@ export default function Navigation() {
     },
   ];
 
-  const getSelf = async () => {
-    try {
-      const response = await api.get(`users/self`, {
-        headers: {
-          Authorization: `Token ${authData.accessToken}`,
-        },
-      });
-      console.log(response.data);
-      setSelfInfo({
-        response: response.data,
-        loading: false,
-        error: null,
-      });
-    } catch (error) {
-      console.log(error);
-      setSelfInfo({
-        loading: false,
-        response: null,
-        error: error.response.data.Msg,
-      });
-    }
-  };
 
   useEffect(() => {
-    if (authData.isAuth && !authData.user) {
-      getSelf();
-    }
-  }, [authData.isAuth, authData.user]);
-
-  useEffect(() => {
-    if (authData.isAuth && selfInfo.response) {
+    if (authData.isAuth && authData.user) {
       const authLinks = [
-        { title: 'Profile', link: `/user/${selfInfo.response.username}` },
+        { title: 'Profile', link: `/user/${authData.user.username}` },
         { title: 'Favorites', link: `/favorites` },
         { title: 'User Settings', link: '/settings' },
         { title: 'Signout', link: `signout` },
       ];
       setAuthSettings(authLinks);
     }
-  }, [authData, selfInfo.response]);
+  }, [authData, authData.user]);
 
   const nonAuthSettings = ['Sign In', 'Register'];
   const [anchorElNav, setAnchorElNav] = useState(null);
@@ -149,31 +106,11 @@ export default function Navigation() {
     dispatch(toggleTheme());
   };
 
-  const resendEmail = async () => {
-    console.log('clicked');
-    setState({ loading: true, response: null, error: null });
-    try {
-      const response = await axios.post(
-        `${baseURL}3000/auth/verify/resendEmail`,
-        {
-          email: authData.user.email,
-        }
-      );
-      console.log(response.data);
-      setState({
-        error: null,
-        response: 'Email successfully sent',
-        loading: false,
-      });
-    } catch (err) {
-      console.log(err.response.data.Msg);
-      setState({
-        error: err.response.data.Msg,
-        response: null,
-        loading: false,
-      });
-    }
-  };
+
+  const logout = async () =>{
+    dispatch(signout())
+    navigate('/')
+  }
 
   return (
     <>
@@ -288,11 +225,9 @@ export default function Navigation() {
                 sx={{ flexGrow: 0, color: 'text.primary' }}
                 className={styles.dropdown}
               >
-                {authData.isAuth &&
-                selfInfo.response &&
-                selfInfo.response ? (
+                {authData.isAuth && authData.user ? (
                   <Avatar sx={{ bgcolor: green[600], color: 'text.primary' }}>
-                    {selfInfo.response.name.charAt(0)}
+                    {authData.user.name.charAt(0)}
                   </Avatar>
                 ) : (
                   <AccountCircleIcon
@@ -304,55 +239,70 @@ export default function Navigation() {
                   className={`${styles.dropdownContent} ${styles.profileDropdownContent} `}
                   sx={{ width: 'max-content' }}
                 >
-                  {authData.isAuth &&
-                  authSettings &&
-                  selfInfo.response ? (
+                  {authData.isAuth && authSettings && authData.user ? (
                     <>
                       {authSettings.map((link) => (
-                        <Link
-                          component={RouterLink}
-                          to={link.link}
-                          key={link.link}
-                          sx={{
-                            color: 'text.primary',
-                            ':hover': { bgcolor: 'divider' },
-                          }}
-                        >
-                          <Box
-                            sx={{
-                              display: 'flex',
-                              flexDirection: 'row',
-                              alignItems: 'center',
-                            }}
-                          >
-                            {/* <AccountCircleIcon fontSize='small' sx={{mr:1}}/> */}
-                            {link.title === 'Profile' ? (
-                              <AccountCircleIcon
-                                fontSize='small'
-                                sx={{ mr: 1 }}
-                              />
-                            ) : link.title === 'Favorites' ? (
-                              <FavoriteRoundedIcon
-                                fontSize='small'
-                                sx={{ mr: 1 }}
-                              />
-                            ) : link.title === 'User Settings' ? (
-                              <SettingsRoundedIcon
-                                fontSize='small'
-                                sx={{ mr: 1 }}
-                              />
-                            ) : (
-                              <LogoutRoundedIcon
-                                fontSize='small'
-                                sx={{ mr: 1 }}
-                              />
-                            )}
-                            <Typography textAlign='center'>
-                              {link.title}
-                            </Typography>
-                          </Box>
-                        </Link>
+                        <React.Fragment key={link.link}>
+                          {link.link !== 'signout' ? (
+                            <Link
+                              component={RouterLink}
+                              to={link.link}
+                              key={link.link}
+                              sx={{
+                                color: 'text.primary',
+                                ':hover': { bgcolor: 'divider' },
+                              }}
+                            >
+                              <Box
+                                sx={{
+                                  display: 'flex',
+                                  flexDirection: 'row',
+                                  alignItems: 'center',
+                                }}
+                              >
+                                {/* <AccountCircleIcon fontSize='small' sx={{mr:1}}/> */}
+                                {link.title === 'Profile' ? (
+                                  <AccountCircleIcon
+                                    fontSize='small'
+                                    sx={{ mr: 1 }}
+                                  />
+                                ) : link.title === 'Favorites' ? (
+                                  <FavoriteRoundedIcon
+                                    fontSize='small'
+                                    sx={{ mr: 1 }}
+                                  />
+                                ) : (
+                                  <SettingsRoundedIcon
+                                    fontSize='small'
+                                    sx={{ mr: 1 }}
+                                  />
+                                )}
+                                <Typography textAlign='center'>
+                                  {link.title}
+                                </Typography>
+                              </Box>
+                            </Link>
+                          ) : (
+                            <></>
+                          )}
+                        </React.Fragment>
                       ))}
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          color: 'text.primary',
+                          ':hover': { bgcolor: 'divider' },
+                          py: 1,
+                          px: 2,
+                          cursor: 'pointer',
+                        }}
+                        onClick={logout}
+                      >
+                        <LogoutRoundedIcon fontSize='small' sx={{ mr: 1 }} />
+                        <Typography textAlign='center'>Signout</Typography>
+                      </Box>
                     </>
                   ) : (
                     <>
@@ -416,57 +366,6 @@ export default function Navigation() {
         </AppBar>
       </HideOnScroll>
       <Toolbar />
-      {authData.isAuth &&
-      selfInfo &&
-      selfInfo.response &&
-      selfInfo.response.foundUser &&
-      !selfInfo.response.foundUser.isVerified ? (
-        <Alert severity='warning' variant='outlined' sx={{ p: 2, m: 2 }}>
-          An email has been sent to you to verify your account. Without
-          verification, you will have limited access. If you did not received
-          one, click{' '}
-          <span
-            style={{ fontWeight: 550, cursor: 'pointer' }}
-            onClick={resendEmail}
-          >
-            here
-          </span>{' '}
-          to send a new one.
-          {state.response ? (
-            <p
-              style={{
-                display: 'flex',
-                justifyContent: 'center',
-                paddingTop: '0.5rem',
-              }}
-            >
-              {state.response}
-            </p>
-          ) : state.loading ? (
-            <Box
-              sx={{
-                display: 'flex',
-                justifyContent: 'center',
-                paddingTop: '0.5rem',
-              }}
-            >
-              <CircularProgress />
-            </Box>
-          ) : (
-            <p
-              style={{
-                display: 'flex',
-                justifyContent: 'center',
-                paddingTop: '0.5rem',
-              }}
-            >
-              {state.error}
-            </p>
-          )}
-        </Alert>
-      ) : (
-        <></>
-      )}
     </>
   );
 }

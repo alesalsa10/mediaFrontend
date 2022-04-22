@@ -43,12 +43,12 @@ export default function Favorites() {
       error: null,
       response: null,
     });
-  }, []);
+  }, [authData.isAuth, authData.user]);
 
   return (
     <Grid container justifyContent='center'>
       <Grid item xs={12} md={8} p={8} px={{ xs: 3, md: 0 }} py={1}>
-        {state.loading && !state.error ? (
+        {(state.loading && !state.error) || !authData.user ? (
           <>
             <Skeleton width={200} height={25} animation='wave' sx={{ mb: 2 }} />
             <Box
@@ -196,7 +196,7 @@ export default function Favorites() {
                     width: '100%',
                   }}
                 >
-                  <Typography variant='h6'>
+                  <Typography variant='h5'>
                     You haven't added anything to you favorites
                   </Typography>
                 </Box>
@@ -205,35 +205,33 @@ export default function Favorites() {
                   {state.response.movies && state.response.movies.length > 0 ? (
                     <>
                       <Grid item xs={12} py={1}>
-                        <Typography varaint='h6'>Favorite Movies</Typography>
+                        <Typography variant='h5'>Favorite Movies</Typography>
                       </Grid>
-                      <div className={`swiper-container movies`}>
-                        <Box
-                          className={'scrollList'}
-                          sx={{
-                            py: 1,
-                            display: 'flex',
-                            flexDirection: 'row',
-                            overflowX: 'scroll',
-                            gap: '10px',
-                          }}
-                        >
-                          {state.response.movies.map((media, index) => (
-                            <React.Fragment key={media.title + index}>
-                              {!media.error ? (
-                                <Card
-                                  key={media.title + index}
-                                  mediaType={'movie'}
-                                  media={media}
-                                  type='carousel'
-                                />
-                              ) : (
-                                <></>
-                              )}
-                            </React.Fragment>
-                          ))}
-                        </Box>
-                      </div>
+                      <Box
+                        className={'scrollList'}
+                        sx={{
+                          py: 1,
+                          display: 'flex',
+                          flexDirection: 'row',
+                          overflowX: 'scroll',
+                          gap: '10px',
+                        }}
+                      >
+                        {state.response.movies.map((media, index) => (
+                          <React.Fragment key={media.title + index}>
+                            {!media.error ? (
+                              <Card
+                                key={media.title + index}
+                                mediaType={'movie'}
+                                media={media}
+                                type='carousel'
+                              />
+                            ) : (
+                              <></>
+                            )}
+                          </React.Fragment>
+                        ))}
+                      </Box>
                     </>
                   ) : (
                     <Grid container>
@@ -248,35 +246,33 @@ export default function Favorites() {
                   {state.response.Tv && state.response.Tv.length > 0 ? (
                     <>
                       <Grid item xs={12} py={1}>
-                        <Typography varaint='h6'>Favorite TV Series</Typography>
+                        <Typography variant='h5'>Favorite TV Series</Typography>
                       </Grid>
-                      <div className={`swiper-container movies`}>
-                        <Box
-                          className={'scrollList'}
-                          sx={{
-                            py: 1,
-                            display: 'flex',
-                            flexDirection: 'row',
-                            overflowX: 'scroll',
-                            gap: '10px',
-                          }}
-                        >
-                          {state.response.Tv.map((media, index) => (
-                            <React.Fragment key={media.title + index}>
-                              {!media.error ? (
-                                <Card
-                                  key={media.name + index}
-                                  mediaType={'tv'}
-                                  media={media}
-                                  type='carousel'
-                                />
-                              ) : (
-                                <></>
-                              )}
-                            </React.Fragment>
-                          ))}
-                        </Box>
-                      </div>
+                      <Box
+                        className={'scrollList'}
+                        sx={{
+                          py: 1,
+                          display: 'flex',
+                          flexDirection: 'row',
+                          overflowX: 'scroll',
+                          gap: '10px',
+                        }}
+                      >
+                        {state.response.Tv.map((media, index) => (
+                          <React.Fragment key={media.name + index}>
+                            {!media.error ? (
+                              <Card
+                                key={media.name + index}
+                                mediaType={'tv'}
+                                media={media}
+                                type='carousel'
+                              />
+                            ) : (
+                              <></>
+                            )}
+                          </React.Fragment>
+                        ))}
+                      </Box>
                     </>
                   ) : (
                     <Grid container>
@@ -291,35 +287,33 @@ export default function Favorites() {
                   {state.response.books && state.response.books.length > 0 ? (
                     <>
                       <Grid item xs={12} py={1}>
-                        <Typography variant='h6'>Favorite Books</Typography>
+                        <Typography variant='h5'>Favorite Books</Typography>
                       </Grid>
-                      <div className={`swiper-container movies`}>
-                        <Box
-                          className={'scrollList'}
-                          sx={{
-                            py: 1,
-                            display: 'flex',
-                            flexDirection: 'row',
-                            overflowX: 'scroll',
-                            gap: '10px',
-                          }}
-                        >
-                          {state.response.books.map((media, index) => (
-                            <React.Fragment key={media.title + index}>
-                              {!media.error ? (
-                                <Card
-                                  key={media.volumeInfo.title + index}
-                                  mediaType={'book'}
-                                  media={media}
-                                  type='carousel'
-                                />
-                              ) : (
-                                <></>
-                              )}
-                            </React.Fragment>
-                          ))}
-                        </Box>
-                      </div>
+                      <Box
+                        className={'scrollList'}
+                        sx={{
+                          py: 1,
+                          display: 'flex',
+                          flexDirection: 'row',
+                          overflowX: 'scroll',
+                          gap: '10px',
+                        }}
+                      >
+                        {state.response.books.map((media, index) => (
+                          <React.Fragment key={media.volumeInfo.title + index}>
+                            {!media.error ? (
+                              <Card
+                                key={media.volumeInfo.title + index}
+                                mediaType={'book'}
+                                media={media}
+                                type='carousel'
+                              />
+                            ) : (
+                              <></>
+                            )}
+                          </React.Fragment>
+                        ))}
+                      </Box>
                     </>
                   ) : (
                     <Grid container>

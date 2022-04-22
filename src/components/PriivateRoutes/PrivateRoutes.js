@@ -6,5 +6,13 @@ import { useSelector } from 'react-redux';
 export default function PrivateRoutes() {
   const authData = useSelector((state) => state.auth);
 
-  return <>{authData.isAuth ? <Outlet /> : <Navigate to='/signin'/>}</>;
+  return (
+    <>
+      {authData.isAuth ? (
+        <Outlet />
+      ) : (
+        <Navigate to='/signin' />
+      )}
+    </>
+  );
 }

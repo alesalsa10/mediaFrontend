@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-const axios = require('axios').default;
-
+import axios from 'axios';
+import api from '../../services/api';
 const baseURL =
   process.env.NODE_ENV === 'production'
     ? process.env.REACT_APP_PROD_BASE
@@ -55,9 +55,23 @@ const refresh = async () => {
   return response.data;
 };
 
-const logout = async () =>{
-  
-}
+const logout = async () => {
+  const response = await api.get(`auth/signout`, {
+    withCredentials: true,
+  });
+  console.log(response.data);
+  return response.data;
+};
+
+const self = async () => {
+  const response = await api.get(`users/self`, {
+    headers: {
+      Authorization: `Token ${initialState.accessToken}`,
+    },
+  });
+  //console.log(response.data);
+  return response.data;
+};
 
 export const register = createAsyncThunk(
   'auth/register',
@@ -90,6 +104,34 @@ export const refreshToken = createAsyncThunk(
   async (data, { rejectWithValue }) => {
     try {
       const response = await refresh();
+      //console.log(response);
+      return response;
+    } catch (err) {
+      console.log(err.response.data);
+      return rejectWithValue(err.response.data);
+    }
+  }
+);
+
+export const signout = createAsyncThunk(
+  'auth/signout',
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await logout();
+      //console.log(response);
+      return response;
+    } catch (err) {
+      console.log(err.response.data);
+      return rejectWithValue(err.response.data);
+    }
+  }
+);
+
+export const getSelf = createAsyncThunk(
+  'auth/getSelf',
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await self();
       //console.log(response);
       return response;
     } catch (err) {
@@ -161,10 +203,10 @@ export const authSlice = createSlice({
         state.errors = null;
         state.isAuth = true;
         if (state.persist) {
-          localStorage.setItem('accessToken', action.payload.accessToken);
-          state.accessToken = action.payload.accessToken;
+          localStorage.setItem('accessToken', action.payload);
+          state.accessToken = action.payload;
         } else {
-          state.accessToken = action.payload.accessToken;
+          state.accessToken = action.payload;
         }
       })
       .addCase(refreshToken.rejected, (state, action) => {
@@ -173,6 +215,28 @@ export const authSlice = createSlice({
         state.isAuth = false;
         state.user = null;
         state.accessToken = null;
+      })
+      .addCase(signout.fulfilled, (state, action) => {
+        state.status = 'idle';
+        state.errors = null;
+        state.isAuth = false;
+        localStorage.removeItem('accessToken');
+        state.accessToken = null;
+      })
+      .addCase(signout.rejected, (state, action) => {
+        state.status = 'idle';
+        state.isAuth = false;
+        state.user = null;
+        localStorage.removeItem('accessToken');
+        state.accessToken = null;
+      })
+      .addCase(getSelf.fulfilled, (state, action) => {
+        state.user = action.payload;
+        state.isAuth = true;
+      })
+      .addCase(getSelf.rejected, (state, action) => {
+        state.user = null;
+        state.isAuth = false;
       });
   },
 });

@@ -297,7 +297,7 @@ export default function Overview({
                   )}
                 </Box>
                 <Box sx={{ alignSelf: 'center', ml: 1, alignItems: 'center' }}>
-                  {authData.isAuth ? (
+                  {authData.isAuth && authData.user ? (
                     <FavoriteIcon
                       onClick={() => toggleFavorite('book')}
                       sx={{
@@ -400,7 +400,7 @@ export default function Overview({
                 />
               </Box>
               <Box sx={{ alignSelf: 'center', ml: 1 }}>
-                {authData.isAuth ? (
+                {authData.isAuth && authData.user? (
                   <FavoriteIcon
                     onClick={
                       mediaType === 'movie'
@@ -464,25 +464,6 @@ export default function Overview({
                   </Modal>
                 </Box>
               ) : (
-                // <Box sx={{ alignSelf: 'center', ml: 1 }}>
-                //   {authData.isAuth ? (
-                //     <FavoriteIcon
-                //       onClick={
-                //         mediaType === 'movie'
-                //           ? () => toggleFavorite('movie')
-                //           : () => toggleFavorite('tv')
-                //       }
-                //       sx={{ color: getColor(), cursor: 'pointer' }}
-                //     />
-                //   ) : (
-                //     <Link to='/signin'>
-                //       {' '}
-                //       <FavoriteIcon
-                //         sx={{ cursor: 'pointer', color: 'text.primary' }}
-                //       />
-                //     </Link>
-                //   )}
-                // </Box>
                 <></>
               )}
             </Box>

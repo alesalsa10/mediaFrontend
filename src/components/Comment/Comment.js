@@ -244,7 +244,7 @@ export default function Comment({
                       style={{ marginBottom: '0.2rem' }}
                       dangerouslySetInnerHTML={sanitizedData(comment.text)}
                     />
-                    {authData.isAuth ? (
+                    {authData.isAuth && authData.user ? (
                       <Box
                         sx={{
                           display: 'flex',

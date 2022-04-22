@@ -39,7 +39,7 @@ export default function Settings() {
           Authorization: `Token ${authData.accessToken}`,
         },
       });
-      console.log(response.data);
+      //console.log(response.data);
       setState({
         response: response.data,
         loading: false,
@@ -221,14 +221,14 @@ export default function Settings() {
   };
 
   useEffect(() => {
-    document.title = 'User Settings'
+    document.title = 'User Settings';
     getSelf();
-  }, []);
+  }, [authData.isAuth, authData.user]);
 
   return (
     <Grid container justifyContent={'center'}>
       <Grid item xs={12} md={8} py={8} px={{ xs: 3, md: 0 }}>
-        {state.loading && !state.error ? (
+        {(state.loading && !state.error) || !authData.user ? (
           <Grid container>
             <Grid
               item
@@ -251,7 +251,7 @@ export default function Settings() {
                     justifyContent: 'space-between',
                     alignItems: 'center',
                     px: 1,
-                    mb: 1
+                    mb: 1,
                   }}
                 >
                   <Box>

@@ -19,7 +19,9 @@ import BooksByAuthor from '../../components/BooksByAuthor/BooksByAuthor';
 import amazonLogo from '../../assets/amazonLogo.png';
 import Card from '../../components/Card/Card';
 
-const { default: axios } = require('axios');
+import axios from 'axios';
+import api from '../../services/api';
+
 const baseURL =
   process.env.NODE_ENV === 'production'
     ? process.env.REACT_APP_PROD_BASE
@@ -40,12 +42,14 @@ export default function Media() {
   const location = useLocation();
 
   const getUser = async () => {
-    if (authData.isAuth) {
+    if (authData.isAuth && authData.user) {
       try {
-        const response = await axios.get(
-          `${baseURL}users/${authData.user.username}`
-        );
-        //console.log(response.data);
+        const response = await api.get(`users/self`, {
+          headers: {
+            Authorization: `Token ${authData.accessToken}`,
+          },
+        });
+        console.log(response.data);
         setUser(response.data);
       } catch (error) {
         console.log(error);
@@ -63,15 +67,16 @@ export default function Media() {
       //console.log(response.data);
       document.title =
         response.data.mediaDetails.title || response.data.mediaDetails.name;
-        let mediaRecommendation = await doesMediaHaveBook(
-          response.data.mediaDetails
-        );
-        console.log(mediaRecommendation);
-        if (!mediaRecommendation.error) {
-          setRecommendation(mediaRecommendation);
-        } else {
-          setRecommendation(mediaRecommendation);
-        }
+      console.log(response.data);
+      let mediaRecommendation = await doesMediaHaveBook(
+        response.data.mediaDetails
+      );
+      console.log(mediaRecommendation);
+      if (!mediaRecommendation.error) {
+        setRecommendation(mediaRecommendation);
+      } else {
+        setRecommendation(mediaRecommendation);
+      }
       if (
         response.data.mediaDetails.videos &&
         response.data.mediaDetails.videos.results.length > 0
@@ -196,7 +201,10 @@ export default function Media() {
     try {
       const response = await axios.post(`${baseURL}media/recommendation`, {
         media_name:
-          mediaDetails.title.toLowerCase() || mediaDetails.name.toLowerCase(),
+          //mediaDetails.title.toLowerCase() || mediaDetails.name.toLowerCase(),
+          mediaDetails.title
+            ? mediaDetails.title.toLowerCase()
+            : mediaDetails.name.toLowerCase(),
         release_year: mediaDetails.release_date || mediaDetails.first_air_date,
       });
       console.log(response.data);
@@ -443,10 +451,7 @@ export default function Media() {
                   You might be interested in this Book
                 </Typography>
                 <Box sx={{ width: 'fit-content' }}>
-                  <Card
-                    mediaType={'book'}
-                    media={recommendation}
-                  />
+                  <Card mediaType={'book'} media={recommendation} />
                 </Box>
               </Box>
             ) : (
