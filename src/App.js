@@ -22,6 +22,7 @@ import Settings from './views/Settings/Settings';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useSelector } from 'react-redux';
 import MediaWrapper from './views/MediaWrapper/MediaWrapper';
+import NotFound from './components/NotFound/NotFound';
 
 
 function App() {
@@ -35,10 +36,16 @@ function App() {
 
   return (
     <ThemeProvider theme={myTheme}>
-      <div style={{ backgroundColor: theme.isLight ? '' : '#3b3a3a', minHeight: '100vh'}}>
+      <div
+        style={{
+          backgroundColor: theme.isLight ? '' : '#3b3a3a',
+          minHeight: '100vh',
+        }}
+      >
         <Router>
           <Fragment>
             <Routes>
+              <Route path='*' element={<NotFound />} />
               <Route element={<WithoutNav />}>
                 <Route path='/signin' element={<Signin />} />
                 <Route path='/register' element={<Register />} />
