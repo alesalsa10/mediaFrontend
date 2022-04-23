@@ -436,7 +436,7 @@ export default function FullCast() {
                           >
                             <Link
                               component={RouterLink}
-                              to={`/person/${actor.id}?name=${actor.name
+                              to={`/person/${actor.id}--${actor.name
                                 .split(' ')
                                 .join('-')}`}
                             >
@@ -471,7 +471,7 @@ export default function FullCast() {
                             >
                               <Link
                                 component={RouterLink}
-                                to={`/person/${actor.id}?name=${actor.name
+                                to={`/person/${actor.id}--${actor.name
                                   .split(' ')
                                   .join('-')}`}
                                 variant='inherit'
@@ -527,7 +527,7 @@ export default function FullCast() {
                             >
                               <Link
                                 component={RouterLink}
-                                to={`/person/${actor.id}?name=${actor.name
+                                to={`/person/${actor.id}--${actor.name
                                   .split(' ')
                                   .join('-')}`}
                               >
@@ -562,7 +562,7 @@ export default function FullCast() {
                               >
                                 <Link
                                   component={RouterLink}
-                                  to={`/person/${actor.id}?name=${actor.name
+                                  to={`/person/${actor.id}--${actor.name
                                     .split(' ')
                                     .join('-')}`}
                                   variant='inherit'
@@ -607,7 +607,7 @@ export default function FullCast() {
                             >
                               <Link
                                 component={RouterLink}
-                                to={`/person/${actor.id}?name=${actor.name
+                                to={`/person/${actor.id}--${actor.name
                                   .split(' ')
                                   .join('-')}`}
                               >
@@ -635,7 +635,7 @@ export default function FullCast() {
                               >
                                 <Link
                                   component={RouterLink}
-                                  to={`/person/${actor.id}?name=${actor.name
+                                  to={`/person/${actor.id}--${actor.name
                                     .split(' ')
                                     .join('-')}`}
                                   variant='inherit'

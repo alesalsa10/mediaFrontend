@@ -45,7 +45,7 @@ export default function Recommendation({ recommendations }) {
       ) : (
         <Grid container>
           <Grid item xs={12}>
-            <Typography sx={{ textAlign: 'left', my: 1 }}>
+            <Typography sx={{ textAlign: 'left', my: 1, color: 'text.primary' }}>
               No recommendations available
             </Typography>
           </Grid>

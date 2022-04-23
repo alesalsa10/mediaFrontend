@@ -40,17 +40,17 @@ export default function Card({ mediaType, media, type, bestSellers }) {
 
   const selectBookLink = (book) => {
     if (book.id) {
-      return `${book.id}-${book.volumeInfo.title
+      return `${book.id}--${book.volumeInfo.title
         .toLowerCase()
         .split(' ')
         .join('')}`;
     } else if (book.primary_isbn10 && book.primary_isbn10 !== 'None') {
-      return `isbn/${book.primary_isbn10}?name=${book.title
+      return `isbn/${book.primary_isbn10}--${book.title
         .toLowerCase()
         .split(' ')
         .join('-')}`;
     } else {
-      return `isbn/${book.primary_isbn13}?name=${book.title
+      return `isbn/${book.primary_isbn13}--${book.title
         .toLowerCase()
         .split(' ')
         .join('-')}`;
@@ -59,15 +59,9 @@ export default function Card({ mediaType, media, type, bestSellers }) {
 
   const selectMediaLink = () => {
     if (mediaType === 'movie') {
-      return `${media.id}?name=${media.title
-        .toLowerCase()
-        .split(' ')
-        .join('-')}`;
+      return `${media.id}--${media.title.toLowerCase().split(' ').join('-')}`;
     } else {
-      return `${media.id}?name=${media.name
-        .toLowerCase()
-        .split(' ')
-        .join('-')}`;
+      return `${media.id}--${media.name.toLowerCase().split(' ').join('-')}`;
     }
   };
 

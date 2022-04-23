@@ -60,11 +60,9 @@ export default function Media() {
 
   const getMediaById = async () => {
     //http://localhost:3000/media/getById/movie/1420
-    //?name=fldskf
     try {
       const response = await axios.get(
-        `${baseURL}media/getById/${params.mediaType}/${params.id
-          .split('?name=')[0]}`
+        `${baseURL}media/getById/${params.mediaType}/${params.id.split('--')[0]}`
       );
       //console.log(response.data);
       document.title =
@@ -118,7 +116,7 @@ export default function Media() {
     //http://localhost:3000/book/e3_6vQEACAAJ
     try {
       const response = await axios.get(
-        `${baseURL}book/${params.id.split('?name=')[0]}`
+        `${baseURL}book/${params.id.split('--')[0]}`
       );
       //console.log(response.data);
       document.title = response.data.mediaDetails.volumeInfo.title;
@@ -152,7 +150,7 @@ export default function Media() {
     //http://localhost:3000/book/isbn/1101885688
     try {
       const response = await axios.get(
-        `${baseURL}book/isbn/${params.id.split('?name=')[0]}`
+        `${baseURL}book/isbn/${params.id.split('--')[0]}`
       );
       //console.log(response.data);
       document.title = response.data.mediaDetails.volumeInfo.title;

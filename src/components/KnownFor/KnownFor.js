@@ -63,7 +63,7 @@ export default function KnownFor({ data }) {
           >
             <Link
               component={RouterLink}
-              to={`/${media.media_type}/${media.id}?name=${
+              to={`/${media.media_type}/${media.id}--${
                 media.media_type === 'movie'
                   ? media.title.split(' ').join('-')
                   : media.name.split(' ').join('-')
@@ -101,7 +101,7 @@ export default function KnownFor({ data }) {
             >
               <Link
                 component={RouterLink}
-                to={`/${media.media_type}/${media.id}?name=${
+                to={`/${media.media_type}/${media.id}--${
                   media.media_type === 'movie'
                     ? media.title.split(' ').join('-')
                     : media.name.split(' ').join('-')
