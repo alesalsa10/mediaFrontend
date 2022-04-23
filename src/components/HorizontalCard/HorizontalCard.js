@@ -37,14 +37,17 @@ export default function HorizontalCard({
 
   const selectBookLink = (book) => {
     if (book.id) {
-      return `${book.id}-${book.volumeInfo.title.toLowerCase().split(' ').join('-')}`;
+      return `${book.id}?name=${book.volumeInfo.title
+        .toLowerCase()
+        .split(' ')
+        .join('-')}`;
     } else if (book.primary_isbn10) {
-      return `isbn/${book.primary_isbn10}-${book.title
+      return `isbn/${book.primary_isbn10}?name=${book.title
         .toLowerCase()
         .split(' ')
         .join('-')}`;
     } else {
-      return `isbn/${book.primary_isbn13}-${book.title
+      return `isbn/${book.primary_isbn13}?name=${book.title
         .toLowerCase()
         .split(' ')
         .join('-')}`;
@@ -53,9 +56,15 @@ export default function HorizontalCard({
 
   const selectMediaLink = () => {
     if (selected === 'Movies') {
-      return `${movie.id}-${movie.title.toLowerCase().split(' ').join('-')}`;
+      return `${movie.id}?name=${movie.title
+        .toLowerCase()
+        .split(' ')
+        .join('-')}`;
     } else {
-      return `${movie.id}-${movie.name.toLowerCase().split(' ').join('-')}`;
+      return `${movie.id}?name=${movie.name
+        .toLowerCase()
+        .split(' ')
+        .join('-')}`;
     }
   };
 

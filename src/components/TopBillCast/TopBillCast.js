@@ -98,7 +98,7 @@ export default function TopBillCast({ cast, mediaType, mediaId, params }) {
                   <Link
                     sx={{ width: 'fit-content' }}
                     component={RouterLink}
-                    to={`/person/${actor.id}-${actor.name
+                    to={`/person/${actor.id}?name${actor.name
                       .split(' ')
                       .join('-')}`}
                   >
@@ -134,7 +134,9 @@ export default function TopBillCast({ cast, mediaType, mediaId, params }) {
                   >
                     <Link
                       component={RouterLink}
-                      to={`/person/${actor.id}`}
+                      to={`/person/${actor.id}?name${actor.name
+                        .split(' ')
+                        .join('-')}`}
                       variant='inherit'
                       color='inherit'
                       underline='none'

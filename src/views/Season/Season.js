@@ -30,10 +30,7 @@ export default function Season({
     //http://localhost:3000/media/tv/season/1420/3
     try {
       const response = await axios.get(
-        `${baseURL}media/tv/${id
-          .split('-')
-          .slice(0, -1)
-          .join('-')}/season/${seasonNumber}`
+        `${baseURL}media/tv/${id.split('?name=')[0]}/season/${seasonNumber}`
       );
       //console.log(response.data);
       document.title = `${response.data.foundMedia.mediaName} Season ${response.data.foundMedia.seasonNumber}`;
@@ -75,10 +72,7 @@ export default function Season({
     //http://localhost:3000/media/getById/movie/1420
     try {
       const response = await axios.get(
-        `${baseURL}media/tv/${id
-          .split('-')
-          .slice(0, -1)
-          .join('-')}/season/${seasonNumber}/episode/${episodeNumber}`
+        `${baseURL}media/tv/${id.spit('?name=')[0]}/season/${seasonNumber}/episode/${episodeNumber}`
       );
       //console.log(response.data);
       document.title = `${response.data.foundMedia.mediaName}  ${response.data.foundMedia.seasonNumber}x${response.data.foundMedia.episodeNumber}`;

@@ -22,7 +22,7 @@ export default function Person() {
     //http://localhost:3000/media/getById/movie/1420
     try {
       const response = await axios.get(
-        `${baseURL}people/${params.id.split('-')[0]}`
+        `${baseURL}people/${params.id.split('?name')[0]}`
       );
       //console.log(response.data);
 
