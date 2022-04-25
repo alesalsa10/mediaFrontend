@@ -415,8 +415,7 @@ export default function Settings() {
             top: '50%',
             left: '50%',
             transform: 'translate(-50%, -50%)',
-            maxWidth: 400,
-            minWidth: 350,
+            width: { xs: '80%', md: 500 },
             p: 4,
             backgroundColor: 'background.paper',
           }}

@@ -32,7 +32,7 @@ export default function EpisodesCarousel({ episodes }) {
 
     return () => {
       window.removeEventListener('resize', handleImageLoad);
-      window.removeEventListener('scroll', getListSize);
+      window.removeEventListener('resize', getListSize);
     };
   }, []);
   const baseImgUrl = 'https://image.tmdb.org/t/p/original';

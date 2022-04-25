@@ -332,7 +332,7 @@ export default function Comment({
                     )}
                     {isReplyOpen ? (
                       <>
-                        <Box sx={{backgroundColor: 'background.paper'}}>
+                        <Box sx={{ backgroundColor: 'background.paper' }}>
                           <ReactQuill
                             value={replyText}
                             onChange={handleReply}
@@ -408,13 +408,17 @@ export default function Comment({
             top: '50%',
             left: '50%',
             transform: 'translate(-50%, -50%)',
-            maxWidth: 400,
+            width: { xs: '80%', md: 500 },
             bgcolor: 'background.paper',
-            //boxShadow: 24,
             p: 4,
           }}
         >
-          <Typography id='modal-modal-title' variant='h6' component='h2' color={'text.primary'}>
+          <Typography
+            id='modal-modal-title'
+            variant='h6'
+            component='h2'
+            color={'text.primary'}
+          >
             Are you sure you want to delete this comment
           </Typography>
           <Box

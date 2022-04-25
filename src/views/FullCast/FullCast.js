@@ -24,11 +24,9 @@ export default function FullCast() {
     //http://localhost:3000/media/getById/movie/1420
     try {
       const response = await axios.get(
-        `${baseURL}media/getById/${params.mediaType}/${
-          params.id.split('-')[0]
-        }`
+        `${baseURL}media/getById/${params.mediaType}/${params.id.split('-')[0]}`
       );
-      console.log(response.data);
+      //console.log(response.data);
 
       //make array of crew separated by department
       //format
@@ -83,7 +81,7 @@ export default function FullCast() {
           params.seasonNumber
         }`
       );
-      console.log(response.data);
+      //console.log(response.data);
 
       let sorted = [];
       for (const [
@@ -128,7 +126,7 @@ export default function FullCast() {
           params.seasonNumber
         }/episode/${params.episodeNumber}`
       );
-      console.log(response.data);
+     // console.log(response.data);
       let sorted = [];
       for (const [
         index,
@@ -199,9 +197,9 @@ export default function FullCast() {
     if (params.mediaType === 'movie' || params.mediaType === 'tv') {
       return `/${params.mediaType}/${params.id}`;
     } else if (params.seasonNumber && params.episodeNumber) {
-      return `/tv/${params.id}/seasons/${params.seasonNumber}`;
+      return `/tv/${params.id}/seasons/${params.seasonNumber}/episodes/${params.episodeNumber}`;
     } else if (params.seasonNumber) {
-      return `/tv/${params.id}`;
+      return `/tv/${params.id}/seasons/${params.seasonNumber}`;
     }
   };
 
@@ -209,9 +207,9 @@ export default function FullCast() {
     if (params.mediaType === 'movie' || params.mediaType === 'tv') {
       return `Back to Main`;
     } else if (params.seasonNumber && params.episodeNumber) {
-      return `Back to Season ${params.seasonNumber}`;
+      return `Back to Episode ${params.episodeNumber}`;
     } else if (params.seasonNumber) {
-      return `Back to Main`;
+      return `Back to Season ${params.seasonNumber}`;
     }
   };
 
@@ -593,7 +591,7 @@ export default function FullCast() {
                   )}
                 </Typography>
                 {params.seasonNumber && params.episodeNumber ? (
-                  <Typography variant='h6'>
+                  <Typography variant='h6' sx={{ color: 'text.primary' }}>
                     Guest stars (
                     {state.response.mediaDetails.credits.guest_stars.length})
                     {state.response.mediaDetails.credits.guest_stars.length >
@@ -603,7 +601,12 @@ export default function FullCast() {
                           (actor, index) => (
                             <Box
                               key={index + actor.name}
-                              sx={{ display: 'flex', flexDirection: 'row' }}
+                              sx={{
+                                display: 'flex',
+                                flexDirection: 'row',
+                                backgroundColor: 'background.paper',
+                                my: 1,
+                              }}
                             >
                               <Link
                                 component={RouterLink}
@@ -622,6 +625,7 @@ export default function FullCast() {
                                     width: 50,
                                     borderRadius: '3px',
                                     backgroundColor: '#a7a7a8',
+                                    height: '100%'
                                   }}
                                 ></Box>
                               </Link>
@@ -659,7 +663,9 @@ export default function FullCast() {
                         )}
                       </>
                     ) : (
-                      <Typography sx={{ textAlign: 'left', m: 1 }}>
+                      <Typography
+                        sx={{ textAlign: 'left', m: 1, color: 'text.primary' }}
+                      >
                         No guest stars available
                       </Typography>
                     )}

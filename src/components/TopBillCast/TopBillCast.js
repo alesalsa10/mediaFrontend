@@ -53,7 +53,7 @@ export default function TopBillCast({ cast, mediaType, mediaId, params }) {
 
     return () => {
       window.removeEventListener('resize', handleImageLoad);
-      window.removeEventListener('scroll', getListSize);
+      window.removeEventListener('resize', getListSize);
     };
   }, []);
 

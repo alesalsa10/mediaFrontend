@@ -84,7 +84,7 @@ export default function Card({ mediaType, media, type, bestSellers }) {
 
     return () => {
       window.removeEventListener('resize', handleImageLoad);
-      window.removeEventListener('scroll', getListSize);
+      window.removeEventListener('resize', getListSize);
     };
   }, []);
 

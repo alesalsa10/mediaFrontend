@@ -31,7 +31,7 @@ export default function KnownFor({ data }) {
 
     return () => {
       window.removeEventListener('resize', handleImageLoad);
-      window.removeEventListener('scroll', getListSize);
+      window.removeEventListener('resize', getListSize);
     };
   }, []);
   return (

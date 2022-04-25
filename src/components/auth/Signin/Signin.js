@@ -35,8 +35,6 @@ export default function Signin() {
 
   useEffect(() => {
     if (authData.isAuth && authData.user) {
-      //navigate(from, { replace: true });
-      //navigate(-1)
       if (hasBack) {
         navigate(-1);
       } else {
@@ -44,10 +42,6 @@ export default function Signin() {
       }
     }
   }, [authData.isAuth, authData.user]);
-
-  useEffect(() => {
-    document.title = 'Sign in';
-  }, []);
 
   const handleRemberMeClick = (event) => {
     event.preventDefault();

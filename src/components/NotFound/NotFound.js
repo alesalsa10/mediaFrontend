@@ -6,7 +6,7 @@ export default function NotFound() {
   return (
     <>
       <Navigation />
-      <Alert sx={{ m: 5 }} severity='info'>
+      <Alert sx={{ m: 5, p: 5}} severity='info'>
         This page does not exist
       </Alert>
     </>
