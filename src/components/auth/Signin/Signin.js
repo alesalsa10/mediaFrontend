@@ -81,13 +81,13 @@ export default function Signin() {
   };
 
   return (
-    <Grid container justifyContent={'center'}>
+    <Grid container justifyContent={'center'} alignItems='center'>
       {authData && authData.isAfterPasswordChange ? (
         <Grid item>
           <Slide
             direction='left'
             in={authData.isAfterPasswordChange}
-            sx={{ m: 2 }}
+            sx={{ m: 2, width: 'fit-content' }}
           >
             <Alert sx={{ py: 3 }} severity='success' variant='outlined'>
               <Typography variant='h6'>
@@ -100,7 +100,7 @@ export default function Signin() {
         <></>
       )}
 
-      <Grid item sx={{ mt: 3 }}>
+      <Grid item sx={{ mt: 3, display: 'flex', justifyContent: 'center', justifyItems: 'center' }} xs={12} >
         <Box
           maxWidth={'sm'}
           sx={{
@@ -114,6 +114,7 @@ export default function Signin() {
             color: 'text.primary',
             backgroundColor: 'background.paper',
             borderRadius: 1,
+            justifySelf: 'center'
           }}
         >
           <Typography component='h1' variant='h5'>
