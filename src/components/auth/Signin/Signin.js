@@ -12,15 +12,14 @@ import { signin, togglePersist } from '../../../features/auth/authSlice';
 import Alert from '@mui/material/Alert';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { Slide } from '@mui/material';
 
 export default function Signin() {
   let navigate = useNavigate();
   const dispatch = useDispatch();
   const authData = useSelector((state) => state.auth);
   const location = useLocation();
-  //const from = location.state?.from?.pathname || '/';
   const hasBack = location.key !== 'default';
-
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -83,7 +82,25 @@ export default function Signin() {
 
   return (
     <Grid container justifyContent={'center'}>
-      <Grid item>
+      {authData && authData.isAfterPasswordChange ? (
+        <Grid item>
+          <Slide
+            direction='left'
+            in={authData.isAfterPasswordChange}
+            sx={{ m: 2 }}
+          >
+            <Alert sx={{ py: 3 }} severity='success' variant='outlined'>
+              <Typography variant='h6'>
+                Successful password change, please log in again.
+              </Typography>
+            </Alert>
+          </Slide>
+        </Grid>
+      ) : (
+        <></>
+      )}
+
+      <Grid item sx={{ mt: 3 }}>
         <Box
           maxWidth={'sm'}
           sx={{

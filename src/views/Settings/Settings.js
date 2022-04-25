@@ -11,10 +11,12 @@ import {
   Skeleton,
 } from '@mui/material';
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import api from '../../services/api';
+import { signout } from '../../features/auth/authSlice';
 
 export default function Settings() {
+  const dispatch = useDispatch();
   const authData = useSelector((state) => state.auth);
   const [state, setState] = useState({
     response: null,
@@ -30,7 +32,6 @@ export default function Settings() {
     loading: null,
   });
   const [selectedModal, setSelectedModal] = useState();
-  
 
   const getSelf = async () => {
     try {
@@ -173,8 +174,10 @@ export default function Settings() {
         }
       );
       console.log(response.data);
-      setChange({ response: true, loading: false, error: false });
-      setIsModalOpen(false);
+      // setChange({ response: true, loading: false, error: false });
+
+      // setIsModalOpen(false);
+      dispatch(signout(true));
     } catch (error) {
       console.log(error.response.data);
       setChange({
@@ -397,8 +400,8 @@ export default function Settings() {
       <Modal
         open={isModalOpen}
         onClose={toggleModal}
-        aria-labelledby='delete comment confirmation'
-        aria-describedby='confirmation for delete'
+        aria-labelledby='user changes'
+        aria-describedby='user account changes'
         closeAfterTransition
         BackdropComponent={Backdrop}
         BackdropProps={{
@@ -523,7 +526,6 @@ export default function Settings() {
                 label='New Password'
                 name='newPassword'
                 autoComplete='newPassword'
-                autoFocus
                 placeholder='Enter New Password'
                 inputProps={{ maxLength: 25 }}
                 error={checkErrors(change.error, 'newPassword')}

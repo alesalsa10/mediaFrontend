@@ -28,9 +28,8 @@ import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import LoginRoundedIcon from '@mui/icons-material/LoginRounded';
 import AppRegistrationRoundedIcon from '@mui/icons-material/AppRegistrationRounded';
 import { green } from '@mui/material/colors';
-import { Alert, CircularProgress, Box } from '@mui/material';
-import api from '../../services/api';
-import { signout, getSelf } from '../../features/auth/authSlice';
+import {  Box } from '@mui/material';
+import { signout } from '../../features/auth/authSlice';
 
 const HideOnScroll = ({ children }) => {
   const trigger = useScrollTrigger();
