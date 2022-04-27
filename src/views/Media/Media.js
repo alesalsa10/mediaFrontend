@@ -62,7 +62,9 @@ export default function Media() {
     //http://localhost:3000/media/getById/movie/1420
     try {
       const response = await axios.get(
-        `${baseURL}media/getById/${params.mediaType}/${params.id.split('--')[0]}`
+        `${baseURL}media/getById/${params.mediaType}/${
+          params.id.split('--')[0]
+        }`
       );
       //console.log(response.data);
       document.title =
@@ -180,18 +182,29 @@ export default function Media() {
   };
 
   const doesBookHaveMedia = async (mediaDetails) => {
-    let authorLastName = mediaDetails.volumeInfo.authors[0].split(' ');
-    authorLastName = authorLastName[authorLastName.length - 1].replace('"', '');
-    try {
-      const response = await axios.post(`${baseURL}book/recommendation`, {
-        book_name: mediaDetails.volumeInfo.title.toLowerCase(),
-        book_author: authorLastName.toLowerCase(),
-      });
-      //console.log(response.data);
-      return response.data;
-    } catch (error) {
-      //console.log(error);
-      return { error: error.response.data.Msg };
+    if (
+      mediaDetails.volumeInfo &&
+      mediaDetails.volumeInfo.authors &&
+      Array.isArray(mediaDetails.volumeInfo.authors)
+    ) {
+      let authorLastName = mediaDetails.volumeInfo.authors[0].split(' ');
+      authorLastName = authorLastName[authorLastName.length - 1].replace(
+        '"',
+        ''
+      );
+      try {
+        const response = await axios.post(`${baseURL}book/recommendation`, {
+          book_name: mediaDetails.volumeInfo.title.toLowerCase(),
+          book_author: authorLastName.toLowerCase(),
+        });
+        //console.log(response.data);
+        return response.data;
+      } catch (error) {
+        //console.log(error);
+        return { error: error.response.data.Msg };
+      }
+    } else {
+      return { error: 'Not available' };
     }
   };
 
