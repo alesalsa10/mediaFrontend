@@ -102,7 +102,7 @@ export default function Register() {
     if (authData.isAuth && authData.user) {
       navigate('/')
     }
-  }, [authData.isAuth]);
+  }, [authData.isAuth, authData.user]);
 
   return (
     <Grid container justifyContent={'center'}>
