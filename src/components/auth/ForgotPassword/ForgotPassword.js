@@ -7,7 +7,6 @@ import Alert from '@mui/material/Alert';
 import CircularProgress from '@mui/material/CircularProgress';
 import { Grid } from '@mui/material';
 
-
 const axios = require('axios').default;
 
 const baseURL =
@@ -25,10 +24,9 @@ export default function ForgotPassword() {
     e.preventDefault();
     setLoading(true);
     try {
-      const response = await axios.post(
-        `${baseURL}auth/forgotPassword`,
-        { email: email }
-      );
+      const response = await axios.post(`${baseURL}auth/forgotPassword`, {
+        email: email,
+      });
       setData(response.data.Msg);
       setError(undefined);
       setLoading(false);
@@ -72,7 +70,7 @@ export default function ForgotPassword() {
     <Grid container justifyContent='center'>
       <Grid item>
         <Box
-           maxWidth={'sm'}
+          maxWidth={'sm'}
           sx={{
             marginTop: 8,
             mx: 2,
@@ -133,9 +131,7 @@ export default function ForgotPassword() {
                   variant='contained'
                   sx={{ mt: 3, mb: 2 }}
                 >
-                  {
-                    loading ? <CircularProgress/>: 'Continue'
-                  }
+                  {loading ? <CircularProgress /> : 'Continue'}
                 </Button>
               </Box>
             </>

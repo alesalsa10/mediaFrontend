@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import Alert from '@mui/material/Alert';
-import { Grid } from '@mui/material';
+import { Grid, Typography, Link as MaterialLink } from '@mui/material';
 
 const axios = require('axios').default;
 
@@ -34,16 +34,29 @@ export default function VerifyEmail() {
 
   return (
     <Grid container justifyContent={'center'}>
-      <Grid item xs={12}>
+      <Grid item xs={12} md={8} sx={{ m: 4}}>
         {data ? (
           <>
-            <Alert variant='outlined' severity='success'>
+            <Alert variant='outlined' severity='success' sx={{p:4}}>
               {data}
+              <Typography variant='body1'>
+                You can{' '}
+                <MaterialLink
+                  component={Link}
+                  to='/signin'
+                  sx={{
+                    ':hover': { color: 'primary.main' },
+                  }}
+                >
+                  Sign In{' '}
+                </MaterialLink>
+                now
+              </Typography>
             </Alert>
           </>
         ) : (
           <>
-            <Alert variant='outlined' severity='error'>
+            <Alert variant='outlined' severity='error' sx={{p:4}}>
               {error}
             </Alert>
           </>
