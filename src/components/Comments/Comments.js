@@ -22,6 +22,7 @@ import api from '../../services/api';
 
 export default function Comments({ id, count }) {
   const theme = useSelector((state) => state.theme);
+  const [commentCount, setCommentCount] = useState(count)
 
   const { pathname, hash, key } = useLocation();
 
@@ -198,7 +199,7 @@ export default function Comments({ id, count }) {
         error: null,
         response: true,
       });
-
+      setCommentCount(commentCount + 1)
       const newState = [comment.data, ...state.response];
       setState({
         loading: false,
@@ -313,6 +314,7 @@ export default function Comments({ id, count }) {
       );
       updatedState[index] = stateWithReply;
       //console.log(updatedState);
+      setCommentCount(commentCount + 1)
       openReply('');
       setState({ loading: false, response: updatedState, error: null });
     } catch (err) {
@@ -441,6 +443,7 @@ export default function Comments({ id, count }) {
             response: updatedState,
             error: null,
           });
+          setCommentCount(commentCount -1)
           setIsOpen(false);
         } else {
           let stateWithDeleted = deleteIteration(
@@ -537,12 +540,11 @@ export default function Comments({ id, count }) {
           const element = document.getElementById(id);
           if (element) {
             element.scrollIntoView();
-            element.focus();
           }
         }, 0);
       }
     }
-  }, [pathname, hash, key, state.response, state.error, state.loading]); // do this on route change
+  }, [pathname, hash, key, state.loading]); 
 
   return (
     <Box
@@ -681,7 +683,7 @@ export default function Comments({ id, count }) {
                   color: 'text.primary',
                 }}
               >
-                <Typography>All Comments ({count})</Typography>
+                <Typography>All Comments ({commentCount})</Typography>
                 <Box>
                   <FormControl>
                     <Select
