@@ -52,25 +52,25 @@ export default function User() {
 
   const getMediaLink = (comment) => {
     if (comment.parentMovie) {
-      return `/movie/${comment.parentMovie._id}-${comment.parentMovie.name
+      return `/movie/${comment.parentMovie._id}--${comment.parentMovie.name
         .split(' ')
         .join('-')}`;
     } else if (comment.parentTv) {
-      return `/tv/${comment.parentTv._id}-${comment.parentTv.name
+      return `/tv/${comment.parentTv._id}--${comment.parentTv.name
         .split(' ')
         .join('-')}`;
     } else if (comment.parentBook) {
-      return `/book/${comment.parentBook._id}-${comment.parentBook.name
+      return `/book/${comment.parentBook._id}--${comment.parentBook.name
         .split(' ')
         .join('-')}`;
     } else if (comment.parentSeason) {
-      return `/tv/${comment.parentSeason.media}-${comment.parentSeason.mediaName
+      return `/tv/${comment.parentSeason.media}--${comment.parentSeason.mediaName
         .split(' ')
         .join('-')}/seasons/${comment.parentSeason.seasonNumber}`;
     } else if (comment.parentEpisode) {
       return `/tv/${
         comment.parentEpisode.mediaId
-      }-${comment.parentEpisode.mediaName.split(' ').join('-')}/seasons/${
+      }--${comment.parentEpisode.mediaName.split(' ').join('-')}/seasons/${
         comment.parentEpisode.seasonNumber
       }/episodes/${comment.parentEpisode.episodeNumber}`;
     } else {
