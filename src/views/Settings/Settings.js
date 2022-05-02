@@ -323,8 +323,8 @@ export default function Settings() {
                 <Box>
                   <Typography variant='body1'>Password</Typography>
                   <Typography variant='body2' sx={{ color: 'text.secondary' }}>
-                    Password must be at least 8 characters long, have 1
-                    uppercase, 1 lowercase, and one special character
+                    Password must be at least 8 characters, have 1
+                    uppercase, 1 lowercase, and 1 special character
                   </Typography>
                 </Box>
                 <Box>

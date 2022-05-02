@@ -207,6 +207,7 @@ export default function Register() {
                   value={password}
                   error={checkErrors(authData.errors, 'password')}
                   helperText={chooseHelperText(authData.errors, 'password')}
+                  inputProps={{ maxLength: 25 }}
                 />
                 <List>
                   <ListItem disablePadding>
@@ -218,7 +219,7 @@ export default function Register() {
                           variant='body2'
                           color='text.secondary'
                         >
-                          At least 8 charcaters
+                          At least 8 characters
                         </Typography>
                       }
                     ></ListItemText>
@@ -246,7 +247,21 @@ export default function Register() {
                           variant='body2'
                           color='text.secondary'
                         >
-                          At least one lower case letter
+                          At least 1 lower case letter
+                        </Typography>
+                      }
+                    ></ListItemText>
+                  </ListItem>
+                  <ListItem disablePadding>
+                    <ListItemText
+                      disableTypography
+                      primary={
+                        <Typography
+                          component='div'
+                          variant='body2'
+                          color='text.secondary'
+                        >
+                          At least 1 symbol
                         </Typography>
                       }
                     ></ListItemText>

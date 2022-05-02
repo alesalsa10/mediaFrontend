@@ -1,4 +1,4 @@
-import { Alert, Backdrop, Box, Button, Modal, Typography } from '@mui/material';
+import { Alert, Backdrop, Box, Button, Modal, Typography, Grid } from '@mui/material';
 import React from 'react';
 import DOMPurify from 'dompurify';
 import ReplyIcon from '@mui/icons-material/Reply';
@@ -440,7 +440,11 @@ export default function Comment({
               No
             </Button>
             {deletedComment.error && !deletedComment.loading ? (
-              <Alert severity='error'>{deletedComment.error}</Alert>
+              <Grid container>
+                <Grid item xs={12}>
+                  <Alert severity='error'>{deletedComment.error}</Alert>
+                </Grid>
+              </Grid>
             ) : !deletedComment.error && deletedComment.loading ? (
               <Box
                 sx={{

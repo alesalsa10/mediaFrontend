@@ -123,13 +123,14 @@ export default function ViewForgotPassword() {
                   required
                   fullWidth
                   name='password'
-                  label=' New Password'
+                  label='New Password'
                   type='password'
                   id='password'
                   autoFocus
                   onChange={(e) => setPassword(e.target.value)}
                   error={checkErrors(error, 'password')}
                   helperText={chooseHelperText(error, 'password')}
+                  inputProps={{ maxLength: 25 }}
                 />
                 <Button
                   type='submit'
