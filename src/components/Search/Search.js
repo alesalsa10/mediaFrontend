@@ -33,8 +33,10 @@ export default function Search() {
   };
 
   const handleSearchClick = (e) => {
-    let searchQuery = search.split(' ').join('+');
-    navigate(`/search?name=${searchQuery}`);
+    if (search) {
+      let searchQuery = search.split(' ').join('+');
+      navigate(`/search?name=${searchQuery}`);
+    }
   };
 
   return (
@@ -46,7 +48,7 @@ export default function Search() {
         boxShadow={4}
         px={1}
         py={2}
-        sx={{ bgcolor: 'background.paper' , color: 'text.primary'}}
+        sx={{ bgcolor: 'background.paper', color: 'text.primary' }}
       >
         <Typography variant='h4' component='h4'>
           Welcome.
