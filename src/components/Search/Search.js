@@ -33,7 +33,7 @@ export default function Search() {
   };
 
   const handleSearchClick = (e) => {
-    if (search) {
+    if (search.length > 0) {
       let searchQuery = search.split(' ').join('+');
       navigate(`/search?name=${searchQuery}`);
     }
