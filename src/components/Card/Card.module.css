@@ -5,9 +5,9 @@
 
 .layer {
   position: relative;
-  bottom: 22.5px;
+  bottom: 30px;
   left: 5px;
-  height: 45px;
-  width: 45px;
-  margin-bottom: -22.5px;
+  height: 60px;
+  width: 60px;
+  /* margin-bottom: 30px; */
 }

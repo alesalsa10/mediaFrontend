@@ -155,7 +155,7 @@ export default function Card({ mediaType, media, type, bestSellers }) {
               <div className={styles.layer}>
                 <CircularProgressbar
                   value={media.vote_average * 10}
-                  text={`${parseFloat((media.vote_average * 10).toFixed(1))}`}
+                  text={`${Math.round(media.vote_average * 10)}%`}
                   background
                   backgroundPadding={4}
                   styles={buildStyles({
@@ -170,6 +170,7 @@ export default function Card({ mediaType, media, type, bestSellers }) {
                         : '#d53f31',
                     trailColor: 'transparent',
                     textSize: '30px',
+                    
                   })}
                 />
               </div>

@@ -379,9 +379,9 @@ export default function Overview({
               >
                 <CircularProgressbar
                   value={mediaDetails.vote_average * 10}
-                  text={`${mediaDetails.vote_average * 10}%`}
+                  text={`${Math.round(mediaDetails.vote_average * 10)}%`}
                   background
-                  backgroundPadding={6}
+                  backgroundPadding={2}
                   styles={buildStyles({
                     backgroundColor: '#282b29',
                     textColor: '#fff',
@@ -394,13 +394,13 @@ export default function Overview({
                         : '#d53f31',
                     trailColor: 'transparent',
                     textSize: '30px',
-                    width: '60px',
-                    height: '60px',
+                    width: '80px',
+                    height: '80px',
                   })}
                 />
               </Box>
               <Box sx={{ alignSelf: 'center', ml: 1 }}>
-                {authData.isAuth && authData.user? (
+                {authData.isAuth && authData.user ? (
                   <FavoriteIcon
                     onClick={
                       mediaType === 'movie'
