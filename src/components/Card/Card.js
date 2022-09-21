@@ -11,6 +11,9 @@ import 'react-circular-progressbar/dist/styles.css';
 
 import placeholder from '../../assets/placeholder.png';
 
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+
+
 export default function Card({ mediaType, media, type, bestSellers }) {
   const [width, setWidth] = useState();
   const refElement = useRef();
@@ -65,28 +68,28 @@ export default function Card({ mediaType, media, type, bestSellers }) {
     }
   };
 
-  const getListSize = () => {
-    // const newWidth = refElement.current.clientWidth;
-    // setWidth(newWidth);
-    if (refElement && refElement.current) {
-      const newWidth = refElement.current.clientWidth;
-      setWidth(newWidth);
-    }
-  };
+  // const getListSize = () => {
+  //   // const newWidth = refElement.current.clientWidth;
+  //   // setWidth(newWidth);
+  //   if (refElement && refElement.current) {
+  //     const newWidth = refElement.current.clientWidth;
+  //     setWidth(newWidth);
+  //   }
+  // };
 
-  const handleImageLoad = (event) => {
-    setWidth(event.target.clientWidth);
-  };
+  // const handleImageLoad = (event) => {
+  //   setWidth(event.target.clientWidth);
+  // };
 
-  useEffect(() => {
-    window.addEventListener('resize', handleImageLoad);
-    window.addEventListener('resize', getListSize);
+  // useEffect(() => {
+  //   window.addEventListener('resize', handleImageLoad);
+  //   window.addEventListener('resize', getListSize);
 
-    return () => {
-      window.removeEventListener('resize', handleImageLoad);
-      window.removeEventListener('resize', getListSize);
-    };
-  }, []);
+  //   return () => {
+  //     window.removeEventListener('resize', handleImageLoad);
+  //     window.removeEventListener('resize', getListSize);
+  //   };
+  // }, []);
 
   const baseImgUrl = 'https://image.tmdb.org/t/p/original';
 
@@ -101,6 +104,14 @@ export default function Card({ mediaType, media, type, bestSellers }) {
         color: 'text.primary',
         pb: 1,
         borderRadius: 1,
+        minWidth: {
+          xs: 150,
+          sm: 200,
+        },
+        maxWidth: {
+          xs: 150,
+          sm: 200,
+        },
       }}
     >
       <Link
@@ -119,8 +130,8 @@ export default function Card({ mediaType, media, type, bestSellers }) {
       >
         <Box
           ref={refElement}
-          onLoad={handleImageLoad}
-          component='img'
+          // onLoad={handleImageLoad}
+          component={LazyLoadImage}
           src={
             mediaType === 'book'
               ? selectImg(media)
@@ -138,10 +149,11 @@ export default function Card({ mediaType, media, type, bestSellers }) {
           }
           alt={media.title}
           sx={{
-            width: {
-              xs: 130,
-              sm: 170,
-            },
+            // width: {
+            //   xs: 130,
+            //   sm: 170,
+            // },
+            width: '100%',
             borderTopRightRadius: '3px',
             borderTopLeftRadius: '3px',
             backgroundColor: '#a7a7a8',
@@ -170,7 +182,6 @@ export default function Card({ mediaType, media, type, bestSellers }) {
                         : '#d53f31',
                     trailColor: 'transparent',
                     textSize: '30px',
-                    
                   })}
                 />
               </div>

@@ -3,6 +3,7 @@ import React from 'react';
 import moment from 'moment';
 import placeholder from '../../assets/placeholder.png';
 import { Link as RouterLink } from 'react-router-dom';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 export default function HorizontalCard({
   selected,
@@ -118,7 +119,7 @@ export default function HorizontalCard({
         }/${selected === 'Books' ? selectBookLink(movie) : selectMediaLink()}`}
       >
         <Box
-          component='img'
+          component={LazyLoadImage}
           sx={{
             width: 100,
             borderTopLeftRadius: 3,

@@ -48,7 +48,12 @@ export default function Search() {
         boxShadow={4}
         px={1}
         py={2}
-        sx={{ bgcolor: 'background.paper', color: 'text.primary' }}
+        sx={{
+          bgcolor: 'background.paper',
+          color: 'text.primary',
+          borderBottomRightRadius: 15,
+          borderBottomLeftRadius: 15
+        }}
       >
         <Typography variant='h4' component='h4'>
           Welcome.
