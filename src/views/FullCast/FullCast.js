@@ -440,7 +440,7 @@ export default function FullCast() {
                                 .join('-')}`}
                             >
                               <Box
-                                component={'img'}
+                                component={LazyLoadImage}
                                 src={
                                   !actor.profile_path
                                     ? placeholder
@@ -531,7 +531,7 @@ export default function FullCast() {
                                   .join('-')}`}
                               >
                                 <Box
-                                  component={'img'}
+                                  component={LazyLoadImage}
                                   src={
                                     !actor.profile_path
                                       ? placeholder
@@ -616,7 +616,7 @@ export default function FullCast() {
                                   .join('-')}`}
                               >
                                 <Box
-                                  component={'img'}
+                                  component={LazyLoadImage}
                                   src={
                                     !actor.profile_path
                                       ? placeholder
