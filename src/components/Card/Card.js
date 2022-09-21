@@ -13,7 +13,6 @@ import placeholder from '../../assets/placeholder.png';
 
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 
-
 export default function Card({ mediaType, media, type, bestSellers }) {
   const [width, setWidth] = useState();
   const refElement = useRef();

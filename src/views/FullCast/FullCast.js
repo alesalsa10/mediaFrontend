@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom';
 import placeholder from '../../assets/placeholder.png';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { Link as RouterLink } from 'react-router-dom';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 const baseURL =
   process.env.NODE_ENV === 'production'
@@ -351,7 +352,7 @@ export default function FullCast() {
               <Box sx={{ display: 'flex', flexDirection: 'row', p: 2 }}>
                 <Link component={RouterLink} to={createLink()}>
                   <Box
-                    component={'img'}
+                    component={LazyLoadImage}
                     src={
                       !state.response.mediaDetails.poster_path
                         ? placeholder

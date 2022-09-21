@@ -2,13 +2,14 @@ import {
   Box,
   Card,
   CardContent,
-  CardMedia,
+  //CardMedia,
   Link,
   Typography,
 } from '@mui/material';
 import React, { useState, useRef, useEffect } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import placeholder from '../../assets/placeholder.png';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 export default function KnownFor({ data }) {
   const baseImgUrl = 'https://image.tmdb.org/t/p/original';
@@ -16,24 +17,24 @@ export default function KnownFor({ data }) {
   const [width, setWidth] = useState();
   const refElement = useRef();
 
-  const getListSize = () => {
-    const newWidth = refElement.current.clientWidth;
-    setWidth(newWidth);
-  };
+  // const getListSize = () => {
+  //   const newWidth = refElement.current.clientWidth;
+  //   setWidth(newWidth);
+  // };
 
-  const handleImageLoad = (event) => {
-    setWidth(event.target.clientWidth);
-  };
+  // const handleImageLoad = (event) => {
+  //   setWidth(event.target.clientWidth);
+  // };
 
-  useEffect(() => {
-    window.addEventListener('resize', handleImageLoad);
-    window.addEventListener('resize', getListSize);
+  // useEffect(() => {
+  //   window.addEventListener('resize', handleImageLoad);
+  //   window.addEventListener('resize', getListSize);
 
-    return () => {
-      window.removeEventListener('resize', handleImageLoad);
-      window.removeEventListener('resize', getListSize);
-    };
-  }, []);
+  //   return () => {
+  //     window.removeEventListener('resize', handleImageLoad);
+  //     window.removeEventListener('resize', getListSize);
+  //   };
+  // }, []);
   return (
     <>
       <Typography variant='h6' component={'div'} sx={{ pt: '0.5rem' }}>
@@ -58,6 +59,14 @@ export default function KnownFor({ data }) {
               color: 'text.primary',
               display: 'flex',
               flexDirection: 'column',
+              minWidth: {
+                xs: 150,
+                sm: 200,
+              },
+              maxWidth: {
+                xs: 150,
+                sm: 200,
+              },
             }}
             key={media.id + index}
           >
@@ -69,21 +78,22 @@ export default function KnownFor({ data }) {
                   : media.name.split(' ').join('-')
               }`}
             >
-              <CardMedia
+              <Box
                 ref={refElement}
-                onLoad={handleImageLoad}
-                component='img'
-                image={
+                //onLoad={handleImageLoad}
+                component={LazyLoadImage}
+                src={
                   !media.poster_path
                     ? placeholder
                     : `${baseImgUrl}${media.poster_path}`
                 }
                 alt={media.name}
                 sx={{
-                  width: {
-                    xs: 130,
-                    sm: 170,
-                  },
+                  // width: {
+                  //   xs: 130,
+                  //   sm: 170,
+                  // },
+                  width: '100%',
                 }}
               />
             </Link>
@@ -96,7 +106,7 @@ export default function KnownFor({ data }) {
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'center',
-                alignItems: 'center'
+                alignItems: 'center',
               }}
             >
               <Link

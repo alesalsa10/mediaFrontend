@@ -12,24 +12,25 @@ import { Link as RouterLink } from 'react-router-dom';
 import React, { useState, useRef, useEffect } from 'react';
 
 import placeholder from '../../assets/placeholder.png';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 export default function TopBillCast({ cast, mediaType, mediaId, params }) {
   const [width, setWidth] = useState();
   const refElement = useRef();
 
-  const getListSize = () => {
-    // const newWidth = refElement.current.clientWidth;
-    // setWidth(newWidth);
+  // const getListSize = () => {
+  //   // const newWidth = refElement.current.clientWidth;
+  //   // setWidth(newWidth);
 
-    if (refElement && refElement.current) {
-      const newWidth = refElement.current.clientWidth;
-      setWidth(newWidth);
-    }
-  };
+  //   if (refElement && refElement.current) {
+  //     const newWidth = refElement.current.clientWidth;
+  //     setWidth(newWidth);
+  //   }
+  // };
 
-  const handleImageLoad = (event) => {
-    setWidth(event.target.clientWidth);
-  };
+  // const handleImageLoad = (event) => {
+  //   setWidth(event.target.clientWidth);
+  // };
 
   const createFullCastLink = () => {
     if (params.mediaType === 'movie' || params.mediaType === 'tv') {
@@ -47,15 +48,15 @@ export default function TopBillCast({ cast, mediaType, mediaId, params }) {
     }
   };
 
-  useEffect(() => {
-    window.addEventListener('resize', handleImageLoad);
-    window.addEventListener('resize', getListSize);
+  // useEffect(() => {
+  //   window.addEventListener('resize', handleImageLoad);
+  //   window.addEventListener('resize', getListSize);
 
-    return () => {
-      window.removeEventListener('resize', handleImageLoad);
-      window.removeEventListener('resize', getListSize);
-    };
-  }, []);
+  //   return () => {
+  //     window.removeEventListener('resize', handleImageLoad);
+  //     window.removeEventListener('resize', getListSize);
+  //   };
+  // }, []);
 
   const baseImgUrl = 'https://image.tmdb.org/t/p/original';
 
@@ -93,6 +94,14 @@ export default function TopBillCast({ cast, mediaType, mediaId, params }) {
                     display: 'flex',
                     flexDirection: 'column',
                     boxShadow: 4,
+                    minWidth: {
+                      xs: 150,
+                      sm: 200,
+                    },
+                    maxWidth: {
+                      xs: 150,
+                      sm: 200,
+                    },
                   }}
                 >
                   <Link
@@ -102,21 +111,22 @@ export default function TopBillCast({ cast, mediaType, mediaId, params }) {
                       .split(' ')
                       .join('-')}`}
                   >
-                    <CardMedia
+                    <Box
                       ref={refElement}
-                      onLoad={handleImageLoad}
-                      component='img'
-                      image={
+                      //onLoad={handleImageLoad}
+                      component={LazyLoadImage}
+                      src={
                         !actor.profile_path
                           ? placeholder
                           : `${baseImgUrl}${actor.profile_path}`
                       }
                       alt={actor.name}
                       sx={{
-                        width: {
-                          xs: 130,
-                          sm: 170,
-                        },
+                        // width: {
+                        //   xs: 130,
+                        //   sm: 170,
+                        // },
+                        width: '100%',
                       }}
                     />
                   </Link>
