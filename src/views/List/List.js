@@ -301,8 +301,8 @@ export default function List({ mediaType, listType }) {
                           my={2}
                           key={`${info.title}${i}`}
                           sx={{
-                            display: { sx: 'initial', sm: 'grid' },
-                            justifyContent: 'start',
+                            display: { xs: 'initial', sm: 'grid' },
+                            justifyContent: 'center',
                             mt: 0,
                             width: 'inherit',
                           }}
