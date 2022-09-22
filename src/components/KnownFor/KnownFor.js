@@ -94,6 +94,10 @@ export default function KnownFor({ data }) {
                   //   sm: 170,
                   // },
                   width: '100%',
+                  height: {
+                    xs: 225,
+                    sm: 300,
+                  },
                 }}
               />
             </Link>

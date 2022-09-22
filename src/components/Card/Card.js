@@ -156,6 +156,10 @@ export default function Card({ mediaType, media, type, bestSellers }) {
             borderTopRightRadius: '3px',
             borderTopLeftRadius: '3px',
             backgroundColor: '#a7a7a8',
+            height: {
+              xs: 225,
+              sm: 300
+            }
           }}
         />
         {mediaType === 'book' ? (
