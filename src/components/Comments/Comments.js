@@ -19,10 +19,9 @@ import ReactQuill from 'react-quill'; // ES6
 import 'react-quill/dist/quill.snow.css'; // ES6
 import api from '../../services/api';
 
-
 export default function Comments({ id, count }) {
   const theme = useSelector((state) => state.theme);
-  const [commentCount, setCommentCount] = useState(count)
+  const [commentCount, setCommentCount] = useState(count);
 
   const { pathname, hash, key } = useLocation();
 
@@ -101,7 +100,7 @@ export default function Comments({ id, count }) {
   const [editText, setEditText] = useState('');
 
   const [collapsedId, setCollapsedId] = useState('');
-  const [sort, setSort] = useState('replies');
+  const [sort, setSort] = useState('popularity');
 
   const handleChange = (value) => {
     setText(value);
@@ -134,7 +133,7 @@ export default function Comments({ id, count }) {
     }
     if (value.includes('[Deleted]')) {
       value = '[Deleted]';
-     // console.log(value);
+      // console.log(value);
       setEditText(value);
     }
   };
@@ -199,7 +198,7 @@ export default function Comments({ id, count }) {
         error: null,
         response: true,
       });
-      setCommentCount(commentCount + 1)
+      setCommentCount(commentCount + 1);
       const newState = [comment.data, ...state.response];
       setState({
         loading: false,
@@ -277,6 +276,10 @@ export default function Comments({ id, count }) {
     return comment;
   };
 
+  const vote = async(commentId, index) =>{
+    //voting logic will go here
+  }
+
   const reply = async (commentId, index) => {
     let mediaType = selectMedia();
     if (changedComment.loading) {
@@ -314,7 +317,7 @@ export default function Comments({ id, count }) {
       );
       updatedState[index] = stateWithReply;
       //console.log(updatedState);
-      setCommentCount(commentCount + 1)
+      setCommentCount(commentCount + 1);
       openReply('');
       setState({ loading: false, response: updatedState, error: null });
     } catch (err) {
@@ -356,7 +359,7 @@ export default function Comments({ id, count }) {
           },
         }
       );
-     // console.log(comment.data);
+      // console.log(comment.data);
       setEditedComment({
         loading: false,
         response: true,
@@ -420,14 +423,11 @@ export default function Comments({ id, count }) {
       loading: true,
     });
     try {
-      let comment = await api.delete(
-        `comments/delete/${commentId}`,
-        {
-          headers: {
-            Authorization: `Token ${authData.accessToken}`,
-          },
-        }
-      );
+      let comment = await api.delete(`comments/delete/${commentId}`, {
+        headers: {
+          Authorization: `Token ${authData.accessToken}`,
+        },
+      });
       setDeletedComment({
         loading: false,
         response: true,
@@ -443,7 +443,7 @@ export default function Comments({ id, count }) {
             response: updatedState,
             error: null,
           });
-          setCommentCount(commentCount -1)
+          setCommentCount(commentCount - 1);
           setIsOpen(false);
         } else {
           let stateWithDeleted = deleteIteration(
@@ -459,7 +459,7 @@ export default function Comments({ id, count }) {
           setIsOpen(false);
         }
       } else {
-       // console.log(comment.data);
+        // console.log(comment.data);
         let stateWithReply = editIteration(
           commentId,
           state.response[index],
@@ -494,9 +494,9 @@ export default function Comments({ id, count }) {
     }
   };
 
-  useEffect(() =>{
-    if(!theme.isLight){
-      setTimeout(() =>{
+  useEffect(() => {
+    if (!theme.isLight) {
+      setTimeout(() => {
         let qlStroke = Array.from(document.getElementsByClassName('ql-stroke'));
         qlStroke.forEach((element) => {
           element.id = 'ql-stroke';
@@ -519,9 +519,9 @@ export default function Comments({ id, count }) {
         qlPickerOptions.forEach((element) => {
           element.id = 'ql-picker-options';
         });
-      }, 0)
+      }, 0);
     }
-  }, )
+  });
 
   useEffect(() => {
     getComments();
@@ -544,7 +544,7 @@ export default function Comments({ id, count }) {
         }, 0);
       }
     }
-  }, [pathname, hash, key, state.loading]); 
+  }, [pathname, hash, key, state.loading]);
 
   return (
     <Box
@@ -690,6 +690,7 @@ export default function Comments({ id, count }) {
                       value={sort}
                       onChange={(event) => setSort(event.target.value)}
                     >
+                      <MenuItem value={'popularity'}>Best</MenuItem>
                       <MenuItem value={'replies'}>Most Replies</MenuItem>
                       <MenuItem value={'recent'}>Most Recent</MenuItem>
                     </Select>
@@ -734,7 +735,7 @@ export default function Comments({ id, count }) {
           ) : (
             <Box
               sx={{
-                p: {xs: 0, md: 10},
+                p: { xs: 0, md: 10 },
                 display: 'flex',
                 justifyContent: 'center',
                 alignContent: 'center',
@@ -746,7 +747,7 @@ export default function Comments({ id, count }) {
                   display: 'flex',
                   flexDirection: 'column',
                   alignItems: 'center',
-                  color: 'text.primary'
+                  color: 'text.primary',
                 }}
               >
                 <ChatIcon />

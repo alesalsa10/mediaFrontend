@@ -1,7 +1,17 @@
-import { Alert, Backdrop, Box, Button, Modal, Typography, Grid } from '@mui/material';
+import {
+  Alert,
+  Backdrop,
+  Box,
+  Button,
+  Modal,
+  Typography,
+  Grid,
+} from '@mui/material';
 import React from 'react';
 import DOMPurify from 'dompurify';
 import ReplyIcon from '@mui/icons-material/Reply';
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import { useSelector } from 'react-redux';
 import { useNavigate, Link as RouterLink } from 'react-router-dom';
 import moment from 'moment';
@@ -255,6 +265,18 @@ export default function Comment({
                           sx={{
                             display: 'flex',
                             flexDirection: 'row',
+                            mr: '0.5rem',
+                            width: 'fit-content',
+                          }}
+                          //onClick={() => openReply(comment._id)}
+                        >
+                          <ArrowUpwardIcon />
+                          <ArrowDownwardIcon />
+                        </Box>
+                        <Box
+                          sx={{
+                            display: 'flex',
+                            flexDirection: 'row',
                             cursor: 'pointer',
                             '&:hover': { color: 'primary.main' },
                             //mb: '0.3rem',
@@ -315,19 +337,33 @@ export default function Comment({
                         )}
                       </Box>
                     ) : (
-                      <Box
-                        sx={{
-                          display: 'flex',
-                          flexDirection: 'row',
-                          cursor: 'pointer',
-                          '&:hover': { color: 'primary.main' },
-                          mb: '0.3rem',
-                          width: 'fit-content',
-                        }}
-                        onClick={() => navigate('/signin')}
-                      >
-                        <Typography variant='body2'>Reply</Typography>
-                        <ReplyIcon fontSize='small' />
+                      <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+                        <Box
+                          sx={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            mr: '0.5rem',
+                            width: 'fit-content',
+                          }}
+                          //onClick={() => openReply(comment._id)}
+                        >
+                          <ArrowUpwardIcon />
+                          <ArrowDownwardIcon />
+                        </Box>
+                        <Box
+                          sx={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            cursor: 'pointer',
+                            '&:hover': { color: 'primary.main' },
+                            mb: '0.3rem',
+                            width: 'fit-content',
+                          }}
+                          onClick={() => navigate('/signin')}
+                        >
+                          <Typography variant='body2'>Reply</Typography>
+                          <ReplyIcon fontSize='small' />
+                        </Box>
                       </Box>
                     )}
                     {isReplyOpen ? (
