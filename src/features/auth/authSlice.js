@@ -13,7 +13,7 @@ const initialState = {
   isAuth: !!localStorage.getItem('accessToken') || false,
   user: null,
   accessToken: localStorage.getItem('accessToken') || null,
-  persist: JSON.parse(localStorage.getItem('persist')) || false,
+  persist: true,
   isAfterPasswordChange: false,
 };
 
@@ -115,11 +115,11 @@ export const refreshToken = createAsyncThunk(
 
 export const signout = createAsyncThunk(
   'auth/signout',
-  async (isAfter, { rejectWithValue, dispatch}) => {
+  async (isAfter, { rejectWithValue, dispatch }) => {
     //initialState.isAfterPasswordChange = isAfter ? true : false;
     //state.auth.isAfterPasswordChange = isAfter? true: false;
-    if(isAfter){
-      dispatch(toggleIsAfterPass())
+    if (isAfter) {
+      dispatch(toggleIsAfterPass());
     }
     try {
       const response = await logout();
@@ -149,13 +149,9 @@ export const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    togglePersist: (state) => {
-      state.persist = !state.persist;
-      localStorage.setItem('persist', state.persist);
+    toggleIsAfterPass: (state) => {
+      state.isAfterPasswordChange = !state.isAfterPasswordChange;
     },
-    toggleIsAfterPass: (state) =>{
-      state.isAfterPasswordChange = !state.isAfterPasswordChange
-    }
   },
   extraReducers: (builder) => {
     builder
@@ -169,12 +165,7 @@ export const authSlice = createSlice({
         state.user = action.payload.foundUser;
         state.isAfterPasswordChange = false;
         state.isVerified = false;
-        if (state.persist) {
-          localStorage.setItem('accessToken', action.payload.accessToken);
-          state.accessToken = action.payload.accessToken;
-        } else {
-          state.accessToken = action.payload.accessToken;
-        }
+        state.accessToken = action.payload.accessToken;
       })
       .addCase(register.rejected, (state, action) => {
         state.status = 'idle';
@@ -193,12 +184,7 @@ export const authSlice = createSlice({
         state.isAuth = true;
         state.isVerified = action.payload.foundUser.isVerified;
         state.isAfterPasswordChange = false;
-        if (state.persist) {
-          localStorage.setItem('accessToken', action.payload.accessToken);
-          state.accessToken = action.payload.accessToken;
-        } else {
-          state.accessToken = action.payload.accessToken;
-        }
+        state.accessToken = action.payload.accessToken;
       })
       .addCase(signin.rejected, (state, action) => {
         state.status = 'idle';
@@ -213,13 +199,7 @@ export const authSlice = createSlice({
         state.errors = null;
         state.isAuth = true;
         state.isAfterPasswordChange = false;
-
-        if (state.persist) {
-          localStorage.setItem('accessToken', action.payload);
-          state.accessToken = action.payload;
-        } else {
-          state.accessToken = action.payload;
-        }
+        state.accessToken = action.payload;
       })
       .addCase(refreshToken.rejected, (state, action) => {
         state.status = 'idle';
@@ -256,6 +236,6 @@ export const authSlice = createSlice({
   },
 });
 
-export const { togglePersist, toggleIsAfterPass} = authSlice.actions;
+export const { toggleIsAfterPass } = authSlice.actions;
 
 export default authSlice.reducer;

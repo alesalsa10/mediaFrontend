@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { useSelector, useDispatch } from 'react-redux';
-import { signin, togglePersist } from '../../../features/auth/authSlice';
+import { signin } from '../../../features/auth/authSlice';
 import Alert from '@mui/material/Alert';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -41,11 +39,6 @@ export default function Signin() {
       }
     }
   }, [authData.isAuth, authData.user]);
-
-  const handleRemberMeClick = (event) => {
-    event.preventDefault();
-    dispatch(togglePersist());
-  };
 
   const checkErrors = (errors, name) => {
     //firs validation layer on the backend
@@ -100,7 +93,16 @@ export default function Signin() {
         <></>
       )}
 
-      <Grid item sx={{ mt: 3, display: 'flex', justifyContent: 'center', justifyItems: 'center' }} xs={12} >
+      <Grid
+        item
+        sx={{
+          mt: 3,
+          display: 'flex',
+          justifyContent: 'center',
+          justifyItems: 'center',
+        }}
+        xs={12}
+      >
         <Box
           maxWidth={'sm'}
           sx={{
@@ -114,7 +116,7 @@ export default function Signin() {
             color: 'text.primary',
             backgroundColor: 'background.paper',
             borderRadius: 1,
-            justifySelf: 'center'
+            justifySelf: 'center',
           }}
         >
           <Typography component='h1' variant='h5'>
@@ -159,17 +161,7 @@ export default function Signin() {
               onChange={handleFieldChanges}
               helperText={chooseHelperText(authData.errors, 'password')}
             />
-            <FormControlLabel
-              control={
-                <Checkbox
-                  value={authData.persist}
-                  color='primary'
-                  onClick={handleRemberMeClick}
-                  checked={authData.persist}
-                />
-              }
-              label='Remember me'
-            />
+
             <Button
               type='submit'
               fullWidth
