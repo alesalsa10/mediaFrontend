@@ -57,6 +57,8 @@ export default function Comment({
 
   isOpen,
   handleModal,
+
+  vote
 }) {
   //add username to links instead of id
   const authData = useSelector((state) => state.auth);
@@ -93,6 +95,7 @@ export default function Comment({
         isCollapsed={comment._id === collpaseId}
         isOpen={isOpen}
         handleModal={handleModal}
+        vote={vote}
       />
     );
   });
@@ -270,8 +273,20 @@ export default function Comment({
                           }}
                           //onClick={() => openReply(comment._id)}
                         >
-                          <ArrowUpwardIcon />
-                          <ArrowDownwardIcon />
+                          <ArrowUpwardIcon
+                            onClick={() => vote(comment._id, index, true)}
+                            sx={{
+                              ':hover': { borderColor: 'text.primary' },
+                              cursor: 'pointer',
+                            }}
+                          />
+                          <ArrowDownwardIcon
+                            onClick={() => vote(comment._id, index, false)}
+                            sx={{
+                              ':hover': { borderColor: 'text.primary' },
+                              cursor: 'pointer',
+                            }}
+                          />
                         </Box>
                         <Box
                           sx={{
@@ -347,8 +362,20 @@ export default function Comment({
                           }}
                           //onClick={() => openReply(comment._id)}
                         >
-                          <ArrowUpwardIcon />
-                          <ArrowDownwardIcon />
+                          <ArrowUpwardIcon
+                            onClick={() => navigate('/signin')}
+                            sx={{
+                              ':hover': { color: 'primary.dark' },
+                              cursor: 'pointer',
+                            }}
+                          />
+                          <ArrowDownwardIcon
+                            onClick={() => navigate('/signin')}
+                            sx={{
+                              ':hover': { color: 'primary.dark' },
+                              cursor: 'pointer',
+                            }}
+                          />
                         </Box>
                         <Box
                           sx={{

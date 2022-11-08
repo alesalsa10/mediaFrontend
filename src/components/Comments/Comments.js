@@ -276,9 +276,38 @@ export default function Comments({ id, count }) {
     return comment;
   };
 
-  const vote = async(commentId, index) =>{
+  const vote = async (commentId, index, isUpvote) => {
     //voting logic will go here
-  }
+    //{isUpvote: boolean}
+    try {
+      const comment = await api.put(
+        `comments/vote/${commentId}`,
+        {
+          isUpvote: isUpvote,
+        },
+        {
+          headers: {
+            Authorization: `Token ${authData.accessToken}`,
+          },
+        }
+      );
+      setEditedComment({
+        loading: false,
+        response: true,
+        error: null,
+      });
+      const updatedState = [...state.response];
+
+      let stateWithVote = editIteration(
+        commentId,
+        state.response[index],
+        comment.data
+      );
+      updatedState[index] = stateWithVote;
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const reply = async (commentId, index) => {
     let mediaType = selectMedia();
@@ -728,6 +757,7 @@ export default function Comments({ id, count }) {
                     isCollapsed={comment._id === collapsedId}
                     isOpen={isOpen}
                     handleModal={handleModal}
+                    vote={vote}
                   />
                 ))}
               </Box>
