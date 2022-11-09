@@ -58,7 +58,7 @@ export default function Comment({
   isOpen,
   handleModal,
 
-  vote
+  vote,
 }) {
   //add username to links instead of id
   const authData = useSelector((state) => state.auth);
@@ -193,6 +193,7 @@ export default function Comment({
               >
                 {comment.postedBy.username}
               </Link>
+
               <Typography variant='body2' sx={{ color: 'text.secondary' }}>
                 {comment.editedAt ? (
                   <>Edited {moment(comment.editedAt).fromNow()}</>
@@ -201,6 +202,7 @@ export default function Comment({
                 )}
                 {}
               </Typography>
+              {/* check if authday.user.id is in comment.votes array and change color if it is */}
             </Box>
 
             {isCollapsed ? (
@@ -276,15 +278,43 @@ export default function Comment({
                           <ArrowUpwardIcon
                             onClick={() => vote(comment._id, index, true)}
                             sx={{
-                              ':hover': { borderColor: 'text.primary' },
+                              ':hover': { color: 'primary.dark' },
                               cursor: 'pointer',
+                              color: comment.votes.some(
+                                (e) =>
+                                  e.postedBy === authData.user._id &&
+                                  e.value === 1
+                              )
+                                ? 'red'
+                                : 'text.secondary',
                             }}
                           />
+                          <Typography
+                            variant='body2'
+                            sx={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              color: comment.votes.some(
+                                (e) => e.postedBy === authData.user._id
+                              )
+                                ? 'red'
+                                : 'text.secondary',
+                            }}
+                          >
+                            {comment.voteCount}
+                          </Typography>
                           <ArrowDownwardIcon
                             onClick={() => vote(comment._id, index, false)}
                             sx={{
-                              ':hover': { borderColor: 'text.primary' },
+                              ':hover': { color: 'primary.dark' },
                               cursor: 'pointer',
+                              color: comment.votes.some(
+                                (e) =>
+                                  e.postedBy === authData.user._id &&
+                                  e.value === -1
+                              )
+                                ? 'red'
+                                : 'text.secondary',
                             }}
                           />
                         </Box>
@@ -369,6 +399,16 @@ export default function Comment({
                               cursor: 'pointer',
                             }}
                           />
+                          <Typography
+                            variant='body2'
+                            sx={{
+                              color: 'text.secondary',
+                              display: 'flex',
+                              alignItems: 'center',
+                            }}
+                          >
+                            {comment.voteCount}
+                          </Typography>
                           <ArrowDownwardIcon
                             onClick={() => navigate('/signin')}
                             sx={{

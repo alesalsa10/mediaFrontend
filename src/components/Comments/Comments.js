@@ -157,7 +157,14 @@ export default function Comments({ id, count }) {
     let mediaType = selectMedia();
     try {
       const response = await api.get(
-        `comments/${mediaType}/${id}?sort=${sort}`
+        `comments/${mediaType}/${id}?sort=${sort}`,
+        {
+          headers: {
+            Authorization: authData.accessToken
+              ? `Token ${authData.accessToken}`
+              : null,
+          },
+        }
       );
       //console.log(response.data);
       setState({ loading: false, response: response.data, error: null });

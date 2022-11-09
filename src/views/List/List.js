@@ -14,7 +14,6 @@ import 'react-circular-progressbar/dist/styles.css';
 import Card from '../../components/Card/Card';
 import Header from '../../components/Header/Header';
 import HorizontalCard from '../../components/HorizontalCard/HorizontalCard';
-import { DoubleArrowTwoTone } from '@mui/icons-material';
 
 const { default: axios } = require('axios');
 const baseURL =
@@ -55,11 +54,9 @@ export default function List({ mediaType, listType }) {
         break;
       case 'top_rated':
         if (mediaType === 'movie') {
-          document.title = (
-            `Top Rated ${
-              mediaType.charAt(0).toUpperCase() + mediaType.slice(1)
-            }s`
-          );
+          document.title = `Top Rated ${
+            mediaType.charAt(0).toUpperCase() + mediaType.slice(1)
+          }s`;
         } else {
           document.title = `Top Rated ${mediaType.toUpperCase()} Shows`;
         }
@@ -188,7 +185,7 @@ export default function List({ mediaType, listType }) {
 
   return (
     <Grid
-      container
+      //container
       justifyContent='center'
       px={1}
       py={2}
@@ -198,7 +195,7 @@ export default function List({ mediaType, listType }) {
       <Grid
         item
         xs={12}
-        md={8}
+        //md={8}
         justifyContent='center'
         sx={{ textAlign: 'center', display: 'flex' }}
       >
@@ -214,7 +211,11 @@ export default function List({ mediaType, listType }) {
           <Header params={params} />
         )}
       </Grid>
-      <Grid item xs={12} md={8}>
+      <Grid
+        item
+        xs={12}
+        // md={8}
+      >
         <Grid
           container
           spacing={1}
@@ -240,8 +241,8 @@ export default function List({ mediaType, listType }) {
                       key={
                         params.mediaType === 'movie' ||
                         params.mediaType === 'book'
-                          ? media.title
-                          : media.name
+                          ? media.title + index
+                          : media.name + index
                       }
                       sx={{
                         display: { xs: 'initial', sm: 'grid' },
@@ -444,7 +445,7 @@ export default function List({ mediaType, listType }) {
         <Grid
           item
           xs={12}
-          md={8}
+          // md={8}
           sx={{ justifyContent: 'center', display: 'flex' }}
         >
           {!state.loading ? (
@@ -452,7 +453,7 @@ export default function List({ mediaType, listType }) {
               variant='contained'
               sx={{ py: 1, px: 3, lineHeight: 1 }}
               onClick={handleViewMore}
-              fullWidth
+              //fullWidth
             >
               {showMore ? (
                 <CircularProgress color='inherit' size={'1.2rem'} />
