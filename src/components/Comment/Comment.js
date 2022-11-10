@@ -295,7 +295,7 @@ export default function Comment({
                               display: 'flex',
                               alignItems: 'center',
                               color: comment.votes.some(
-                                (e) => e.postedBy === authData.user._id
+                                (e) => e.postedBy === authData.user._id && e.value !== 0
                               )
                                 ? 'red'
                                 : 'text.secondary',

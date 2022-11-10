@@ -252,11 +252,16 @@ export default function Comments({ id, count }) {
       if (comment._id === commentId) {
         comment.text = content.text;
         comment.editedAt = content.editedAt;
+        comment.voteCount = content.voteCount;
+        comment.votes = content.votes
       } else {
         for (let comm of comment.replies) {
           if (comm._id === commentId) {
             comm.text = content.text;
             comm.editedAt = content.editedAt;
+            comm.voteCount = content.voteCount;
+            comm.votes = content.votes
+
             break;
           } else {
             editIteration(commentId, comm, content);
@@ -298,6 +303,7 @@ export default function Comments({ id, count }) {
           },
         }
       );
+      //console.log(comment.data)
       setEditedComment({
         loading: false,
         response: true,
@@ -305,14 +311,27 @@ export default function Comments({ id, count }) {
       });
       const updatedState = [...state.response];
 
-      let stateWithVote = editIteration(
+      let stateWithReply = editIteration(
         commentId,
         state.response[index],
         comment.data
       );
-      updatedState[index] = stateWithVote;
-    } catch (error) {
-      console.log(error);
+      updatedState[index] = stateWithReply;
+      setState({ loading: false, response: updatedState, error: null });
+    } catch (err) {
+      console.log(err.response);
+      setEditedComment({
+        loading: false,
+        response: null,
+        error: err.response.data.Msg,
+      });
+      setTimeout(() => {
+        setEditedComment({
+          error: null,
+          response: null,
+          loading: false,
+        });
+      }, 3000);
     }
   };
 
@@ -369,7 +388,7 @@ export default function Comments({ id, count }) {
           response: null,
           loading: false,
         });
-      }, 5000);
+      }, 3000);
     }
   };
 
@@ -424,7 +443,7 @@ export default function Comments({ id, count }) {
           response: null,
           loading: false,
         });
-      }, 5000);
+      }, 3000);
     }
   };
 
@@ -518,7 +537,7 @@ export default function Comments({ id, count }) {
           response: null,
           loading: false,
         });
-      }, 5000);
+      }, 3000);
     }
   };
 
