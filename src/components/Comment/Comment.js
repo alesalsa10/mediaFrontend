@@ -260,127 +260,141 @@ export default function Comment({
                       dangerouslySetInnerHTML={sanitizedData(comment.text)}
                     />
                     {authData.isAuth && authData.user ? (
-                      <Box
-                        sx={{
-                          display: 'flex',
-                          flexDirection: 'row',
-                        }}
-                      >
+                      <>
                         <Box
                           sx={{
                             display: 'flex',
                             flexDirection: 'row',
-                            mr: '0.5rem',
-                            width: 'fit-content',
                           }}
-                          //onClick={() => openReply(comment._id)}
                         >
-                          <ArrowUpwardIcon
-                            onClick={() => vote(comment._id, index, true)}
-                            sx={{
-                              ':hover': { color: 'primary.dark' },
-                              cursor: 'pointer',
-                              color: comment.votes.some(
-                                (e) =>
-                                  e.postedBy === authData.user._id &&
-                                  e.value === 1
-                              )
-                                ? 'red'
-                                : 'text.secondary',
-                            }}
-                          />
-                          <Typography
-                            variant='body2'
+                          <Box
                             sx={{
                               display: 'flex',
-                              alignItems: 'center',
-                              color: comment.votes.some(
-                                (e) => e.postedBy === authData.user._id && e.value !== 0
-                              )
-                                ? 'red'
-                                : 'text.secondary',
+                              flexDirection: 'row',
+                              mr: '0.5rem',
+                              width: 'fit-content',
                             }}
+                            //onClick={() => openReply(comment._id)}
                           >
-                            {comment.voteCount}
-                          </Typography>
-                          <ArrowDownwardIcon
-                            onClick={() => vote(comment._id, index, false)}
-                            sx={{
-                              ':hover': { color: 'primary.dark' },
-                              cursor: 'pointer',
-                              color: comment.votes.some(
-                                (e) =>
-                                  e.postedBy === authData.user._id &&
-                                  e.value === -1
-                              )
-                                ? 'red'
-                                : 'text.secondary',
-                            }}
-                          />
-                        </Box>
-                        <Box
-                          sx={{
-                            display: 'flex',
-                            flexDirection: 'row',
-                            cursor: 'pointer',
-                            '&:hover': { color: 'primary.main' },
-                            //mb: '0.3rem',
-                            mr: '0.5rem',
-                            width: 'fit-content',
-                          }}
-                          onClick={() => openReply(comment._id)}
-                        >
-                          <Typography variant='body2'>Reply</Typography>
-                          <ReplyIcon fontSize='small' />
-                        </Box>
-
-                        {authData.user._id === comment.postedBy._id ? (
-                          <>
-                            <Box
+                            <ArrowUpwardIcon
+                              onClick={() => vote(comment._id, index, true)}
                               sx={{
-                                display: 'flex',
-                                flexDirection: 'row',
+                                ':hover': { color: 'primary.dark' },
                                 cursor: 'pointer',
-                                '&:hover': { color: 'primary.main' },
-                                mb: '0.3rem',
-                                mr: '0.5rem',
-                                width: 'fit-content',
-                              }}
-                              onClick={() =>
-                                openEdit(comment._id, comment.text)
-                              }
-                            >
-                              <Typography variant='body2' sx={{ mr: '0.2rem' }}>
-                                Edit
-                              </Typography>
-                              <EditIcon fontSize='small' />
-                            </Box>
-                            <Box
-                              sx={{
-                                display: 'flex',
-                                flexDirection: 'row',
-                                cursor: 'pointer',
-                                '&:hover': { color: 'error.main' },
-                                mb: '0.3rem',
-                                width: 'fit-content',
-                              }}
-                              onClick={(e, reason) =>
-                                handleModal(
-                                  e,
-                                  reason,
-                                  comment,
-                                  index,
-                                  isFirst && comment.replies.length === 0
+                                color: comment.votes.some(
+                                  (e) =>
+                                    e.postedBy === authData.user._id &&
+                                    e.value === 1
                                 )
-                              }
+                                  ? 'red'
+                                  : 'text.secondary',
+                              }}
+                            />
+                            <Typography
+                              variant='body2'
+                              sx={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                color: comment.votes.some(
+                                  (e) =>
+                                    e.postedBy === authData.user._id &&
+                                    e.value !== 0
+                                )
+                                  ? 'red'
+                                  : 'text.secondary',
+                              }}
                             >
-                              <DeleteIcon fontSize='small' />
-                            </Box>
-                          </>
+                              {comment.voteCount}
+                            </Typography>
+                            <ArrowDownwardIcon
+                              onClick={() => vote(comment._id, index, false)}
+                              sx={{
+                                ':hover': { color: 'primary.dark' },
+                                cursor: 'pointer',
+                                color: comment.votes.some(
+                                  (e) =>
+                                    e.postedBy === authData.user._id &&
+                                    e.value === -1
+                                )
+                                  ? 'red'
+                                  : 'text.secondary',
+                              }}
+                            />
+                          </Box>
+                          <Box
+                            sx={{
+                              display: 'flex',
+                              flexDirection: 'row',
+                              cursor: 'pointer',
+                              '&:hover': { color: 'primary.main' },
+                              //mb: '0.3rem',
+                              mr: '0.5rem',
+                              width: 'fit-content',
+                            }}
+                            onClick={() => openReply(comment._id)}
+                          >
+                            <Typography variant='body2'>Reply</Typography>
+                            <ReplyIcon fontSize='small' />
+                          </Box>
+
+                          {authData.user._id === comment.postedBy._id ? (
+                            <>
+                              <Box
+                                sx={{
+                                  display: 'flex',
+                                  flexDirection: 'row',
+                                  cursor: 'pointer',
+                                  '&:hover': { color: 'primary.main' },
+                                  mb: '0.3rem',
+                                  mr: '0.5rem',
+                                  width: 'fit-content',
+                                }}
+                                onClick={() =>
+                                  openEdit(comment._id, comment.text)
+                                }
+                              >
+                                <Typography
+                                  variant='body2'
+                                  sx={{ mr: '0.2rem' }}
+                                >
+                                  Edit
+                                </Typography>
+                                <EditIcon fontSize='small' />
+                              </Box>
+                              <Box
+                                sx={{
+                                  display: 'flex',
+                                  flexDirection: 'row',
+                                  cursor: 'pointer',
+                                  '&:hover': { color: 'error.main' },
+                                  mb: '0.3rem',
+                                  width: 'fit-content',
+                                }}
+                                onClick={(e, reason) =>
+                                  handleModal(
+                                    e,
+                                    reason,
+                                    comment,
+                                    index,
+                                    isFirst && comment.replies.length === 0
+                                  )
+                                }
+                              >
+                                <DeleteIcon fontSize='small' />
+                              </Box>
+                            </>
+                          ) : (
+                            <></>
+                          )}
+                        </Box>
+                        {editedComment.error ? (
+                          <Alert severity='error' variant='outlined'>
+                            {editedComment.error}
+                          </Alert>
                         ) : (
                           <></>
                         )}
-                      </Box>
+                      </>
                     ) : (
                       <Box sx={{ display: 'flex', flexDirection: 'row' }}>
                         <Box

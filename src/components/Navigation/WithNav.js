@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { getSelf } from '../../features/auth/authSlice';
 import { Alert, CircularProgress, Box } from '@mui/material';
 import api from '../../services/api';
+import styles from './WithNav.module.css';
 
 export default function WithNav() {
   const location = useLocation();
@@ -56,50 +57,50 @@ export default function WithNav() {
   return (
     <>
       <Navigation />
-      {authData.isAuth && authData.user && !authData.user.isVerified ? (
-        <Alert severity='warning' variant='outlined' sx={{ p: 2, m: 2 }}>
-          An email has been sent to you to verify your account. Without
-          verification, you will have limited access. If you did not received
-          one, click{' '}
-          <span
-            style={{ fontWeight: 550, cursor: 'pointer' }}
-            onClick={resendEmail}
-          >
-            here
-          </span>{' '}
-          to send a new one.
-          {state.response ? (
-            <p
-              style={{
-                display: 'flex',
-                justifyContent: 'center',
-                paddingTop: '0.5rem',
-              }}
+      {authData.isAuth && authData.user && !authData.user.isVerified && location.pathname !== '/settings' ? (
+        <div className={styles.banner}>
+          <Alert severity='warning' sx={{ p: 1, m: 0 }}>
+            Pleae, verify your email. Click{' '}
+            <span
+              style={{ fontWeight: 700, cursor: 'pointer', fontSize: 16 }}
+              onClick={resendEmail}
             >
-              {state.response}
-            </p>
-          ) : state.loading ? (
-            <Box
-              sx={{
-                display: 'flex',
-                justifyContent: 'center',
-                paddingTop: '0.5rem',
-              }}
-            >
-              <CircularProgress />
-            </Box>
-          ) : (
-            <p
-              style={{
-                display: 'flex',
-                justifyContent: 'center',
-                paddingTop: '0.5rem',
-              }}
-            >
-              {state.error}
-            </p>
-          )}
-        </Alert>
+              here
+            </span>{' '}
+            to send a new verification email.
+            {state.response ? (
+              <p
+                style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  paddingTop: '0.5rem',
+                }}
+              >
+                {state.response}
+              </p>
+            ) : state.loading ? (
+              <Box
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  paddingTop: '0.5rem',
+                }}
+              >
+                <CircularProgress />
+              </Box>
+            ) : (
+              <p
+                style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  paddingTop: '0.5rem',
+                }}
+              >
+                {state.error}
+              </p>
+            )}
+          </Alert>
+        </div>
       ) : (
         <></>
       )}

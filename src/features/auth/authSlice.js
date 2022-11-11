@@ -13,7 +13,7 @@ const initialState = {
   isAuth: !!localStorage.getItem('accessToken') || false,
   user: null,
   accessToken: localStorage.getItem('accessToken') || null,
-  persist: true,
+  //persist: true,
   isAfterPasswordChange: false,
 };
 
@@ -57,9 +57,17 @@ const refresh = async () => {
 };
 
 const logout = async () => {
-  const response = await axios.get(`${baseURL}auth/signout`, {
-    withCredentials: true,
-  });
+  const response = await axios.get(
+    `${baseURL}auth/signout`,
+    {
+      withCredentials: true,
+    },
+    {
+      headers: {
+        Authorization: `Token ${initialState.accessToken}`,
+      },
+    }
+  );
   return response.data;
 };
 
@@ -165,6 +173,7 @@ export const authSlice = createSlice({
         state.user = action.payload.foundUser;
         state.isAfterPasswordChange = false;
         state.isVerified = false;
+        localStorage.setItem('accessToken', action.payload.accessToken);
         state.accessToken = action.payload.accessToken;
       })
       .addCase(register.rejected, (state, action) => {
@@ -184,6 +193,7 @@ export const authSlice = createSlice({
         state.isAuth = true;
         state.isVerified = action.payload.foundUser.isVerified;
         state.isAfterPasswordChange = false;
+        localStorage.setItem('accessToken', action.payload.accessToken);
         state.accessToken = action.payload.accessToken;
       })
       .addCase(signin.rejected, (state, action) => {
@@ -199,6 +209,7 @@ export const authSlice = createSlice({
         state.errors = null;
         state.isAuth = true;
         state.isAfterPasswordChange = false;
+        localStorage.setItem('accessToken', action.payload);
         state.accessToken = action.payload;
       })
       .addCase(refreshToken.rejected, (state, action) => {
@@ -214,7 +225,7 @@ export const authSlice = createSlice({
         state.isAuth = false;
         localStorage.removeItem('accessToken');
         state.accessToken = null;
-        console.log(action.payload);
+        //console.log(action.payload);
       })
       .addCase(signout.rejected, (state, action) => {
         state.status = 'idle';

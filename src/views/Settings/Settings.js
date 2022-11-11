@@ -23,6 +23,11 @@ export default function Settings() {
     error: null,
     loading: true,
   });
+  const [resend, setResend] = useState({
+    response: null,
+    error: null,
+    loading: false,
+  });
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [changeText, setChangeText] = useState('');
   const [currentPassword, setCurrentPassword] = useState('');
@@ -223,6 +228,29 @@ export default function Settings() {
     }
   };
 
+  const resendEmail = async () => {
+    console.log('clicked');
+    setState({ loading: true, response: null, error: null });
+    try {
+      const response = await api.post(`auth/verify/resendEmail`, {
+        email: authData.user.email,
+      });
+      console.log(response.data);
+      setResend({
+        error: null,
+        response: 'Email successfully sent',
+        loading: false,
+      });
+    } catch (err) {
+      console.log(err.response.data.Msg);
+      setResend({
+        error: err.response.data.Msg,
+        response: null,
+        loading: false,
+      });
+    }
+  };
+
   useEffect(() => {
     document.title = 'User Settings';
     getSelf();
@@ -274,6 +302,53 @@ export default function Settings() {
           </Alert>
         ) : (
           <Grid container>
+            {!authData.user.isVerified ? (
+              <Grid item xs={12}>
+                <Alert severity='warning' sx={{ p: 1, mb:2 }}>
+                  Pleae, verify your email. Click{' '}
+                  <span
+                    style={{ fontWeight: 700, cursor: 'pointer' }}
+                    onClick={resendEmail}
+                  >
+                    here
+                  </span>{' '}
+                  to send a new verification email.
+                  {resend.response ? (
+                    <p
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        paddingTop: '0.5rem',
+                      }}
+                    >
+                      {resend.response}
+                    </p>
+                  ) : resend.loading ? (
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        paddingTop: '0.5rem',
+                      }}
+                    >
+                      <CircularProgress />
+                    </Box>
+                  ) : (
+                    <p
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        paddingTop: '0.5rem',
+                      }}
+                    >
+                      {resend.error}
+                    </p>
+                  )}
+                </Alert>
+              </Grid>
+            ) : (
+              <></>
+            )}
             <Grid
               item
               xs={12}
@@ -323,8 +398,8 @@ export default function Settings() {
                 <Box>
                   <Typography variant='body1'>Password</Typography>
                   <Typography variant='body2' sx={{ color: 'text.secondary' }}>
-                    Password must be at least 8 characters, have 1
-                    uppercase, 1 lowercase, and 1 special character
+                    Password must be at least 8 characters, have 1 uppercase, 1
+                    lowercase, and 1 special character
                   </Typography>
                 </Box>
                 <Box>

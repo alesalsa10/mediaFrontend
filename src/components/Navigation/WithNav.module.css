@@ -1,0 +1,22 @@
+.banner {
+  animation-name: rightLeft;
+  animation-duration: 8s;
+  animation-fill-mode: forwards;
+  position: fixed;
+  top: 65px;
+  width: 300px;
+  z-index: 2000;
+}
+
+@keyframes rightLeft {
+  0%,
+  100% {
+    right: -300px;
+  }
+  10% {
+    right: 0;
+  }
+  90% {
+    right: 0;
+  }
+}

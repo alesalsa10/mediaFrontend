@@ -28,7 +28,7 @@ import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import LoginRoundedIcon from '@mui/icons-material/LoginRounded';
 import AppRegistrationRoundedIcon from '@mui/icons-material/AppRegistrationRounded';
 import { green } from '@mui/material/colors';
-import {  Box } from '@mui/material';
+import { Box } from '@mui/material';
 import { signout } from '../../features/auth/authSlice';
 
 const HideOnScroll = ({ children }) => {
@@ -77,7 +77,6 @@ export default function Navigation() {
     },
   ];
 
-
   useEffect(() => {
     if (authData.isAuth && authData.user) {
       const authLinks = [
@@ -105,11 +104,10 @@ export default function Navigation() {
     dispatch(toggleTheme());
   };
 
-
-  const logout = async () =>{
-    dispatch(signout())
-    navigate('/')
-  }
+  const logout = async () => {
+    dispatch(signout());
+    navigate('/');
+  };
 
   return (
     <>
@@ -201,6 +199,7 @@ export default function Navigation() {
                       sx={{
                         bgcolor: 'background.paper',
                         color: 'text.primary',
+                        //p:2
                       }}
                     >
                       {page.links.map((link) => (
@@ -211,6 +210,7 @@ export default function Navigation() {
                           sx={{
                             color: 'text.primary',
                             ':hover': { bgcolor: 'divider' },
+                            p:1
                           }}
                         >
                           <Typography>{link.title}</Typography>
@@ -236,7 +236,7 @@ export default function Navigation() {
                 )}
                 <Card
                   className={`${styles.dropdownContent} ${styles.profileDropdownContent} `}
-                  sx={{ width: 'max-content' }}
+                  sx={{ width: 'max-content', p: 1 }}
                 >
                   {authData.isAuth && authSettings && authData.user ? (
                     <>
@@ -250,6 +250,7 @@ export default function Navigation() {
                               sx={{
                                 color: 'text.primary',
                                 ':hover': { bgcolor: 'divider' },
+                                p:1
                               }}
                             >
                               <Box
@@ -293,13 +294,17 @@ export default function Navigation() {
                           alignItems: 'center',
                           color: 'text.primary',
                           ':hover': { bgcolor: 'divider' },
-                          py: 1,
-                          px: 2,
+                          //py: 1,
+                          //px: 2,
                           cursor: 'pointer',
+                          p:1
                         }}
                         onClick={logout}
                       >
-                        <LogoutRoundedIcon fontSize='small' sx={{ mr: 1 }} />
+                        <LogoutRoundedIcon
+                          fontSize='small'
+                          sx={{ mr: 1 }}
+                        />
                         <Typography textAlign='center'>Signout</Typography>
                       </Box>
                     </>
@@ -313,6 +318,7 @@ export default function Navigation() {
                           sx={{
                             color: 'text.primary',
                             ':hover': { bgcolor: 'divider' },
+                            p:1,
                           }}
                         >
                           <Box
@@ -325,12 +331,12 @@ export default function Navigation() {
                             {setting === 'Register' ? (
                               <AppRegistrationRoundedIcon
                                 fontSize='small'
-                                sx={{ mx: 1 }}
+                                sx={{ mr: 1 }}
                               />
                             ) : (
                               <LoginRoundedIcon
                                 fontSize='small'
-                                sx={{ mx: 1 }}
+                                sx={{ mr: 1 }}
                               />
                             )}
                             <Typography textAlign='center'>
@@ -348,6 +354,7 @@ export default function Navigation() {
                       alignItems: 'center',
                       width: '100%',
                       justifyContent: 'space-between',
+                      mx: 1,
                     }}
                   >
                     <ModeNightOutlinedIcon />

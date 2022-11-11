@@ -319,7 +319,7 @@ export default function Comments({ id, count }) {
       updatedState[index] = stateWithReply;
       setState({ loading: false, response: updatedState, error: null });
     } catch (err) {
-      console.log(err.response);
+      //console.log(err.response);
       setEditedComment({
         loading: false,
         response: null,
