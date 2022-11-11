@@ -3,7 +3,7 @@
   animation-duration: 8s;
   animation-fill-mode: forwards;
   position: fixed;
-  top: 65px;
+  top: 0;
   width: 300px;
   z-index: 2000;
 }
