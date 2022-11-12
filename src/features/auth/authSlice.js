@@ -57,17 +57,9 @@ const refresh = async () => {
 };
 
 const logout = async () => {
-  const response = await axios.get(
-    `${baseURL}auth/signout`,
-    {
-      withCredentials: true,
-    },
-    {
-      headers: {
-        Authorization: `Token ${initialState.accessToken}`,
-      },
-    }
-  );
+  const response = await axios.get(`${baseURL}auth/signout`, {
+    withCredentials: true,
+  });
   return response.data;
 };
 
