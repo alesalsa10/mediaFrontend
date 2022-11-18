@@ -14,6 +14,7 @@ import api from '../../services/api';
 const baseImgUrl = 'https://image.tmdb.org/t/p/original';
 
 export default function Overview({
+  foundMediaId,
   mediaDetails,
   mediaType,
   videoKey,
@@ -43,7 +44,7 @@ export default function Overview({
   const toggleFavorite = async (mediaType) => {
     try {
       const response = await api.put(
-        `favorites/${mediaType}/${mediaDetails.id}`,
+        `favorites/${mediaType}/${foundMediaId}`,
         {},
         {
           headers: {
@@ -53,7 +54,7 @@ export default function Overview({
       );
       //console.log(response.data);
       if (response.data.Msg === 'Bookmark created') {
-        setFavoriteId(mediaDetails.id);
+        setFavoriteId(foundMediaId);
       } else {
         setUserInfo('');
         setFavoriteId('');
@@ -87,8 +88,8 @@ export default function Overview({
       if (
         (userInfo &&
           userInfo.favoriteTv &&
-          userInfo.favoriteTv.includes(mediaDetails.id.toString())) ||
-        favoriteId === mediaDetails.id
+          userInfo.favoriteTv.includes(foundMediaId.toString())) ||
+        favoriteId === foundMediaId
       ) {
         return 'red';
       } else {
@@ -98,8 +99,8 @@ export default function Overview({
       if (
         (userInfo &&
           userInfo.favoriteMovies &&
-          userInfo.favoriteMovies.includes(mediaDetails.id.toString())) ||
-        favoriteId === mediaDetails.id
+          userInfo.favoriteMovies.includes(foundMediaId.toString())) ||
+        favoriteId === foundMediaId
       ) {
         return 'red';
       } else {
@@ -109,6 +110,7 @@ export default function Overview({
   };
 
   useEffect(() => {
+    console.log(foundMediaId)
     if (mediaType === 'movie') {
       for (const media of mediaDetails.release_dates.results) {
         if (media.iso_3166_1 === 'US') {
@@ -306,9 +308,9 @@ export default function Overview({
                           (userInfo &&
                             userInfo.favoriteBooks &&
                             userInfo.favoriteBooks.includes(
-                              mediaDetails.id.toString()
+                              foundMediaId.toString()
                             )) ||
-                          favoriteId === mediaDetails.id.toString()
+                          favoriteId === foundMediaId.toString()
                             ? 'red'
                             : 'text.primary',
                       }}

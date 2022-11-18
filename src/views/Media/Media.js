@@ -434,6 +434,7 @@ export default function Media() {
             <Grid item>
               <Overview
                 mediaDetails={state.response.mediaDetails}
+                foundMediaId={state.response.foundMedia._id}
                 mediaType={params.mediaType}
                 hasTrailer={hasTrailer}
                 videoKey={videoKey}
@@ -576,7 +577,7 @@ export default function Media() {
               <></>
             )}
             <Comments
-              id={state.response.mediaDetails.id}
+              id={state.response.foundMedia._id}
               count={state.response.foundMedia.commentCount}
             />
           </Grid>

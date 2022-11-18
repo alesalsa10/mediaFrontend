@@ -265,7 +265,7 @@ export default function Season({
               <></>
             )}
             <Comments
-              id={state.response.mediaDetails.id}
+              id={state.response.foundMedia._id}
               count={state.response.foundMedia.commentCount}
             />
           </Grid>
