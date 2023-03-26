@@ -31,17 +31,19 @@ export default function Trending({ mediaType }) {
   });
 
   const getTrendingmedias = async (filter) => {
+    console.log(baseURL);
     try {
       const response = await axios.get(
         `${baseURL}media/trending/${mediaType}/${filter}`
       );
-      //console.log(response.data);
+      console.log(response.data);
       setState({
         loading: false,
         response: response.data.results,
         error: null,
       });
     } catch (error) {
+      console.log(error);
       setState({
         loading: false,
         response: null,

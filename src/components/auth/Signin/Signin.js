@@ -6,13 +6,15 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { useSelector, useDispatch } from 'react-redux';
-import { signin } from '../../../features/auth/authSlice';
+import { googleAuth, signin } from '../../../features/auth/authSlice';
 import Alert from '@mui/material/Alert';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Slide } from '@mui/material';
+import { GoogleLogin } from '@react-oauth/google';
 
 export default function Signin() {
+  const theme = useSelector((state) => state.theme);
   let navigate = useNavigate();
   const dispatch = useDispatch();
   const authData = useSelector((state) => state.auth);
@@ -28,6 +30,11 @@ export default function Signin() {
       email: email,
     };
     dispatch(signin(data));
+  };
+
+  const google = (credential) => {
+    //event.preventDefault();
+    dispatch(googleAuth(credential));
   };
 
   useEffect(() => {
@@ -161,7 +168,6 @@ export default function Signin() {
               onChange={handleFieldChanges}
               helperText={chooseHelperText(authData.errors, 'password')}
             />
-
             <Button
               type='submit'
               fullWidth
@@ -174,6 +180,26 @@ export default function Signin() {
                 <span style={{ fontSize: '1.2rem' }}>Sign In</span>
               )}
             </Button>
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <GoogleLogin
+                theme={theme.isLight ? 'filled_blue' : 'filled_black'}
+                width='100%'
+                onSuccess={(credentialResponse) => {
+                  console.log(credentialResponse);
+                  google(credentialResponse.credential);
+                  //send credentialResponse.credential to server to decode payload and use in user profile
+                }}
+                onError={() => {
+                  console.log('Login Failed');
+                }}
+              />
+            </Box>
             <Grid container>
               <Grid item xs>
                 <Link href='/forgotPassword' variant='body2'>

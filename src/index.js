@@ -6,12 +6,14 @@ import { store } from './app/store';
 import { Provider } from 'react-redux';
 import * as serviceWorker from './serviceWorker';
 import setUpInterceptors from './services/setUpInterceptors';
-
+import { GoogleOAuthProvider } from '@react-oauth/google';
 
 ReactDOM.render(
-  <Provider store={store}>
-    <App />
-  </Provider>,
+  <GoogleOAuthProvider clientId={process.env.REACT_APP_CLIENT_ID}>
+    <Provider store={store}>
+      <App />
+    </Provider>
+  </GoogleOAuthProvider>,
   document.getElementById('root')
 );
 setUpInterceptors(store);

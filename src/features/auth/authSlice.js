@@ -33,6 +33,17 @@ const createAccount = async (data) => {
   return response.data;
 };
 
+const continueWithGoogle = async (credential) => {
+  const response = await axios.post(
+    `${baseURL}auth/google`,
+    {
+      credential: credential,
+    },
+    { withCredentials: true }
+  );
+  return response.data;
+};
+
 const login = async (data) => {
   const response = await axios.post(
     `${baseURL}auth/signin`,
@@ -78,6 +89,19 @@ export const register = createAsyncThunk(
   async (data, { rejectWithValue }) => {
     try {
       const response = await createAccount(data);
+      return response;
+    } catch (err) {
+      //console.log(err.response.data);
+      return rejectWithValue(err.response.data);
+    }
+  }
+);
+
+export const googleAuth = createAsyncThunk(
+  'auth/googleAuth',
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await continueWithGoogle(data);
       return response;
     } catch (err) {
       //console.log(err.response.data);
@@ -169,6 +193,26 @@ export const authSlice = createSlice({
         state.accessToken = action.payload.accessToken;
       })
       .addCase(register.rejected, (state, action) => {
+        state.status = 'idle';
+        state.errors = action.payload;
+        state.isAuth = false;
+        state.user = null;
+        state.isAfterPasswordChange = false;
+      })
+      .addCase(googleAuth.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(googleAuth.fulfilled, (state, action) => {
+        state.status = 'idle';
+        state.errors = null;
+        state.isAuth = true;
+        state.user = action.payload.foundUser;
+        state.isAfterPasswordChange = false;
+        state.isVerified = false;
+        localStorage.setItem('accessToken', action.payload.accessToken);
+        state.accessToken = action.payload.accessToken;
+      })
+      .addCase(googleAuth.rejected, (state, action) => {
         state.status = 'idle';
         state.errors = action.payload;
         state.isAuth = false;
