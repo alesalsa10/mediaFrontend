@@ -6,14 +6,17 @@ import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { register } from '../../../features/auth/authSlice';
+import { register, googleAuth } from '../../../features/auth/authSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import CircularProgress from '@mui/material/CircularProgress';
 import List from '@mui/material/List';
 import { ListItem, ListItemText } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { GoogleLogin } from '@react-oauth/google';
+
 
 export default function Register() {
+  const theme = useSelector((state) => state.theme);
   const navigate = useNavigate()
   const dispatch = useDispatch();
   const authData = useSelector((state) => state.auth);
@@ -22,6 +25,11 @@ export default function Register() {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  const google = (credential) => {
+    //event.preventDefault();
+    dispatch(googleAuth(credential));
+  };
 
   const handleFieldChanges = (e) => {
     switch (e.target.id) {
@@ -281,6 +289,26 @@ export default function Register() {
                 <span style={{ fontSize: '1.2rem' }}>Sign Up</span>
               )}
             </Button>
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <GoogleLogin
+                theme={theme.isLight ? 'filled_blue' : 'filled_black'}
+                width='100%'
+                onSuccess={(credentialResponse) => {
+                  //console.log(credentialResponse);
+                  google(credentialResponse.credential);
+                  //send credentialResponse.credential to server to decode payload and use in user profile
+                }}
+                onError={() => {
+                  console.log('Login Failed');
+                }}
+              />
+            </Box>
             <Grid container justifyContent='flex-end'>
               <Grid item>
                 <Link href='/signin' variant='body2'>

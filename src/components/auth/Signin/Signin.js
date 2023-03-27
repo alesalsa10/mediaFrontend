@@ -191,7 +191,7 @@ export default function Signin() {
                 theme={theme.isLight ? 'filled_blue' : 'filled_black'}
                 width='100%'
                 onSuccess={(credentialResponse) => {
-                  console.log(credentialResponse);
+                  //console.log(credentialResponse);
                   google(credentialResponse.credential);
                   //send credentialResponse.credential to server to decode payload and use in user profile
                 }}
