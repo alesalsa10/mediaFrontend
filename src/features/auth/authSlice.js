@@ -140,10 +140,15 @@ export const refreshToken = createAsyncThunk(
 export const signout = createAsyncThunk(
   'auth/signout',
   async (isAfter, { rejectWithValue, dispatch }) => {
-    //initialState.isAfterPasswordChange = isAfter ? true : false;
-    //state.auth.isAfterPasswordChange = isAfter? true: false;
     if (isAfter) {
       dispatch(toggleIsAfterPass());
+      try {
+        const response = await logout();
+        return response;
+      } catch (err) {
+        //console.log(err.response.data);
+        return rejectWithValue(err.response.data);
+      }
     }
     try {
       const response = await logout();
@@ -262,6 +267,7 @@ export const authSlice = createSlice({
         localStorage.removeItem('accessToken');
         state.accessToken = null;
         //console.log(action.payload);
+        state.user = null
       })
       .addCase(signout.rejected, (state, action) => {
         state.status = 'idle';

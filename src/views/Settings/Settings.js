@@ -51,6 +51,7 @@ export default function Settings() {
         loading: false,
         error: null,
       });
+      console.log(response.data)
     } catch (error) {
       console.log(error);
       setState({
@@ -179,9 +180,6 @@ export default function Settings() {
         }
       );
       console.log(response.data);
-      // setChange({ response: true, loading: false, error: false });
-
-      // setIsModalOpen(false);
       dispatch(signout(true));
     } catch (error) {
       console.log(error.response.data);
@@ -304,7 +302,7 @@ export default function Settings() {
           <Grid container>
             {!authData.user.isVerified ? (
               <Grid item xs={12}>
-                <Alert severity='warning' sx={{ p: 1, mb:2 }}>
+                <Alert severity='warning' sx={{ p: 1, mb: 2 }}>
                   Pleae, verify your email. Click{' '}
                   <span
                     style={{ fontWeight: 700, cursor: 'pointer' }}
@@ -576,22 +574,26 @@ export default function Settings() {
           ) : selectedModal === 'passwordModal' ? (
             <>
               <Typography varaint='h6'>Update Password</Typography>
-              <TextField
-                margin='normal'
-                required
-                fullWidth
-                type='password'
-                id='currentPassword'
-                label='Current Password'
-                name='currentPassword'
-                autoComplete='currentPassword'
-                autoFocus
-                placeholder='Enter Current Password'
-                inputProps={{ maxLength: 25 }}
-                error={checkErrors(change.error, 'currentPassword')}
-                onChange={handleCurrentPassword}
-                helperText={chooseHelperText(change.error, 'currentPassword')}
-              />
+              {state.response && state.response.usedSocial ? (
+                <></>
+              ) : (
+                <TextField
+                  margin='normal'
+                  required
+                  fullWidth
+                  type='password'
+                  id='currentPassword'
+                  label='Current Password'
+                  name='currentPassword'
+                  autoComplete='currentPassword'
+                  autoFocus
+                  placeholder='Enter Current Password'
+                  inputProps={{ maxLength: 25 }}
+                  error={checkErrors(change.error, 'currentPassword')}
+                  onChange={handleCurrentPassword}
+                  helperText={chooseHelperText(change.error, 'currentPassword')}
+                />
+              )}
               <TextField
                 margin='normal'
                 required
@@ -625,22 +627,26 @@ export default function Settings() {
           ) : (
             <>
               <Typography varaint='h6'>Update Email</Typography>
-              <TextField
-                margin='normal'
-                required
-                fullWidth
-                type='password'
-                id='currentPassword'
-                label='Current Password'
-                name='currentPassword'
-                autoComplete='currentPassword'
-                autoFocus
-                placeholder='Enter Current Password'
-                inputProps={{ maxLength: 25 }}
-                error={checkErrors(change.error, 'currentPassword')}
-                onChange={handleCurrentPassword}
-                helperText={chooseHelperText(change.error, 'currentPassword')}
-              />
+              {state.response && state.response.usedSocial ? (
+                <></>
+              ) : (
+                <TextField
+                  margin='normal'
+                  required
+                  fullWidth
+                  type='password'
+                  id='currentPassword'
+                  label='Current Password'
+                  name='currentPassword'
+                  autoComplete='currentPassword'
+                  autoFocus
+                  placeholder='Enter Current Password'
+                  inputProps={{ maxLength: 25 }}
+                  error={checkErrors(change.error, 'currentPassword')}
+                  onChange={handleCurrentPassword}
+                  helperText={chooseHelperText(change.error, 'currentPassword')}
+                />
+              )}
               <TextField
                 margin='normal'
                 required
